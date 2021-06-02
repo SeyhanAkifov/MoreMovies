@@ -1,0 +1,40 @@
+﻿@model MoreMovies.Models.Movie
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+<body >
+
+    <div class="container" style="background: url(@Model.ImageUrl)>
+        <div class="row bg-light text-dark">
+            <h1>@Model.Title</h1>
+
+            <div class="img-fluid">
+                <img src="~/@Model.ImageUrl" alt="Image" width="200" height="300">
+            </div>
+            <div class="col-md-4 text-center">
+                <h3 class="my-3 ">Movie info</h3>
+                <p>Movie Info</p>
+                <h3 class="my-lg-n4 ">@Model.Language.</h3>
+                <h3 class="my-3 "> <a href=@Model.HomePage>Home Page</a></h3>
+                <h3 class="my-3 ">@Model.Genre.</h3>
+                <h3 class="my-3 ">@Model.Country.</h3>
+                <h3 class="my-xl-0 ">@Model.Budget $</h3>
+                <h3 class="my-3 ">@Model.Description</h3>
+                <h3 class="my-3 ">@Model.ReleaseDate</h3>
+
+
+                <a class="btn btn-danger" href="#">Delete</a>
+                <a class="btn btn-warning" href="#">Edit</a>
+
+                <a class="btn btn-primary" href="#">Like</a>
+
+
+
+            </div>
+        </div>
+    </div>
+</body>

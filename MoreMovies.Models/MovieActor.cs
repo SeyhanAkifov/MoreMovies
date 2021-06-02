@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MoreMovies.Models
 {
-    public class MovieActors
+    public class MovieActor
     {
         public int MovieId { get; set; }
         public virtual Movie Movie { get; set; }

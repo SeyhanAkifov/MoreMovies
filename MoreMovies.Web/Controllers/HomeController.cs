@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MoreMovies.Services.Interfaces;
 using MoreMovies.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -12,13 +13,29 @@ namespace MoreMovies.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IMovieService service;
 
-        public HomeController(ILogger<HomeController> logger)
+
+
+        public HomeController(ILogger<HomeController> logger, IMovieService service)
         {
             _logger = logger;
+            this.service = service;
+        }
+
+        public IActionResult Details(int id)
+        {
+            var movie = service.GetMovieWithId(id);
+            return this.View(movie);
         }
 
         public IActionResult Index()
+        {
+            var movies = service.GetAllMovie();
+            return this.View(movies);
+        }
+
+        public IActionResult HomePage()
         {
             return View();
         }

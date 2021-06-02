@@ -14,7 +14,7 @@ namespace MoreMovies.Models
 
         public string Description { get; set; }
 
-        public int Likes { get; set; }
+        public int? Likes { get; set; }
 
         public DateTime ReleaseDate { get; set; }
 
@@ -22,12 +22,14 @@ namespace MoreMovies.Models
 
         public string HomePage { get; set; }
 
-        public int Popularity { get; set; }
+        public int? Popularity { get; set; }
 
-        public TimeSpan Runtime { get; set; }
+        public TimeSpan? Runtime { get; set; }
 
-        public virtual ICollection<MovieComments> Comments { get; set; }
-        public virtual ICollection<MovieActors> Actors { get; set; }
+        public string ImageUrl { get; set; }
+
+        public virtual ICollection<MovieComment> Comments { get; set; }
+        public virtual ICollection<MovieActor> Actors { get; set; }
 
         public virtual MovieLanguage  Language { get; set; }
         public virtual MovieGenre  Genre { get; set; }

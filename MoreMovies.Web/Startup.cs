@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -8,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MoreMovies.Models;
+using MoreMovies.Services;
+using MoreMovies.Services.Interfaces;
 using MoreMovies.Web.Data;
 using System;
 using System.Collections.Generic;
@@ -28,19 +31,50 @@ namespace MoreMovies.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            
+
+            
+
+
+
+           
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDatabaseDeveloperPageExceptionFilter();
+            //services.AddDatabaseDeveloperPageExceptionFilter();
+
+            //services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration["DefaultConnection"]));
+            //services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+            //services.AddMvc();
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>(); ;
+
+            //services.AddScoped<UserManager<ApplicationUser>, UserManager<ApplicationUser>>();
             services.AddControllersWithViews();
 
+            //services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+               
+            });
 
-            services.AddDefaultIdentity<ApplicationUser>()
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
+            services.AddMvc();
+
+            services.AddTransient<IMovieService, MovieService>();
+            services.AddTransient<ILanguageService, LanguageService>();
+            services.AddTransient<IGenreService, GenreService>();
+            services.AddTransient<IActorService, ActorService>();
+            services.AddTransient<ICountryService, CountryService>();
+            services.AddTransient<ICommentService, CommentService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

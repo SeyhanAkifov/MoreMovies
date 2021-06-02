@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
-    <Folder Include="ViewModels\" />
+    <ProjectReference Include="..\MoreMovies.Data\MoreMovies.Data.csproj" />
+    <ProjectReference Include="..\MoreMovies.Models\MoreMovies.Models.csproj" />
   </ItemGroup>
 
 </Project>

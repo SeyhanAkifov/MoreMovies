@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MoreMovies.Models
 {
-    public class MovieComments
+    public class MovieComment
     {
         public int Id { get; set; }
 

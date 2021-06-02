@@ -1,0 +1,51 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<form class="text-center border border-light p-5" action="AddMovie" method="post">
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" class="form-control" placeholder="Title" name="title" value="">
+    </div>
+    <div class="form-group">
+        <label for="country">Country</label>
+        <input type="text" class="form-control" placeholder="Country" name="country" value="">
+    </div>
+    <div class="form-group">
+        <label for="genre">Genre</label>
+        <input type="text" class="form-control" placeholder="Genre" name="genre" value="">
+    </div>
+    <div class="form-group">
+        <label for="language">Language</label>
+        <input type="text" class="form-control" placeholder="Language" name="language" value="">
+    </div>
+
+    <div class="form-group">
+        <label for="image">Image</label>
+        <input type="text" class="form-control" placeholder="Image" name="image" value="">
+    </div>
+
+    <div class="form-group">
+        <label for="releaseDate">Release Date</label>
+        <input type="datetime" class="form-control" placeholder="Release-Date" name="releaseDate" value="">
+    </div>
+
+    <div class="form-group">
+        <label for="budget">Budget</label>
+        <input type="text" class="form-control" placeholder="Budget" name="budget" value="">
+    </div>
+
+    <div class="form-group">
+        <label for="homePage">Home page</label>
+        <input type="text" class="form-control" placeholder="HomePage" name="homePage" value="">
+    </div>
+
+    <div class="form-group">
+        <label for="description">Description</label>
+        <input type="text" class="form-control" placeholder="Description" name="description" value="">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add movie</button>
+</form>
