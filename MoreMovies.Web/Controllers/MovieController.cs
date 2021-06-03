@@ -4,6 +4,7 @@ using MoreMovies.Models;
 using MoreMovies.Services.Interfaces;
 using MoreMovies.Services.ViewModels.Movie;
 using MoreMovies.Web.Data;
+using MoreMovies.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -31,10 +32,28 @@ namespace MoreMovies.Web.Controllers
             this.db = db;
             this.mapper = mapper;
         }
+
+        public IActionResult Details(int id)
+        {
+            var movie = movieService.GetMovieWithId(id);
+
+            var result = mapper.Map<Movie, MovieViewModel>(movie);
+
+            return this.View(result);
+        }
+
         [HttpGet]
         public  IActionResult Add()
         {
             return this.View();
+        }
+
+        //[HttpPost]
+        public IActionResult Delete(int id)
+        {
+            movieService.DeleteMovie(id);
+
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]

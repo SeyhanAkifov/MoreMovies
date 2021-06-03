@@ -26,8 +26,9 @@
                 <h3 class="my-3 ">@Model.Description</h3>
                 <h3 class="my-3 ">@Model.ReleaseDate</h3>
 
-
-                <a class="btn btn-danger" href="#">Delete</a>
+                <form method="post">
+                <a class="btn btn-danger" asp-controller="Movie" asp-action="Delete" asp-route-id="@Model.Id" name="@Model.Id">Delete</a>
+                </form>
                 <a class="btn btn-warning" href="#">Edit</a>
 
                 <a class="btn btn-primary" href="#">Like</a>

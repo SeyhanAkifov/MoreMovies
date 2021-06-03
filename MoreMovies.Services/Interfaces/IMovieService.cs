@@ -11,7 +11,7 @@ namespace MoreMovies.Services.Interfaces
     public interface IMovieService
     {
         public  void AddMovie(AddMovieInputModel movie);
-        public  void DeleteMovie();
+        public  void DeleteMovie(int id);
         public  void SearchMovie();
         public  void EditMovie();
         public  Movie GetMovieWithId(int id);

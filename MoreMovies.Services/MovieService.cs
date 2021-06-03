@@ -64,9 +64,12 @@ namespace MoreMovies.Services
 
         }
 
-        public void DeleteMovie()
+        public void DeleteMovie(int id)
         {
-            throw new NotImplementedException();
+            var db = new ApplicationDbContext();
+            var movie = db.Movies.Find(id);
+            db.Movies.Remove(movie);
+            db.SaveChanges();
         }
 
         public void EditMovie()
