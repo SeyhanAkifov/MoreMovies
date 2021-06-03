@@ -20,10 +20,11 @@ namespace MoreMovies.Web.Controllers
         private readonly ILanguageService languageService;
         private readonly IGenreService genreService;
         private readonly ICountryService countryService;
+        private readonly ICommentService commentService;
         private readonly ApplicationDbContext db;
         private readonly IMapper mapper;
 
-        public MovieController( IMovieService movieService, ILanguageService languageService, IGenreService genreService, ICountryService countryService, ApplicationDbContext db, IMapper mapper)
+        public MovieController( IMovieService movieService, ILanguageService languageService, IGenreService genreService, ICountryService countryService, ApplicationDbContext db, IMapper mapper, ICommentService commentService)
         {
             this.movieService = movieService;
             this.languageService = languageService;
@@ -31,6 +32,7 @@ namespace MoreMovies.Web.Controllers
             this.countryService = countryService;
             this.db = db;
             this.mapper = mapper;
+            this.commentService = commentService;
         }
 
         public IActionResult Details(int id)
@@ -91,6 +93,24 @@ namespace MoreMovies.Web.Controllers
             movieService.LikeMovie(id);
 
             return RedirectToAction("Details", "Movie", new { id = id });
+        }
+        [HttpPost]
+        public IActionResult AddComment(int id, string input)
+        {
+
+
+            movieService.AddComment(id, input);
+
+            db.SaveChanges();
+
+            return RedirectToAction("Details", "Movie", new { id = id });
+        }
+
+        public IActionResult AddComment(int id)
+        {
+
+
+            return View(id);
         }
 
 

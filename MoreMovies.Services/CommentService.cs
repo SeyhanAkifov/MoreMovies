@@ -1,4 +1,6 @@
-﻿using MoreMovies.Services.Interfaces;
+﻿using MoreMovies.Data;
+using MoreMovies.Models;
+using MoreMovies.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +11,24 @@ namespace MoreMovies.Services
 {
     public class CommentService : ICommentService
     {
-        public Task Add()
+
+        ApplicationDbContext db = new ApplicationDbContext();
+        public Comment AddComment(string text)
         {
-            throw new NotImplementedException();
+            
+            var comment = new Comment { Description = text };
+            
+
+            
+                db.Comments.Add(comment);
+                db.SaveChanges();
+
+               
+
+                return comment;
+            
+
+            
         }
 
         public Task Delete()

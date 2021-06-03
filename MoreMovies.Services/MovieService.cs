@@ -15,7 +15,7 @@ namespace MoreMovies.Services
     public class MovieService : IMovieService
     {
         ApplicationDbContext db = new ApplicationDbContext();
-
+        
         public void AddMovie(AddMovieInputModel model)
         {
 
@@ -89,6 +89,20 @@ namespace MoreMovies.Services
             var movie = GetMovieWithId(id);
 
             movie.Likes++;
+
+            db.SaveChanges();
+        }
+
+        public void AddComment(int movieId, string text)
+        {
+            var movie = GetMovieWithId(movieId);
+
+            var commentService = new CommentService();
+            var comment = commentService.AddComment(text);
+           
+            
+
+            movie.Comments.Add(new MovieComment { Comment = comment});
 
             db.SaveChanges();
         }

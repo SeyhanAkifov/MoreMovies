@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MoreMovies.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace MoreMovies.Services.Interfaces
 {
     public interface ICommentService
     {
-        public Task Add();
+        public Comment AddComment(string text);
         public Task Delete();
     }
 }

@@ -14,6 +14,8 @@ namespace MoreMovies.Services.Interfaces
         public  void DeleteMovie(int id);
         public  void SearchMovie();
         public  void LikeMovie(int id);
+        public  void AddComment(int id, string text);
+
         public void EditMovieWithId(int id, AddMovieInputModel model);
         public  Movie GetMovieWithId(int id);
         public  ICollection<Movie> GetAllMovie();
