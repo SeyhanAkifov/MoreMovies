@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MoreMovies.Models;
 using MoreMovies.Web.Models;
+using System.Linq;
 
 namespace SocialNetworkCustom.Web.MappingConfiguration
 {
@@ -12,7 +13,8 @@ namespace SocialNetworkCustom.Web.MappingConfiguration
             this.CreateMap<Movie, MovieViewModel>()
                 .ForMember(x => x.Genre, y => y.MapFrom(s => s.Genre.Genre.Name))
                 .ForMember(x => x.Language, y => y.MapFrom(s => s.Language.Language.Name))
-                .ForMember(x => x.Country, y => y.MapFrom(s => s.Country.Country.Name));
+                .ForMember(x => x.Country, y => y.MapFrom(s => s.Country.Country.Name))
+                .ForMember(x => x.Comments, y => y.MapFrom(s => s.Comments.Select(x => x.Comment.Description).ToList()));
 
             //this.CreateMap<Comment, CommentViewModel>()
             //    .ForMember(x => x.Author, y => y.MapFrom(s => s.User.FirstName + " " + s.User.LastName));

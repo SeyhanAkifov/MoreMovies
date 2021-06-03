@@ -8,13 +8,18 @@ namespace MoreMovies.Models
 {
     public class Movie
     {
+        public Movie()
+        {
+            this.Comments = new HashSet<MovieComment>();
+            this.Actors = new HashSet<MovieActor>();
+        }
         public int Id { get; set; }
 
         public string Title { get; set; }
 
         public string Description { get; set; }
 
-        public int? Likes { get; set; }
+        public int? Likes { get; set; } = 0;
 
         public DateTime ReleaseDate { get; set; }
 

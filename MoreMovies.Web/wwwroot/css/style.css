@@ -303,6 +303,11 @@ h1#logo a {
 	padding-left:12px;
 	float:right;
 }
+.likes {
+	background: url('images/likes.gif') no-repeat 0 center;
+	padding-left: 12px;
+	float: right;
+}
 #news {
 	width:460px;
 	float:left;

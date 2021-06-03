@@ -31,7 +31,7 @@
                 </form>
                 <a class="btn btn-warning" asp-controller="Movie" asp-action="Edit" asp-route-id="@Model.Id" name="@Model.Id">Edit</a>
 
-                <a class="btn btn-primary" href="#">Like</a>
+                <a class="btn btn-primary" asp-controller="Movie" asp-action="Like" asp-route-id="@Model.Id" name="@Model.Id">Like: @Model.Likes</a>
 
 
 

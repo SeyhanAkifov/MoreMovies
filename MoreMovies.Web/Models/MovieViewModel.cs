@@ -28,5 +28,7 @@ namespace MoreMovies.Web.Models
         public TimeSpan? Runtime { get; set; }
 
         public string ImageUrl { get; set; }
+
+        public List<string> Comments { get; set; }
     }
 }

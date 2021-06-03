@@ -84,6 +84,15 @@ namespace MoreMovies.Services
             db.SaveChanges();
         }
 
+        public void LikeMovie(int id)
+        {
+            var movie = GetMovieWithId(id);
+
+            movie.Likes++;
+
+            db.SaveChanges();
+        }
+
         public ICollection<Movie> GetAllMovie()
         {
 
@@ -92,6 +101,7 @@ namespace MoreMovies.Services
                 .Include(x => x.Genre.Genre)
                 .Include(x => x.Language.Language)
                 .Include(x => x.Country.Country)
+                //.Take(6)
                 .ToArray();
 
             return movies;

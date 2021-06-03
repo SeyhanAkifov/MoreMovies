@@ -86,6 +86,13 @@ namespace MoreMovies.Web.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        
+        public IActionResult Like(int id)
+        {
+            movieService.LikeMovie(id);
+
+            return RedirectToAction("Details", "Movie", new { id = id });
+        }
+
+
     }
 }
