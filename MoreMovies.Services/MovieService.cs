@@ -1,4 +1,5 @@
-﻿using MoreMovies.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using MoreMovies.Data;
 using MoreMovies.Models;
 using MoreMovies.Services.Interfaces;
 using MoreMovies.Services.ViewModels.Movie;
@@ -77,14 +78,21 @@ namespace MoreMovies.Services
         {
 
             var db = new ApplicationDbContext();
-            ICollection<Movie> movies = db.Movies.ToArray();
+            ICollection<Movie> movies = db.Movies
+                .Include(x => x.Genre.Genre)
+                .Include(x => x.Language.Language)
+                .Include(x => x.Country.Country)
+                .ToArray();
 
             return movies;
         }
 
         public Movie GetMovieWithId(int id)
         {
-            Movie movie = db.Movies.Find(id);
+            Movie movie = db.Movies
+                .Include(x => x.Genre.Genre)
+                .Include(x => x.Language.Language)
+                .Include(x => x.Country.Country).First(x => x.Id == id);
 
             return movie;
         }

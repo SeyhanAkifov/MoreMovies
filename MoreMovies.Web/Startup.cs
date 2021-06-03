@@ -12,6 +12,7 @@ using MoreMovies.Models;
 using MoreMovies.Services;
 using MoreMovies.Services.Interfaces;
 using MoreMovies.Web.Data;
+using SocialNetworkCustom.Web.MappingConfiguration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,7 +61,7 @@ namespace MoreMovies.Web
             //services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
             var mapperConfig = new MapperConfiguration(mc =>
             {
-               
+                mc.AddProfile(new ApplicationProfile());
             });
 
             IMapper mapper = mapperConfig.CreateMapper();

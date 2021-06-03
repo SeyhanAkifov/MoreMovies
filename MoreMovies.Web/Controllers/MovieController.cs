@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using MoreMovies.Models;
 using MoreMovies.Services.Interfaces;
 using MoreMovies.Services.ViewModels.Movie;
@@ -19,14 +20,16 @@ namespace MoreMovies.Web.Controllers
         private readonly IGenreService genreService;
         private readonly ICountryService countryService;
         private readonly ApplicationDbContext db;
+        private readonly IMapper mapper;
 
-        public MovieController( IMovieService movieService, ILanguageService languageService, IGenreService genreService, ICountryService countryService, ApplicationDbContext db)
+        public MovieController( IMovieService movieService, ILanguageService languageService, IGenreService genreService, ICountryService countryService, ApplicationDbContext db, IMapper mapper)
         {
             this.movieService = movieService;
             this.languageService = languageService;
             this.genreService = genreService;
             this.countryService = countryService;
             this.db = db;
+            this.mapper = mapper;
         }
         [HttpGet]
         public  IActionResult Add()

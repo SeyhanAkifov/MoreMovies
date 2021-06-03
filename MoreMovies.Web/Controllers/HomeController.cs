@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MoreMovies.Models;
 using MoreMovies.Services.Interfaces;
 using MoreMovies.Web.Models;
 using System;
@@ -14,25 +16,34 @@ namespace MoreMovies.Web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IMovieService service;
+        private readonly IMapper mapper;
 
 
-
-        public HomeController(ILogger<HomeController> logger, IMovieService service)
+        public HomeController(ILogger<HomeController> logger, IMovieService service, IMapper mapper)
         {
             _logger = logger;
             this.service = service;
+            this.mapper = mapper;
         }
 
         public IActionResult Details(int id)
         {
             var movie = service.GetMovieWithId(id);
-            return this.View(movie);
+
+            var result = mapper.Map<Movie, MovieViewModel>(movie);
+
+            return this.View(result);
         }
 
         public IActionResult Index()
         {
             var movies = service.GetAllMovie();
-            return this.View(movies);
+
+           
+
+            var destinations = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(movies);
+
+            return this.View(destinations);
         }
 
         public IActionResult HomePage()
