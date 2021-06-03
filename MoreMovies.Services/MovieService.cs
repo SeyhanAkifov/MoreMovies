@@ -72,9 +72,16 @@ namespace MoreMovies.Services
             db.SaveChanges();
         }
 
-        public void EditMovie()
+        public void EditMovieWithId(int id, AddMovieInputModel model)
         {
-            throw new NotImplementedException();
+            var movie = GetMovieWithId(id);
+
+            movie.Title = model.Title;
+            movie.HomePage = model.HomePage;
+            movie.ImageUrl = model.Image;
+            movie.Description = model.Description;
+
+            db.SaveChanges();
         }
 
         public ICollection<Movie> GetAllMovie()

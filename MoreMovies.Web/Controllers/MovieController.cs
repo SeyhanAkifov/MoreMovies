@@ -48,6 +48,36 @@ namespace MoreMovies.Web.Controllers
             return this.View();
         }
 
+        [HttpPost]
+        public IActionResult AddMovie(AddMovieInputModel model)
+        {
+            movieService.AddMovie(model);
+
+
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var movie = movieService.GetMovieWithId(id);
+
+            var result = mapper.Map<Movie, MovieViewModel>(movie);
+
+            return this.View(result);
+        }
+
+        [HttpPost]
+        public IActionResult EditMovie(int id, AddMovieInputModel model)
+        {
+            movieService.EditMovieWithId(id, model);
+
+
+
+            return RedirectToAction("Details", "Movie", new { id = id });
+        }
+
         //[HttpPost]
         public IActionResult Delete(int id)
         {
@@ -56,14 +86,6 @@ namespace MoreMovies.Web.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpPost]
-        public  IActionResult AddMovie(AddMovieInputModel model)
-        {
-            movieService.AddMovie(model);
-
-
-
-            return RedirectToAction("Index");
-        }
+        
     }
 }
