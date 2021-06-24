@@ -28,12 +28,22 @@ namespace MoreMovies.Web.Controllers
         
         public async Task<IActionResult> Details(int id)
         {
-            var movie = await movieService.GetMovieWithId(id);
+            if (id != 0)
+            {
+                var movie = await movieService.GetMovieWithId(id);
 
-            var result = mapper.Map<Movie, MovieViewModel>(movie);
-            
-            result.Comments = this.commentService.GetMovieComments(result.Id);
-            return View(result);
+                var result = mapper.Map<Movie, MovieViewModel>(movie);
+
+                result.Comments = this.commentService.GetMovieComments(result.Id);
+
+                return View(result);
+            }
+            else
+            {
+                return this.View(null);
+            }
+           
+           
         }
 
         [HttpGet]
@@ -110,7 +120,7 @@ namespace MoreMovies.Web.Controllers
                 return RedirectToAction("Details", "Movie", new { id = movieId });
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Details", "Movie", 0);
         }
 
 

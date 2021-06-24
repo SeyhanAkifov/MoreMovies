@@ -7,58 +7,70 @@
 
 
 <body>
-    </section>
-    <div class="container" style="background: url(@Model.ImageUrl)>
+    
+    <div class="container" style="background: url()>
         <div class="row bg-light text-dark">
-            <h1>@Model.Title</h1>
+            @if (Model != null)
+            {
+                <h1>@Model.Title</h1>
 
-            <div class="img-fluid">
-                <img src="~/@Model.ImageUrl" alt="Image" width="200" height="300">
-            </div>
-            <div class="col-md-4 text-center">
-                <h3 class="my-3 ">Movie info</h3>
-                
-                <h3 class="my-lg-n4 ">@Model.Language</h3>
-                <h3 class="my-3 "> <a href=@Model.HomePage>Home Page</a></h3>
-                <h3 class="my-3 ">@Model.Genre</h3>
-                <h3 class="my-3 ">@Model.Country</h3>
-                <h3 class="my-xl-0 ">@Model.Budget $</h3>
-                <h3 class="my-3 ">@Model.Description</h3>
-                <h3 class="my-3 ">@Model.ReleaseDate</h3>
+                <div class="img-fluid">
+                    <img src="~/@Model.ImageUrl" alt="Image" width="200" height="300">
+                </div>
+                <div class="col-md-4 text-center">
+                    <h3 class="my-3 ">Movie info</h3>
 
-                <form method="post">
-                    <a class="btn btn-danger" asp-controller="Movie" asp-action="Delete" asp-route-id="@Model.Id" name="@Model.Id">Delete</a>
-                </form>
-                <a class="btn btn-warning" asp-controller="Movie" asp-action="Edit" asp-route-id="@Model.Id" name="@Model.Id">Edit</a>
+                    <h3 class="my-lg-n4 ">@Model.Language</h3>
+                    <h3 class="my-3 "> <a href=@Model.HomePage>Home Page</a></h3>
+                    <h3 class="my-3 ">@Model.Genre</h3>
+                    <h3 class="my-3 ">@Model.Country</h3>
+                    <h3 class="my-xl-0 ">@Model.Budget $</h3>
+                    <h3 class="my-3 ">@Model.Description</h3>
+                    <h3 class="my-3 ">@Model.ReleaseDate</h3>
 
-                <a class="btn btn-primary" asp-controller="Movie" asp-action="Like" asp-route-id="@Model.Id" name="@Model.Id">Like: @Model.Likes</a>
+                    <form method="post">
+                        <a class="btn btn-danger" asp-controller="Movie" asp-action="Delete" asp-route-id="@Model.Id" name="@Model.Id">Delete</a>
+                    </form>
+                    <a class="btn btn-warning" asp-controller="Movie" asp-action="Edit" asp-route-id="@Model.Id" name="@Model.Id">Edit</a>
 
-
-                <a class="btn btn-primary" asp-controller="Movie" asp-action="AddComment" asp-route-id="@Model.Id" name="@Model.Id">Write a comment</a>
-
+                    <a class="btn btn-primary" asp-controller="Movie" asp-action="Like" asp-route-id="@Model.Id" name="@Model.Id">Like: @Model.Likes</a>
 
 
-            </div>
-            <div>
-                @foreach (var item in Model.Comments)
-                {
-                <div class="containerComments darkerComments">
-                    <p>@item</p>
+                    <a class="btn btn-primary" asp-controller="Movie" asp-action="AddComment" asp-route-id="@Model.Id" name="@Model.Id">Write a comment</a>
+
+
 
                 </div>
-                }
-            </div>
+                <div>
+                    @foreach (var item in Model.Comments)
+                    {
+                        <div class="containerComments darkerComments">
+                            <p>@item</p>
+
+                        </div>
+                    }
+                </div>
+                <section>
+                    <iframe width="420" height="315"
+                            src="https://www.youtube.com/watch?v=kN-qQsuB2cs">
+                    </iframe>
+                </section>
+            }
+            else
+            {
+                <h1>Not Found</h1>
+            }
+
+
+
+
 
 
         </div>
-
-
     </div>
-    </section>
+    
+    
+    
 
-    <section>
-        <iframe width="420" height="315"
-                src="https://www.youtube.com/watch?v=kN-qQsuB2cs">
-        </iframe>
-    </section>
+    
 </body>
