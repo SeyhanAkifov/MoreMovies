@@ -1,6 +1,7 @@
 ﻿using MoreMovies.Data;
 using MoreMovies.Models;
 using MoreMovies.Services.Interfaces;
+using MoreMovies.Services.ViewModels.Movie;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,24 +12,38 @@ namespace MoreMovies.Services
 {
     public class CommentService : ICommentService
     {
+        private readonly ApplicationDbContext db;
 
-        ApplicationDbContext db = new ApplicationDbContext();
-        public Comment AddComment(string text)
+        public CommentService(ApplicationDbContext db)
         {
-            
-            var comment = new Comment { Description = text };
-            
+            this.db = db;
+        }
 
-            
-                db.Comments.Add(comment);
-                db.SaveChanges();
 
-               
-
-                return comment;
+        public async Task<Comment> AddComment(AddCommentInputModel model)
+        {
+            var comment = new Comment 
+            { 
+                Description = model.Description,
+            };
             
+            db.Comments.Add(comment);
 
+            await  db.SaveChangesAsync();
             
+            return comment;
+        }
+
+        public List<string> GetMovieComments(int id)
+        {
+            var d =  this.db.MovieComments
+                .Where(x => x.MovieId == id)
+                .Join(this.db.Comments,
+                a => a.CommentId,
+                b => b.Id,
+                (a, b) => b.Description).ToList();
+            
+            return d;
         }
 
         public Task Delete()

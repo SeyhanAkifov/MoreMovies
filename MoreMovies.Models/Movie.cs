@@ -34,6 +34,7 @@ namespace MoreMovies.Models
         public string ImageUrl { get; set; }
 
         public virtual ICollection<MovieComment> Comments { get; set; }
+
         public virtual ICollection<MovieActor> Actors { get; set; }
 
         public virtual MovieLanguage  Language { get; set; }

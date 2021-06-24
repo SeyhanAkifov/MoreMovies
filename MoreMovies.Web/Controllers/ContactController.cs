@@ -10,7 +10,7 @@ namespace MoreMovies.Web.Controllers
     {
         public IActionResult ContactPage()
         {
-            return View();
+            return this.View();
         }
     }
 }

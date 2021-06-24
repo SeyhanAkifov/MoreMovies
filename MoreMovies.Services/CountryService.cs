@@ -11,21 +11,21 @@ namespace MoreMovies.Services
 {
     public class CountryService : ICountryService
     {
-        private readonly ApplicationDbContext dbContext;
-        public CountryService()
+        private readonly ApplicationDbContext db;
+        public CountryService(ApplicationDbContext db)
         {
-            this.dbContext = new ApplicationDbContext();
+            this.db = db;
         }
 
         public void Add(string name)
         {
-            Country language = new Country()
+            Country country = new Country()
             {
                 Name = name
             };
 
-            this.dbContext.Country.Add(language);
-            this.dbContext.SaveChanges();
+            this.db.Country.Add(country);
+            this.db.SaveChanges();
 
         }
     }

@@ -1,4 +1,5 @@
 ﻿using MoreMovies.Models;
+using MoreMovies.Services.ViewModels.Movie;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,10 @@ namespace MoreMovies.Services.Interfaces
 {
     public interface ICommentService
     {
-        public Comment AddComment(string text);
+        public Task<Comment> AddComment(AddCommentInputModel model);
+
         public Task Delete();
+
+        public List<string> GetMovieComments(int id);
     }
 }

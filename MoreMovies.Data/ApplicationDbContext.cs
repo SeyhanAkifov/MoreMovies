@@ -60,6 +60,8 @@ namespace MoreMovies.Data
 
             modelBuilder.Entity<MovieComment>()
                 .HasKey(x => new { x.CommentId, x.MovieId });
+
+           
         }
     }
 }

@@ -1,22 +1,15 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MoreMovies.Models;
+using MoreMovies.Data;
 using MoreMovies.Services;
 using MoreMovies.Services.Interfaces;
-using MoreMovies.Web.Data;
 using SocialNetworkCustom.Web.MappingConfiguration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MoreMovies.Web
 {
@@ -32,33 +25,16 @@ namespace MoreMovies.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-            
-
-            
-
-
-
-           
-
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            //services.AddDatabaseDeveloperPageExceptionFilter();
-
-            //services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration["DefaultConnection"]));
-            //services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
-            //services.AddMvc();
-
+            
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>(); ;
+                .AddEntityFrameworkStores<ApplicationDbContext>(); 
 
-            //services.AddScoped<UserManager<ApplicationUser>, UserManager<ApplicationUser>>();
             services.AddControllersWithViews();
 
-            //services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
             var mapperConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new ApplicationProfile());

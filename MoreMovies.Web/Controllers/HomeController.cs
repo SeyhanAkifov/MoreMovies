@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MoreMovies.Data;
 using MoreMovies.Models;
 using MoreMovies.Services.Interfaces;
 using MoreMovies.Web.Models;
@@ -17,21 +18,26 @@ namespace MoreMovies.Web.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IMovieService service;
         private readonly IMapper mapper;
+        private readonly ApplicationDbContext db;
 
 
-        public HomeController(ILogger<HomeController> logger, IMovieService service, IMapper mapper)
+        public HomeController(ILogger<HomeController> logger, IMovieService service, IMapper mapper, ApplicationDbContext db)
         {
             _logger = logger;
             this.service = service;
             this.mapper = mapper;
+            this.db = db;
         }
 
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var movie = service.GetMovieWithId(id);
+            var movie = await service.GetMovieWithId(id);
 
             var result = mapper.Map<Movie, MovieViewModel>(movie);
+            var comments = db.MovieComments
+                    .Join(db.Comments, c => c.CommentId, b => b.Id, (comment, c) => c.Description).ToList();
 
+            result.Comments = comments;
             return this.View(result);
         }
 
@@ -39,10 +45,11 @@ namespace MoreMovies.Web.Controllers
         {
             var movies = service.GetAllMovie();
 
-           
+            
 
             var destinations = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(movies);
 
+            
             return this.View(destinations);
         }
 

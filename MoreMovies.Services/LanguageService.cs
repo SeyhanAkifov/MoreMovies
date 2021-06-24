@@ -11,10 +11,10 @@ namespace MoreMovies.Services
 {
     public class LanguageService : ILanguageService
     {
-        private readonly ApplicationDbContext dbContext;
-        public LanguageService()
+        private readonly ApplicationDbContext db;
+        public LanguageService(ApplicationDbContext db)
         {
-            this.dbContext = new ApplicationDbContext();
+            this.db = db;
         }
 
         public  void Add(string name)
@@ -24,9 +24,8 @@ namespace MoreMovies.Services
                 Name = name
             };
 
-            this.dbContext.Languages.Add(language);
-            this.dbContext.SaveChanges();
-           
+            this.db.Languages.Add(language);
+            this.db.SaveChanges();
         }
     }
 }

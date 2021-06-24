@@ -11,10 +11,10 @@ namespace MoreMovies.Services
 {
     public class GenreService : IGenreService
     {
-        private readonly ApplicationDbContext dbContext;
-        public GenreService()
+        private readonly ApplicationDbContext db;
+        public GenreService(ApplicationDbContext db)
         {
-            this.dbContext = new ApplicationDbContext();
+            this.db = db;
         }
         public void Add(string name)
         {
@@ -23,9 +23,9 @@ namespace MoreMovies.Services
                 Name = name
             };
 
-            this.dbContext.Genre.Add(genre);
+            this.db.Genre.Add(genre);
 
-            this.dbContext.SaveChanges();
+            this.db.SaveChanges();
 
         }
     }
