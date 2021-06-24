@@ -17,11 +17,11 @@
             </div>
             <div class="col-md-4 text-center">
                 <h3 class="my-3 ">Movie info</h3>
-                <p>Movie Info</p>
-                <h3 class="my-lg-n4 ">@Model.Language.</h3>
+                
+                <h3 class="my-lg-n4 ">@Model.Language</h3>
                 <h3 class="my-3 "> <a href=@Model.HomePage>Home Page</a></h3>
-                <h3 class="my-3 ">@Model.Genre.</h3>
-                <h3 class="my-3 ">@Model.Country.</h3>
+                <h3 class="my-3 ">@Model.Genre</h3>
+                <h3 class="my-3 ">@Model.Country</h3>
                 <h3 class="my-xl-0 ">@Model.Budget $</h3>
                 <h3 class="my-3 ">@Model.Description</h3>
                 <h3 class="my-3 ">@Model.ReleaseDate</h3>
@@ -42,7 +42,10 @@
             <div>
                 @foreach (var item in Model.Comments)
                 {
-                <p>@item</p>
+                <div class="containerComments darkerComments">
+                    <p>@item</p>
+
+                </div>
                 }
             </div>
 

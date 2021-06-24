@@ -63,34 +63,32 @@ namespace MoreMovies.Services
                 Genre = new MovieGenre { Genre = genre },
                 Country = new MovieCountry { Country = country },
                 ImageUrl = model.Image
-
-
-
             };
+
             var result = db.Movies.Add(movie);
+
             db.SaveChanges();
-
-            // return result;
-
         }
 
-        public void DeleteMovie(int id)
+        public async Task DeleteMovie(int id)
         {
-            var movie = db.Movies.Find(id);
+            var movie = await this.db.Movies.FindAsync(id);
+
             db.Movies.Remove(movie);
-            db.SaveChanges();
+
+            await db.SaveChangesAsync();
         }
 
-        public async void EditMovieWithId(int id, AddMovieInputModel model)
+        public async Task EditMovieWithId(int id, AddMovieInputModel model)
         {
-            var movie = await GetMovieWithId(id);
+             var movie = await this.db.Movies.FindAsync(id);
 
             movie.Title = model.Title;
             movie.HomePage = model.HomePage;
             movie.ImageUrl = model.Image;
             movie.Description = model.Description;
 
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
         public async Task LikeMovie(int id)
@@ -138,9 +136,12 @@ namespace MoreMovies.Services
             return movie;
         }
 
-        public void SearchMovie()
+        public async Task<int> SearchMovie(string name)
         {
-            throw new NotImplementedException();
+            
+            var movie = await this.db.Movies.FirstOrDefaultAsync(x => x.Title.ToLower() == name.ToLower());
+
+            return movie != null ? movie.Id : 0 ;
         }
     }
 }

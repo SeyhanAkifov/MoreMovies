@@ -61,17 +61,17 @@ namespace MoreMovies.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditMovie(int id, AddMovieInputModel model)
+        public async Task<IActionResult> EditMovie(int id, AddMovieInputModel model)
         {
-            movieService.EditMovieWithId(id, model);
+            await movieService.EditMovieWithId(id, model);
             
             return RedirectToAction("Details", "Movie", new { id = id });
         }
 
         
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            movieService.DeleteMovie(id);
+           await movieService.DeleteMovie(id);
 
             return RedirectToAction("Index", "Home");
         }
@@ -94,6 +94,23 @@ namespace MoreMovies.Web.Controllers
         public IActionResult AddComment(int id)
         {
             return View(id);
+        }
+
+        public async Task<IActionResult> Search(string name)
+        {
+            if (name == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var movieId = await movieService.SearchMovie(name);
+
+            if (movieId != 0)
+            {
+                return RedirectToAction("Details", "Movie", new { id = movieId });
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
 

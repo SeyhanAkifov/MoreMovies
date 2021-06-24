@@ -9,15 +9,15 @@ namespace MoreMovies.Services.Interfaces
     {
         public void AddMovie(AddMovieInputModel movie);
 
-        public void DeleteMovie(int id);
+        public Task DeleteMovie(int id);
 
-        public void SearchMovie();
+        public Task<int> SearchMovie(string name);
 
         public Task LikeMovie(int id);
 
         public Task AddComment(int id, AddCommentInputModel model);
 
-        public void EditMovieWithId(int id, AddMovieInputModel model);
+        public Task EditMovieWithId(int id, AddMovieInputModel model);
 
         public Task<Movie> GetMovieWithId(int id);
 
