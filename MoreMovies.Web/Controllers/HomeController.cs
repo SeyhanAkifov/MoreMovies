@@ -44,11 +44,23 @@ namespace MoreMovies.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var movies = await service.GetAllMovie();
-            
-            var destinations = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(movies);
-            
-            return this.View(destinations);
+            var topcomentedMovies = await service.GetTopCommentedMovie();
+            var topLikedMovies = await service.GetTopLikedMovie();
+            var newestAddedMovies = await service.GetNewestAddedMovie();
+
+            var topCommentedResult = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(topcomentedMovies);
+            var topLikedResult = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(topLikedMovies);
+            var newestAddedResult = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(newestAddedMovies);
+
+            var movies = new MovieListViewModel()
+            {
+                TopCommented = topCommentedResult,
+                TopLiked = topLikedResult,
+                Newest = newestAddedResult
+            };
+
+
+            return this.View(movies);
         }
 
         public IActionResult HomePage()

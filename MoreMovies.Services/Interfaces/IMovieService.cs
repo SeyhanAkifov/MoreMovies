@@ -22,5 +22,12 @@ namespace MoreMovies.Services.Interfaces
         public Task<Movie> GetMovieWithId(int id);
 
         public Task<ICollection<Movie>> GetAllMovie();
+
+        public Task<ICollection<Movie>> GetTopCommentedMovie();
+
+        public Task<ICollection<Movie>> GetTopLikedMovie();
+
+        public Task<ICollection<Movie>> GetNewestAddedMovie();
+
     }
 }

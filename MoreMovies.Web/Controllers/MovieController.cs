@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MoreMovies.Models;
 using MoreMovies.Services.Interfaces;
+using MoreMovies.Services.ViewModels;
 using MoreMovies.Services.ViewModels.Movie;
 using MoreMovies.Web.Models;
 using System;
@@ -126,11 +127,24 @@ namespace MoreMovies.Web.Controllers
 
         public async Task<IActionResult> All()
         {
-            var movies = await movieService.GetAllMovie();
+            
+            var topcomentedMovies = await movieService.GetAllMovie();
+            var topLikedMovies = await movieService.GetAllMovie();
+            var newestAddedMovies = await movieService.GetAllMovie();
 
-            var result = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(movies);
+            var topCommentedResult = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(topcomentedMovies);
+            var topLikedResult = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(topLikedMovies);
+            var newestAddedResult = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(newestAddedMovies);
 
-            return this.View(result);
+            var movies = new MovieListViewModel()
+            {
+                TopCommented = topCommentedResult,
+                TopLiked = topLikedResult,
+                Newest = newestAddedResult
+            };
+
+
+            return this.View(movies);
         }
 
 

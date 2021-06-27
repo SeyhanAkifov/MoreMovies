@@ -1,4 +1,6 @@
-﻿@model ICollection<MovieViewModel>;
+﻿@model MoreMovies.Web.Models.MovieListViewModel;
+@using MoreMovies.Web.Models
+
 
 
 @*
@@ -66,7 +68,7 @@
                         <h2>LATEST TRAILERS</h2>
                         <p class="text-right"><a asp-controller="Movie" asp-action="All" method="get">See all</a></p>
                     </div>
-                    @foreach (var movie in Model)
+                    @foreach (var movie in Model.Newest)
                      {
                         //var photoPath = "~/images/" + (movie.PhotoPath ?? "noimaje.jpg");
 
@@ -91,7 +93,7 @@
                         <h2>TOP RATED</h2>
                         <p class="text-right"><a href="#">See all</a></p>
                     </div>
-                    @foreach (var movie in Model.OrderByDescending(x => x.Likes))
+                    @foreach (var movie in Model.TopLiked)
                     {
                         //var photoPath = "~/images/" + (movie.PhotoPath ?? "noimaje.jpg");
 
@@ -116,7 +118,7 @@
                         <h2>MOST COMMENTED</h2>
                         <p class="text-right"><a href="#">See all</a></p>
                     </div>
-                    @foreach (var movie in Model.OrderByDescending(x => x.Comments.Count))
+                    @foreach (var movie in Model.TopCommented)
                     {
                         //var photoPath = "~/images/" + (movie.PhotoPath ?? "noimaje.jpg");
 

@@ -150,5 +150,47 @@ namespace MoreMovies.Services
 
             return movie != null ? movie.Id : 0 ;
         }
+
+        public async Task<ICollection<Movie>> GetTopCommentedMovie()
+        {
+            ICollection<Movie> movies = await db.Movies
+                .Include(x => x.Genre.Genre)
+                .Include(x => x.Language.Language)
+                .Include(x => x.Country.Country)
+                .Include(x => x.Comments)
+                .OrderByDescending(x => x.Comments.Count)
+                .Take(6)
+                .ToArrayAsync();
+
+            return movies;
+        }
+
+        public async Task<ICollection<Movie>> GetTopLikedMovie()
+        {
+            ICollection<Movie> movies = await db.Movies
+                .Include(x => x.Genre.Genre)
+                .Include(x => x.Language.Language)
+                .Include(x => x.Country.Country)
+                .Include(x => x.Comments)
+                .OrderByDescending(x => x.Likes)
+                .Take(6)
+                .ToArrayAsync();
+
+            return movies;
+        }
+
+        public async Task<ICollection<Movie>> GetNewestAddedMovie()
+        {
+            ICollection<Movie> movies = await db.Movies
+                .Include(x => x.Genre.Genre)
+                .Include(x => x.Language.Language)
+                .Include(x => x.Country.Country)
+                .Include(x => x.Comments)
+                .OrderByDescending(x => x.ReleaseDate)
+                .Take(6)
+                .ToArrayAsync();
+
+            return movies;
+        }
     }
 }
