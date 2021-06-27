@@ -10,6 +10,6 @@ namespace MoreMovies.Services.ViewModels.Movie
     {
         public string Description { get; set; }
         public string UserId { get; set; }
-        public string movieId { get; set; }
+        public string MovieId { get; set; }
     }
 }

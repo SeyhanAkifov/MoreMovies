@@ -18,7 +18,7 @@ namespace MoreMovies.Services
         }
         public void Add(string name)
         {
-            Genre genre = new Genre()
+            Genre genre = new()
             {
                 Name = name
             };

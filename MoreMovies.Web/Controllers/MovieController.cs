@@ -5,6 +5,7 @@ using MoreMovies.Services.Interfaces;
 using MoreMovies.Services.ViewModels.Movie;
 using MoreMovies.Web.Models;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MoreMovies.Web.Controllers
@@ -18,7 +19,7 @@ namespace MoreMovies.Web.Controllers
         
 
 
-        public MovieController(IServiceProvider services,IMovieService movieService, ILanguageService languageService, IGenreService genreService, ICountryService countryService, IMapper mapper, ICommentService commentService)
+        public MovieController(IMovieService movieService, IMapper mapper, ICommentService commentService)
         {
             this.movieService = movieService;
             this.mapper = mapper;
@@ -75,7 +76,7 @@ namespace MoreMovies.Web.Controllers
         {
             await movieService.EditMovieWithId(id, model);
             
-            return RedirectToAction("Details", "Movie", new { id = id });
+            return RedirectToAction("Details", "Movie", new { id });
         }
 
         
@@ -90,7 +91,7 @@ namespace MoreMovies.Web.Controllers
         {
             await movieService.LikeMovie(id);
 
-            return RedirectToAction("Details", "Movie", new { id = id });
+            return RedirectToAction("Details", "Movie", new { id });
         }
 
         [HttpPost]
@@ -123,7 +124,14 @@ namespace MoreMovies.Web.Controllers
             return RedirectToAction("Details", "Movie", 0);
         }
 
+        public async Task<IActionResult> All()
+        {
+            var movies = await movieService.GetAllMovie();
 
+            var result = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(movies);
+
+            return this.View(result);
+        }
 
 
     }

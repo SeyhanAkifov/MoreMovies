@@ -35,20 +35,18 @@ namespace MoreMovies.Web.Controllers
 
             var result = mapper.Map<Movie, MovieViewModel>(movie);
             var comments = db.MovieComments
-                    .Join(db.Comments, c => c.CommentId, b => b.Id, (comment, c) => c.Description).ToList();
+                           .Join(db.Comments, c => c.CommentId, b => b.Id, (comment, c) => c.Description)
+                           .ToList();
 
             result.Comments = comments;
             return this.View(result);
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var movies = service.GetAllMovie();
-
+            var movies = await service.GetAllMovie();
             
-
             var destinations = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(movies);
-
             
             return this.View(destinations);
         }

@@ -21,6 +21,6 @@ namespace MoreMovies.Services.Interfaces
 
         public Task<Movie> GetMovieWithId(int id);
 
-        public ICollection<Movie> GetAllMovie();
+        public Task<ICollection<Movie>> GetAllMovie();
     }
 }

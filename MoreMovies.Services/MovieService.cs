@@ -15,10 +15,16 @@ namespace MoreMovies.Services
     {
         private readonly ApplicationDbContext db;
         private readonly ICommentService commentService;
+        private readonly ILanguageService languageService;
+        private readonly IGenreService genreService;
+        private readonly ICountryService countryService;
 
-        public MovieService(ICommentService commentService, ApplicationDbContext db)
+        public MovieService(ICommentService commentService, ApplicationDbContext db, ILanguageService languageService, IGenreService genreService, ICountryService countryService)
         {
             this.commentService = commentService;
+            this.languageService = languageService;
+            this.genreService = genreService;
+            this.countryService = countryService;
             this.db = db;
         }
 
@@ -29,29 +35,29 @@ namespace MoreMovies.Services
 
             if (language == null)
             {
-                db.Languages.Add(new Language { Name = model.Language });
-                db.SaveChanges();
+                languageService.Add(model.Language);
+               
                 language = db.Languages.FirstOrDefault(x => x.Name == model.Language);
             }
             var genre = db.Genre.FirstOrDefault(x => x.Name == model.Genre);
             if (genre == null)
             {
-                db.Genre.Add(new Genre { Name = model.Genre });
-                db.SaveChanges();
+                genreService.Add(model.Genre);
+                
                 genre = db.Genre.FirstOrDefault(x => x.Name == model.Genre);
             }
             var country = db.Country.FirstOrDefault(x => x.Name == model.Country);
             if (country == null)
             {
-                db.Country.Add(new Country { Name = model.Country });
-                db.SaveChanges();
+                countryService.Add(model.Country);
+                
                 country = db.Country.FirstOrDefault(x => x.Name == model.Country);
             }
 
 
             string[] actorNames = new string[] { "John Deep", "Angi Joli" };
 
-            Movie movie = new Movie
+            Movie movie = new()
             {
                 Title = model.Title,
                 Budget = model.Budget,
@@ -111,17 +117,18 @@ namespace MoreMovies.Services
             await db.SaveChangesAsync();
         }
 
-        public ICollection<Movie> GetAllMovie()
+        public async Task<ICollection<Movie>> GetAllMovie()
         {
-            ICollection<Movie> movies = db.Movies
+            
+            ICollection<Movie> movies = await db.Movies
                 .Include(x => x.Genre.Genre)
                 .Include(x => x.Language.Language)
                 .Include(x => x.Country.Country)
                 .Include(x => x.Comments)
                 //.Take(6)
-                .ToArray();
+                .ToArrayAsync();
 
-            return movies;
+            return  movies;
         }
 
         public async Task<Movie> GetMovieWithId(int id)

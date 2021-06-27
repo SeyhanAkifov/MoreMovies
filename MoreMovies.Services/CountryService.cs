@@ -19,7 +19,7 @@ namespace MoreMovies.Services
 
         public void Add(string name)
         {
-            Country country = new Country()
+            Country country = new()
             {
                 Name = name
             };

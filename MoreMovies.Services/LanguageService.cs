@@ -19,7 +19,7 @@ namespace MoreMovies.Services
 
         public  void Add(string name)
         {
-            Language language = new Language()
+            Language language = new()
             {
                 Name = name
             };
