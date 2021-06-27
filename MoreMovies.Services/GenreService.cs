@@ -16,7 +16,7 @@ namespace MoreMovies.Services
         {
             this.db = db;
         }
-        public void Add(string name)
+        public async Task Add(string name)
         {
             Genre genre = new()
             {
@@ -25,7 +25,7 @@ namespace MoreMovies.Services
 
             this.db.Genre.Add(genre);
 
-            this.db.SaveChanges();
+            await this.db.SaveChangesAsync();
 
         }
     }

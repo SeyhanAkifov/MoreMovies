@@ -8,6 +8,6 @@ namespace MoreMovies.Services.Interfaces
 {
     public interface IGenreService
     {
-        public void Add(string name);
+        public Task Add(string name);
     }
 }

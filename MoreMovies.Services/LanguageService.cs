@@ -17,7 +17,7 @@ namespace MoreMovies.Services
             this.db = db;
         }
 
-        public  void Add(string name)
+        public async Task Add(string name)
         {
             Language language = new()
             {
@@ -25,7 +25,7 @@ namespace MoreMovies.Services
             };
 
             this.db.Languages.Add(language);
-            this.db.SaveChanges();
+            await this.db.SaveChangesAsync();
         }
     }
 }
