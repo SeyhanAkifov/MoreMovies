@@ -7,7 +7,7 @@ namespace MoreMovies.Services.Interfaces
 {
     public interface IMovieService
     {
-        public void AddMovie(AddMovieInputModel movie);
+        public Task AddMovie(AddMovieInputModel movie);
 
         public Task DeleteMovie(int id);
 
@@ -22,6 +22,8 @@ namespace MoreMovies.Services.Interfaces
         public Task<Movie> GetMovieWithId(int id);
 
         public Task<ICollection<Movie>> GetAllMovie();
+
+        public Task<ICollection<Movie>> GetAllMyMovie(string email);
 
         public Task<ICollection<Movie>> GetTopCommentedMovie();
 

@@ -41,6 +41,7 @@ namespace MoreMovies.Data
         public DbSet<MovieCountry> MovieCountries { get; set; }
         public DbSet<MovieGenre> MovieGenres { get; set; }
         public DbSet<MovieLanguage> MovieLanguages { get; set; }
+        public DbSet<UserMovie> UserMovies { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -61,7 +62,8 @@ namespace MoreMovies.Data
             modelBuilder.Entity<MovieComment>()
                 .HasKey(x => new { x.CommentId, x.MovieId });
 
-           
+            modelBuilder.Entity<UserMovie>()
+                .HasKey(x => new { x.UserId, x.MovieId });
         }
     }
 }

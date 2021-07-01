@@ -31,7 +31,9 @@ namespace MoreMovies.Web
             
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>(); 
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            
 
             services.AddControllersWithViews();
 
@@ -44,6 +46,7 @@ namespace MoreMovies.Web
             services.AddSingleton(mapper);
 
             services.AddMvc();
+            
 
             services.AddTransient<IMovieService, MovieService>();
             services.AddTransient<ILanguageService, LanguageService>();
@@ -51,7 +54,7 @@ namespace MoreMovies.Web
             services.AddTransient<IActorService, ActorService>();
             services.AddTransient<ICountryService, CountryService>();
             services.AddTransient<ICommentService, CommentService>();
-
+            services.AddScoped<UserManager<IdentityUser>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

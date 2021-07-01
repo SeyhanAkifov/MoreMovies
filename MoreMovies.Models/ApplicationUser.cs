@@ -15,6 +15,8 @@ namespace MoreMovies.Models
         public string FirstName { get; set; }
         [PersonalData]
         public string LastName { get; set; }
-        
+
+        public ICollection<UserMovie> Movies { get; set; }
+
     }
 }

@@ -1,8 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿
 
 <form class="text-center border border-light p-5" action="AddMovie" method="post">
     <div class="form-group">
@@ -50,6 +46,11 @@
     <div class="form-group">
         <label for="actors">Actors</label>
         <input type="text" class="form-control" placeholder="Actors" name="actors" value="">
+    </div>
+
+    <div class="form-group" display="hide">
+        <label for="userId">UserId</label>
+        <input type="text" class="form-control" placeholder="UserId" name="userId" value="@User.Identity.Name">
     </div>
 
     <button type="submit" class="btn btn-primary">Add movie</button>

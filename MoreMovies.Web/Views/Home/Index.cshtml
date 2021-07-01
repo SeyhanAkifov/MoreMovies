@@ -37,7 +37,7 @@
             <div id="navigation">
                 <ul>
                     <li><a class="active" href="#">HOME</a></li>
-                    <li><a href="#">NEWS</a></li>
+                    <li><a asp-controller="Movie" asp-action="MyMovies" asp-route-Id="@User.Identity.Name.ToString()">My Movies</a></li>
                     <li><a href="#">IN THEATERS</a></li>
                     <li><a href="#">COMING SOON</a></li>
                     <li><a href="/Contact/ContactPage">CONTACT</a></li>

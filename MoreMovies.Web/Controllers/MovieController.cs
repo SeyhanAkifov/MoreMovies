@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MoreMovies.Models;
 using MoreMovies.Services.Interfaces;
@@ -18,7 +19,8 @@ namespace MoreMovies.Web.Controllers
         private readonly ICommentService commentService;
         private readonly IActorService actorService;
         private readonly IMapper mapper;
-        
+        private readonly UserManager<IdentityUser> userManager;
+
 
 
         public MovieController(IMovieService movieService, IMapper mapper, ICommentService commentService, IActorService actorService)
@@ -59,9 +61,9 @@ namespace MoreMovies.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddMovie(AddMovieInputModel model)
+        public async Task<IActionResult> AddMovie(AddMovieInputModel model)
         {
-            movieService.AddMovie(model);
+            await movieService.AddMovie(model);
             
             return RedirectToAction("Index", "Home");
         }
@@ -84,7 +86,15 @@ namespace MoreMovies.Web.Controllers
             return RedirectToAction("Details", "Movie", new { id });
         }
 
-        
+        public async Task<IActionResult> MyMovies(string id)
+        {
+            var movies = await movieService.GetAllMyMovie(id);
+            var result = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(movies);
+
+            return View("All", result );
+        }
+
+
         public async Task<IActionResult> Delete(int id)
         {
            await movieService.DeleteMovie(id);

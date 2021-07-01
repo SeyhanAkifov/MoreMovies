@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,8 @@ namespace MoreMovies.Models
             this.Actors = new HashSet<MovieActor>();
         }
         public int Id { get; set; }
+
+        public string Creator  { get; set; }
 
         public string Title { get; set; }
 
@@ -36,11 +39,13 @@ namespace MoreMovies.Models
         public virtual ICollection<MovieComment> Comments { get; set; }
 
         public virtual ICollection<MovieActor> Actors { get; set; }
-
+        
         public virtual MovieLanguage  Language { get; set; }
 
         public virtual MovieGenre  Genre { get; set; }
 
         public virtual MovieCountry  Country { get; set; }
+
+       
     }
 }
