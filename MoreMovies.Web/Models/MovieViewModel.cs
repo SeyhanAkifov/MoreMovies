@@ -31,5 +31,7 @@ namespace MoreMovies.Web.Models
         public string ImageUrl { get; set; }
 
         public List<string> Comments { get; set; }
+
+        public List<string> Actors { get; set; }
     }
 }

@@ -38,7 +38,13 @@
 
                     <a class="btn btn-primary" asp-controller="Movie" asp-action="AddComment" asp-route-id="@Model.Id" name="@Model.Id">Write a comment</a>
 
+                    @foreach (var item in Model.Actors)
+                    {
+                        <div class="containerComments darkerComments">
+                            <p>@item</p>
 
+                        </div>
+                    }
 
                 </div>
                 <div>

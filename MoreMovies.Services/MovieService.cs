@@ -55,7 +55,9 @@ namespace MoreMovies.Services
             }
 
 
-            string[] actorNames = new string[] { "John Deep", "Angi Joli" };
+
+
+            string[] actorNames = model.Actors.Split(", ");
 
             Movie movie = new()
             {
@@ -68,8 +70,26 @@ namespace MoreMovies.Services
                 Language = new MovieLanguage { Language = language },
                 Genre = new MovieGenre { Genre = genre },
                 Country = new MovieCountry { Country = country },
-                ImageUrl = model.Image
+                ImageUrl = model.Image,
+
+                
             };
+
+            foreach (var name in actorNames)
+            {
+                var actor = new Actor()
+                {
+                    Name = name
+                };
+
+                if (this.db.Actors.Any(x => x.Name == name))
+                {
+                    movie.Actors.Add(new MovieActor { Actor = actor });
+                    continue;
+                }
+                this.db.Actors.Add(actor);
+                movie.Actors.Add(new MovieActor { Actor = actor });
+            }
 
             var result = db.Movies.Add(movie);
 
@@ -138,6 +158,7 @@ namespace MoreMovies.Services
                 .Include(x => x.Language.Language)
                 .Include(x => x.Country.Country)
                 .Include(x => x.Comments)
+                .Include(x => x.Actors)
                 .FirstAsync(x => x.Id == id);
             
             return movie;

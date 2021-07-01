@@ -38,7 +38,9 @@ namespace MoreMovies.Models
         public virtual ICollection<MovieActor> Actors { get; set; }
 
         public virtual MovieLanguage  Language { get; set; }
+
         public virtual MovieGenre  Genre { get; set; }
+
         public virtual MovieCountry  Country { get; set; }
     }
 }

@@ -26,5 +26,6 @@ namespace MoreMovies.Services.ViewModels.Movie
         public string ReleaseDate { get; set; }
 
         public decimal Budget { get; set; }
+        public string Actors { get; set; }
     }       
 }

@@ -16,15 +16,17 @@ namespace MoreMovies.Web.Controllers
 
         private readonly IMovieService movieService;
         private readonly ICommentService commentService;
+        private readonly IActorService actorService;
         private readonly IMapper mapper;
         
 
 
-        public MovieController(IMovieService movieService, IMapper mapper, ICommentService commentService)
+        public MovieController(IMovieService movieService, IMapper mapper, ICommentService commentService, IActorService actorService)
         {
             this.movieService = movieService;
             this.mapper = mapper;
             this.commentService = commentService;
+            this.actorService = actorService;
         }
 
         
@@ -37,6 +39,8 @@ namespace MoreMovies.Web.Controllers
                 var result = mapper.Map<Movie, MovieViewModel>(movie);
 
                 result.Comments = this.commentService.GetMovieComments(result.Id);
+
+                result.Actors = this.actorService.GetMovieActors(result.Id);
 
                 return View(result);
             }
@@ -127,24 +131,11 @@ namespace MoreMovies.Web.Controllers
 
         public async Task<IActionResult> All()
         {
-            
-            var topcomentedMovies = await movieService.GetAllMovie();
-            var topLikedMovies = await movieService.GetAllMovie();
-            var newestAddedMovies = await movieService.GetAllMovie();
 
-            var topCommentedResult = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(topcomentedMovies);
-            var topLikedResult = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(topLikedMovies);
-            var newestAddedResult = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(newestAddedMovies);
+            var movies = await movieService.GetAllMovie();
+            var result = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(movies);
 
-            var movies = new MovieListViewModel()
-            {
-                TopCommented = topCommentedResult,
-                TopLiked = topLikedResult,
-                Newest = newestAddedResult
-            };
-
-
-            return this.View(movies);
+            return this.View(result);
         }
 
 
