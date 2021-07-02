@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MoreMovies.Services.ViewModels.Movie
+﻿namespace MoreMovies.Services.Dto
 {
     public class AddMovieInputModel
     {
         public string UserId { get; set; }
+
         public string Title { get; set; }
 
         public string Description { get; set; }
@@ -22,11 +17,11 @@ namespace MoreMovies.Services.ViewModels.Movie
         public string Country { get; set; }
 
         public string Language { get; set; }
-
-
+        
         public string ReleaseDate { get; set; }
 
         public decimal Budget { get; set; }
+
         public string Actors { get; set; }
-    }       
+    }
 }

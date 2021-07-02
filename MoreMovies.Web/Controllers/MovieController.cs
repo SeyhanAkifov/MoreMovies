@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MoreMovies.Models;
+using MoreMovies.Services.Dto;
 using MoreMovies.Services.Interfaces;
-using MoreMovies.Services.ViewModels;
-using MoreMovies.Services.ViewModels.Movie;
 using MoreMovies.Web.Models;
-using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace MoreMovies.Web.Controllers
@@ -20,18 +20,18 @@ namespace MoreMovies.Web.Controllers
         private readonly IActorService actorService;
         private readonly IMapper mapper;
         private readonly UserManager<IdentityUser> userManager;
-
-
-
-        public MovieController(IMovieService movieService, IMapper mapper, ICommentService commentService, IActorService actorService)
+        private readonly IdentityUser user;
+        
+        public MovieController(IMovieService movieService, IMapper mapper, ICommentService commentService, IActorService actorService, IdentityUser user)
         {
             this.movieService = movieService;
             this.mapper = mapper;
             this.commentService = commentService;
             this.actorService = actorService;
+            this.user = user;
         }
 
-        
+        [Authorize]
         public async Task<IActionResult> Details(int id)
         {
             if (id != 0)
@@ -50,58 +50,71 @@ namespace MoreMovies.Web.Controllers
             {
                 return this.View(null);
             }
-           
-           
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult Add()
         {
             return this.View();
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddMovie(AddMovieInputModel model)
         {
             await movieService.AddMovie(model);
-            
+
             return RedirectToAction("Index", "Home");
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             var movie = await movieService.GetMovieWithId(id);
+            var userEmail = User.FindFirstValue(ClaimTypes.Email);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId != movie.CreatorId)
+            {
+                return RedirectToAction("Index", "Home");
+            };
+
+           
 
             var result = mapper.Map<Movie, MovieViewModel>(movie);
 
             return this.View(result);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> EditMovie(int id, AddMovieInputModel model)
         {
-            await movieService.EditMovieWithId(id, model);
             
+            await movieService.EditMovieWithId(id, model);
+
             return RedirectToAction("Details", "Movie", new { id });
         }
 
+        [Authorize]
         public async Task<IActionResult> MyMovies(string id)
         {
             var movies = await movieService.GetAllMyMovie(id);
             var result = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(movies);
 
-            return View("All", result );
+            return View("All", result);
         }
 
-
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
-           await movieService.DeleteMovie(id);
+            await movieService.DeleteMovie(id);
 
             return RedirectToAction("Index", "Home");
         }
 
+        [Authorize]
         public async Task<IActionResult> Like(int id)
         {
             await movieService.LikeMovie(id);
@@ -109,18 +122,21 @@ namespace MoreMovies.Web.Controllers
             return RedirectToAction("Details", "Movie", new { id });
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddComment(int id, AddCommentInputModel model, string email)
         {
             await movieService.AddComment(id, model, email);
-            
+
             return RedirectToAction("Details", "Movie", new { id = id });
         }
 
+        [Authorize]
         public IActionResult AddComment(int id)
         {
             return View(id);
         }
+
 
         public async Task<IActionResult> Search(string name)
         {

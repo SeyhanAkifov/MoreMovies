@@ -1,5 +1,4 @@
-﻿using MoreMovies.Web.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace MoreMovies.Web.Models
 {

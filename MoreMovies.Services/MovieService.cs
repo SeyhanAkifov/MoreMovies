@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using MoreMovies.Data;
 using MoreMovies.Models;
+using MoreMovies.Services.Dto;
 using MoreMovies.Services.Interfaces;
-using MoreMovies.Services.ViewModels.Movie;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -21,11 +21,8 @@ namespace MoreMovies.Services
         private readonly ICountryService countryService;
         private readonly UserManager<IdentityUser> userManager;
         private readonly IdentityUser user;
-        
-        
 
-
-        public MovieService(IdentityUser user, UserManager<IdentityUser> userManager,ICommentService commentService, ApplicationDbContext db, ILanguageService languageService, IGenreService genreService, ICountryService countryService)
+        public MovieService(IdentityUser user, UserManager<IdentityUser> userManager, ICommentService commentService, ApplicationDbContext db, ILanguageService languageService, IGenreService genreService, ICountryService countryService)
         {
             this.commentService = commentService;
             this.languageService = languageService;
@@ -44,26 +41,27 @@ namespace MoreMovies.Services
             if (language == null)
             {
                 await languageService.Add(model.Language);
-               
+
                 language = db.Languages.FirstOrDefault(x => x.Name == model.Language);
             }
+
             var genre = db.Genre.FirstOrDefault(x => x.Name == model.Genre);
+
             if (genre == null)
             {
                 await genreService.Add(model.Genre);
-                
+
                 genre = db.Genre.FirstOrDefault(x => x.Name == model.Genre);
             }
+
             var country = db.Country.FirstOrDefault(x => x.Name == model.Country);
+
             if (country == null)
             {
-                await countryService .Add(model.Country);
-                
+                await countryService.Add(model.Country);
+
                 country = db.Country.FirstOrDefault(x => x.Name == model.Country);
             }
-
-           
-
 
             string[] actorNames = model.Actors.Split(", ");
 
@@ -80,7 +78,7 @@ namespace MoreMovies.Services
                 Country = new MovieCountry { Country = country },
                 ImageUrl = model.Image,
 
-                
+
             };
 
             foreach (var name in actorNames)
@@ -98,17 +96,14 @@ namespace MoreMovies.Services
                 this.db.Actors.Add(actor);
                 movie.Actors.Add(new MovieActor { Actor = actor });
             }
-            
+
             var userMovie = new UserMovie()
             {
                 Movies = movie,
                 User = user
             };
 
-            
-
             var result = db.Movies.Add(movie);
-
 
             this.db.UserMovies.Add(userMovie);
 
@@ -126,7 +121,7 @@ namespace MoreMovies.Services
 
         public async Task EditMovieWithId(int id, AddMovieInputModel model)
         {
-             var movie = await this.db.Movies.FindAsync(id);
+            var movie = await this.db.Movies.FindAsync(id);
 
             movie.Title = model.Title;
             movie.HomePage = model.HomePage;
@@ -145,14 +140,13 @@ namespace MoreMovies.Services
             await db.SaveChangesAsync();
         }
 
-        public async Task AddComment(int movieId, AddCommentInputModel model)
+        public async Task AddComment(int movieId, AddCommentInputModel model, string email)
         {
             var movie = await GetMovieWithId(movieId);
 
             var userId = this.user.Id;
-            
 
-            var comment = await commentService.AddComment(model, userId);
+            var comment = await commentService.AddComment(model, email);
 
             movie.Comments.Add(new MovieComment { Comment = comment });
 
@@ -161,7 +155,7 @@ namespace MoreMovies.Services
 
         public async Task<ICollection<Movie>> GetAllMovie()
         {
-            
+
             ICollection<Movie> movies = await db.Movies
                 .Include(x => x.Genre.Genre)
                 .Include(x => x.Language.Language)
@@ -170,14 +164,14 @@ namespace MoreMovies.Services
                 //.Take(6)
                 .ToArrayAsync();
 
-            return  movies;
+            return movies;
         }
 
         public async Task<ICollection<Movie>> GetAllMyMovie(string email)
         {
 
             ICollection<Movie> movies = await db.Movies
-                .Where(x => x.Creator == email)
+                .Where(x => x.CreatorId == this.user.Id)
                 .Include(x => x.Genre.Genre)
                 .Include(x => x.Language.Language)
                 .Include(x => x.Country.Country)
@@ -196,16 +190,16 @@ namespace MoreMovies.Services
                 .Include(x => x.Comments)
                 .Include(x => x.Actors)
                 .FirstAsync(x => x.Id == id);
-            
+
             return movie;
         }
 
         public async Task<int> SearchMovie(string name)
         {
-            
+
             var movie = await this.db.Movies.FirstOrDefaultAsync(x => x.Title.ToLower() == name.ToLower());
 
-            return movie != null ? movie.Id : 0 ;
+            return movie != null ? movie.Id : 0;
         }
 
         public async Task<ICollection<Movie>> GetTopCommentedMovie()

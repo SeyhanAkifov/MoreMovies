@@ -1,5 +1,5 @@
 ﻿using MoreMovies.Models;
-using MoreMovies.Services.ViewModels.Movie;
+using MoreMovies.Services.Dto;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -15,7 +15,7 @@ namespace MoreMovies.Services.Interfaces
 
         public Task LikeMovie(int id);
 
-        public Task AddComment(int id, AddCommentInputModel model);
+        public Task AddComment(int id, AddCommentInputModel model, string email);
 
         public Task EditMovieWithId(int id, AddMovieInputModel model);
 
@@ -30,6 +30,5 @@ namespace MoreMovies.Services.Interfaces
         public Task<ICollection<Movie>> GetTopLikedMovie();
 
         public Task<ICollection<Movie>> GetNewestAddedMovie();
-
     }
 }

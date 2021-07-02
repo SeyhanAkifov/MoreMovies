@@ -1,9 +1,6 @@
 ﻿using MoreMovies.Models;
-using MoreMovies.Services.ViewModels.Movie;
-using System;
+using MoreMovies.Services.Dto;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MoreMovies.Services.Interfaces

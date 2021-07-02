@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using MoreMovies.Data;
 using MoreMovies.Models;
+using MoreMovies.Services.Dto;
 using MoreMovies.Services.Interfaces;
-using MoreMovies.Services.ViewModels.Movie;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,12 +24,12 @@ namespace MoreMovies.Services
 
         public async Task<Comment> AddComment(AddCommentInputModel model, string email)
         {
+            //DateTime.ParseExact(DateTime.UtcNow.ToString(), "g", CultureInfo.InvariantCulture, DateTimeStyles.None), 
             var comment = new Comment
             {
                 Description = model.Description,
                 CreatedOn = DateTime.UtcNow,
-               UserFullName = email
-
+                UserFullName = email
             };
 
             db.Comments.Add(comment);
