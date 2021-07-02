@@ -5,15 +5,14 @@
 @{
 }
 
-<form class="text-center border border-light p-5" asp-controller="Movie" asp-action="AddComment" asp-route-id="@Model"  name="movieId" method="post">
+<form class="text-center border border-light p-5" asp-controller="Movie" asp-action="AddComment" asp-route-id="@Model" asp-route-email="@User.Identity.Name" method="post">
 
 
     <div class="form-group">
         <label for="description">Description</label>
         <input type="text" class="form-control" placeholder="Description" name="description" value="">
-        <label for="movieId"></label>
-        <input type="number" class="form-control" placeholder="movieId" name="movieId" value="@Model">
     </div>
+   
 
-    <button type="submit" class="btn btn-primary"  value="submit" >Add comment</button>
+    <button type="submit" class="btn btn-primary" value="submit">Add comment</button>
 </form>

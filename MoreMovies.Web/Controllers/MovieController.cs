@@ -110,11 +110,11 @@ namespace MoreMovies.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddComment(int movieId, AddCommentInputModel model)
+        public async Task<IActionResult> AddComment(int id, AddCommentInputModel model, string email)
         {
-            await movieService.AddComment(movieId, model);
+            await movieService.AddComment(id, model, email);
             
-            return RedirectToAction("Details", "Movie", new { id = movieId });
+            return RedirectToAction("Details", "Movie", new { id = id });
         }
 
         public IActionResult AddComment(int id)

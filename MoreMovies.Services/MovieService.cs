@@ -20,9 +20,12 @@ namespace MoreMovies.Services
         private readonly IGenreService genreService;
         private readonly ICountryService countryService;
         private readonly UserManager<IdentityUser> userManager;
+        private readonly IdentityUser user;
+        
+        
 
 
-        public MovieService(UserManager<IdentityUser> userManager,ICommentService commentService, ApplicationDbContext db, ILanguageService languageService, IGenreService genreService, ICountryService countryService)
+        public MovieService(IdentityUser user, UserManager<IdentityUser> userManager,ICommentService commentService, ApplicationDbContext db, ILanguageService languageService, IGenreService genreService, ICountryService countryService)
         {
             this.commentService = commentService;
             this.languageService = languageService;
@@ -30,7 +33,7 @@ namespace MoreMovies.Services
             this.countryService = countryService;
             this.db = db;
             this.userManager = userManager;
-
+            this.user = user;
         }
 
         public async Task AddMovie(AddMovieInputModel model)
@@ -146,7 +149,10 @@ namespace MoreMovies.Services
         {
             var movie = await GetMovieWithId(movieId);
 
-            var comment = await commentService.AddComment(model);
+            var userId = this.user.Id;
+            
+
+            var comment = await commentService.AddComment(model, userId);
 
             movie.Comments.Add(new MovieComment { Comment = comment });
 

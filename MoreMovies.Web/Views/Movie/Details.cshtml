@@ -48,13 +48,30 @@
 
                 </div>
                 <div>
-                    @foreach (var item in Model.Comments)
-                    {
-                        <div class="containerComments darkerComments">
-                            <p>@item</p>
+                    <section>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm-5 col-md-6 col-12 pb-4">
+                                    <h1>Comments</h1>
+                                    @foreach (var item in Model.Comments)
+                                    {
+                                        @*<div class="containerComments darkerComments">
+                                <p>@item</p>
 
+                            </div>*@
+
+                                        <div class="comment mt-4 text-justify float-left">
+                                            <h4>@item.UserFullName </h4> <span>@item.CreatedOn</span> <br>
+                                            <p>@item.Description</p>
+                                        </div>
+                                       
+
+                                    }
+                                </div>
+
+                            </div>
                         </div>
-                    }
+                    </section>
                 </div>
                 <section>
                     <iframe width="420" height="315"

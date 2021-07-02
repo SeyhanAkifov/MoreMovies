@@ -14,8 +14,8 @@ namespace MoreMovies.Models
 
         public DateTime CreatedOn { get; set; }
 
-        public string UserId { get; set; }
+        public string UserFullName { get; set; }
 
-        public ApplicationUser User { get; set; }
+        
     }
 }

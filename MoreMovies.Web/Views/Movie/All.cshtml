@@ -29,7 +29,7 @@
                                 <span class="comments">@movie.Comments.Count().ToString()</span>
                             </div>
 
-                            <a class="btn btn-danger" href="Details/@movie.Id" name="@movie.Id">Details</a>
+                            <a class="btn btn-danger" asp-controller="Movie" asp-action="Details" asp-route-id=@movie.Id>Details</a>
                         </div>
                     }
                 </div>

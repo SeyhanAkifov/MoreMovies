@@ -10,10 +10,10 @@ namespace MoreMovies.Services.Interfaces
 {
     public interface ICommentService
     {
-        public Task<Comment> AddComment(AddCommentInputModel model);
+        public Task<Comment> AddComment(AddCommentInputModel model, string email);
 
         public Task Delete();
 
-        public List<string> GetMovieComments(int id);
+        public List<Comment> GetMovieComments(int id);
     }
 }

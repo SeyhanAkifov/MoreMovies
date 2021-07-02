@@ -5,7 +5,6 @@ using MoreMovies.Data;
 using MoreMovies.Models;
 using MoreMovies.Services.Interfaces;
 using MoreMovies.Web.Models;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -35,7 +34,7 @@ namespace MoreMovies.Web.Controllers
 
             var result = mapper.Map<Movie, MovieViewModel>(movie);
             var comments = db.MovieComments
-                           .Join(db.Comments, c => c.CommentId, b => b.Id, (comment, c) => c.Description)
+                           .Join(db.Comments, c => c.CommentId, b => b.Id, (comment, c) => c)
                            .ToList();
 
             result.Comments = comments;

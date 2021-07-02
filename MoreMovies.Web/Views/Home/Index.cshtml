@@ -37,7 +37,12 @@
             <div id="navigation">
                 <ul>
                     <li><a class="active" href="#">HOME</a></li>
-                    <li><a asp-controller="Movie" asp-action="MyMovies" asp-route-Id="@User.Identity.Name.ToString()">My Movies</a></li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li><a asp-controller="Movie" asp-action="MyMovies" asp-route-Id="@User.Identity.Name.ToString()">My Movies</a></li>
+                        <li><a asp-controller="Movie" asp-action="Add">ADD Movie</a></li>
+                    }
+
                     <li><a href="#">IN THEATERS</a></li>
                     <li><a href="#">COMING SOON</a></li>
                     <li><a href="/Contact/ContactPage">CONTACT</a></li>
@@ -50,7 +55,7 @@
                     <li><a href="#">LATEST TRAILERS</a></li>
                     <li><a href="#">TOP RATED</a></li>
                     <li><a href="#">MOST COMMENTED</a></li>
-                    <li><a href="/Movie/Add">ADD Movie</a></li>
+                    
                 </ul>
                 <div id="search">
                     <form asp-controller="Movie" asp-action="Search" method="get" accept-charset="utf-8">
