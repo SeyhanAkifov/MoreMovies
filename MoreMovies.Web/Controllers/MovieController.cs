@@ -156,6 +156,14 @@ namespace MoreMovies.Web.Controllers
             return RedirectToAction("Details", "Movie", 0);
         }
 
+        public async Task<IActionResult> SearchByGenre(string genre)
+        {
+            var movies = await movieService.SearchMovieByGenre(genre);
+            var result = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(movies);
+
+            return View("All", result);
+        }
+
         public async Task<IActionResult> All()
         {
 

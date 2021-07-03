@@ -223,8 +223,8 @@ label {
     position: static
 }
 
-.form-group input,
-.form-group textarea {
+.form-group input select,
+.form-group textarea  {
     background-color: black;
     border: 1px solid rgba(16, 46, 46, 1);
     border-radius: 12px

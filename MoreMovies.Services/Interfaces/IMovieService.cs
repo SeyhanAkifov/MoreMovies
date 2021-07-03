@@ -13,6 +13,8 @@ namespace MoreMovies.Services.Interfaces
 
         public Task<int> SearchMovie(string name);
 
+        public Task<ICollection<Movie>> SearchMovieByGenre(string genre);
+
         public Task LikeMovie(int id);
 
         public Task AddComment(int id, AddCommentInputModel model, string email);
