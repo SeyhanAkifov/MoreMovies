@@ -1,7 +1,7 @@
 ﻿@model ICollection<MovieViewModel>;
 
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-    <html xmlns="http://www.w3.org/1999/xhtml">
+    
     <head>
         <title>MovieHunter</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -13,37 +13,20 @@
     <body>
 
         @if (Model.Count > 0)
-        {
-
-
-
-        <h1>All Movies</h1>
-        <div id="main">
-            <div id="content">
-                <div class="box">
-                    @foreach (var movie in Model)
-                    {
-                        //var photoPath = "~/images/" + (movie.PhotoPath ?? "noimaje.jpg");
-
-                        <div class="movie">
-                            <div class="movie-image"> <span class="play"><span class="name">@movie.Title</span></span> <a href="#"><img src="/@movie.ImageUrl" alt="" /></a> </div>
-                            <div class="rating">
-                                <p>RATING</p>
-                                <div class="stars">
-                                    <div class="stars-in"> </div>
-                                </div>
-                                <span class="likes">@movie.Likes</span>
-                                <span class="comments">@movie.Comments.Count().ToString()</span>
-                            </div>
-
-                            <a class="btn btn-danger" asp-controller="Movie" asp-action="Details" asp-route-id=@movie.Id>Details</a>
-                        </div>
-                    }
+         {
+            <h1>All Movies</h1>
+            <div id="main">
+                <div id="content">
+                    <div class="box">
+                        @foreach (var movie in Model)
+                        {
+                            @await Html.PartialAsync("../Shared/_MoviePR", movie)
+                        }
+                    </div>
                 </div>
             </div>
-        </div>
-        }else 
-        { 
+         }else 
+         { 
              <h1>No Movies Here</h1>
-        }
+         }
     </body>

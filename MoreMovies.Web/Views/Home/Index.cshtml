@@ -16,6 +16,7 @@
     <title>MovieHunter</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="css/style.css" />
+    
     <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
     <script type="text/javascript" src="js/jquery-func.js"></script>
     <!--[if IE 6]><link rel="stylesheet" href="css/ie6.css" type="text/css" media="all" /><![endif]-->
@@ -39,7 +40,7 @@
                     <li><a class="active" href="#">HOME</a></li>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li><a asp-controller="Movie" asp-action="MyMovies" asp-route-Id="@User.Identity.Name.ToString()">My Movies</a></li>
+                        <li><a asp-controller="Movie" asp-action="MyMovies">My Movies</a></li>
                         <li><a asp-controller="Movie" asp-action="Add">ADD Movie</a></li>
                     }
 
@@ -57,7 +58,8 @@
                     <li><a asp-controller="Movie" asp-action="AllTopCommented">MOST COMMENTED</a></li>
 
                 </ul>
-                <div id="search">
+                
+                <div id="search" class="col-sm">
                     <form asp-controller="Movie" asp-action="SearchByGenre" method="get" accept-charset="utf-8">
                         <label for="search-field">SEARCH BY GENRE</label>
                         <select type="text"  placeholder="Genre" name="genre" id="search-field" class="blink search-field">
@@ -71,7 +73,7 @@
                     </form>
                 </div>
                 <hr />
-                <div id="search">
+                <div id="search"class="col-sm" >
                     <form asp-controller="Movie" asp-action="Search" method="get" accept-charset="utf-8">
                         <label for="search-field">SEARCH BY NAME</label>
                         <input type="text" name="name" value="" placeholder="Enter search here" id="search-field" class="blink search-field" />
@@ -88,23 +90,11 @@
                         <p class="text-right"><a asp-controller="Movie" asp-action="All" method="get">See all</a></p>
                     </div>
                     @foreach (var movie in Model.Newest)
-                     {
+                    {
                         //var photoPath = "~/images/" + (movie.PhotoPath ?? "noimaje.jpg");
 
-                        <div class="movie">
-                            <div class="movie-image"> <span class="play"><span class="name">@movie.Title</span></span> <a href="#"><img src="@movie.ImageUrl" alt="" /></a> </div>
-                            <div class="rating">
-                                <p>RATING</p>
-                                <div class="stars">
-                                    <div class="stars-in"> </div>
-                                </div>
-                                <span class="likes">@movie.Likes</span>
-                                <span class="comments">@movie.Comments.Count().ToString()</span>
-                            </div> 
-
-                            <a class="btn btn-danger" href="Movie/Details/@movie.Id" name="@movie.Id">Details</a>
-                        </div>
-                     }
+                        @await Html.PartialAsync("../Shared/_MoviePR", movie)
+                    }
                     <div class="cl">&nbsp;</div>
                 </div>
                 <div class="box">
@@ -116,19 +106,7 @@
                     {
                         //var photoPath = "~/images/" + (movie.PhotoPath ?? "noimaje.jpg");
 
-                        <div class="movie">
-                            <div class="movie-image"> <span class="play"><span class="name">@movie.Title</span></span> <a href="#"><img src="@movie.ImageUrl" alt="" /></a> </div>
-                            <div class="rating">
-                                <p>RATING</p>
-                                <div class="stars">
-                                    <div class="stars-in"> </div>
-                                </div>
-                                <span class="likes">@movie.Likes</span>
-                                <span class="comments">@movie.Comments.Count().ToString()</span>
-                            </div>
-
-                            <a class="btn btn-danger" href="Movie/Details/@movie.Id" name="@movie.Id">Details</a>
-                        </div>
+                        @await Html.PartialAsync("../Shared/_MoviePR", movie)
                     }
                     <div class="cl">&nbsp;</div>
                 </div>
@@ -141,47 +119,12 @@
                     {
                         //var photoPath = "~/images/" + (movie.PhotoPath ?? "noimaje.jpg");
 
-                        <div class="movie">
-                            <div class="movie-image"> <span class="play"><span class="name">@movie.Title</span></span> <a href="#"><img src="@movie.ImageUrl" alt="" /></a> </div>
-                            <div class="rating">
-                                <p>RATING</p>
-                                <div class="stars">
-                                    <div class="stars-in"> </div>
-                                </div>
-                                <span class="likes">@movie.Likes</span>
-                                <span class="comments">@movie.Comments.Count().ToString()</span>
-                            </div>
-
-                            <a class="btn btn-danger" href="Movie/Details/@movie.Id" name="@movie.Id">Details</a>
-                        </div>
+                        @await Html.PartialAsync("../Shared/_MoviePR", movie)
                     }
                     <div class="cl">&nbsp;</div>
                 </div>
             </div>
-            <div id="news">
-                <div class="head">
-                    <h3>NEWS</h3>
-                    <p class="text-right"><a href="#">See all</a></p>
-                </div>
-                <div class="content">
-                    <p class="date">12.04.09</p>
-                    <h4>Disney's A Christmas Carol</h4>
-                    <p>&quot;Disney's A Christmas Carol,&quot; a multi-sensory thrill ride re-envisioned by Academy Award&reg;-winning filmmaker Robert Zemeckis, captures... </p>
-                    <a href="#">Read more</a>
-                </div>
-                <div class="content">
-                    <p class="date">11.04.09</p>
-                    <h4>Where the Wild Things Are</h4>
-                    <p>Innovative director Spike Jonze collaborates with celebrated author Maurice Sendak to bring one of the most beloved books of all time to the big screen in &quot;Where the Wild Things Are,&quot;...</p>
-                    <a href="#">Read more</a>
-                </div>
-                <div class="content">
-                    <p class="date">10.04.09</p>
-                    <h4>The Box</h4>
-                    <p>Norma and Arthur Lewis are a suburban couple with a young child who receive an anonymous gift bearing fatal and irrevocable consequences.</p>
-                    <a href="#">Read more</a>
-                </div>
-            </div>
+                @await Html.PartialAsync("../Shared/_NewsPR") 
             <div id="coming">
                 <div class="head">
                     <h3>COMING SOON<strong>!</strong></h3>
@@ -202,11 +145,6 @@
                 </div>
             </div>
             <div class="cl">&nbsp;</div>
-        </div>
-        <div id="footer">
-            <p class="lf">Copyright &copy; 2010 <a href="#">SiteName</a> - All Rights Reserved</p>
-            <p class="rf">Design by <a href="http://chocotemplates.com/">ChocoTemplates.com</a></p>
-            <div style="clear:both;"></div>
         </div>
     </div>
     <!-- END PAGE SOURCE -->

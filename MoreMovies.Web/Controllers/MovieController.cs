@@ -98,7 +98,7 @@ namespace MoreMovies.Web.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> MyMovies(string id)
+        public async Task<IActionResult> MyMovies()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var movies = await movieService.GetAllMyMovie(userId);
@@ -125,9 +125,11 @@ namespace MoreMovies.Web.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> AddComment(int id, AddCommentInputModel model, string email)
+        public async Task<IActionResult> AddComment(int id, AddCommentInputModel model)
         {
-            await movieService.AddComment(id, model, email);
+            var userEmail = User.FindFirstValue(ClaimTypes.Email);
+
+            await movieService.AddComment(id, model, userEmail);
 
             return RedirectToAction("Details", "Movie", new { id = id });
         }

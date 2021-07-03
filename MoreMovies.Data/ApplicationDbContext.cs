@@ -42,6 +42,7 @@ namespace MoreMovies.Data
         public DbSet<MovieGenre> MovieGenres { get; set; }
         public DbSet<MovieLanguage> MovieLanguages { get; set; }
         public DbSet<UserMovie> UserMovies { get; set; }
+        public DbSet<News> News { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

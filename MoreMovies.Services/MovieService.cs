@@ -146,9 +146,7 @@ namespace MoreMovies.Services
         public async Task AddComment(int movieId, AddCommentInputModel model, string email)
         {
             var movie = await GetMovieWithId(movieId);
-
-            var userId = this.user.Id;
-
+            
             var comment = await commentService.AddComment(model, email);
 
             movie.Comments.Add(new MovieComment { Comment = comment });

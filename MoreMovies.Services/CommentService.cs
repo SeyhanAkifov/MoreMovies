@@ -28,7 +28,6 @@ namespace MoreMovies.Services
             var comment = new Comment
             {
                 Description = model.Description,
-                CreatedOn = DateTime.UtcNow,
                 UserFullName = email
             };
 

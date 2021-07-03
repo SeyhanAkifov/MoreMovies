@@ -36,7 +36,7 @@
                     <a class="btn btn-primary" asp-controller="Movie" asp-action="Like" asp-route-id="@Model.Id" name="@Model.Id">Like: @Model.Likes</a>
 
 
-                    <a class="btn btn-primary" asp-controller="Movie" asp-action="AddComment" asp-route-id="@Model.Id" name="@Model.Id">Write a comment</a>
+                    <a class="btn btn-primary" asp-controller="Movie" asp-action="AddComment" asp-route-id="@Model.Id" >Write a comment</a>
 
                     @foreach (var item in Model.Actors)
                     {
@@ -54,19 +54,12 @@
                                 <div class="col-sm-5 col-md-6 col-12 pb-4">
                                     <h1>Comments</h1>
                                     @foreach (var item in Model.Comments)
-                                    {
-                                        @*<div class="containerComments darkerComments">
-                                        <p>@item</p>
-
-                                    </div>*@
-
+                                     {
                                         <div class="comment mt-4 text-justify float-left">
                                             <h4>@item.UserFullName </h4> <span>@item.CreatedOn.ToString("g")</span> <br>
                                             <p>@item.Description</p>
                                         </div>
-
-
-                                    }
+                                     }
                                 </div>
 
                             </div>
