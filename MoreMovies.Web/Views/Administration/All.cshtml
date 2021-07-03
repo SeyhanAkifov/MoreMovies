@@ -1,0 +1,46 @@
+﻿@model IList<MoreMovie.Web.Models.MyProfileViewModel>
+@using Microsoft.AspNetCore.Identity
+@using MoreMovie.Web.Models
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+
+
+@{
+    ViewData["Title"] = "All Users";
+}
+<h1 class="text-center">All Users</h1>
+<hr class="hr-2" />
+
+<div class=" mt-3 ">
+    <div class="row d-flex d-wrap">
+
+
+
+
+        @for (var i = 0; i < Model.Count(); i++)
+        {
+
+            <div class="card mb-3">
+                <div class="card-header">
+                    User Id: @Model[i].Id
+                </div>
+                
+                <div class="card-body">
+                    Email: @Model[i].Email
+                </div>
+                <div class="card-footer">
+                    <form asp-controller="Administration" asp-action="DeleteUser" asp-route-id="@Model[i].Id" method="post">
+                       
+                        <button type="submit" class="btn btn-danger">Delete</button>
+
+                    </form>
+                </div>
+            </div>
+
+        }
+
+
+
+    </div>
+</div>

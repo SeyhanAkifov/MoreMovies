@@ -100,10 +100,11 @@ namespace MoreMovies.Web.Controllers
         [Authorize]
         public async Task<IActionResult> MyMovies(string id)
         {
-            var movies = await movieService.GetAllMyMovie(id);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var movies = await movieService.GetAllMyMovie(userId);
             var result = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(movies);
 
-            return View("All", result);
+            return View(result);
         }
 
         [Authorize]
@@ -159,6 +160,24 @@ namespace MoreMovies.Web.Controllers
         {
 
             var movies = await movieService.GetAllMovie();
+            var result = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(movies);
+
+            return this.View(result);
+        }
+
+        public async Task<IActionResult> AllTopCommented()
+        {
+
+            var movies = await movieService.GetTopCommentedMovie();
+            var result = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(movies);
+
+            return this.View(result);
+        }
+
+        public async Task<IActionResult> AllTopLiked()
+        {
+
+            var movies = await movieService.GetTopLikedMovie();
             var result = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(movies);
 
             return this.View(result);

@@ -53,8 +53,8 @@
                 <ul>
                     <li><a href="#">SHOW ALL</a></li>
                     <li><a href="#">LATEST TRAILERS</a></li>
-                    <li><a href="#">TOP RATED</a></li>
-                    <li><a href="#">MOST COMMENTED</a></li>
+                    <li><a asp-controller="Movie" asp-action="AllTopLiked">TOP LIKED</a></li>
+                    <li><a asp-controller="Movie" asp-action="AllTopCommented">MOST COMMENTED</a></li>
                     
                 </ul>
                 <div id="search">
@@ -96,7 +96,7 @@
                 <div class="box">
                     <div class="head">
                         <h2>TOP RATED</h2>
-                        <p class="text-right"><a href="#">See all</a></p>
+                        <p class="text-right"><a asp-controller="Movie" asp-action="AllTopLiked">See all</a></p>
                     </div>
                     @foreach (var movie in Model.TopLiked)
                     {
@@ -121,7 +121,7 @@
                 <div class="box">
                     <div class="head">
                         <h2>MOST COMMENTED</h2>
-                        <p class="text-right"><a href="#">See all</a></p>
+                        <p class="text-right"><a asp-controller="Movie" asp-action="AllTopCommented">See all</a></p>
                     </div>
                     @foreach (var movie in Model.TopCommented)
                     {

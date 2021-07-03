@@ -1,0 +1,22 @@
+﻿@using MoreMovie.Web.Models
+@model CreateRoleViewModel
+
+@{ 
+    ViewBag.Title = "Create New Role";
+
+
+}
+
+<h1>Create New Role</h1>
+
+
+<form class="text-center border border-light p-5" asp-controller="Administration" asp-action="CreateRole" method="post">
+    <div class="form-group">
+        <label for="RoleName">RoleName</label>
+        <input type="text" class="form-control" placeholder="RoleName" name="RoleName" value="">
+    </div>
+    
+
+    <button style="width:auto" type="submit" class="btn btn-primary">Create Role</button>
+</form>
+

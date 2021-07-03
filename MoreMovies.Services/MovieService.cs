@@ -8,7 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+
 
 namespace MoreMovies.Services
 {
@@ -63,7 +65,7 @@ namespace MoreMovies.Services
                 country = db.Country.FirstOrDefault(x => x.Name == model.Country);
             }
 
-            string[] actorNames = model.Actors.Split(", ");
+            
 
             Movie movie = new()
             {
@@ -80,6 +82,7 @@ namespace MoreMovies.Services
 
 
             };
+            string[] actorNames = model.Actors.Split(", ");
 
             foreach (var name in actorNames)
             {
@@ -96,12 +99,12 @@ namespace MoreMovies.Services
                 this.db.Actors.Add(actor);
                 movie.Actors.Add(new MovieActor { Actor = actor });
             }
-
-            var userMovie = new UserMovie()
-            {
-                Movies = movie,
-                User = user
-            };
+                var userMovie = new UserMovie()
+                {
+                    Movies = movie,
+                    User = user
+                };
+            
 
             var result = db.Movies.Add(movie);
 
@@ -167,15 +170,12 @@ namespace MoreMovies.Services
             return movies;
         }
 
-        public async Task<ICollection<Movie>> GetAllMyMovie(string email)
+        public async Task<ICollection<Movie>> GetAllMyMovie(string userId)
         {
+           
 
-            ICollection<Movie> movies = await db.Movies
-                .Where(x => x.CreatorId == this.user.Id)
-                .Include(x => x.Genre.Genre)
-                .Include(x => x.Language.Language)
-                .Include(x => x.Country.Country)
-                .Include(x => x.Comments)
+            ICollection<Movie> movies = await db.UserMovies.Where(um => um.UserId == userId)
+                .Select(x => x.Movies)
                 .ToArrayAsync();
 
             return movies;
