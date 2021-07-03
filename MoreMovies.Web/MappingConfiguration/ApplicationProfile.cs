@@ -22,6 +22,8 @@ namespace SocialNetworkCustom.Web.MappingConfiguration
              this.CreateMap<IdentityUser, MyProfileViewModel>()
                 .ForMember(x => x.Id, y => y.MapFrom(s => s.Id))
                 .ForMember(x => x.Email, y => y.MapFrom(s => s.Email));
+
+            this.CreateMap<News, NewsViewModel>();
         }
 
     }

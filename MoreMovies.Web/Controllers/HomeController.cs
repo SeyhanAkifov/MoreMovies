@@ -16,16 +16,18 @@ namespace MoreMovies.Web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IMovieService service;
+        private readonly INewsService newsService;
         private readonly IMapper mapper;
         private readonly ApplicationDbContext db;
 
 
-        public HomeController(ILogger<HomeController> logger, IMovieService service, IMapper mapper, ApplicationDbContext db)
+        public HomeController(ILogger<HomeController> logger, IMovieService service, IMapper mapper, ApplicationDbContext db, INewsService newsService)
         {
             _logger = logger;
             this.service = service;
             this.mapper = mapper;
             this.db = db;
+            this.newsService = newsService;
         }
 
         public async Task<IActionResult> Details(int id)
@@ -46,16 +48,19 @@ namespace MoreMovies.Web.Controllers
             var topcomentedMovies = await service.GetTopCommentedMovie();
             var topLikedMovies = await service.GetTopLikedMovie();
             var newestAddedMovies = await service.GetNewestAddedMovie();
+            var news = await newsService.GetNewsForHomePage();
 
             var topCommentedResult = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(topcomentedMovies);
             var topLikedResult = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(topLikedMovies);
             var newestAddedResult = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(newestAddedMovies);
+            var newsResult = mapper.Map<ICollection<News>, ICollection<NewsViewModel>>(news);
 
             var movies = new MovieListViewModel()
             {
                 TopCommented = topCommentedResult,
                 TopLiked = topLikedResult,
-                Newest = newestAddedResult
+                Newest = newestAddedResult,
+                News = newsResult,
             };
 
 

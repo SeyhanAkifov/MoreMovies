@@ -117,14 +117,14 @@
                     </div>
                     @foreach (var movie in Model.TopCommented)
                     {
-                        //var photoPath = "~/images/" + (movie.PhotoPath ?? "noimaje.jpg");
-
                         @await Html.PartialAsync("../Shared/_MoviePR", movie)
                     }
                     <div class="cl">&nbsp;</div>
                 </div>
             </div>
-                @await Html.PartialAsync("../Shared/_NewsPR") 
+           
+            @await Html.PartialAsync("../Shared/_NewsPR", Model.News)
+
             <div id="coming">
                 <div class="head">
                     <h3>COMING SOON<strong>!</strong></h3>

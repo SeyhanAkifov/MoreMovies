@@ -1,6 +1,7 @@
-﻿<div class="content">
-    <p class="date">12.04.09</p>
-    <h4>Disney's A Christmas Carol</h4>
-    <p>&quot;Disney's A Christmas Carol,&quot; a multi-sensory thrill ride re-envisioned by Academy Award&reg;-winning filmmaker Robert Zemeckis, captures... </p>
+﻿@model NewsViewModel
+<div class="content">
+    <p class="date">@Model.AddedOn</p>
+    <h4>@Model.Title</h4>
+    <p>@Model.Description</p>
     <a href="#">Read more</a>
 </div>

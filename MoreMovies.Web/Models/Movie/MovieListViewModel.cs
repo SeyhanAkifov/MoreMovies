@@ -9,5 +9,7 @@ namespace MoreMovies.Web.Models
         public ICollection<MovieViewModel> TopCommented { get; set; }
 
         public ICollection<MovieViewModel> Newest { get; set; }
+
+        public ICollection<NewsViewModel> News { get; set; }
     }
 }
