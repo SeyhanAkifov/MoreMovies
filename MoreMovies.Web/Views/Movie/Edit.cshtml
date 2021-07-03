@@ -1,24 +1,26 @@
 ﻿@model MovieViewModel
-
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
 }
+@{
+    ViewData["Title"] = "Movie edit";
+}
 
-<form class="text-center border border-light p-5"  asp-controller="Movie" asp-action="EditMovie" asp-route-id="@Model.Id" name="@Model.Id" method="post">
+<form class="text-center border border-light p-5" asp-controller="Movie" asp-action="EditMovie" asp-route-id="@Model.Id" name="@Model.Id" method="post">
     <div class="form-group">
         <label for="title">Title</label>
         <input type="text" class="form-control" placeholder="Title" name="title" value="@Model.Title">
     </div>
-    
+
 
     <div class="form-group">
         <label for="image">@Model.ImageUrl</label>
         <input type="text" class="form-control" placeholder="Image" name="image" value="@Model.ImageUrl">
     </div>
 
-    
+
 
     <div class="form-group">
         <label for="homePage">@Model.HomePage</label>

@@ -1,18 +1,15 @@
 ﻿@model int
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+
 @{
+    ViewData["Title"] = "Add Comment";
 }
 
+<h1>ADD COMMENT</h1>
+
 <form class="text-center border border-light p-5" asp-controller="Movie" asp-action="AddComment" asp-route-id="@Model" asp-route-email="@User.Identity.Name" method="post">
-
-
     <div class="form-group">
         <label for="description">Description</label>
         <input type="text" class="form-control" placeholder="Description" name="description" value="">
     </div>
-   
-
     <button type="submit" class="btn btn-primary" value="submit">Add comment</button>
 </form>

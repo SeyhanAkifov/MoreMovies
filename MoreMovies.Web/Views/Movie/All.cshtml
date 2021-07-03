@@ -1,32 +1,37 @@
 ﻿@model ICollection<MovieViewModel>;
 
-    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-    
-    <head>
-        <title>MovieHunter</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <link rel="stylesheet" href="/css/style.css" />
-        <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
-        <script type="text/javascript" src="js/jquery-func.js"></script>
-        <!--[if IE 6]><link rel="stylesheet" href="css/ie6.css" type="text/css" media="all" /><![endif]-->
-    </head>
-    <body>
+@{
+    ViewData["Title"] = "All Movies";
+}
 
-        @if (Model.Count > 0)
-         {
-            <h1>All Movies</h1>
-            <div id="main">
-                <div id="content">
-                    <div class="box">
-                        @foreach (var movie in Model)
-                        {
-                            @await Html.PartialAsync("../Shared/_MoviePR", movie)
-                        }
-                    </div>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<head>
+    <title>MovieHunter</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery-func.js"></script>
+    <!--[if IE 6]><link rel="stylesheet" href="css/ie6.css" type="text/css" media="all" /><![endif]-->
+</head>
+<body>
+
+    @if (Model.Count > 0)
+    {
+        <h1>All Movies</h1>
+        <div id="main">
+            <div id="content">
+                <div class="box">
+                    @foreach (var movie in Model)
+                    {
+                        @await Html.PartialAsync("../Shared/_MoviePR", movie)
+                    }
                 </div>
             </div>
-         }else 
-         { 
-             <h1>No Movies Here</h1>
-         }
-    </body>
+        </div>
+    }
+    else
+    {
+        <h1>No Movies Here</h1>
+    }
+</body>
