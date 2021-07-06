@@ -26,6 +26,8 @@ namespace MoreMovies.Web.Models
 
         public string HomePage { get; set; }
 
+        public string CreatorId { get; set; }
+
         public int? Popularity { get; set; }
 
         public TimeSpan? Runtime { get; set; }

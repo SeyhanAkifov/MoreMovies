@@ -10,6 +10,8 @@ namespace MoreMovies.Web.Models
 
         public ICollection<MovieViewModel> Newest { get; set; }
 
+        public ICollection<ComingSoonViewModel> ComingSoon { get; set; }
+
         public ICollection<NewsViewModel> News { get; set; }
     }
 }

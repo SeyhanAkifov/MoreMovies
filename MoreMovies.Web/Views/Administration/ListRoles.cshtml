@@ -12,17 +12,20 @@
 
     foreach (var role in Model)
     {
-       <div class="card mb-3">
-         <div class="card-header">
-             Role Id: @role.Id
-         </div>
-         
-         <div class="card-footer">
-            <a  class="btn btn-danger mb-3" style="width:auto" asp-controller="Administration" asp-action="EditRoles" asp-route-id="@role.Id">Edit</a>
-            <a class="btn btn-primary mb-3" style="width:auto" asp-controller="Administration" asp-action="DeleteRole" asp-route-id="@role.Id">Delete</a>
-         </div>
+<div class="card mb-3">
+    <div class="card-header">
+        Role Id: @role.Id
+    </div>
+    <div class="card-header">
+        Role Name: @role.Name
+    </div>
 
-       </div>
+    <div class="card-footer">
+        <a class="btn btn-danger mb-3" style="width:auto" asp-controller="Administration" asp-action="EditRoles" asp-route-id="@role.Id">Edit</a>
+        <a class="btn btn-primary mb-3" style="width:auto" asp-controller="Administration" asp-action="DeleteRole" asp-route-id="@role.Id">Delete</a>
+    </div>
+
+</div>
     }
 }
 else

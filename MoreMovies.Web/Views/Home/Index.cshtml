@@ -1,11 +1,7 @@
-﻿@model MoreMovies.Web.Models.MovieListViewModel;
-@using MoreMovies.Web.Models
+﻿@model MovieListViewModel;
 
 
 
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
 @{
     ViewData["Title"] = "Index";
 }
@@ -26,9 +22,11 @@
     <div id="shell">
         <div id="header">
             <h1 id="logo"><a href="#">More Movies</a></h1>
+           
             <div class="social">
                 <span>FOLLOW US ON:</span>
                 <ul>
+
                     <li><a class="twitter" href="#">twitter</a></li>
                     <li><a class="facebook" href="#">facebook</a></li>
                     <li><a class="vimeo" href="#">vimeo</a></li>
@@ -52,17 +50,17 @@
             </div>
             <div id="sub-navigation">
                 <ul>
-                    <li><a href="#">SHOW ALL</a></li>
+                    <li><a asp-controller="Movie" asp-action="All">SHOW ALL</a></li>
                     <li><a href="#">LATEST TRAILERS</a></li>
                     <li><a asp-controller="Movie" asp-action="AllTopLiked">TOP LIKED</a></li>
                     <li><a asp-controller="Movie" asp-action="AllTopCommented">MOST COMMENTED</a></li>
 
                 </ul>
-                
+
                 <div id="search" class="col-sm">
                     <form asp-controller="Movie" asp-action="SearchByGenre" method="get" accept-charset="utf-8">
                         <label for="search-field">SEARCH BY GENRE</label>
-                        <select type="text"  placeholder="Genre" name="genre" id="search-field" class="blink search-field">
+                        <select type="text" placeholder="Genre" name="genre" id="search-field" class="blink search-field">
                             <option value="Fantasy">Fantasy</option>
                             <option value="Horror">Horror</option>
                             <option value="Drama">Drama</option>
@@ -73,7 +71,7 @@
                     </form>
                 </div>
                 <hr />
-                <div id="search"class="col-sm" >
+                <div id="search" class="col-sm">
                     <form asp-controller="Movie" asp-action="Search" method="get" accept-charset="utf-8">
                         <label for="search-field">SEARCH BY NAME</label>
                         <input type="text" name="name" value="" placeholder="Enter search here" id="search-field" class="blink search-field" />
@@ -91,8 +89,6 @@
                     </div>
                     @foreach (var movie in Model.Newest)
                     {
-                        //var photoPath = "~/images/" + (movie.PhotoPath ?? "noimaje.jpg");
-
                         @await Html.PartialAsync("../Shared/_MoviePR", movie)
                     }
                     <div class="cl">&nbsp;</div>
@@ -104,8 +100,6 @@
                     </div>
                     @foreach (var movie in Model.TopLiked)
                     {
-                        //var photoPath = "~/images/" + (movie.PhotoPath ?? "noimaje.jpg");
-
                         @await Html.PartialAsync("../Shared/_MoviePR", movie)
                     }
                     <div class="cl">&nbsp;</div>
@@ -125,28 +119,11 @@
            
             @await Html.PartialAsync("../Shared/_NewsPR", Model.News)
 
-            <div id="coming">
-                <div class="head">
-                    <h3>COMING SOON<strong>!</strong></h3>
-                    <p class="text-right"><a href="#">See all</a></p>
-                </div>
-                <div class="content">
-                    <h4>The Princess and the Frog </h4>
-                    <a href="#"><img src="css/images/coming-soon1.jpg" alt="" /></a>
-                    <p>Walt Disney Animation Studios presents the musical &quot;The Princess and the Frog,&quot; an animated comedy set in the great city of New Orleans...</p>
-                    <a href="#">Read more</a>
-                </div>
-                <div class="cl">&nbsp;</div>
-                <div class="content">
-                    <h4>The Princess and the Frog </h4>
-                    <a href="#"><img src="css/images/coming-soon2.jpg" alt="" /></a>
-                    <p>Walt Disney Animation Studios presents the musical &quot;The Princess and the Frog,&quot; an animated comedy set in the great city of New Orleans...</p>
-                    <a href="#">Read more</a>
-                </div>
-            </div>
+            @await Html.PartialAsync("../Shared/_ComingSoonPR", Model.ComingSoon)
+
             <div class="cl">&nbsp;</div>
         </div>
     </div>
-    <!-- END PAGE SOURCE -->
+    
 </body>
 </html>

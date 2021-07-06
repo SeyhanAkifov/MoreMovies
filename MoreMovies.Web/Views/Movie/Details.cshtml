@@ -30,10 +30,14 @@
                     <h3 class="my-3 ">@Model.Description</h3>
                     <h3 class="my-3 ">@Model.ReleaseDate</h3>
 
-                    <form method="post">
-                        <a class="btn btn-danger" asp-controller="Movie" asp-action="Delete" asp-route-id="@Model.Id" name="@Model.Id">Delete</a>
-                    </form>
-                    <a class="btn btn-warning" asp-controller="Movie" asp-action="Edit" asp-route-id="@Model.Id" name="@Model.Id">Edit</a>
+                    @if (Model.CreatorId == User.Identity.Name)
+                    {
+                        <form method="post">
+                            <a class="btn btn-danger" asp-controller="Movie" asp-action="Delete" asp-route-id="@Model.Id" name="@Model.Id">Delete</a>
+                        </form>
+                        <a class="btn btn-warning" asp-controller="Movie" asp-action="Edit" asp-route-id="@Model.Id" name="@Model.Id">Edit</a>
+                    }
+
 
                     <a class="btn btn-primary" asp-controller="Movie" asp-action="Like" asp-route-id="@Model.Id" name="@Model.Id">Like: @Model.Likes</a>
 

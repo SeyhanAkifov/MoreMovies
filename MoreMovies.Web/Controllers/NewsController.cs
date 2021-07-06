@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MoreMovies.Models;
 using MoreMovies.Services.Dto;
@@ -20,11 +21,13 @@ namespace MoreMovies.Web.Controllers
             this.mapper = mapper;
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Add()
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Add(NewsAddModel model)
         {
@@ -33,6 +36,7 @@ namespace MoreMovies.Web.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete()
         {
             return View();

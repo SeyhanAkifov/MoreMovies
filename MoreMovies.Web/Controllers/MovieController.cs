@@ -44,7 +44,7 @@ namespace MoreMovies.Web.Controllers
 
                 result.Actors = this.actorService.GetMovieActors(result.Id);
 
-                return View(result);
+                  return View(result);
             }
             else
             {

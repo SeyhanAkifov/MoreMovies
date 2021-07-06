@@ -55,6 +55,7 @@ namespace MoreMovies.Web
             services.AddTransient<ICountryService, CountryService>();
             services.AddTransient<ICommentService, CommentService>();
             services.AddTransient<INewsService, NewsService>();
+            services.AddTransient<IComingSoonService, ComingSoonService>();
             services.AddScoped<UserManager<IdentityUser>>();
             services.AddScoped<IdentityUser>();
         }

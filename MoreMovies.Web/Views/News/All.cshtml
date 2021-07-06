@@ -1,9 +1,5 @@
 ﻿@model ICollection<NewsViewModel>
 
-
-
-
-
 @{
     ViewData["Title"] = "All News";
 }
@@ -12,14 +8,9 @@
 
 <div class=" mt-3 ">
     <div class="row d-flex d-wrap">
-
-
-
-
         @foreach (var item in Model)
         {
-
-        <div class="card mb-3">
+            <div class="card mb-3">
             <div class="card-header">
                 User Id: @item.Id
             </div>
@@ -39,10 +30,6 @@
                 </form>
             </div>
         </div>
-
         }
-
-
-
     </div>
 </div>

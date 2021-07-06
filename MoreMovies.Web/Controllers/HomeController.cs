@@ -17,17 +17,19 @@ namespace MoreMovies.Web.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IMovieService service;
         private readonly INewsService newsService;
+        private readonly IComingSoonService comingSoonService;
         private readonly IMapper mapper;
         private readonly ApplicationDbContext db;
 
 
-        public HomeController(ILogger<HomeController> logger, IMovieService service, IMapper mapper, ApplicationDbContext db, INewsService newsService)
+        public HomeController(ILogger<HomeController> logger, IMovieService service, IMapper mapper, ApplicationDbContext db, INewsService newsService, IComingSoonService comingSoonService)
         {
             _logger = logger;
             this.service = service;
             this.mapper = mapper;
             this.db = db;
             this.newsService = newsService;
+            this.comingSoonService = comingSoonService;
         }
 
         public async Task<IActionResult> Details(int id)
@@ -49,11 +51,13 @@ namespace MoreMovies.Web.Controllers
             var topLikedMovies = await service.GetTopLikedMovie();
             var newestAddedMovies = await service.GetNewestAddedMovie();
             var news = await newsService.GetNewsForHomePage();
+            var comingSoon = await comingSoonService.GetForHomePage();
 
             var topCommentedResult = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(topcomentedMovies);
             var topLikedResult = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(topLikedMovies);
             var newestAddedResult = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(newestAddedMovies);
             var newsResult = mapper.Map<ICollection<News>, ICollection<NewsViewModel>>(news);
+            var comingSoonResult = mapper.Map<ICollection<ComingSoon>, ICollection<ComingSoonViewModel>>(comingSoon);
 
             var movies = new MovieListViewModel()
             {
@@ -61,6 +65,7 @@ namespace MoreMovies.Web.Controllers
                 TopLiked = topLikedResult,
                 Newest = newestAddedResult,
                 News = newsResult,
+                ComingSoon = comingSoonResult,
             };
 
 

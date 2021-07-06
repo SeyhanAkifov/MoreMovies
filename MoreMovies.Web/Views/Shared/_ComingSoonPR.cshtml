@@ -1,0 +1,14 @@
+﻿@model ICollection<ComingSoonViewModel>
+<div id="coming">
+    <div class="head">
+        <h3>COMING SOON<strong>!</strong></h3>
+        <p class="text-right"><a href="#">See all</a></p>
+    </div>
+    @foreach (var item in Model)
+    {
+        @await Html.PartialAsync("../ComingSoon/ComingSoon", item)
+    }
+    
+
+
+</div>

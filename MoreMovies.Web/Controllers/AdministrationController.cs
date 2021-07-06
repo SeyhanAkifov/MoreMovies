@@ -25,7 +25,6 @@ namespace MoreMovie.Web.Controllers
             this.userManager = userManager;
             this.context = context;
             this.mapper = mapper;
-
         }
 
         public IActionResult Index()
@@ -77,8 +76,6 @@ namespace MoreMovie.Web.Controllers
                         return RedirectToAction("EditRoles", new { Id = roleId });
                     }
                 }
-
-
             }
 
             return RedirectToAction("EditRoles", new { Id = roleId });
@@ -170,17 +167,8 @@ namespace MoreMovie.Web.Controllers
                 {
                     return RedirectToAction("ListRoles");
                 }
-
-                //foreach (var error in result.Errors)
-                //{
-                //    ModelState.AddModelError("", error.Description);
-                //}
             }
-
-
-
-
-
+            
             return View(model);
         }
 
@@ -227,7 +215,7 @@ namespace MoreMovie.Web.Controllers
 
             if (user == null)
             {
-                ViewBag.ErroorMessage = $"User with Id: {id} cannot be found";
+                ViewBag.ErrorMessage = $"User with Id: {id} cannot be found";
             }
             else
             {

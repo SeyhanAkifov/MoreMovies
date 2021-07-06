@@ -24,6 +24,8 @@ namespace SocialNetworkCustom.Web.MappingConfiguration
                 .ForMember(x => x.Email, y => y.MapFrom(s => s.Email));
 
             this.CreateMap<News, NewsViewModel>();
+
+            this.CreateMap<ComingSoon, ComingSoonViewModel>();
         }
 
     }
