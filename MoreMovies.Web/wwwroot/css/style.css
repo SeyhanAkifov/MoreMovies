@@ -68,7 +68,7 @@ h4 {
 	font-weight:bold;
 }
 #shell {
-	width:980px;
+	width:auto;
 	margin:0 auto;
 }
 #header {
@@ -178,7 +178,7 @@ h1#logo a {
 	text-decoration:underline;
 }
 #search {
-	width:346px;
+	width:300px;
 	margin:0 0 0 auto;
 }
 #search label {
@@ -224,11 +224,13 @@ h1#logo a {
 	float:left;
 	display:inline;
 }
-.box .movie {
-	width:152px;
-	float:left;
-	padding-right:12px;
-}
+	.box .movie {
+		width: 152px;
+		float: left;
+		padding-right: 12px;
+		margin: 0 0 0 auto;
+		margin-left: auto;
+	}
 .movie-image {
 	float:left;
 	width:152px;

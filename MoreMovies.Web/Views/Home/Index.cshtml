@@ -9,7 +9,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>MovieHunter</title>
+    <title>More Movie</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="css/style.css" />
     
@@ -19,10 +19,11 @@
 </head>
 <body>
     <!-- START PAGE SOURCE -->
+
     <div id="shell">
         <div id="header">
             <h1 id="logo"><a href="#">More Movies</a></h1>
-           
+            
             <div class="social">
                 <span>FOLLOW US ON:</span>
                 <ul>
@@ -33,6 +34,7 @@
                     <li><a class="rss" href="#">rss</a></li>
                 </ul>
             </div>
+            
             <div id="navigation">
                 <ul>
                     <li><a class="active" href="#">HOME</a></li>
@@ -43,10 +45,55 @@
                     }
 
                     <li><a href="#">IN THEATERS</a></li>
-                    <li><a href="#">COMING SOON</a></li>
+                    <li><a asp-controller="ComingSoon" asp-action="All">COMING SOON</a></li>
                     <li><a href="/Contact/ContactPage">CONTACT</a></li>
-                    <li><a href="#">ADVERTISE</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Privacy">PRIVACY</a></li>
+
                 </ul>
+            </div>
+            <div id="navigation">
+                <ul>
+                    <li>
+                        <div id="search" class="col-sm10">
+                            <form asp-controller="Movie" asp-action="SearchByGenre" method="get" accept-charset="utf-8">
+                                <label for="search-field">SEARCH BY GENRE</label>
+                                <select type="text" placeholder="Genre" name="genre" id="search-field" class="blink search-field">
+                                    <option value="Fantasy">Fantasy</option>
+                                    <option value="Horror">Horror</option>
+                                    <option value="Drama">Drama</option>
+                                    <option value="Comedy">Comedy</option>
+                                    <option value="Thriller">Thriller</option>
+                                </select>
+                                <input type="submit" value="GO!" class="search-button" />
+                            </form>
+                        </div>
+                        <hr />
+                    </li>
+                    <li>
+                        <div id="search" class="col-sm10">
+                            <form asp-controller="Movie" asp-action="Search" method="get" accept-charset="utf-8">
+                                <label for="search-field">SEARCH BY NAME</label>
+                                <input type="text" name="name" value="" placeholder="Enter search here" id="search-field" class="blink search-field" />
+                                <input type="submit" value="GO!" class="search-button" />
+                            </form>
+                        </div>
+                        <hr />
+                    </li>
+                    
+                    <li>
+                        <div id="search" class="col-sm10">
+                            <form asp-controller="Movie" asp-action="Search" method="get" accept-charset="utf-8">
+                                <label for="search-field">SEARCH BY NAME</label>
+                                <input type="text" name="name" value="" placeholder="Enter search here" id="search-field" class="blink search-field" />
+                                <input type="submit" value="GO!" class="search-button" />
+                            </form>
+                        </div>
+                        <hr />
+                    </li>
+                </ul>
+                
+                
+                
             </div>
             <div id="sub-navigation">
                 <ul>
@@ -57,73 +104,58 @@
 
                 </ul>
 
-                <div id="search" class="col-sm">
-                    <form asp-controller="Movie" asp-action="SearchByGenre" method="get" accept-charset="utf-8">
-                        <label for="search-field">SEARCH BY GENRE</label>
-                        <select type="text" placeholder="Genre" name="genre" id="search-field" class="blink search-field">
-                            <option value="Fantasy">Fantasy</option>
-                            <option value="Horror">Horror</option>
-                            <option value="Drama">Drama</option>
-                            <option value="Comedy">Comedy</option>
-                            <option value="Thriller">Thriller</option>
-                        </select>
-                        <input type="submit" value="GO!" class="search-button" />
-                    </form>
+                
+            </div>
+            
+        </div >
+            <div id="main">
+                <div id="content">
+                    <div class="box" >
+                        <div class="head">
+                            <h2>LATEST TRAILERS</h2>
+                            <p class="text-right"><a asp-controller="Movie" asp-action="All" method="get">See all</a></p>
+                        </div>
+                        
+                            @foreach (var movie in Model.Newest)
+                            {
+                            
+                                @await Html.PartialAsync("../Shared/_MoviePR", movie)
+                            
+                            }
+                        
+                        <div class="cl">&nbsp;</div>
+                    </div>
+                    <div class="box">
+                        <div class="head">
+                            <h2>TOP RATED</h2>
+                            <p class="text-right"><a asp-controller="Movie" asp-action="AllTopLiked">See all</a></p>
+                        </div>
+                        @foreach (var movie in Model.TopLiked)
+                        {
+                            @await Html.PartialAsync("../Shared/_MoviePR", movie)
+                        }
+                        <div class="cl">&nbsp;</div>
+                    </div>
+                    <div class="box">
+                        <div class="head">
+                            <h2>MOST COMMENTED</h2>
+                            <p class="text-right"><a asp-controller="Movie" asp-action="AllTopCommented">See all</a></p>
+                        </div>
+                        @foreach (var movie in Model.TopCommented)
+                        {
+                            @await Html.PartialAsync("../Shared/_MoviePR", movie)
+                        }
+                        <div class="cl">&nbsp;</div>
+                    </div>
                 </div>
-                <hr />
-                <div id="search" class="col-sm">
-                    <form asp-controller="Movie" asp-action="Search" method="get" accept-charset="utf-8">
-                        <label for="search-field">SEARCH BY NAME</label>
-                        <input type="text" name="name" value="" placeholder="Enter search here" id="search-field" class="blink search-field" />
-                        <input type="submit" value="GO!" class="search-button" />
-                    </form>
-                </div>
+
+                @await Html.PartialAsync("../Shared/_NewsPR", Model.News)
+
+                @await Html.PartialAsync("../Shared/_ComingSoonPR", Model.ComingSoon)
+
+                <div class="cl">&nbsp;</div>
             </div>
         </div>
-        <div id="main">
-            <div id="content">
-                <div class="box">
-                    <div class="head">
-                        <h2>LATEST TRAILERS</h2>
-                        <p class="text-right"><a asp-controller="Movie" asp-action="All" method="get">See all</a></p>
-                    </div>
-                    @foreach (var movie in Model.Newest)
-                    {
-                        @await Html.PartialAsync("../Shared/_MoviePR", movie)
-                    }
-                    <div class="cl">&nbsp;</div>
-                </div>
-                <div class="box">
-                    <div class="head">
-                        <h2>TOP RATED</h2>
-                        <p class="text-right"><a asp-controller="Movie" asp-action="AllTopLiked">See all</a></p>
-                    </div>
-                    @foreach (var movie in Model.TopLiked)
-                    {
-                        @await Html.PartialAsync("../Shared/_MoviePR", movie)
-                    }
-                    <div class="cl">&nbsp;</div>
-                </div>
-                <div class="box">
-                    <div class="head">
-                        <h2>MOST COMMENTED</h2>
-                        <p class="text-right"><a asp-controller="Movie" asp-action="AllTopCommented">See all</a></p>
-                    </div>
-                    @foreach (var movie in Model.TopCommented)
-                    {
-                        @await Html.PartialAsync("../Shared/_MoviePR", movie)
-                    }
-                    <div class="cl">&nbsp;</div>
-                </div>
-            </div>
-           
-            @await Html.PartialAsync("../Shared/_NewsPR", Model.News)
-
-            @await Html.PartialAsync("../Shared/_ComingSoonPR", Model.ComingSoon)
-
-            <div class="cl">&nbsp;</div>
-        </div>
-    </div>
     
 </body>
 </html>

@@ -175,7 +175,16 @@ namespace MoreMovies.Web.Controllers
             return this.View(result);
         }
 
-        public async Task<IActionResult> AllTopCommented()
+        public async Task<IActionResult> AllNewest()
+        {
+
+            var movies = await movieService.GetNewestAddedAllMovie();
+            var result = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(movies);
+
+            return this.View(result);
+        }
+
+        public async Task<IActionResult> TopCommented()
         {
 
             var movies = await movieService.GetTopCommentedMovie();
@@ -184,10 +193,28 @@ namespace MoreMovies.Web.Controllers
             return this.View(result);
         }
 
-        public async Task<IActionResult> AllTopLiked()
+        public async Task<IActionResult> AllTopCommented()
+        {
+
+            var movies = await movieService.GetTopCommentedAllMovie();
+            var result = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(movies);
+
+            return this.View(result);
+        }
+
+        public async Task<IActionResult> TopLiked()
         {
 
             var movies = await movieService.GetTopLikedMovie();
+            var result = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(movies);
+
+            return this.View(result);
+        }
+
+        public async Task<IActionResult> AllTopLiked()
+        {
+
+            var movies = await movieService.GetTopLikedAllMovie();
             var result = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(movies);
 
             return this.View(result);

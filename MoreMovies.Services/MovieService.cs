@@ -214,6 +214,19 @@ namespace MoreMovies.Services
             return movies;
         }
 
+        public async Task<ICollection<Movie>> GetTopCommentedAllMovie()
+        {
+            ICollection<Movie> movies = await db.Movies
+                .Include(x => x.Genre.Genre)
+                .Include(x => x.Language.Language)
+                .Include(x => x.Country.Country)
+                .Include(x => x.Comments)
+                .OrderByDescending(x => x.Comments.Count)
+                .ToArrayAsync();
+
+            return movies;
+        }
+
         public async Task<ICollection<Movie>> GetTopLikedMovie()
         {
             ICollection<Movie> movies = await db.Movies
@@ -228,6 +241,19 @@ namespace MoreMovies.Services
             return movies;
         }
 
+        public async Task<ICollection<Movie>> GetTopLikedAllMovie()
+        {
+            ICollection<Movie> movies = await db.Movies
+                .Include(x => x.Genre.Genre)
+                .Include(x => x.Language.Language)
+                .Include(x => x.Country.Country)
+                .Include(x => x.Comments)
+                .OrderByDescending(x => x.Likes)
+                .ToArrayAsync();
+
+            return movies;
+        }
+        
         public async Task<ICollection<Movie>> GetNewestAddedMovie()
         {
             ICollection<Movie> movies = await db.Movies
@@ -237,6 +263,19 @@ namespace MoreMovies.Services
                 .Include(x => x.Comments)
                 .OrderByDescending(x => x.ReleaseDate)
                 .Take(6)
+                .ToArrayAsync();
+
+            return movies;
+        }
+
+        public async Task<ICollection<Movie>> GetNewestAddedAllMovie()
+        {
+            ICollection<Movie> movies = await db.Movies
+                .Include(x => x.Genre.Genre)
+                .Include(x => x.Language.Language)
+                .Include(x => x.Country.Country)
+                .Include(x => x.Comments)
+                .OrderByDescending(x => x.ReleaseDate)
                 .ToArrayAsync();
 
             return movies;
