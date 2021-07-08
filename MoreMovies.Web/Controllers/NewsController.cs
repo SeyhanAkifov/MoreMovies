@@ -37,9 +37,10 @@ namespace MoreMovies.Web.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public IActionResult Delete()
+        public async Task<IActionResult> Delete(int id)
         {
-            return View();
+            await newsService.Delete(id);
+            return RedirectToAction("All");
         }
 
         public async Task<IActionResult> All()

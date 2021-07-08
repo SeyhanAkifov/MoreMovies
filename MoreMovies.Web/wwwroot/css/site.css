@@ -11,7 +11,10 @@ a.navbar-brand {
 a {
   color: #0366d6;
 }
-
+.movie-image-details img {
+    width: 282px;
+    height: 414px;
+}
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;

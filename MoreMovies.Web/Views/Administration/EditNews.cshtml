@@ -1,0 +1,36 @@
+﻿@model ICollection<NewsViewModel>
+
+@{
+    ViewData["Title"] = "All News";
+}
+<h1 class="text-center">All News</h1>
+<hr class="hr-2" />
+
+<div class=" mt-3 ">
+    <div class="row d-flex d-wrap">
+        @foreach (var item in Model)
+        {
+            <div class="card mb-3">
+                <div class="card-header">
+                    User Id: @item.Id
+                </div>
+
+                <div class="card-body">
+                    Email: @item.Title
+                </div>
+
+                <div class="card-body">
+                    Email: @item.Description
+                </div>
+
+                <div class="card-footer">
+                    <form asp-controller="Administration" asp-action="DeleteNews" asp-route-id="@item.Id" method="post">
+
+                        <button type="submit" class="btn btn-danger">Delete</button>
+
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+</div>

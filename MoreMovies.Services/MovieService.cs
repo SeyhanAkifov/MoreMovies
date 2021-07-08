@@ -79,7 +79,7 @@ namespace MoreMovies.Services
                 Genre = new MovieGenre { Genre = genre },
                 Country = new MovieCountry { Country = country },
                 ImageUrl = model.Image,
-
+                CreatorId = model.UserId
 
             };
             string[] actorNames = model.Actors.Split(", ");

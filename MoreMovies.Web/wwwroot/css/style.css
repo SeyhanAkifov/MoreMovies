@@ -241,6 +241,10 @@ h1#logo a {
 	width:152px;
 	height:214px;
 }
+.movie-image-details img {
+	width: 252px;
+	height: 314px;
+}
 .movie-image a {
 	float:left;
 	display:inline;

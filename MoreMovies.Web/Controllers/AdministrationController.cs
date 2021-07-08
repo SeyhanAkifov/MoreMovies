@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MoreMovie.Web.Models;
 using MoreMovies.Data;
+using MoreMovies.Models;
+using MoreMovies.Services.Interfaces;
+using MoreMovies.Web.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,13 +21,15 @@ namespace MoreMovie.Web.Controllers
         private readonly UserManager<IdentityUser> userManager;
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
+        private readonly INewsService newsService;
 
-        public AdministrationController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext context, IMapper mapper)
+        public AdministrationController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext context, IMapper mapper, INewsService newsService)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
             this.context = context;
             this.mapper = mapper;
+            this.newsService = newsService;
         }
 
         public IActionResult Index()
@@ -32,7 +37,21 @@ namespace MoreMovie.Web.Controllers
             return View();
         }
 
+        public async Task<IActionResult> EditNews()
+        {
+            var news = await this.newsService.GetAllNews();
+            var newsResult = mapper.Map<ICollection<News>, ICollection<NewsViewModel>>(news);
 
+            return this.View(newsResult);
+        }
+
+        public async Task<IActionResult> DeleteNews(int id)
+        {
+            await this.newsService.Delete(id);
+
+
+            return this.RedirectToAction("EditNews");
+        }
 
 
         [HttpPost]

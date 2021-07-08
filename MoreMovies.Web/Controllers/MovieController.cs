@@ -75,7 +75,7 @@ namespace MoreMovies.Web.Controllers
             var movie = await movieService.GetMovieWithId(id);
             var userEmail = User.FindFirstValue(ClaimTypes.Email);
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId != movie.CreatorId)
+            if (userEmail != movie.CreatorId)
             {
                 return RedirectToAction("Index", "Home");
             };
