@@ -16,7 +16,7 @@ namespace MoreMovies.Models
         public int Id { get; set; }
 
         [Required]
-        public string CreatorId { get; set; }
+        public string Creator { get; set; }
 
         [Required]
         [StringLength(30)]
