@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MoreMovies.Models
 {
@@ -12,12 +8,17 @@ namespace MoreMovies.Models
         [Key]
         public int Id { get; set; }
 
+        [Required]
         public DateTime AddedOn { get; set; } = DateTime.UtcNow;
 
+        [Required]
+        [StringLength(50)]
         public string Title { get; set; }
 
+        [Required]
         public string Description { get; set; }
 
+        [Required]
         public string ImageUrl { get; set; }
     }
 }

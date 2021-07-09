@@ -37,6 +37,8 @@ namespace MoreMovie.Web.Controllers
             return View();
         }
 
+        
+
         public async Task<IActionResult> EditNews()
         {
             var news = await this.newsService.GetAllNews();

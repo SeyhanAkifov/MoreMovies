@@ -25,7 +25,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        
+
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
@@ -38,14 +38,16 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer ">
         <div class="container">
             &copy; 2021 - MoreMovies.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="~/js/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="~/js/jquery-func.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @*@await RenderSectionAsync("Scripts", required: false)*@
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

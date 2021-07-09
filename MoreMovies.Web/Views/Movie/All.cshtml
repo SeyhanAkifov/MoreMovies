@@ -9,12 +9,13 @@
 <head>
     <title>MovieHunter</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link rel="stylesheet" href="/css/style.css" />
-    <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
-    <script type="text/javascript" src="js/jquery-func.js"></script>
+    <link rel="stylesheet" href="~/css/style.css"/>
+    
+    <script type="text/javascript" src="~/js/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="~/js/jquery-func.js"></script>
     <!--[if IE 6]><link rel="stylesheet" href="css/ie6.css" type="text/css" media="all" /><![endif]-->
 </head>
-<body>
+<div class="container">
 
     @if (Model.Count > 0)
     {
@@ -34,4 +35,6 @@
     {
         <h1>No Movies Here</h1>
     }
-</body>
+
+
+</div>
