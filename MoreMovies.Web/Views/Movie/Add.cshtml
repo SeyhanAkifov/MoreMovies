@@ -14,8 +14,9 @@
         <span asp-validation-for="Title" class="small text-danger"></span>
     </div>
     <div class="form-group">
-        <label for="country">Country</label>
-        <input type="text" class="form-control" placeholder="Country" name="country" value="">
+        <label asp-for="Country">Country</label>
+        <input asp-for="Country" type="text" class="form-control" placeholder="Country" name="country" value="">
+        <span asp-validation-for="Country" class="small text-danger"></span>
     </div>
     <div class="form-group">
         <label for="genre">Genre</label>
@@ -29,44 +30,46 @@
 
     </div>
     <div class="form-group">
-        <label for="language">Language</label>
-        <input type="text" class="form-control" placeholder="Language" name="language" value="">
+        <label asp-for="Language">Language</label>
+        <input asp-for="Language" type="text" class="form-control" placeholder="Language" name="language" value="">
+        <span asp-validation-for="Language" class="m-md-0 text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label for="image">Image</label>
-        <input type="text" class="form-control" placeholder="Image" name="image" value="">
+        <label asp-for="Image">Image</label>
+        <input asp-for="Image" type="text" class="form-control" placeholder="Image" name="image" value="">
+        <span asp-validation-for="Image" class="m-md-0 text-danger"></span>
+
     </div>
 
     <div class="form-group">
-        <label for="releaseDate">Release Date</label>
-        <input type="datetime" class="form-control" placeholder="Release-Date" name="releaseDate" value="">
+        <label asp-for="ReleaseDate">Release Date</label>
+        <input asp-for="ReleaseDate" type="datetime" class="form-control" placeholder="Release-Date" name="releaseDate" value="">
+        <span asp-validation-for="ReleaseDate" class="m-md-0 text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label for="budget">Budget</label>
-        <input type="text" class="form-control" placeholder="Budget" name="budget" value="">
+        <label asp-for="Budget">Budget</label>
+        <input asp-for="Budget" type="text" class="form-control" placeholder="Budget" name="budget" value="">
+        <span asp-validation-for="Budget" class="m-md-0 text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label for="homePage">Home page</label>
-        <input type="text" class="form-control" placeholder="HomePage" name="homePage" value="">
+        <label asp-for="HomePage">Home page</label>
+        <input asp-for="HomePage" type="text" class="form-control" placeholder="HomePage" name="homePage" value="">
+        <span asp-validation-for="HomePage" class="m-md-0 text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label for="description">Description</label>
-        <textarea type="text" class="form-control" placeholder="Description" name="description" value=""></textarea>
+        <label asp-for="Description">Description</label>
+        <textarea asp-for="Description" type="text" class="form-control" placeholder="Description" name="description" value=""></textarea>
+        <span asp-validation-for="Description" class="m-md-0 text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label for="actors">Actors</label>
-        <input type="text" class="form-control" placeholder="Actors" name="actors" value="">
+        <label asp-for="Actors">Actors</label>
+        <input asp-for="Actors" type="text" class="form-control" placeholder="Actors" name="actors" value="">
+        <span asp-validation-for="Actors" class="m-md-0 text-danger"></span>
     </div>
-
-    <div class="form-group" display="hide">
-        <label for="userId">UserId</label>
-        <input type="text" class="form-control" placeholder="UserId" name="userId" value="@User.Identity.Name">
-    </div>
-
     <button type="submit" class="btn btn-primary">Add movie</button>
 </form>

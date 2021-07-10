@@ -20,11 +20,10 @@ namespace MoreMovies.Services.Dto
         public string Genre { get; set; }
 
         [Required]
-        [Url]
         public string Image { get; set; }
 
         [Required]
-        [StringLength(MovieMaxHomePageLength), MinLength(MovieMinHomePageLength)]
+        [Url]
         public string HomePage { get; set; }
 
         [Required]
