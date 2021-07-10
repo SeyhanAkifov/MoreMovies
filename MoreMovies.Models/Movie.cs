@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
+using static MoreMovies.Models.DataConstants;
+
 namespace MoreMovies.Models
 {
     public class Movie
@@ -19,7 +21,7 @@ namespace MoreMovies.Models
         public string Creator { get; set; }
 
         [Required]
-        [StringLength(30)]
+        [StringLength(MovieMaxTitleLength)]
         public string Title { get; set; }
 
         [Required]

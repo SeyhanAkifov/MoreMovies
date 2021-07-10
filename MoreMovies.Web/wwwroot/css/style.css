@@ -206,14 +206,16 @@ h1#logo a {
 	cursor:pointer;
 }
 #main {
-	border-bottom:1px dashed #413e3e;
+	border-bottom: 1px dashed #413e3e;
+	position: relative;
 }
 #content {
 }
 .box {
-	width:980px;
-	border-bottom:1px dashed #413e3e;
-	padding-bottom:21px;
+	width: 980px;
+	border-bottom: 1px dashed #413e3e;
+	padding-bottom: 21px;
+	position: relative;
 }
 .box .head {
 	width:980px;

@@ -63,6 +63,11 @@ namespace MoreMovies.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddMovie(AddMovieInputModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View("Add", model);
+            }
+
             await movieService.AddMovie(model);
 
             return RedirectToAction("Index", "Home");

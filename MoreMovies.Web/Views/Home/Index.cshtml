@@ -20,7 +20,7 @@
 <body>
     <!-- START PAGE SOURCE -->
 
-    <div id="shell">
+    <div id="shell" >
         <div id="header">
             <h1 id="logo"><a href="#">More Movies</a></h1>
             
@@ -107,21 +107,21 @@
                 
             </div>
             
-        </div >
+        </div>
             <div id="main">
                 <div id="content">
                     <div class="box" >
                         <div class="head">
                             <h2>LATEST TRAILERS</h2>
                             <p class="text-right"><a asp-controller="Movie" asp-action="All" method="get">See all</a></p>
-                        </div>
-                        
-                            @foreach (var movie in Model.Newest)
+                        </div >
+                         @foreach (var movie in Model.Newest)
                             {
-                            
+
                                 @await Html.PartialAsync("../Shared/_MoviePR", movie)
-                            
+
                             }
+                        
                         
                         <div class="cl">&nbsp;</div>
                     </div>
@@ -155,7 +155,7 @@
 
                 <div class="cl">&nbsp;</div>
             </div>
-        </div>
+    </div>
     
 </body>
 </html>

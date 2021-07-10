@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using MoreMovies.Data;
 using MoreMovies.Services;
 using MoreMovies.Services.Interfaces;
+using MoreMovies.Web.Infrastructure;
 using SocialNetworkCustom.Web.MappingConfiguration;
 
 namespace MoreMovies.Web
@@ -28,12 +29,12 @@ namespace MoreMovies.Web
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            
+
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            
+
 
             services.AddControllersWithViews();
 
@@ -46,7 +47,7 @@ namespace MoreMovies.Web
             services.AddSingleton(mapper);
 
             services.AddMvc();
-            
+
 
             services.AddTransient<IMovieService, MovieService>();
             services.AddTransient<ILanguageService, LanguageService>();
@@ -63,6 +64,8 @@ namespace MoreMovies.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.PrepareDatabase();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

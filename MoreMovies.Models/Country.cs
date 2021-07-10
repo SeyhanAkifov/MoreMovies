@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+using static MoreMovies.Models.DataConstants;
+
 namespace MoreMovies.Models
 {
     public class Country
@@ -8,10 +10,10 @@ namespace MoreMovies.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(30)]
+        [StringLength(CountryMaxNameLength)]
         public string Name { get; set; }
 
-        [StringLength(5)]
+        [StringLength(CountryMaxCodeLength)]
         public string CountryCode { get; set; }
     }
 }

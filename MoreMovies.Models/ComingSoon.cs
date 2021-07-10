@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
+using static MoreMovies.Models.DataConstants;
+
 namespace MoreMovies.Models
 {
     public class ComingSoon
@@ -12,7 +14,7 @@ namespace MoreMovies.Models
         public DateTime AddedOn { get; set; } = DateTime.UtcNow;
 
         [Required]
-        [StringLength(50)]
+        [StringLength(ComingSoonMaxTitleLength)]
         public string Title { get; set; }
 
         [Required]
