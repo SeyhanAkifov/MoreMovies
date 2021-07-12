@@ -1,6 +1,9 @@
-﻿using MoreMovies.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using MoreMovies.Data;
 using MoreMovies.Models;
 using MoreMovies.Services.Interfaces;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MoreMovies.Services
@@ -22,6 +25,11 @@ namespace MoreMovies.Services
 
             this.db.Country.Add(country);
             await this.db.SaveChangesAsync();
+        }
+
+        public async Task<ICollection<Country>> GetCountries()
+        {
+           return  await this.db.Country.ToListAsync();
         }
     }
 }

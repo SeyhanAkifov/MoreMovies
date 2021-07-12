@@ -1,6 +1,8 @@
-﻿using MoreMovies.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using MoreMovies.Data;
 using MoreMovies.Models;
 using MoreMovies.Services.Interfaces;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MoreMovies.Services
@@ -23,6 +25,11 @@ namespace MoreMovies.Services
             this.db.Genre.Add(genre);
 
             await this.db.SaveChangesAsync();
+        }
+
+        public async Task<ICollection<Genre>> GetGenres()
+        {
+            return await this.db.Genre.ToListAsync();
         }
     }
 }

@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+
+using static MoreMovies.Models.DataConstants;
 
 namespace MoreMovies.Services.Dto
 {
     public class NewsAddModel
     {
         [Required]
+        [StringLength(NewsMaxTitleLength, MinimumLength = NewsMinTitleLength)]
         public string Title { get; set; }
 
         [Required]
+        [StringLength(NewsMaxDescriptionLength, MinimumLength = NewsMinDescriptionLength)]
         public string Description { get; set; }
     }
 }

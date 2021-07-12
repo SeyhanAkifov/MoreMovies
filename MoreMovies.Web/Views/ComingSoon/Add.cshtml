@@ -1,20 +1,25 @@
-﻿@{
+﻿@model ComingSoonAddModel
+
+@{
     ViewData["Title"] = "Add News";
 
     <h1>ADD Coming Soon</h1>
 }
 <form class="text-center border border-light p-5" asp-controller="ComingSoon" asp-action="Add" method="post">
     <div class="form-group">
-        <label for="title">Title</label>
-        <input type="text" class="form-control" placeholder="Title" name="title" value="">
+        <label asp-for="Title">Title</label>
+        <input asp-for="Title" type="text" class="form-control" placeholder="Title" name="title" value="">
+        <span asp-validation-for="Title" class="small text-danger"></span>
     </div>
     <div class="form-group">
-        <label for="description">Description</label>
-        <input type="text" class="form-control" placeholder="Description" name="description" value="">
+        <label asp-for="Description">Description</label>
+        <input asp-for="Description" type="text" class="form-control" placeholder="Description" name="description" value="">
+        <span asp-validation-for="Description" class="small text-danger"></span>
     </div>
     <div class="form-group">
-        <label for="imageUrl">ImageUrl</label>
-        <input type="text" class="form-control" placeholder="ImageUrl" name="imageUrl" value="">
+        <label asp-for="ImageUrl">ImageUrl</label>
+        <input asp-for="ImageUrl" type="text" class="form-control" placeholder="ImageUrl" name="imageUrl" value="">
+        <span asp-validation-for="ImageUrl" class="small text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary" value="submit">Add</button>
 </form>

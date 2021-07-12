@@ -143,11 +143,11 @@ namespace MoreMovies.Services
             await db.SaveChangesAsync();
         }
 
-        public async Task AddComment(int movieId, AddCommentInputModel model, string email)
+        public async Task AddComment(AddCommentInputModel model)
         {
-            var movie = await GetMovieWithId(movieId);
+            var movie = await GetMovieWithId(model.MovieId);
             
-            var comment = await commentService.AddComment(model, email);
+            var comment = await commentService.AddComment(model);
 
             movie.Comments.Add(new MovieComment { Comment = comment });
 

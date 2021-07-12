@@ -1,6 +1,8 @@
-﻿using MoreMovies.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using MoreMovies.Data;
 using MoreMovies.Models;
 using MoreMovies.Services.Interfaces;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MoreMovies.Services
@@ -22,6 +24,11 @@ namespace MoreMovies.Services
 
             this.db.Languages.Add(language);
             await this.db.SaveChangesAsync();
+        }
+
+        public async Task<ICollection<Language>> GetLanguages()
+        {
+            return await this.db.Languages.ToListAsync();
         }
     }
 }

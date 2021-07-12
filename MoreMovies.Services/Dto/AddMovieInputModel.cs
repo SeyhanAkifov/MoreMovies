@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MoreMovies.Models;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 using static MoreMovies.Models.DataConstants;
 
@@ -41,5 +43,9 @@ namespace MoreMovies.Services.Dto
 
         [Required]
         public string Actors { get; set; }
+
+        public ICollection<Language> Languages { get; set; }
+        public ICollection<Genre> Genres { get; set; }
+        public ICollection<Country> Countries { get; set; }
     }
 }

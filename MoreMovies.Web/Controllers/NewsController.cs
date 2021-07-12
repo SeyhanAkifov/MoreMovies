@@ -24,13 +24,18 @@ namespace MoreMovies.Web.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Add()
         {
-            return View();
+            return View(new NewsAddModel());
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Add(NewsAddModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
             await this.newsService.Add(model);
 
             return RedirectToAction("Index", "Home");

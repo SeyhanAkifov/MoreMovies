@@ -24,13 +24,18 @@ namespace MoreMovies.Web.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Add()
         {
-            return View();
+            return View(new ComingSoonAddModel());
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Add(ComingSoonAddModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
             await this.comingSoonService.Add(model);
 
             return RedirectToAction("Index", "Home");

@@ -7,6 +7,7 @@ using MoreMovies.Services.Dto;
 using MoreMovies.Services.Interfaces;
 using MoreMovies.Web.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -18,17 +19,23 @@ namespace MoreMovies.Web.Controllers
         private readonly IMovieService movieService;
         private readonly ICommentService commentService;
         private readonly IActorService actorService;
+        private readonly ILanguageService languageService;
+        private readonly IGenreService genreService;
+        private readonly ICountryService countryService;
         private readonly IMapper mapper;
         private readonly UserManager<IdentityUser> userManager;
         private readonly IdentityUser user;
-        
-        public MovieController(IMovieService movieService, IMapper mapper, ICommentService commentService, IActorService actorService, IdentityUser user)
+
+        public MovieController(IMovieService movieService, IMapper mapper, ICommentService commentService, IActorService actorService, IdentityUser user, ILanguageService languageService, IGenreService genreService, ICountryService countryService)
         {
             this.movieService = movieService;
             this.mapper = mapper;
             this.commentService = commentService;
             this.actorService = actorService;
             this.user = user;
+            this.languageService = languageService;
+            this.genreService = genreService;
+            this.countryService = countryService;
         }
 
         [Authorize]
@@ -54,20 +61,51 @@ namespace MoreMovies.Web.Controllers
 
         [Authorize]
         [HttpGet]
-        public IActionResult Add()
+        public async Task<IActionResult> Add()
         {
-            return this.View();
+            var model = new AddMovieInputModel
+            {
+                Languages = await languageService.GetLanguages(),
+                Countries = await countryService.GetCountries(),
+                Genres = await genreService.GetGenres(),
+            };
+
+            return this.View(model);
         }
 
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddMovie(AddMovieInputModel model)
         {
-            if (!ModelState.IsValid)
+            var languages = await languageService.GetLanguages();
+            var countries = await countryService.GetCountries();
+            var genres = await genreService.GetGenres();
+
+            if (!languages.Any(x => x.Name == model.Language))
             {
-                return View("Add", model);
+                this.ModelState.AddModelError(nameof(model.Language), "Language does not exist");
             }
 
+            if (!countries.Any(x => x.Name == model.Country))
+            {
+                this.ModelState.AddModelError(nameof(model.Country), "Country does not exist");
+            }
+
+            if (!genres.Any(x => x.Name == model.Genre))
+            {
+                this.ModelState.AddModelError(nameof(model.Genre), "Genre does not exist");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                model.Languages = languages;
+                model.Countries = countries;
+                model.Genres = genres;
+
+                return View("Add", model);
+            }
+            
+            model.UserId = User.FindFirstValue(ClaimTypes.Email);
             await movieService.AddMovie(model);
 
             return RedirectToAction("Index", "Home");
@@ -132,17 +170,23 @@ namespace MoreMovies.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddComment(int id, AddCommentInputModel model)
         {
-            var userEmail = User.FindFirstValue(ClaimTypes.Email);
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
 
-            await movieService.AddComment(id, model, userEmail);
+            var userEmail = User.FindFirstValue(ClaimTypes.Email);
+            model.UserId = userEmail;
+            model.MovieId = id;
+            await movieService.AddComment(model);
 
             return RedirectToAction("Details", "Movie", new { id = id });
         }
 
         [Authorize]
-        public IActionResult AddComment(int id)
+        public IActionResult AddComment()
         {
-            return View(id);
+            return View(new AddCommentInputModel());
         }
 
 
