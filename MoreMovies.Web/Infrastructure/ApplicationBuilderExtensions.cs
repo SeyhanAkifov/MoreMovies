@@ -123,7 +123,7 @@ namespace MoreMovies.Web.Infrastructure
                 Name = "User"
             };
             
-            await roleManager.CreateAsync(roleAdmin);
+            await roleManager.CreateAsync(roleAdmin);  
             await roleManager.CreateAsync(roleUser);
             
             var admin = new IdentityUser { UserName = "Admin1@abv.bg", Email = "Admin1@abv.bg", EmailConfirmed = true };
@@ -134,7 +134,7 @@ namespace MoreMovies.Web.Infrastructure
             await userManager.CreateAsync(user, "User1@abv.bg");
             await userManager.AddToRoleAsync(user, "User");
             
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
     }
 }

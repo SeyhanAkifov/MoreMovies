@@ -8,5 +8,5 @@
     <p class="date">@Model.AddedOn</p>
     <h4>@Model.Title</h4>
     <p>@Model.Description</p>
-    <a href="#">Read more</a>
+    <a asp-controller="News" asp-action="Details" asp-route-id="@Model.Id">Read more</a>
 </div>

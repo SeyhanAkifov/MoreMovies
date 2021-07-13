@@ -3,6 +3,9 @@
 	padding:0;
 	outline:0;
 }
+body header {
+	background: url('images/body-bg.gif');
+}
 body {
 	font-size:12px;
 	line-height:1.3;

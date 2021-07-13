@@ -55,5 +55,13 @@ namespace MoreMovies.Web.Controllers
 
             return this.View(newsResult);
         }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var news = await this.newsService.GetNewsWithId(id);
+            var newsResult = mapper.Map<News, NewsViewModel>(news);
+
+            return this.View(newsResult);
+        }
     }
 }

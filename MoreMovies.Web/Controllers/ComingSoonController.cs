@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MoreMovies.Models;
 using MoreMovies.Services.Dto;
 using MoreMovies.Services.Interfaces;
+using MoreMovies.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +41,23 @@ namespace MoreMovies.Web.Controllers
             await this.comingSoonService.Add(model);
 
             return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> All()
+        {
+            var comingSoon = await this.comingSoonService.GetAll();
+
+            var comingSoonResult = mapper.Map<ICollection<ComingSoon>, ICollection<ComingSoonViewModel>>(comingSoon);
+
+            return this.View(comingSoonResult);
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var comingSoon = await this.comingSoonService.GetWithId(id);
+            var comingSoonResult = mapper.Map<ComingSoon, ComingSoonViewModel>(comingSoon);
+
+            return this.View(comingSoonResult);
         }
     }
 }
