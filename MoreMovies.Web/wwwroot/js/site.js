@@ -8,8 +8,13 @@ var playButtons = document.querySelectorAll(".movie-image");
 var holder = document.querySelector(".holder > button");
 
 
+
 playButtons.forEach(button => button.addEventListener("click", (e) => {
     e.preventDefault();
+    var trailerUrl = document.querySelector("#trailerUrl").innerHTML;
+
+    var current = document.querySelector(".modal-body > iframe")
+    current.src = trailerUrl;
     holder.click();
 }));
 
