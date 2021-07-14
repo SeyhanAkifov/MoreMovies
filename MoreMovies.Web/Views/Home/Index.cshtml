@@ -15,15 +15,48 @@
     
     <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
     <script type="text/javascript" src="js/jquery-func.js"></script>
+
+
     <!--[if IE 6]><link rel="stylesheet" href="css/ie6.css" type="text/css" media="all" /><![endif]-->
 </head>
 <body>
+    
+    <div class="holder" style="display: none;">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="display: none;">
+            Launch demo modal
+        </button>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog align-center " style="margin:0 0  auto;" role="document">
+            <div class="modal-content align-center" style="width:fit-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <iframe width="1260" height="715" src="https://www.youtube.com/embed/VF1Yz05iQM0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=allowfullscreen></iframe>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- START PAGE SOURCE -->
 
-    <div id="shell" >
+    <div id="shell">
         <div id="header">
-            <h1 id="logo"><a href="#">More Movies</a></h1>
-            
+            @*<h1 id="logo"><a href="#">More Movies</a></h1>*@
+
+
+
             <div class="social">
                 <span>FOLLOW US ON:</span>
                 <ul>
@@ -34,27 +67,10 @@
                     <li><a class="rss" href="#">rss</a></li>
                 </ul>
             </div>
-            
-            <div id="navigation">
-                <ul>
-                    <li><a class="active" href="#">HOME</a></li>
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <li><a asp-controller="Movie" asp-action="MyMovies">My Movies</a></li>
-                        <li><a asp-controller="Movie" asp-action="Add">ADD Movie</a></li>
-                    }
-
-                    <li><a href="#">IN THEATERS</a></li>
-                    <li><a asp-controller="ComingSoon" asp-action="All">COMING SOON</a></li>
-                    <li><a href="/Contact/ContactPage">CONTACT</a></li>
-                    <
-
-                </ul>
-            </div>
-            <div id="navigation">
-                <ul>
-                    <li>
-                        <div id="search" class="col-sm10">
+            <div id="navigation" class="align-center ">
+                <ul class="align-center">
+                    <li class="display-inline">
+                        <div id="search" class="col-sm12 align-center">
                             <form asp-controller="Movie" asp-action="SearchByGenre" method="get" accept-charset="utf-8">
                                 <label for="search-field">SEARCH BY GENRE</label>
                                 <select type="text" placeholder="Genre" name="genre" id="search-field" class="blink search-field">
@@ -70,7 +86,7 @@
                         <hr />
                     </li>
                     <li>
-                        <div id="search" class="col-sm10">
+                        <div id="search" class="col-sm12">
                             <form asp-controller="Movie" asp-action="Search" method="get" accept-charset="utf-8">
                                 <label for="search-field">SEARCH BY NAME</label>
                                 <input type="text" name="name" value="" placeholder="Enter search here" id="search-field" class="blink search-field" />
@@ -79,7 +95,7 @@
                         </div>
                         <hr />
                     </li>
-                    
+
                     <li>
                         <div id="search" class="col-sm10">
                             <form asp-controller="Movie" asp-action="Search" method="get" accept-charset="utf-8">
@@ -91,71 +107,66 @@
                         <hr />
                     </li>
                 </ul>
-                
-                
-                
             </div>
             <div id="sub-navigation">
                 <ul>
                     <li><a asp-controller="Movie" asp-action="All">SHOW ALL</a></li>
-                    <li><a href="#">LATEST TRAILERS</a></li>
+                    <li><a asp-controller="Movie" asp-action="All">LATEST TRAILERS</a></li>
                     <li><a asp-controller="Movie" asp-action="AllTopLiked">TOP LIKED</a></li>
                     <li><a asp-controller="Movie" asp-action="AllTopCommented">MOST COMMENTED</a></li>
-
                 </ul>
-
-                
             </div>
-            
+            <div class="mb-4"></div>
+
         </div>
-            <div id="main">
-                <div id="content">
-                    <div class="box" >
-                        <div class="head">
-                            <h2>LATEST TRAILERS</h2>
-                            <p class="text-right"><a asp-controller="Movie" asp-action="All" method="get">See all</a></p>
-                        </div >
-                         @foreach (var movie in Model.Newest)
-                            {
+        <div id="main">
+            <div id="content">
+                <div class="box col-12">
+                    <div class="head">
+                        <h2>LATEST TRAILERS</h2>
+                        <p class="text-right position-relative"><a asp-controller="Movie" asp-action="All" method="get">See all</a></p>
+                    </div>
+                    @foreach (var movie in Model.Newest)
+                    {
 
-                                @await Html.PartialAsync("../Shared/_MoviePR", movie)
+                        @await Html.PartialAsync("../Shared/_MoviePR", movie)
 
-                            }
-                        
-                        
-                        <div class="cl">&nbsp;</div>
-                    </div>
-                    <div class="box">
-                        <div class="head">
-                            <h2>TOP RATED</h2>
-                            <p class="text-right"><a asp-controller="Movie" asp-action="AllTopLiked">See all</a></p>
-                        </div>
-                        @foreach (var movie in Model.TopLiked)
-                        {
-                            @await Html.PartialAsync("../Shared/_MoviePR", movie)
-                        }
-                        <div class="cl">&nbsp;</div>
-                    </div>
-                    <div class="box">
-                        <div class="head">
-                            <h2>MOST COMMENTED</h2>
-                            <p class="text-right"><a asp-controller="Movie" asp-action="AllTopCommented">See all</a></p>
-                        </div>
-                        @foreach (var movie in Model.TopCommented)
-                        {
-                            @await Html.PartialAsync("../Shared/_MoviePR", movie)
-                        }
-                        <div class="cl">&nbsp;</div>
-                    </div>
+                    }
+
+
+                    <div class="cl">&nbsp;</div>
                 </div>
-
-                @await Html.PartialAsync("../Shared/_NewsPR", Model.News)
-
-                @await Html.PartialAsync("../Shared/_ComingSoonPR", Model.ComingSoon)
-
-                <div class="cl">&nbsp;</div>
+                <div class="box col-12">
+                    <div class="head">
+                        <h2>TOP RATED</h2>
+                        <p class="text-right"><a asp-controller="Movie" asp-action="AllTopLiked">See all</a></p>
+                    </div>
+                    @foreach (var movie in Model.TopLiked)
+                    {
+                        @await Html.PartialAsync("../Shared/_MoviePR", movie)
+                    }
+                    <div class="cl">&nbsp;</div>
+                </div>
+                <div class="box col-12">
+                    <div class="head">
+                        <h2>MOST COMMENTED</h2>
+                        <p class="text-right"><a asp-controller="Movie" asp-action="AllTopCommented">See all</a></p>
+                    </div>
+                    @foreach (var movie in Model.TopCommented)
+                    {
+                        @await Html.PartialAsync("../Shared/_MoviePR", movie)
+                    }
+                    <div class="cl">&nbsp;</div>
+                </div>
             </div>
+
+            @await Html.PartialAsync("../Shared/_NewsPR", Model.News)
+
+            @await Html.PartialAsync("../Shared/_ComingSoonPR", Model.ComingSoon)
+
+            <div class="cl">&nbsp;</div>
+        </div>
     </div>
-    
+
 </body>
 </html>

@@ -3,7 +3,11 @@
 	padding:0;
 	outline:0;
 }
-body header {
+modal{
+	width:fit-content;
+		
+}
+header {
 	background: url('images/body-bg.gif');
 }
 body {
@@ -15,7 +19,7 @@ body {
 }
 a {
 	color:#e7b038;
-	text-decoration:underline;
+	
 	cursor:pointer;
 }
 a:hover {
@@ -137,6 +141,7 @@ h1#logo a {
 	clear:right;
 	padding-top:28px;
 	padding-bottom:47px;
+
 }
 #navigation ul {
 	list-style:none;
@@ -156,11 +161,13 @@ h1#logo a {
 	color:#d91d2a;
 }
 #sub-navigation {
-	display:block;
-	clear:right;
-	border-top:1px dashed #666;
-	border-bottom:1px dashed #666;
-	padding:8px 0;
+	display: block;
+	clear: right;
+	border-top: 1px dashed #666;
+	border-bottom: 1px dashed #666;
+	padding: 8px 0;
+	width: auto;
+	margin: 0 auto;
 }
 #sub-navigation ul {
 	list-style:none;
@@ -213,6 +220,7 @@ h1#logo a {
 	position: relative;
 }
 #content {
+	position: relative;
 }
 .box {
 	width: 980px;
@@ -220,22 +228,24 @@ h1#logo a {
 	padding-bottom: 21px;
 	position: relative;
 }
-.box .head {
-	width:980px;
-	padding-top:14px;
-	padding-bottom:11px;
-}
+	.box .head {
+		width: auto;
+		padding-top: 14px;
+		padding-bottom: 11px;
+		position: relative;
+	}
 .box .head h2 {
 	float:left;
 	display:inline;
 }
-	.box .movie {
-		width: 152px;
-		float: left;
-		padding-right: 12px;
-		margin: 0 0 0 auto;
-		margin-left: auto;
-	}
+.box .movie {
+	width: 152px;
+	float: left;
+	padding-right: 12px;
+	margin: 0 0 0 auto;
+	margin-left: auto;
+}
+	
 .movie-image {
 	float:left;
 	width:152px;

@@ -15,30 +15,26 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-md navbar-toggleable-sm navbar-light  border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MoreMovies</a>
+                <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">MoreMovies</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item"><a class="nav-link text-dark" asp-controller="Movie" asp-action="MyMovies">My Movies</a></li>
-                            <li class="nav-item"><a class="nav-link text-dark" asp-controller="Movie" asp-action="Add">ADD Movie</a></li>
+                            <li class="nav-item"><a class="nav-link text-white" asp-controller="Movie" asp-action="MyMovies">My Movies</a></li>
+                            <li class="nav-item"><a class="nav-link text-white" asp-controller="Movie" asp-action="Add">ADD Movie</a></li>
                         }
 
-                        <li class="nav-item"><a class="nav-link text-dark" href="#">IN THEATERS</a></li>
-                        <li class="nav-item"><a class="nav-link text-dark" asp-controller="ComingSoon" asp-action="All">COMING SOON</a></li>
-                        <li class="nav-item"><a class="nav-link text-dark" href="/Contact/ContactPage">CONTACT</a></li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="Index">Administration</a>
-                        </li>
+                        <li class="nav-item"><a class="nav-link text-white" href="#">IN THEATERS</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" asp-controller="ComingSoon" asp-action="All">COMING SOON</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="/Contact/ContactPage">CONTACT</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" asp-area="" asp-controller="Administration" asp-action="Index">Administration</a></li>
+                        <li><a href="#">IN THEATERS</a></li>
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

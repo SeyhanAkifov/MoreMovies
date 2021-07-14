@@ -4,20 +4,20 @@
     ViewData["Title"] = "My Movies";
 }
     
-    <head>
-        <title>MovieHunter</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <link rel="stylesheet" href="/css/style.css" />
-        <script type="text/javascript" src="~/js/jquery-1.4.2.min.js"></script>
-        <script type="text/javascript" src="~/js/jquery-func.js"></script>
-        <!--[if IE 6]><link rel="stylesheet" href="css/ie6.css" type="text/css" media="all" /><![endif]-->
-    </head>
+<head>
+    <title>MovieHunter</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="/css/style.css" media="none" onload="if(media!='all')media='all'">
+    <script type="text/javascript" src="~/js/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="~/js/jquery-func.js"></script>
+    <!--[if IE 6]><link rel="stylesheet" href="css/ie6.css" type="text/css" media="all" /><![endif]-->
+</head>
     <body>
 
         <h1>My Movies</h1>
-        <div id="main">
+        <div id="main row">
             <div id="content">
-                <div class="box">
+                <div class="box col-12">
                     @foreach (var movie in Model)
                     {
                         @await Html.PartialAsync("../Shared/_MoviePR", movie)

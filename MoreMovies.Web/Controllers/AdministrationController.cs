@@ -22,22 +22,39 @@ namespace MoreMovie.Web.Controllers
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
         private readonly INewsService newsService;
+        private readonly IComingSoonService comingSoonService;
 
-        public AdministrationController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext context, IMapper mapper, INewsService newsService)
+        public AdministrationController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext context, IMapper mapper, INewsService newsService, IComingSoonService comingSoonService)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
             this.context = context;
             this.mapper = mapper;
             this.newsService = newsService;
+            this.comingSoonService = comingSoonService;
         }
 
         public IActionResult Index()
         {
             return View();
         }
-
         
+        public async Task<IActionResult> EditComingSoon()
+        {
+            var comingSoon = await this.comingSoonService.GetAll();
+            var comingSoonResult = mapper.Map<ICollection<ComingSoon>, ICollection<ComingSoonViewModel>>(comingSoon);
+
+
+            return this.View(comingSoonResult);
+        }
+
+        public async Task<IActionResult> DeleteComingSoon(int id)
+        {
+            await this.comingSoonService.Delete(id);
+
+
+            return this.RedirectToAction("EditComingSoon");
+        }
 
         public async Task<IActionResult> EditNews()
         {
