@@ -10,10 +10,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Find More Movies</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="css/style.css" />
+    @*<link rel="stylesheet" href="~/css/site.css" />*@
+    <link rel="stylesheet" href="~/css/style.css" />
 </head>
 <body>
+   
     <header>
         <nav class="navbar navbar-expand-md navbar-toggleable-sm navbar-light  border-bottom box-shadow mb-3">
             <div class="container">
@@ -47,8 +48,8 @@
         </main>
     </div>
 
-    <footer>
-        <div class="container footer">
+    <footer id="footer" class="border-top footer ">
+        <div id="footer">
             &copy; @DateTime.UtcNow.Year - MoreMovies - Seyhan Akifov
         </div>
     </footer>

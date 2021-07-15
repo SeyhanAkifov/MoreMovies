@@ -1,14 +1,14 @@
 ﻿@model MovieViewModel
 
-<div class="movie row">
+<div class="movie">
     <div class="movie-image"> <span class="play"><span class="name">@Model.Title</span></span><span id="trailerUrl" style="display:none;">@Model.HomePage</span> <a href="#"><img src="/@Model.ImageUrl" alt="" /></a> </div>
     <div class="rating">
         <p>RATING</p>
         <div class="stars">
             <div class="stars-in"> </div>
         </div>
-        <span >Likes: @Model.Likes</span>
         <span class="comments">@Model.Comments.Count().ToString()</span>
+        <div >Likes: @Model.Likes</div>
     </div>
 
     <a class="btn btn-primary" asp-controller="Movie" asp-action="Details" asp-route-id=@Model.Id>Details</a>
