@@ -18,6 +18,32 @@ playButtons.forEach(button => button.addEventListener("click", (e) => {
     holder.click();
 }));
 
+//try SignalR
+
+
+setupConnection = () => {
+    connection = new signalR.HubConnectionBuilder()
+        .withUrl("/moviehub")
+        .build();
+
+    connection.on("RecieveMessage", (update) => {
+        document.getElementById("status").innerHTML = update;
+    })
+
+    connection.on("NewMessage", (user, movie) => {
+        document.getElementById("status").innerHTML = `${user} commented on this ${movie}`;
+    })
+
+    connection.on("Finished", function () {
+        connection.stop();
+    })
+
+    connection.start()
+        .catch(err => console.error(err.toString()))
+}
+
+setupConnection();
+
 
 
 

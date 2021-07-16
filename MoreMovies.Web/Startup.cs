@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using MoreMovies.Data;
 using MoreMovies.Services;
 using MoreMovies.Services.Interfaces;
+using MoreMovies.Web.Hubs;
 using MoreMovies.Web.Infrastructure;
 using SocialNetworkCustom.Web.MappingConfiguration;
 
@@ -48,6 +49,7 @@ namespace MoreMovies.Web
 
             services.AddMvc();
 
+            services.AddSignalR();
 
             services.AddTransient<IMovieService, MovieService>();
             services.AddTransient<ILanguageService, LanguageService>();
@@ -91,6 +93,7 @@ namespace MoreMovies.Web
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+                endpoints.MapHub<MovieHub>("/moviehub");
             });
         }
     }

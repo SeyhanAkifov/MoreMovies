@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using MoreMovies.Models;
 using MoreMovies.Services.Dto;
 using MoreMovies.Services.Interfaces;
+using MoreMovies.Web.Hubs;
 using MoreMovies.Web.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,11 +24,12 @@ namespace MoreMovies.Web.Controllers
         private readonly ILanguageService languageService;
         private readonly IGenreService genreService;
         private readonly ICountryService countryService;
+        private readonly IHubContext<MovieHub> movieHub;
         private readonly IMapper mapper;
         private readonly UserManager<IdentityUser> userManager;
         private readonly IdentityUser user;
 
-        public MovieController(IMovieService movieService, IMapper mapper, ICommentService commentService, IActorService actorService, IdentityUser user, ILanguageService languageService, IGenreService genreService, ICountryService countryService)
+        public MovieController(IMovieService movieService, IMapper mapper, ICommentService commentService, IActorService actorService, IdentityUser user, ILanguageService languageService, IGenreService genreService, ICountryService countryService, IHubContext<MovieHub> movieHub)
         {
             this.movieService = movieService;
             this.mapper = mapper;
@@ -36,6 +39,7 @@ namespace MoreMovies.Web.Controllers
             this.languageService = languageService;
             this.genreService = genreService;
             this.countryService = countryService;
+            this.movieHub = movieHub;
         }
 
         [Authorize]
@@ -179,7 +183,8 @@ namespace MoreMovies.Web.Controllers
             model.UserId = userEmail;
             model.MovieId = id;
             await movieService.AddComment(model);
-
+            var movie = await movieService.GetMovieWithId(model.MovieId);
+            await this.movieHub.Clients.All.SendAsync("NewMessage",  model.UserId, movie.Title);
             return RedirectToAction("Details", "Movie", new { id = id });
         }
 
