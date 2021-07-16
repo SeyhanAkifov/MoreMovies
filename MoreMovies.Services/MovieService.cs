@@ -289,7 +289,19 @@ namespace MoreMovies.Services
                 .Include(x => x.Country.Country)
                 .Include(x => x.Comments)
                 .Where(x => x.Genre.Genre.Name == genre)
-                .Take(6)
+                .ToArrayAsync();
+
+            return movies;
+        }
+
+        public async Task<ICollection<Movie>> SearchMovieByYear(string year)
+        {
+            ICollection<Movie> movies = await db.Movies
+                .Include(x => x.Genre.Genre)
+                .Include(x => x.Language.Language)
+                .Include(x => x.Country.Country)
+                .Include(x => x.Comments)
+                .Where(x => x.ReleaseDate.Year == int.Parse(year))
                 .ToArrayAsync();
 
             return movies;

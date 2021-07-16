@@ -3,6 +3,9 @@
 
 // Write your JavaScript code.
 
+
+//play trailer in pop up doalog
+
 console.log('my js file');
 var playButtons = document.querySelectorAll(".movie-image");
 var holder = document.querySelector(".holder > button");
@@ -18,7 +21,7 @@ playButtons.forEach(button => button.addEventListener("click", (e) => {
     holder.click();
 }));
 
-//try SignalR
+//try SignalR notification on add new comment
 
 
 setupConnection = () => {

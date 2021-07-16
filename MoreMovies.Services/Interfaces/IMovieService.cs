@@ -15,6 +15,8 @@ namespace MoreMovies.Services.Interfaces
 
         public Task<ICollection<Movie>> SearchMovieByGenre(string genre);
 
+        public Task<ICollection<Movie>> SearchMovieByYear(string year);
+
         public Task LikeMovie(int id);
 
         public Task AddComment(AddCommentInputModel model);

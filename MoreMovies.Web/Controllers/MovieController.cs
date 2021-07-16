@@ -185,6 +185,8 @@ namespace MoreMovies.Web.Controllers
             await movieService.AddComment(model);
             var movie = await movieService.GetMovieWithId(model.MovieId);
             await this.movieHub.Clients.All.SendAsync("NewMessage",  model.UserId, movie.Title);
+            
+
             return RedirectToAction("Details", "Movie", new { id = id });
         }
 
@@ -215,6 +217,14 @@ namespace MoreMovies.Web.Controllers
         public async Task<IActionResult> SearchByGenre(string genre)
         {
             var movies = await movieService.SearchMovieByGenre(genre);
+            var result = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(movies);
+
+            return View("All", result);
+        }
+
+        public async Task<IActionResult> SearchByYear(string year)
+        {
+            var movies = await movieService.SearchMovieByYear(year);
             var result = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(movies);
 
             return View("All", result);

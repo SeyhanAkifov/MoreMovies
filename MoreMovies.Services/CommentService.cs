@@ -45,7 +45,9 @@ namespace MoreMovies.Services
                 .Join(this.db.Comments,
                 a => a.CommentId,
                 b => b.Id,
-                (a, b) => b).ToList();
+                (a, b) => b)
+                .OrderByDescending(x => x.CreatedOn)
+                .ToList();
 
             return d;
         }
