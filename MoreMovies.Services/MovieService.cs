@@ -65,7 +65,7 @@ namespace MoreMovies.Services
                 country = db.Country.FirstOrDefault(x => x.Name == model.Country);
             }
 
-            
+            var editedHomePage = model.HomePage.Replace("watch?v=", "embed/");
 
             Movie movie = new()
             {
@@ -74,7 +74,7 @@ namespace MoreMovies.Services
                 ReleaseDate = DateTime.ParseExact(model.ReleaseDate.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture),
                 Runtime = new TimeSpan(1, 36, 50),
                 Description = model.Description,
-                HomePage = model.HomePage,
+                HomePage = editedHomePage,
                 Language = new MovieLanguage { Language = language },
                 Genre = new MovieGenre { Genre = genre },
                 Country = new MovieCountry { Country = country },

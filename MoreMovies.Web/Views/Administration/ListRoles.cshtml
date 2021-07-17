@@ -13,10 +13,10 @@
     foreach (var role in Model)
     {
 <div class="card mb-3">
-    <div class="card-header">
+    <div class="card-header text-black-50">
         Role Id: @role.Id
     </div>
-    <div class="card-header">
+    <div class="card-header text-black-50">
         Role Name: @role.Name
     </div>
 
@@ -31,10 +31,10 @@
 else
 {
     <div class="card">
-        <div class="card-header">
+        <div class="card-header text-black-50">
             No roles created yet
         </div>>
-        <div class="card-body">
+        <div class="card-body text-black-50">
             <h5>Use the button below to create a role</h5>>
             <a class="btn btn-primary" style="width:auto" asp-controller="Administration" asp-action="CreateRole">Create Role</a>
         </div>>

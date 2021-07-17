@@ -18,19 +18,21 @@
                     <h1>@Model.Title</h1>
 
                     <div class="movie-image-details">
-                        <img src="~/@Model.ImageUrl" alt="Image" width="200" height="300">
+                        <img src="@Model.ImageUrl" alt="Image" width="200" height="300">
                     </div>
                     <div class="container">
                         <div class="col-md-4 text-center">
                             <h3 class="my-3 ">Movie info</h3>
 
-                            <h3 class="my-lg-n4 ">@Model.Language</h3>
-                            <h3 class="my-3 "> <a href=@Model.HomePage>Home Page</a></h3>
-                            <h3 class="my-3 ">@Model.Genre</h3>
-                            <h3 class="my-3 ">@Model.Country</h3>
-                            <h3 class="my-xl-0 ">@Model.Budget $</h3>
-                            <h3 class="my-3 ">@Model.Description</h3>
-                            <h3 class="my-3 ">@Model.ReleaseDate</h3>
+                            <h3 >Language: @Model.Language</h3>
+                            <h3 > <a href=@Model.HomePage>Home Page</a></h3>
+                            <h3 >Genre: @Model.Genre</h3>
+                            <h3 >Country: @Model.Country</h3>
+                            <h3 >Budget: @Model.Budget $</h3>
+                            <div class="row comment mt-4 text-justify float-left " style="width: 550px; margin: 0 0 auto">
+                                <h3>@Model.Description</h3>
+                            </div>
+                            <h3 >Release date: @Model.ReleaseDate</h3>
 
                             @if (Model.Creator == User.Identity.Name)
                             {

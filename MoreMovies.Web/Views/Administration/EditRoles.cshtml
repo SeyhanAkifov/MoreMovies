@@ -31,19 +31,19 @@
 
     <div class="card">
         <div class="card-header">
-            <h3>Users in this role</h3>
+            <h3 class="text-black-50">Users in this role</h3>
         </div>
         <div class="card-body">
             @if (Model.Users.Any())
             {
                 foreach (var user in Model.Users)
                 {
-                    <h5 class="card-title">@user</h5>
+                    <h5 class="card-title text-black-50">@user</h5>
                 }
             }
             else
             {
-                <h5 class="card-title">Not at the moment</h5>
+                <h5 class="card-title text-black-50">Not at the moment</h5>
             }
         </div>
         <div class="card-footer">

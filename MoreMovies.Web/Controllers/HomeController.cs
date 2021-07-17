@@ -16,13 +16,14 @@ namespace MoreMovies.Web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IMovieService service;
+        private readonly IGenreService genreService;
         private readonly INewsService newsService;
         private readonly IComingSoonService comingSoonService;
         private readonly IMapper mapper;
         private readonly ApplicationDbContext db;
 
 
-        public HomeController(ILogger<HomeController> logger, IMovieService service, IMapper mapper, ApplicationDbContext db, INewsService newsService, IComingSoonService comingSoonService)
+        public HomeController(ILogger<HomeController> logger, IMovieService service, IMapper mapper, ApplicationDbContext db, INewsService newsService, IComingSoonService comingSoonService, IGenreService genreService)
         {
             _logger = logger;
             this.service = service;
@@ -30,6 +31,7 @@ namespace MoreMovies.Web.Controllers
             this.db = db;
             this.newsService = newsService;
             this.comingSoonService = comingSoonService;
+            this.genreService = genreService;
         }
 
         public async Task<IActionResult> Details(int id)
@@ -58,6 +60,7 @@ namespace MoreMovies.Web.Controllers
             var newestAddedResult = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(newestAddedMovies);
             var newsResult = mapper.Map<ICollection<News>, ICollection<NewsViewModel>>(news);
             var comingSoonResult = mapper.Map<ICollection<ComingSoon>, ICollection<ComingSoonViewModel>>(comingSoon);
+            var genres = await genreService.GetGenres();
 
             var movies = new MovieListViewModel()
             {
@@ -66,6 +69,7 @@ namespace MoreMovies.Web.Controllers
                 Newest = newestAddedResult,
                 News = newsResult,
                 ComingSoon = comingSoonResult,
+                Genres = genres
             };
 
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MoreMovies.Models;
+using System.Collections.Generic;
 
 namespace MoreMovies.Web.Models
 {
@@ -13,5 +14,7 @@ namespace MoreMovies.Web.Models
         public ICollection<ComingSoonViewModel> ComingSoon { get; set; }
 
         public ICollection<NewsViewModel> News { get; set; }
+
+        public ICollection<Genre> Genres { get; set; }
     }
 }
