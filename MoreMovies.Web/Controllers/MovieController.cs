@@ -116,7 +116,7 @@ namespace MoreMovies.Web.Controllers
                 return View("Add", model);
             }
             
-            model.UserId = User.FindFirstValue(ClaimTypes.Email);
+            //model.Creator = User.FindFirstValue(ClaimTypes.Email);
             await movieService.AddMovie(model);
 
             return RedirectToAction("Index", "Home");

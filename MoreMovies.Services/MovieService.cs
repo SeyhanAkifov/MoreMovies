@@ -36,7 +36,7 @@ namespace MoreMovies.Services
 
         public async Task AddMovie(AddMovieInputModel model)
         {
-            var user = await userManager.FindByEmailAsync(model.UserId);
+            //var user = await userManager.FindByEmailAsync(model.Creator);
             var language = db.Languages.FirstOrDefault(x => x.Name == model.Language);
 
             if (language == null)
@@ -77,7 +77,7 @@ namespace MoreMovies.Services
                 Genre = new MovieGenre { Genre = genre },
                 Country = new MovieCountry { Country = country },
                 ImageUrl = model.Image,
-                Creator = model.UserId
+                Creator = model.Creator
 
             };
             string[] actorNames = model.Actors.Split(", ");
@@ -97,16 +97,16 @@ namespace MoreMovies.Services
                 this.db.Actors.Add(actor);
                 movie.Actors.Add(new MovieActor { Actor = actor });
             }
-                var userMovie = new UserMovie()
-                {
-                    Movies = movie,
-                    User = user
-                };
+                //var userMovie = new UserMovie()
+                //{
+                //    Movies = movie,
+                //    User = user
+                //};
             
 
             var result = db.Movies.Add(movie);
 
-            this.db.UserMovies.Add(userMovie);
+            //this.db.UserMovies.Add(userMovie);
 
             db.SaveChanges();
         }

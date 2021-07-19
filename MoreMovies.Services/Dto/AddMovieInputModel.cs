@@ -8,7 +8,7 @@ namespace MoreMovies.Services.Dto
 {
     public class AddMovieInputModel
     {
-        public string UserId { get; set; }
+        public string Creator { get; set; }
 
         [Required]
         [StringLength(MovieMaxTitleLength), MinLength(MovieMinTitleLength)]

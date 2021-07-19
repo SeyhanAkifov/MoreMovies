@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MoreMovies.Data;
 using MoreMovies.Models;
+using MoreMovies.Services.Dto;
+using MoreMovies.Services.Interfaces;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -20,16 +23,19 @@ namespace MoreMovies.Web.Infrastructure
         public static IApplicationBuilder PrepareDatabase(this IApplicationBuilder app)
         {
             using var scopedServices = app.ApplicationServices.CreateScope();
+            
 
             var db = scopedServices.ServiceProvider.GetService<ApplicationDbContext>();
-            
+            var ms = scopedServices.ServiceProvider.GetService<IMovieService>();
+            var mapper = scopedServices.ServiceProvider.GetService<IMapper>();
+
             db.Database.Migrate();
 
             SeedGenre(db);
             SeedLanguage(db);
             SeedCountry(db);
             SeedUsers(app.ApplicationServices);
-            SeedMovies(db);
+            SeedMovies(db, ms, mapper);
 
             return app;
         }
@@ -141,16 +147,21 @@ namespace MoreMovies.Web.Infrastructure
             await db.SaveChangesAsync();
         }
 
-        public static async void SeedMovies(ApplicationDbContext db)
+        public static void SeedMovies(ApplicationDbContext db, IMovieService ms, IMapper mapper)
         {
             if (db.Movies.Any())
             {
                 return;
             }
 
-            var movies = JsonConvert.DeserializeObject<ICollection<Movie>>(File.ReadAllText("movies.json"));
+            var movies = JsonConvert.DeserializeObject<ICollection<AddMovieInputModel>>(File.ReadAllText("movies.json"));
+            
+            foreach (var movie in movies)
+            {
+                ms.AddMovie(movie);
 
-            db.Movies.AddRange(movies);
+            }
+            
             db.SaveChanges();
         }
     }
