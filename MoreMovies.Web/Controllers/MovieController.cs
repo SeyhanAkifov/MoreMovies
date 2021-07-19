@@ -26,16 +26,14 @@ namespace MoreMovies.Web.Controllers
         private readonly ICountryService countryService;
         private readonly IHubContext<MovieHub> movieHub;
         private readonly IMapper mapper;
-        private readonly UserManager<IdentityUser> userManager;
-        private readonly IdentityUser user;
+        
 
-        public MovieController(IMovieService movieService, IMapper mapper, ICommentService commentService, IActorService actorService, IdentityUser user, ILanguageService languageService, IGenreService genreService, ICountryService countryService, IHubContext<MovieHub> movieHub)
+        public MovieController(IMovieService movieService, IMapper mapper, ICommentService commentService, IActorService actorService,ILanguageService languageService, IGenreService genreService, ICountryService countryService, IHubContext<MovieHub> movieHub)
         {
             this.movieService = movieService;
             this.mapper = mapper;
             this.commentService = commentService;
             this.actorService = actorService;
-            this.user = user;
             this.languageService = languageService;
             this.genreService = genreService;
             this.countryService = countryService;
@@ -61,6 +59,15 @@ namespace MoreMovies.Web.Controllers
             {
                 return this.View(null);
             }
+        }
+
+        [Authorize]
+        public async Task<IActionResult> RateMovie(int rating, int movieId)
+        {
+            await movieService.Ratemovie(rating, movieId);
+
+            return RedirectToAction("Details", "Movie", new { Id = movieId });
+
         }
 
         [Authorize]
@@ -121,7 +128,6 @@ namespace MoreMovies.Web.Controllers
         {
             var movie = await movieService.GetMovieWithId(id);
             var userEmail = User.FindFirstValue(ClaimTypes.Email);
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userEmail != movie.Creator)
             {
                 return RedirectToAction("Index", "Home");

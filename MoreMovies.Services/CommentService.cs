@@ -13,12 +13,10 @@ namespace MoreMovies.Services
     public class CommentService : ICommentService
     {
         private readonly ApplicationDbContext db;
-        private readonly IdentityUser user;
-
-        public CommentService(ApplicationDbContext db, IdentityUser user)
+        
+        public CommentService(ApplicationDbContext db)
         {
             this.db = db;
-            this.user = user;
         }
 
 
@@ -28,7 +26,7 @@ namespace MoreMovies.Services
             var comment = new Comment
             {
                 Description = model.Description,
-                UserFullName = model.UserId
+                UserEmail = model.UserId
             };
 
             db.Comments.Add(comment);

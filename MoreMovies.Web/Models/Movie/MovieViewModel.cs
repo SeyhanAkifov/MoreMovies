@@ -18,7 +18,7 @@ namespace MoreMovies.Web.Models
 
         public string Country { get; set; }
 
-        public int? Likes { get; set; }
+        public int Likes { get; set; }
 
         public DateTime ReleaseDate { get; set; }
 
@@ -28,10 +28,8 @@ namespace MoreMovies.Web.Models
 
         public string Creator { get; set; }
 
-        public int? Popularity { get; set; }
-
-        public TimeSpan? Runtime { get; set; }
-
+        public int Rating { get; set; }
+        
         public string ImageUrl { get; set; }
 
         public List<Comment> Comments { get; set; }

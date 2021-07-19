@@ -4,7 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MoreMovies.Data;
 using MoreMovies.Models;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace MoreMovies.Web.Infrastructure
@@ -26,6 +29,7 @@ namespace MoreMovies.Web.Infrastructure
             SeedLanguage(db);
             SeedCountry(db);
             SeedUsers(app.ApplicationServices);
+            SeedMovies(db);
 
             return app;
         }
@@ -135,6 +139,19 @@ namespace MoreMovies.Web.Infrastructure
             await userManager.AddToRoleAsync(user, "User");
             
             await db.SaveChangesAsync();
+        }
+
+        public static async void SeedMovies(ApplicationDbContext db)
+        {
+            if (db.Movies.Any())
+            {
+                return;
+            }
+
+            var movies = JsonConvert.DeserializeObject<ICollection<Movie>>(File.ReadAllText("movies.json"));
+
+            db.Movies.AddRange(movies);
+            db.SaveChanges();
         }
     }
 }

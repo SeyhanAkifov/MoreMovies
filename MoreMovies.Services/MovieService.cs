@@ -22,9 +22,9 @@ namespace MoreMovies.Services
         private readonly IGenreService genreService;
         private readonly ICountryService countryService;
         private readonly UserManager<IdentityUser> userManager;
-        private readonly IdentityUser user;
+        
 
-        public MovieService(IdentityUser user, UserManager<IdentityUser> userManager, ICommentService commentService, ApplicationDbContext db, ILanguageService languageService, IGenreService genreService, ICountryService countryService)
+        public MovieService(UserManager<IdentityUser> userManager, ICommentService commentService, ApplicationDbContext db, ILanguageService languageService, IGenreService genreService, ICountryService countryService)
         {
             this.commentService = commentService;
             this.languageService = languageService;
@@ -32,7 +32,6 @@ namespace MoreMovies.Services
             this.countryService = countryService;
             this.db = db;
             this.userManager = userManager;
-            this.user = user;
         }
 
         public async Task AddMovie(AddMovieInputModel model)
@@ -72,7 +71,6 @@ namespace MoreMovies.Services
                 Title = model.Title,
                 Budget = model.Budget,
                 ReleaseDate = DateTime.ParseExact(model.ReleaseDate.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture),
-                Runtime = new TimeSpan(1, 36, 50),
                 Description = model.Description,
                 HomePage = editedHomePage,
                 Language = new MovieLanguage { Language = language },
@@ -305,6 +303,15 @@ namespace MoreMovies.Services
                 .ToArrayAsync();
 
             return movies;
+        }
+
+        public async Task Ratemovie(int rating, int movieId)
+        {
+            var movie = await this.GetMovieWithId(movieId);
+            movie.Rating = rating;
+            movie.RatingCount++;
+
+            await this.db.SaveChangesAsync();
         }
     }
 }

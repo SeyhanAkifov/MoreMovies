@@ -24,15 +24,15 @@
                         <div class="col-md-4 text-center">
                             <h3 class="my-3 ">Movie info</h3>
 
-                            <h3 >Language: @Model.Language</h3>
-                            <h3 > <a href=@Model.HomePage>Home Page</a></h3>
-                            <h3 >Genre: @Model.Genre</h3>
-                            <h3 >Country: @Model.Country</h3>
-                            <h3 >Budget: @Model.Budget $</h3>
+                            <h3>Language: @Model.Language</h3>
+                            <h3> <a href=@Model.HomePage>Home Page</a></h3>
+                            <h3>Genre: @Model.Genre</h3>
+                            <h3>Country: @Model.Country</h3>
+                            <h3>Budget: @Model.Budget $</h3>
                             <div class="row comment mt-4 text-justify float-left " style="width: 550px; margin: 0 0 auto">
                                 <h3>@Model.Description</h3>
                             </div>
-                            <h3 >Release date: @Model.ReleaseDate</h3>
+                            <h3>Release date: @Model.ReleaseDate</h3>
 
                             @if (Model.Creator == User.Identity.Name)
                             {
@@ -57,25 +57,49 @@
                             }
 
                         </div>
-                        <div class="col-sm-1">
-                            <section>
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-sm-5 col-md-6 col-12 pb-4">
-                                            <h1>Comments</h1>
-                                            @foreach (var item in Model.Comments)
-                                            {
-                                                <div class="comment mt-4 text-justify float-left">
-                                                    <h4>@item.UserFullName </h4> <span>@item.CreatedOn.ToString("g")</span> <br>
-                                                    <p>@item.Description</p>
-                                                </div>
-                                            }
-                                        </div>
 
+
+                        <h1>Star Rating</h1>
+                        <form method="post" asp-controller="Movie" asp-action="RateMovie">
+                            
+                            <div class="rating">
+
+                                <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="Rocks!">5 stars</label>
+                                <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="Pretty good">4 stars</label>
+                                <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="Meh">3 stars</label>
+                                <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="Kinda bad">2 stars</label>
+                                <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="Sucks big time">1 star</label>
+                                <input type="hidden" name="movieId" value="@Model.Id" />
+                            </div>
+                            <input style="background:#43a7d5;color:#fff;padding:12px;border:0" type="submit" value="Please rate">
+
+                        </form>
+
+                       
+                            <div class="clear"></div>
+                            <hr class="survey-hr">
+
+
+
+                            <div class="col-sm-1">
+                                <section>
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-sm-5 col-md-6 col-12 pb-4">
+                                                <h1>Comments</h1>
+                                                @foreach (var item in Model.Comments)
+                                                {
+                                                    <div class="comment mt-4 text-justify float-left">
+                                                        <h4>@item.UserEmail </h4> <span>@item.CreatedOn.ToString("g")</span> <br>
+                                                        <p>@item.Description</p>
+                                                    </div>
+                                                }
+                                            </div>
+
+                                        </div>
                                     </div>
-                                </div>
-                            </section>
-                        </div>
+                                </section>
+                            </div>
 
                     </div>
                     <div class="col-sm-1">

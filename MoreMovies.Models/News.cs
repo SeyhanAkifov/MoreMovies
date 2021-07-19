@@ -18,6 +18,7 @@ namespace MoreMovies.Models
         public string Title { get; set; }
 
         [Required]
+        [StringLength(NewsMaxDescriptionLength)]
         public string Description { get; set; }
     }
 }

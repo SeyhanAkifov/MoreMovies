@@ -27,21 +27,25 @@ namespace MoreMovies.Models
         [Required]
         public string Description { get; set; }
 
-        public int? Likes { get; set; } = 0;
+        public int Likes { get; set; }
 
         [Required]
         public DateTime ReleaseDate { get; set; }
 
         [Required]
+        [Range(0, Double.PositiveInfinity)]
         public decimal Budget { get; set; }
 
         [Required]
+        [Url]
         public string HomePage { get; set; }
 
-        public int? Popularity { get; set; }
+        [Range(0, 5)]
+        public int Rating { get; set; }
 
-        public TimeSpan? Runtime { get; set; }
-
+        
+        public int RatingCount { get; set; }
+        
         [Required]
         [Url]
         public string ImageUrl { get; set; }

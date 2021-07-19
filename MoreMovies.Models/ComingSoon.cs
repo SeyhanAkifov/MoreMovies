@@ -18,9 +18,11 @@ namespace MoreMovies.Models
         public string Title { get; set; }
 
         [Required]
+        [StringLength(ComingSoonMaxDescriptionLength)]
         public string Description { get; set; }
 
         [Required]
+        [Url]
         public string ImageUrl { get; set; }
     }
 }

@@ -5,7 +5,7 @@
     <div class="rating">
         <p>RATING</p>
         <div class="stars">
-            <div class="stars-in"> </div>
+            <div class="stars-in" style="width: @(Model.Rating * 12 +  "px")"> </div>
         </div>
         <span class="comments">@Model.Comments.Count().ToString()</span>
         <div >Likes: @Model.Likes</div>
