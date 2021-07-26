@@ -86,6 +86,7 @@ namespace MoreMovies.Web.Controllers
 
         [Authorize]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddMovie(AddMovieInputModel model)
         {
             var languages = await languageService.GetLanguages();

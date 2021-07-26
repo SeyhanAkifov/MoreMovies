@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace MoreMovie.Web.Models
+namespace MoreMovie.Web.Models.Administration
 {
     public class EditRoleViewModel
     {

@@ -84,18 +84,22 @@ namespace MoreMovies.Services
 
             foreach (var name in actorNames)
             {
-                var actor = new Actor()
+                if (!this.db.Actors.Any(x => x.Name == name))
                 {
-                    Name = name
-                };
+                    var actor = new Actor()
+                    {
+                        Name = name
+                    };
 
-                if (this.db.Actors.Any(x => x.Name == name))
-                {
+                    this.db.Actors.Add(actor);
+
                     movie.Actors.Add(new MovieActor { Actor = actor });
-                    continue;
                 }
-                this.db.Actors.Add(actor);
-                movie.Actors.Add(new MovieActor { Actor = actor });
+                else
+                {
+                    var actor = await this.db.Actors.FirstOrDefaultAsync(x => x.Name == name);
+                    movie.Actors.Add(new MovieActor { Actor = actor });
+                }
             }
                 //var userMovie = new UserMovie()
                 //{

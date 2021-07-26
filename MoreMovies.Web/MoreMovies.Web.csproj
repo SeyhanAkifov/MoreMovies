@@ -28,10 +28,4 @@
   </ItemGroup>
 
 
-
-  <ItemGroup>
-    <Folder Include="Models\News\" />
-  </ItemGroup>
-
-
 </Project>

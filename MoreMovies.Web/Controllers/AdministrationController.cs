@@ -3,11 +3,12 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MoreMovie.Web.Models;
+using MoreMovie.Web.Models.Administration;
 using MoreMovies.Data;
 using MoreMovies.Models;
 using MoreMovies.Services.Interfaces;
 using MoreMovies.Web.Models;
+using MoreMovies.Web.Models.News;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -38,7 +39,7 @@ namespace MoreMovie.Web.Controllers
         {
             return View();
         }
-        
+
         public async Task<IActionResult> EditComingSoon()
         {
             var comingSoon = await this.comingSoonService.GetAll();
@@ -206,7 +207,7 @@ namespace MoreMovie.Web.Controllers
                     return RedirectToAction("ListRoles");
                 }
             }
-            
+
             return View(model);
         }
 

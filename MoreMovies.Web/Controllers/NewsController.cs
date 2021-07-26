@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MoreMovies.Models;
 using MoreMovies.Services.Dto;
 using MoreMovies.Services.Interfaces;
-using MoreMovies.Web.Models;
+using MoreMovies.Web.Models.News;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

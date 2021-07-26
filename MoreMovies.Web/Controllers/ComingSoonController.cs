@@ -5,9 +5,7 @@ using MoreMovies.Models;
 using MoreMovies.Services.Dto;
 using MoreMovies.Services.Interfaces;
 using MoreMovies.Web.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MoreMovies.Web.Controllers

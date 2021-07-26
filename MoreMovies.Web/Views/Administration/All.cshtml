@@ -1,10 +1,7 @@
-﻿@model IList<MoreMovie.Web.Models.MyProfileViewModel>
-@using Microsoft.AspNetCore.Identity
-@using MoreMovie.Web.Models
+﻿@model IList<MyProfileViewModel>
+
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
-
-
 
 @{
     ViewData["Title"] = "All Users";

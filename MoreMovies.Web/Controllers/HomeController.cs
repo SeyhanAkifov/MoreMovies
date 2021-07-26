@@ -5,8 +5,8 @@ using MoreMovies.Data;
 using MoreMovies.Models;
 using MoreMovies.Services.Interfaces;
 using MoreMovies.Web.Models;
+using MoreMovies.Web.Models.News;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -89,7 +89,7 @@ namespace MoreMovies.Web.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View();
         }
     }
 }

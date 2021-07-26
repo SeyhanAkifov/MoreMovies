@@ -1,4 +1,4 @@
-﻿namespace MoreMovies.Web.Models
+﻿namespace MoreMovies.Web.Models.News
 {
     public class NewsViewModel
     {

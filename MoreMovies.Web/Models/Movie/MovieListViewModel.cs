@@ -1,4 +1,5 @@
 ﻿using MoreMovies.Models;
+using MoreMovies.Web.Models.News;
 using System.Collections.Generic;
 
 namespace MoreMovies.Web.Models
