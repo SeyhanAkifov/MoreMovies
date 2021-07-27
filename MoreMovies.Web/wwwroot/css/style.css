@@ -346,9 +346,14 @@ h1#logo a {
 	padding-left: 12px;
 	float: right;
 }
+#soon {
+	width: 460px;
+	float: right;
+}
 #news {
 	width:460px;
 	float:left;
+	margin-left: 9px;
 }
 #news .head {
 	width:460px;
@@ -360,7 +365,7 @@ h1#logo a {
 }
 #coming {
 	width:490px;
-	float:left;
+	float:right;
 	padding-left:30px;
 }
 #coming .head {

@@ -48,6 +48,7 @@ namespace MoreMovies.Web.Controllers
             return RedirectToAction("All");
         }
 
+        [HttpGet]
         public async Task<IActionResult> All()
         {
             var news = await this.newsService.GetAllNews();
@@ -56,6 +57,7 @@ namespace MoreMovies.Web.Controllers
             return this.View(newsResult);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             var news = await this.newsService.GetNewsWithId(id);

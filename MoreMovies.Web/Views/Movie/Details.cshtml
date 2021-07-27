@@ -6,9 +6,9 @@
 
 <body>
 
-    <div class="container" style="background: url()>
+    <div class=" col-md-12"  style="background: url()>
         <div class="bg-light text-dark">
-            <div class="col">
+            <div class="col-md-12">
                 @if (Model != null)
                 {
                     <h1>@Model.Title</h1>
@@ -16,7 +16,7 @@
                     <div class="movie-image-details">
                         <img src="@Model.ImageUrl" alt="Image" width="200" height="300">
                     </div>
-                    <div class="container">
+                    <div class="container col-md-12">
                         <div class="col-md-4 text-center">
                             <h3 class="my-3 ">Movie info</h3>
 
@@ -51,13 +51,12 @@
 
                                 </div>
                             }
-
                         </div>
 
 
                         <h1>Star Rating</h1>
                         <form method="post" asp-controller="Movie" asp-action="RateMovie">
-                            
+
                             <div class="rating">
 
                                 <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="Rocks!">5 stars</label>
@@ -71,34 +70,33 @@
 
                         </form>
 
-                       
-                            <div class="clear"></div>
-                            <hr class="survey-hr">
+
+                        <div class="clear"></div>
+                        <hr class="survey-hr">
 
 
 
-                            <div class="col-sm-1">
-                                <section>
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col-sm-5 col-md-6 col-12 pb-4">
-                                                <h1>Comments</h1>
-                                                @foreach (var item in Model.Comments)
-                                                {
-                                                    <div class="comment mt-4 text-justify float-left">
-                                                        <h4>@item.UserEmail </h4> <span>@item.CreatedOn.ToString("g")</span> <br>
-                                                        <p>@item.Description</p>
-                                                    </div>
-                                                }
-                                            </div>
-
+                        <div class="col-sm-1">
+                            <section>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm-5 col-md-6 col-12 pb-4">
+                                            <h1>Comments</h1>
+                                            @foreach (var item in Model.Comments)
+                                            {
+                                                <div class="comment mt-4 text-justify float-left">
+                                                    <h4>@item.UserEmail </h4> <span>@item.CreatedOn.ToString("g")</span> <br>
+                                                    <p>@item.Description</p>
+                                                </div>
+                                            }
                                         </div>
-                                    </div>
-                                </section>
-                            </div>
 
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
                     </div>
-                    <div class="col-sm-1">
+                    <div class="col-md-12">
                         <iframe width="560" height="315" src="@Model.HomePage" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
                 }
@@ -106,18 +104,7 @@
                 {
                     <h1>Not Found</h1>
                 }
-
-
             </div>
-
-
-            
         </div>
-        
     </div>
-
-
-
-
-
 </body>

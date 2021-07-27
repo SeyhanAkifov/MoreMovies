@@ -1,6 +1,6 @@
 ﻿@model ICollection<NewsViewModel>
 
-<div id="news " >
+<div id="news" class="col-md-12 m-lg-auto">
     <div class="head">
         <h3>NEWS</h3>
         <p class="text-right"><a asp-controller="News" asp-action="All">See all</a></p>
@@ -8,6 +8,6 @@
     @foreach (var item in Model)
     {
         @await Html.PartialAsync("../News/News", item)
-<hr />
+
     }
 </div>

@@ -41,6 +41,7 @@ namespace MoreMovies.Web.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpGet]
         public async Task<IActionResult> All()
         {
             var comingSoon = await this.comingSoonService.GetAll();
@@ -50,6 +51,7 @@ namespace MoreMovies.Web.Controllers
             return this.View(comingSoonResult);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             var comingSoon = await this.comingSoonService.GetWithId(id);

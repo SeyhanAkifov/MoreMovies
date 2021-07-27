@@ -41,6 +41,7 @@ namespace MoreMovies.Web.Controllers
         }
 
         [Authorize]
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             if (id != 0)
@@ -152,6 +153,7 @@ namespace MoreMovies.Web.Controllers
         }
 
         [Authorize]
+        [HttpGet]
         public async Task<IActionResult> MyMovies()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -162,6 +164,7 @@ namespace MoreMovies.Web.Controllers
         }
 
         [Authorize]
+        [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
             await movieService.DeleteMovie(id);
@@ -170,6 +173,7 @@ namespace MoreMovies.Web.Controllers
         }
 
         [Authorize]
+        [HttpGet]
         public async Task<IActionResult> Like(int id)
         {
             await movieService.LikeMovie(id);
@@ -198,12 +202,13 @@ namespace MoreMovies.Web.Controllers
         }
 
         [Authorize]
+        [HttpGet]
         public IActionResult AddComment()
         {
             return View(new AddCommentInputModel());
         }
 
-
+        [HttpGet]
         public async Task<IActionResult> Search(string name)
         {
             if (name == null)
@@ -221,6 +226,7 @@ namespace MoreMovies.Web.Controllers
             return RedirectToAction("Details", "Movie", 0);
         }
 
+        [HttpGet]
         public async Task<IActionResult> SearchByGenre(string genre)
         {
             var movies = await movieService.SearchMovieByGenre(genre);
@@ -229,6 +235,7 @@ namespace MoreMovies.Web.Controllers
             return View("All", result);
         }
 
+        [HttpGet]
         public async Task<IActionResult> SearchByYear(string year)
         {
             var movies = await movieService.SearchMovieByYear(year);
@@ -237,6 +244,7 @@ namespace MoreMovies.Web.Controllers
             return View("All", result);
         }
 
+        [HttpGet]
         public async Task<IActionResult> All()
         {
 
@@ -246,6 +254,7 @@ namespace MoreMovies.Web.Controllers
             return this.View(result);
         }
 
+        [HttpGet]
         public async Task<IActionResult> AllNewest()
         {
 
@@ -255,6 +264,7 @@ namespace MoreMovies.Web.Controllers
             return this.View(result);
         }
 
+        [HttpGet]
         public async Task<IActionResult> TopCommented()
         {
 
@@ -264,6 +274,7 @@ namespace MoreMovies.Web.Controllers
             return this.View(result);
         }
 
+        [HttpGet]
         public async Task<IActionResult> AllTopCommented()
         {
 
@@ -273,6 +284,7 @@ namespace MoreMovies.Web.Controllers
             return this.View(result);
         }
 
+        [HttpGet]
         public async Task<IActionResult> TopLiked()
         {
 
@@ -282,6 +294,7 @@ namespace MoreMovies.Web.Controllers
             return this.View(result);
         }
 
+        [HttpGet]
         public async Task<IActionResult> AllTopLiked()
         {
 

@@ -1,6 +1,136 @@
 [
   {
     "title": "Raya and the Last Dragon",
+    "description": "In a realm known as Kumandra, a re-imagined Earth inhabited by an ancient civilization, a warrior named Raya is determined to find the last dragon.",
+    "language": "English",
+    "genre": "Kids",
+    "country": "USA",
+    "image": "https://static.posters.cz/image/750/poster/raya-and-the-last-dragon-warrior-in-the-wild-i103404.jpg",
+    "releaseDate": "01/02/2021",
+    "budget": 12800000,
+    "homePage": "https://www.youtube.com/embed/1VIZ89FEjYI",
+    "actors": "Kelly Marie Tran, Awkwafina, Gemma Chan",
+    "creator": "Admin1@abv.bg"
+  },
+  {
+    "title": "Black Widdow",
+    "description": "Natasha Romanoff confronts the darker parts of her ledger when a dangerous conspiracy with ties to her past arises.",
+    "language": "English",
+    "genre": "Action",
+    "country": "USA",
+    "image": "https://de.web.img2.acsta.net/c_310_420/pictures/21/07/01/12/20/0398168.jpg",
+    "releaseDate": "01/02/2021",
+    "budget": 238000000,
+    "homePage": "https://www.youtube.com/embed/Fp9pNPdNwjI&t=1s",
+    "actors": "Scarlett Johansson, Florence Pugh, David Harbour",
+    "creator": "Admin1@abv.bg"
+  },
+  {
+    "title": "Peter rabbit 2",
+    "description": "Thomas and Bea are now married and living with Peter and his rabbit family. Bored of life in the garden, Peter goes to the big city, where he meets shady characters and ends up creating chaos for the whole family.",
+    "language": "English",
+    "genre": "Kids",
+    "country": "USA",
+    "image": "https://images-na.ssl-images-amazon.com/images/I/91Cb8bRosxL.jpg",
+    "releaseDate": "01/02/2020",
+    "budget": 45000000,
+    "homePage": "https://www.youtube.com/embed/PWBcqCz7l_c",
+    "actors": "Rose Byrne, Patrick Burleight, Beatrix Potter",
+    "creator": "Admin1@abv.bg"
+  },
+  {
+    "title": "No Time To Die",
+    "description": "koko",
+    "language": "English",
+    "genre": "Action",
+    "country": "USA",
+    "image": "https://1.bp.blogspot.com/-xm_yKuOgp3Y/X0Sp0XBsx1I/AAAAAAAANxU/WRu-_lg0EgIr54cn66z1BtNs3gwD6Kc-gCNcBGAsYHQ/s640/unnamed.jpg",
+    "releaseDate": "01/02/2021",
+    "budget": 10000000,
+    "homePage": "https://www.youtube.com/embed/vw2FOYjCz38&t=2s",
+    "actors": "Daniel Craig, Ana de Armas, Rami Malek",
+    "creator": "Admin1@abv.bg"
+  },
+  {
+    "title": "A Quiet Place Part II",
+    "description": "koko",
+    "language": "English",
+    "genre": "Horror",
+    "country": "USA",
+    "image": "https://de.web.img3.acsta.net/pictures/21/06/23/13/05/3559654.jpg",
+    "releaseDate": "01/02/2021",
+    "budget": 61000000,
+    "homePage": "https://www.youtube.com/embed/BpdDN9d9Jio",
+    "actors": "Emily Blunt, Millicent Simmonds, Cillian Murphy",
+    "creator": "Admin1@abv.bg"
+  },
+  {
+    "title": "Godzilla vs. Kong",
+    "description": "The epic next chapter in the cinematic Monsterverse pits two of the greatest icons in motion picture history against one another - the fearsome Godzilla and the mighty Kong - with humanity caught in the balance.",
+    "language": "English",
+    "genre": "Fantasy",
+    "country": "USA",
+    "image": "http://www.alleyways.de/abgeschminkt/wp-content/uploads/Godzilla-King-Kong-1a-Copyright-WARNER-BROS.jpg",
+    "releaseDate": "01/02/2021",
+    "budget": 160000000,
+    "homePage": "https://www.youtube.com/embed/odM92ap8_c0",
+    "actors": "Alexander Skarsgard, Millie Bobby Brown, Rebecca Hall",
+    "creator": "Admin1@abv.bg"
+  },
+  {
+    "title": "Fast & Furious 9",
+    "description": "Cipher enlists the help of Jakob, Dom's younger brother to take revenge on Dom and his team.",
+    "language": "English",
+    "genre": "Action",
+    "country": "USA",
+    "image": "https://de.web.img2.acsta.net/pictures/21/04/15/09/37/2281382.jpg",
+    "releaseDate": "01/02/2021",
+    "budget": 220000000,
+    "homePage": "https://www.youtube.com/embed/Xz5wHV6AEAg",
+    "actors": "Vin Diesel, Michelle Rodriguez, Jordana Brewster",
+    "creator": "Admin1@abv.bg"
+  },
+  {
+    "title": "Top Gun: Maverick",
+    "description": "After more than thirty years of service as one of the Navy's top aviators, Pete Mitchell is where he belongs, pushing the envelope as a courageous test pilot and dodging the advancement in rank that would ground him.",
+    "language": "English",
+    "genre": "Kids",
+    "country": "USA",
+    "image": "https://i.ytimg.com/vi/3sMdYdZ9xYI/movieposter_en.jpg",
+    "releaseDate": "01/02/2021",
+    "budget": 152000000,
+    "homePage": "https://www.youtube.com/embed/qSqVVswa420&t=1s",
+    "actors": "Tom Cruise, Jennifer Connelly, Miles Teller",
+    "creator": "Admin1@abv.bg"
+  },
+  {
+    "title": "The Suicide Squad",
+    "description": "Supervillains Harley Quinn, Bloodsport, Peacemaker and a collection of nutty cons at Belle Reve prison join the super-secret, super-shady Task Force X as they are dropped off at the remote, enemy-infused island of Corto Maltese.",
+    "language": "English",
+    "genre": "Action",
+    "country": "USA",
+    "image": "https://de.web.img3.acsta.net/pictures/21/05/28/11/39/1192773.jpg",
+    "releaseDate": "01/02/2021",
+    "budget": 175000000,
+    "homePage": "https://www.youtube.com/embed/JuDLepNa7hw",
+    "actors": "Margot Robbie, Idris ElbaJohn, Cena",
+    "creator": "Admin1@abv.bg"
+  },
+  {
+    "title": "Dune",
+    "description": "Feature adaptation of Frank Herbert's science fiction novel, about the son of a noble family entrusted with the protection of the most valuable asset and most vital element in the galaxy.",
+    "language": "English",
+    "genre": "Fantasy",
+    "country": "USA",
+    "image": "https://www.imdb.com/title/tt1160419/mediaviewer/rm2419237377/?ref_=tt_ov_i",
+    "releaseDate": "01/02/2021",
+    "budget": 165000000,
+    "homePage": "https://www.youtube.com/embed/8g18jFHCLXk",
+    "actors": "Timothee Chalamet, Rebecca Ferguson, Zendaya",
+    "creator": "Admin1@abv.bg"
+  },
+  {
+    "title": "Dune",
     "description": "koko",
     "language": "English",
     "genre": "Kids",
@@ -13,7 +143,7 @@
     "creator": "Admin1@abv.bg"
   },
   {
-    "title": "Raya and the Last Dragon",
+    "title": "Dune",
     "description": "koko",
     "language": "English",
     "genre": "Kids",
@@ -26,7 +156,7 @@
     "creator": "Admin1@abv.bg"
   },
   {
-    "title": "Raya and the Last Dragon",
+    "title": "Dune",
     "description": "koko",
     "language": "English",
     "genre": "Kids",
@@ -39,7 +169,7 @@
     "creator": "Admin1@abv.bg"
   },
   {
-    "title": "Raya and the Last Dragon",
+    "title": "Dune",
     "description": "koko",
     "language": "English",
     "genre": "Kids",
@@ -52,7 +182,7 @@
     "creator": "Admin1@abv.bg"
   },
   {
-    "title": "Raya and the Last Dragon",
+    "title": "Dune",
     "description": "koko",
     "language": "English",
     "genre": "Kids",
@@ -65,7 +195,7 @@
     "creator": "Admin1@abv.bg"
   },
   {
-    "title": "Raya and the Last Dragon",
+    "title": "Dune",
     "description": "koko",
     "language": "English",
     "genre": "Kids",
@@ -78,59 +208,7 @@
     "creator": "Admin1@abv.bg"
   },
   {
-    "title": "Raya and the Last Dragon",
-    "description": "koko",
-    "language": "English",
-    "genre": "Kids",
-    "country": "USA",
-    "image": "https://de.web.img2.acsta.net/c_310_420/pictures/21/07/01/12/20/0398168.jpg",
-    "releaseDate": "01/02/2021",
-    "budget": 12800000,
-    "homePage": "https://www.youtube.com/embed/1VIZ89FEjYI",
-    "actors": "Test test",
-    "creator": "Admin1@abv.bg"
-  },
-  {
-    "title": "Raya and the Last Dragon",
-    "description": "koko",
-    "language": "English",
-    "genre": "Kids",
-    "country": "USA",
-    "image": "https://de.web.img2.acsta.net/c_310_420/pictures/21/07/01/12/20/0398168.jpg",
-    "releaseDate": "01/02/2021",
-    "budget": 12800000,
-    "homePage": "https://www.youtube.com/embed/1VIZ89FEjYI",
-    "actors": "Test test",
-    "creator": "Admin1@abv.bg"
-  },
-  {
-    "title": "Raya and the Last Dragon",
-    "description": "koko",
-    "language": "English",
-    "genre": "Kids",
-    "country": "USA",
-    "image": "https://de.web.img2.acsta.net/c_310_420/pictures/21/07/01/12/20/0398168.jpg",
-    "releaseDate": "01/02/2021",
-    "budget": 12800000,
-    "homePage": "https://www.youtube.com/embed/1VIZ89FEjYI",
-    "actors": "Test test",
-    "creator": "Admin1@abv.bg"
-  },
-  {
-    "title": "Raya and the Last Dragon",
-    "description": "koko",
-    "language": "English",
-    "genre": "Kids",
-    "country": "USA",
-    "image": "https://de.web.img2.acsta.net/c_310_420/pictures/21/07/01/12/20/0398168.jpg",
-    "releaseDate": "01/02/2021",
-    "budget": 12800000,
-    "homePage": "https://www.youtube.com/embed/1VIZ89FEjYI",
-    "actors": "Test test",
-    "creator": "Admin1@abv.bg"
-  },
-  {
-    "title": "Raya and the Last Dragon",
+    "title": "Dune",
     "description": "koko",
     "language": "English",
     "genre": "Kids",

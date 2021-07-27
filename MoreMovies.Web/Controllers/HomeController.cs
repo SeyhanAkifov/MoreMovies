@@ -47,6 +47,7 @@ namespace MoreMovies.Web.Controllers
             return this.View(result);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var topcomentedMovies = await service.GetTopCommentedMovie();

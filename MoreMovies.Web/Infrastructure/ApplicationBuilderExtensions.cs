@@ -27,7 +27,7 @@ namespace MoreMovies.Web.Infrastructure
 
             var db = scopedServices.ServiceProvider.GetService<ApplicationDbContext>();
             var ms = scopedServices.ServiceProvider.GetService<IMovieService>();
-            var mapper = scopedServices.ServiceProvider.GetService<IMapper>();
+            
 
             db.Database.Migrate();
 
@@ -35,7 +35,7 @@ namespace MoreMovies.Web.Infrastructure
             SeedLanguage(db);
             SeedCountry(db);
             SeedUsers(app.ApplicationServices);
-            SeedMovies(db, ms, mapper);
+            SeedMovies(db, ms);
 
             return app;
         }
@@ -147,7 +147,7 @@ namespace MoreMovies.Web.Infrastructure
             await db.SaveChangesAsync();
         }
 
-        public static void SeedMovies(ApplicationDbContext db, IMovieService ms, IMapper mapper)
+        public static void SeedMovies(ApplicationDbContext db, IMovieService ms)
         {
             if (db.Movies.Any())
             {

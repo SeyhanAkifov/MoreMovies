@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace MoreMovie.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
@@ -35,11 +35,13 @@ namespace MoreMovie.Web.Controllers
             this.comingSoonService = comingSoonService;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             return View();
         }
 
+        [HttpGet]
         public async Task<IActionResult> EditComingSoon()
         {
             var comingSoon = await this.comingSoonService.GetAll();
@@ -49,6 +51,7 @@ namespace MoreMovie.Web.Controllers
             return this.View(comingSoonResult);
         }
 
+        [HttpPost]
         public async Task<IActionResult> DeleteComingSoon(int id)
         {
             await this.comingSoonService.Delete(id);
@@ -57,6 +60,7 @@ namespace MoreMovie.Web.Controllers
             return this.RedirectToAction("EditComingSoon");
         }
 
+        [HttpGet]
         public async Task<IActionResult> EditNews()
         {
             var news = await this.newsService.GetAllNews();
@@ -65,6 +69,7 @@ namespace MoreMovie.Web.Controllers
             return this.View(newsResult);
         }
 
+        [HttpPost]
         public async Task<IActionResult> DeleteNews(int id)
         {
             await this.newsService.Delete(id);
@@ -74,7 +79,7 @@ namespace MoreMovie.Web.Controllers
         }
 
 
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> EditUsersInRole(List<UserRoleViewModel> model, string roleId)
         {
             var role = await roleManager.FindByIdAsync(roleId);
@@ -218,6 +223,12 @@ namespace MoreMovie.Web.Controllers
             return View(roles);
         }
 
+        [HttpGet]
+        public IActionResult CreateRole()
+        {
+            return this.View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateRole(CreateRoleViewModel model)
         {
@@ -241,13 +252,8 @@ namespace MoreMovie.Web.Controllers
 
             return this.View(model);
         }
-
-        [HttpGet]
-        public IActionResult CreateRole()
-        {
-            return this.View();
-        }
-
+        
+        [HttpPost]
         public async Task<IActionResult> DeleteUser(string id)
         {
             var user = await userManager.FindByIdAsync(id);
@@ -271,9 +277,8 @@ namespace MoreMovie.Web.Controllers
             return RedirectToAction("All", "Administration");
 
         }
-
-
-
+        
+        [HttpGet]
         public IActionResult All()
         {
             var users = this.context.Users

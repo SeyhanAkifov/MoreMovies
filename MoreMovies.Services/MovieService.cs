@@ -197,7 +197,7 @@ namespace MoreMovies.Services
         public async Task<int> SearchMovie(string name)
         {
 
-            var movie = await this.db.Movies.FirstOrDefaultAsync(x => x.Title.ToLower() == name.ToLower());
+            var movie = await this.db.Movies.FirstOrDefaultAsync(x => x.Title.Contains(name));
 
             return movie != null ? movie.Id : 0;
         }
