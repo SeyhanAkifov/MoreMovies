@@ -20,15 +20,14 @@ namespace MoreMovies.Web.Controllers
         private readonly INewsService newsService;
         private readonly IComingSoonService comingSoonService;
         private readonly IMapper mapper;
-        private readonly ApplicationDbContext db;
+        
 
 
-        public HomeController(ILogger<HomeController> logger, IMovieService service, IMapper mapper, ApplicationDbContext db, INewsService newsService, IComingSoonService comingSoonService, IGenreService genreService)
+        public HomeController(ILogger<HomeController> logger, IMovieService service, IMapper mapper, INewsService newsService, IComingSoonService comingSoonService, IGenreService genreService)
         {
             _logger = logger;
             this.service = service;
             this.mapper = mapper;
-            this.db = db;
             this.newsService = newsService;
             this.comingSoonService = comingSoonService;
             this.genreService = genreService;
@@ -39,11 +38,11 @@ namespace MoreMovies.Web.Controllers
             var movie = await service.GetMovieWithId(id);
 
             var result = mapper.Map<Movie, MovieViewModel>(movie);
-            var comments = db.MovieComments
-                           .Join(db.Comments, c => c.CommentId, b => b.Id, (comment, c) => c)
-                           .ToList();
+            //var comments = db.MovieComments
+            //               .Join(db.Comments, c => c.CommentId, b => b.Id, (comment, c) => c)
+            //               .ToList();
 
-            result.Comments = comments;
+            //result.Comments = comments;
             return this.View(result);
         }
 

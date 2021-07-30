@@ -20,19 +20,19 @@ namespace MoreMovie.Web.Controllers
     {
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly UserManager<IdentityUser> userManager;
-        private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
         private readonly INewsService newsService;
         private readonly IComingSoonService comingSoonService;
+        private readonly IUserService userService;
 
-        public AdministrationController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext context, IMapper mapper, INewsService newsService, IComingSoonService comingSoonService)
+        public AdministrationController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext context, IMapper mapper, INewsService newsService, IComingSoonService comingSoonService, IUserService userService)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
-            this.context = context;
             this.mapper = mapper;
             this.newsService = newsService;
             this.comingSoonService = comingSoonService;
+            this.userService = userService;
         }
 
         [HttpGet]
@@ -279,13 +279,13 @@ namespace MoreMovie.Web.Controllers
         }
         
         [HttpGet]
-        public IActionResult All()
+        public async Task<IActionResult> All()
         {
-            var users = this.context.Users
-                .ProjectTo<MyProfileViewModel>(mapper.ConfigurationProvider)
+            var users = await userService.GetAll();
+            var usersResult = mapper.Map<ICollection<IdentityUser>, ICollection<MyProfileViewModel>>(users)
                 .ToList();
 
-            return this.View(users);
+            return this.View(usersResult);
         }
 
 
