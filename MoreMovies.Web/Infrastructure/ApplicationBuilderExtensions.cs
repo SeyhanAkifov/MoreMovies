@@ -123,12 +123,12 @@ namespace MoreMovies.Web.Infrastructure
                 return;
             }
 
-            IdentityRole roleAdmin = new IdentityRole
+            IdentityRole roleAdmin = new()
             {
                 Name = "Admin"
             };
 
-            IdentityRole roleUser = new IdentityRole
+            IdentityRole roleUser = new()
             {
                 Name = "User"
             };

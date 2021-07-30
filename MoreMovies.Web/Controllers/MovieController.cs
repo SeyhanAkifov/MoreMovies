@@ -197,7 +197,7 @@ namespace MoreMovies.Web.Controllers
             await this.movieHub.Clients.All.SendAsync("NewMessage", model.UserId, movie.Title);
 
 
-            return RedirectToAction("Details", "Movie", new { id = id });
+            return RedirectToAction("Details", "Movie", new {id});
         }
 
         [Authorize]

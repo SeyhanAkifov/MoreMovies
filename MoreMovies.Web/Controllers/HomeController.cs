@@ -14,7 +14,6 @@ namespace MoreMovies.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly IMovieService service;
         private readonly IGenreService genreService;
         private readonly INewsService newsService;
@@ -23,9 +22,8 @@ namespace MoreMovies.Web.Controllers
         
 
 
-        public HomeController(ILogger<HomeController> logger, IMovieService service, IMapper mapper, INewsService newsService, IComingSoonService comingSoonService, IGenreService genreService)
+        public HomeController(IMovieService service, IMapper mapper, INewsService newsService, IComingSoonService comingSoonService, IGenreService genreService)
         {
-            _logger = logger;
             this.service = service;
             this.mapper = mapper;
             this.newsService = newsService;

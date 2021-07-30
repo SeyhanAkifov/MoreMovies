@@ -25,7 +25,7 @@ namespace MoreMovie.Web.Controllers
         private readonly IComingSoonService comingSoonService;
         private readonly IUserService userService;
 
-        public AdministrationController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext context, IMapper mapper, INewsService newsService, IComingSoonService comingSoonService, IUserService userService)
+        public AdministrationController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IMapper mapper, INewsService newsService, IComingSoonService comingSoonService, IUserService userService)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
@@ -94,7 +94,7 @@ namespace MoreMovie.Web.Controllers
             {
                 var user = await userManager.FindByIdAsync(model[i].UserId);
 
-                IdentityResult result = null;
+                IdentityResult result;
 
                 if (model[i].IsSelected && !(await userManager.IsInRoleAsync(user, role.Name)))
                 {
@@ -234,7 +234,7 @@ namespace MoreMovie.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                IdentityRole role = new IdentityRole
+                IdentityRole role = new()
                 {
                     Name = model.RoleName
                 };

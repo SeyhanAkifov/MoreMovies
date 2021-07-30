@@ -20,17 +20,14 @@ namespace MoreMovies.Services
         private readonly ILanguageService languageService;
         private readonly IGenreService genreService;
         private readonly ICountryService countryService;
-        private readonly UserManager<IdentityUser> userManager;
-
-
-        public MovieService(UserManager<IdentityUser> userManager, ICommentService commentService, ApplicationDbContext db, ILanguageService languageService, IGenreService genreService, ICountryService countryService)
+        
+        public MovieService(ICommentService commentService, ApplicationDbContext db, ILanguageService languageService, IGenreService genreService, ICountryService countryService)
         {
             this.commentService = commentService;
             this.languageService = languageService;
             this.genreService = genreService;
             this.countryService = countryService;
             this.db = db;
-            this.userManager = userManager;
         }
 
         public async Task AddMovie(AddMovieInputModel model)

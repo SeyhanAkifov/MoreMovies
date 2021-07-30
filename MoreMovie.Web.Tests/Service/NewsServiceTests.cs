@@ -9,7 +9,7 @@ namespace MoreMovie.Web.Tests.Service
 {
     public class NewsServiceTests
     {
-        public async void Test()
+        public static async void Test()
         {
             //Arrange
             var newsService = GetNewsService();

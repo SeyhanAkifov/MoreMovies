@@ -16,19 +16,6 @@ namespace MoreMovies.Web.Hubs
             this.commentService = commentService;
         }
 
-        public async Task GetUpdateForComment()
-        {
-            //CheckResult result;
-            //do
-            //{
-            //    result = this.commentService.AddComment();
-            //    if (result.New)
-            //    {
-            //        await this.Clients.Caller.SendAsync("RecieveMessage", result.Update);
-            //    }
-            //}
-            //while (!result.Finished);
-            //await this.Clients.Caller.SendAsync("Finished");
-        }
+       
     }
 }

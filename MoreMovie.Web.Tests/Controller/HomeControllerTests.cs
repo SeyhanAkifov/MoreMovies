@@ -29,9 +29,9 @@ namespace MoreMovie.Web.Tests.Controller
             var newsService = new NewsService(data);
             var comingSoonService = new ComingSoonService(data);
 
-            var movieService = new MovieService(null, commentService, data, languageService, genreService, countryService);
+            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
 
-            var homeController = new HomeController(null, movieService, mapper, data, newsService, comingSoonService, genreService);
+            var homeController = new HomeController(movieService, mapper, newsService, comingSoonService, genreService);
 
             //Act
             var result = await homeController.Index();
@@ -58,7 +58,7 @@ namespace MoreMovie.Web.Tests.Controller
         public void ErrorShouldReturnView()
         {
             //Arrange
-            var homeController = new HomeController(null, null, MapperMock.Instanse, null, null, null, null);
+            var homeController = new HomeController(null, MapperMock.Instanse, null, null, null);
 
             //Act
             var result = homeController.Error();

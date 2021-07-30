@@ -32,7 +32,7 @@ namespace MoreMovie.Web.Tests.Controller
 
 
 
-            var movieService = new MovieService(null, commentService, data, languageService, genreService, countryService);
+            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
 
             var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, null);
 
