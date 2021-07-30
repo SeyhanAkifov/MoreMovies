@@ -3,7 +3,6 @@ using MoreMovies.Data;
 using MoreMovies.Models;
 using MoreMovies.Services.Interfaces;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MoreMovies.Services
@@ -29,7 +28,7 @@ namespace MoreMovies.Services
 
         public async Task<ICollection<Country>> GetCountries()
         {
-           return  await this.db.Country.ToListAsync();
+            return await this.db.Country.ToListAsync();
         }
     }
 }

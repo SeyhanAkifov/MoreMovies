@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using MoreMovies.Models;
@@ -26,9 +25,9 @@ namespace MoreMovies.Web.Controllers
         private readonly ICountryService countryService;
         private readonly IHubContext<MovieHub> movieHub;
         private readonly IMapper mapper;
-        
 
-        public MovieController(IMovieService movieService, IMapper mapper, ICommentService commentService, IActorService actorService,ILanguageService languageService, IGenreService genreService, ICountryService countryService, IHubContext<MovieHub> movieHub)
+
+        public MovieController(IMovieService movieService, IMapper mapper, ICommentService commentService, IActorService actorService, ILanguageService languageService, IGenreService genreService, ICountryService countryService, IHubContext<MovieHub> movieHub)
         {
             this.movieService = movieService;
             this.mapper = mapper;
@@ -54,7 +53,7 @@ namespace MoreMovies.Web.Controllers
 
                 result.Actors = this.actorService.GetMovieActors(result.Id);
 
-                  return View(result);
+                return View(result);
             }
             else
             {
@@ -117,7 +116,7 @@ namespace MoreMovies.Web.Controllers
 
                 return View("Add", model);
             }
-            
+
             //model.Creator = User.FindFirstValue(ClaimTypes.Email);
             await movieService.AddMovie(model);
 
@@ -135,7 +134,7 @@ namespace MoreMovies.Web.Controllers
                 return RedirectToAction("Index", "Home");
             };
 
-           
+
 
             var result = mapper.Map<Movie, MovieViewModel>(movie);
 
@@ -146,7 +145,7 @@ namespace MoreMovies.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> EditMovie(int id, AddMovieInputModel model)
         {
-            
+
             await movieService.EditMovieWithId(id, model);
 
             return RedirectToAction("Details", "Movie", new { id });
@@ -195,8 +194,8 @@ namespace MoreMovies.Web.Controllers
             model.MovieId = id;
             await movieService.AddComment(model);
             var movie = await movieService.GetMovieWithId(model.MovieId);
-            await this.movieHub.Clients.All.SendAsync("NewMessage",  model.UserId, movie.Title);
-            
+            await this.movieHub.Clients.All.SendAsync("NewMessage", model.UserId, movie.Title);
+
 
             return RedirectToAction("Details", "Movie", new { id = id });
         }

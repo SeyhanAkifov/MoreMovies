@@ -77,6 +77,44 @@ $(document).ready(function () {
         });
 });
 
+//Show movie info
+var infoButton = document.querySelector("#movieInfo");
+infoButton.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    var infoDiv = document.querySelector('#info');
+
+    if (infoButton.innerHTML === "Show info") {
+        var id = infoButton.value;
+        fetch(`https://localhost:44321/api/GetDetails/${id}`, {
+            method: 'Get',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+
+        }).then(response => response.json())
+            .then(data => {
+                console.log(data.title);
+                document.querySelector('#language-info').innerHTML = `Language: ${data.language}`;
+                document.querySelector('#genre-info').innerHTML = `Genre: ${data.genre}`;
+                document.querySelector('#date-info').innerHTML = `Release Date: ${data.releaseDate.toString()}`;
+                document.querySelector('#description-info').innerHTML = `Description: ${data.description}`;
+                document.querySelector('#country-info').innerHTML = `Country: ${data.country}`;
+                document.querySelector('#budget-info').innerHTML = `Budget: ${data.budget} $`;
+                document.querySelector('#homepage-info').innerHTML = `Home page: ${data.homePage}`;
+            });
+
+        infoDiv.style.display = "block";
+        infoButton.innerHTML = "Hide info";
+    } else {
+        infoDiv.style.display = "none";
+        infoButton.innerHTML = "Show info";
+    }
+
+});
+
+
+
 
 
 

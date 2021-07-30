@@ -42,5 +42,7 @@ namespace MoreMovies.Services.Interfaces
         public Task<ICollection<Movie>> GetNewestAddedAllMovie();
 
         public Task Ratemovie(int rating, int movieId);
+
+        public Task<Movie> GetDetails(int id);
     }
 }

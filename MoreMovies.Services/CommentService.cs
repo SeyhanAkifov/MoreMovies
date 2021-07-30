@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using MoreMovies.Data;
+﻿using MoreMovies.Data;
 using MoreMovies.Models;
 using MoreMovies.Services.Dto;
 using MoreMovies.Services.Interfaces;
@@ -13,7 +12,7 @@ namespace MoreMovies.Services
     public class CommentService : ICommentService
     {
         private readonly ApplicationDbContext db;
-        
+
         public CommentService(ApplicationDbContext db)
         {
             this.db = db;

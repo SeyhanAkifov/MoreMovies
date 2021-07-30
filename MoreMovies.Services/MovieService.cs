@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 
@@ -22,7 +21,7 @@ namespace MoreMovies.Services
         private readonly IGenreService genreService;
         private readonly ICountryService countryService;
         private readonly UserManager<IdentityUser> userManager;
-        
+
 
         public MovieService(UserManager<IdentityUser> userManager, ICommentService commentService, ApplicationDbContext db, ILanguageService languageService, IGenreService genreService, ICountryService countryService)
         {
@@ -101,12 +100,12 @@ namespace MoreMovies.Services
                     movie.Actors.Add(new MovieActor { Actor = actor });
                 }
             }
-                //var userMovie = new UserMovie()
-                //{
-                //    Movies = movie,
-                //    User = user
-                //};
-            
+            //var userMovie = new UserMovie()
+            //{
+            //    Movies = movie,
+            //    User = user
+            //};
+
 
             var result = db.Movies.Add(movie);
 
@@ -148,7 +147,7 @@ namespace MoreMovies.Services
         public async Task AddComment(AddCommentInputModel model)
         {
             var movie = await GetMovieWithId(model.MovieId);
-            
+
             var comment = await commentService.AddComment(model);
 
             movie.Comments.Add(new MovieComment { Comment = comment });
@@ -172,7 +171,7 @@ namespace MoreMovies.Services
 
         public async Task<ICollection<Movie>> GetAllMyMovie(string userId)
         {
-           
+
 
             ICollection<Movie> movies = await db.UserMovies.Where(um => um.UserId == userId)
                 .Select(x => x.Movies)
@@ -255,7 +254,7 @@ namespace MoreMovies.Services
 
             return movies;
         }
-        
+
         public async Task<ICollection<Movie>> GetNewestAddedMovie()
         {
             ICollection<Movie> movies = await db.Movies
@@ -316,6 +315,20 @@ namespace MoreMovies.Services
             movie.RatingCount++;
 
             await this.db.SaveChangesAsync();
+        }
+
+        public async Task<Movie> GetDetails(int id)
+        {
+            Movie movie = await db.Movies
+                .Include(x => x.Genre.Genre)
+                .Include(x => x.Language.Language)
+                .Include(x => x.Country.Country)
+                .Include(x => x.Comments)
+                .FirstOrDefaultAsync(y => y.Id == id);
+                
+
+
+            return movie;
         }
     }
 }

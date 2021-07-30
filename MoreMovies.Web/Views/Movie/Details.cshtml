@@ -18,17 +18,18 @@
                     </div>
                     <div class="container col-md-12">
                         <div class="col-md-4 text-center">
-                            <h3 class="my-3 ">Movie info</h3>
-
-                            <h3>Language: @Model.Language</h3>
-                            <h3> <a href=@Model.HomePage>Home Page</a></h3>
-                            <h3>Genre: @Model.Genre</h3>
-                            <h3>Country: @Model.Country</h3>
-                            <h3>Budget: @Model.Budget $</h3>
-                            <div class="row comment mt-4 text-justify float-left " style="width: 550px; margin: 0 0 auto">
-                                <h3>@Model.Description</h3>
+                            <button class="btn btn-outline-primary" id="movieInfo" name="id" value="@Model.Id">Show info</button>
+                            <div class="card-body" style="display: none" id="info">
+                                <h3 id="genre-info"></h3>
+                                <h3 id="country-info"></h3>
+                                <h3 id="language-info"></h3>
+                                <h3 id="budget-info"></h3>
+                                <h3 id="date-info">Release date: </h3>
+                                <div class="row comment mt-4 text-justify float-left " style="width: 550px; margin: 0 0 auto">
+                                    <h3 id="description-info"></h3>
+                                </div>
+                                <h3 id="homepage-info"></h3>
                             </div>
-                            <h3>Release date: @Model.ReleaseDate</h3>
 
                             @if (Model.Creator == User.Identity.Name)
                             {
