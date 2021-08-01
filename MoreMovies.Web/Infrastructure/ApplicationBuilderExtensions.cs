@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MoreMovies.Data;
 using MoreMovies.Models;
-using MoreMovies.Services.Dto;
+using MoreMovies.Services.Dto.Input;
 using MoreMovies.Services.Interfaces;
 using Newtonsoft.Json;
 using System;
@@ -27,7 +27,9 @@ namespace MoreMovies.Web.Infrastructure
 
             var db = scopedServices.ServiceProvider.GetService<ApplicationDbContext>();
             var ms = scopedServices.ServiceProvider.GetService<IMovieService>();
-            
+            var ns = scopedServices.ServiceProvider.GetService<INewsService>();
+            var cs = scopedServices.ServiceProvider.GetService<IComingSoonService>();
+
 
             db.Database.Migrate();
 
@@ -36,6 +38,8 @@ namespace MoreMovies.Web.Infrastructure
             SeedCountry(db);
             SeedUsers(app.ApplicationServices);
             SeedMovies(db, ms);
+            SeedNews(db, ns);
+            SeedComingSoon(db, cs);
 
             return app;
         }
@@ -162,6 +166,42 @@ namespace MoreMovies.Web.Infrastructure
 
             }
             
+            db.SaveChanges();
+        }
+
+        public static void SeedNews(ApplicationDbContext db, INewsService ns)
+        {
+            if (db.News.Any())
+            {
+                return;
+            }
+
+            var news = JsonConvert.DeserializeObject<ICollection<NewsAddModel>>(File.ReadAllText("news.json"));
+
+            foreach (var item in news)
+            {
+                ns.Add(item);
+
+            }
+
+            db.SaveChanges();
+        }
+
+        public static void SeedComingSoon(ApplicationDbContext db, IComingSoonService cs)
+        {
+            if (db.ComingSoons.Any())
+            {
+                return;
+            }
+
+            var soon = JsonConvert.DeserializeObject<ICollection<ComingSoonAddModel>>(File.ReadAllText("comingSoon.json"));
+
+            foreach (var item in soon)
+            {
+                cs.Add(item);
+
+            }
+
             db.SaveChanges();
         }
     }

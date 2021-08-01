@@ -31,18 +31,18 @@ namespace MoreMovies.Web.Controllers
             this.genreService = genreService;
         }
 
-        public async Task<IActionResult> Details(int id)
-        {
-            var movie = await service.GetMovieWithId(id);
+        //public async Task<IActionResult> Details(int id)
+        //{
+        //    var movie = await service.GetMovieWithId(id);
 
-            var result = mapper.Map<Movie, MovieViewModel>(movie);
-            //var comments = db.MovieComments
-            //               .Join(db.Comments, c => c.CommentId, b => b.Id, (comment, c) => c)
-            //               .ToList();
+        //    var result = mapper.Map<Movie, MovieViewModel>(movie);
+        //    //var comments = db.MovieComments
+        //    //               .Join(db.Comments, c => c.CommentId, b => b.Id, (comment, c) => c)
+        //    //               .ToList();
 
-            //result.Comments = comments;
-            return this.View(result);
-        }
+        //    //result.Comments = comments;
+        //    return this.View(result);
+        //}
 
         [HttpGet]
         public async Task<IActionResult> Index()

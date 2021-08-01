@@ -1,4 +1,4 @@
-﻿@model MovieViewModel
+﻿@model EditMovieInputModel
 
 @{
     ViewData["Title"] = "Movie edit";
@@ -6,26 +6,30 @@
 
 <form class="text-center border border-light p-5" asp-controller="Movie" asp-action="EditMovie" asp-route-id="@Model.Id" name="@Model.Id" method="post">
     <div class="form-group">
-        <label for="title">Title</label>
-        <input type="text" class="form-control" placeholder="Title" name="title" value="@Model.Title">
+        <label asp-for="Title">Title</label>
+        <input asp-for="Title" type="text" class="form-control" placeholder="Title" name="title" value="@Model.Title">
+        <span asp-validation-for="Title" class="m-md-0 text-danger"></span>
     </div>
 
 
     <div class="form-group">
-        <label for="image">@Model.ImageUrl</label>
-        <input type="text" class="form-control" placeholder="Image" name="image" value="@Model.ImageUrl">
+        <label asp-for="ImageUrl">Image</label>
+        <input asp-for="ImageUrl" type="text" class="form-control" placeholder="Image" name="imageUrl" value="@Model.ImageUrl">
+        <span asp-validation-for="ImageUrl" class="m-md-0 text-danger"></span>
     </div>
 
 
 
     <div class="form-group">
-        <label for="homePage">@Model.HomePage</label>
-        <input type="text" class="form-control" placeholder="HomePage" name="homePage" value="@Model.HomePage">
+        <label asp-for="HomePage">HomePage</label>
+        <input asp-for="HomePage" type="text" class="form-control" placeholder="HomePage" name="homePage" value="@Model.HomePage">
+        <span asp-validation-for="HomePage" class="m-md-0 text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label for="description">Description</label>
-        <input type="text" class="form-control" placeholder="Description" name="description" value="@Model.Description">
+        <label asp-for="Description">Description</label>
+        <input asp-for="Description" type="text" class="form-control" placeholder="Description" name="description" value="@Model.Description">
+        <span asp-validation-for="Description" class="m-md-0 text-danger"></span>
     </div>
 
     <button type="submit" class="btn btn-primary">Edit movie</button>

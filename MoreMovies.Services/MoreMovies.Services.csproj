@@ -9,8 +9,4 @@
     <ProjectReference Include="..\MoreMovies.Models\MoreMovies.Models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Dto\Output\" />
-  </ItemGroup>
-
 </Project>

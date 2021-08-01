@@ -9,8 +9,9 @@
             <div class="stars-in" style="width: @(Model.Rating * 12 +  "px")"> </div>
         </div>
         <span class="comments">@Model.Comments.Count().ToString()</span>
-        <div >Likes: @Model.Likes</div>
+        <span style="padding: 3px">Likes: @Model.Likes</span>
     </div>
-
-    <a class="btn btn-primary" asp-controller="Movie" asp-action="Details" asp-route-id=@Model.Id>Details</a>
+    <div class="text-center">
+        <a class="btn btn-primary " asp-controller="Movie" asp-action="Details" asp-route-id=@Model.Id>Details</a>
+    </div>
 </div>

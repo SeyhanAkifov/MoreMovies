@@ -1,5 +1,5 @@
 ﻿@model ICollection<ComingSoonViewModel>
-<div id="news" class="col-md-12">
+<div id="coming" class="col-md-12">
     <div class="head">
         <h3>COMING SOON<strong>!</strong></h3>
         <p class="text-right"><a asp-controller="ComingSoon" asp-action="All">See all</a></p>
@@ -8,7 +8,4 @@
     {
         @await Html.PartialAsync("../ComingSoon/ComingSoon", item)
     }
-    
-
-
 </div>

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MoreMovies.Models;
-using MoreMovies.Services.Dto;
+using MoreMovies.Services.Dto.Input;
 using MoreMovies.Services.Interfaces;
 using MoreMovies.Web.Models.News;
 using System.Collections.Generic;

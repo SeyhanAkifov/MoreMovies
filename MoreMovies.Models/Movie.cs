@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
 using static MoreMovies.Models.DataConstants;
 
 namespace MoreMovies.Models
@@ -43,9 +42,9 @@ namespace MoreMovies.Models
         [Range(0, 5)]
         public int Rating { get; set; }
 
-        
+
         public int RatingCount { get; set; }
-        
+
         [Required]
         [Url]
         public string ImageUrl { get; set; }

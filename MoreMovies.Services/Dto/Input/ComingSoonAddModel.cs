@@ -2,7 +2,7 @@
 
 using static MoreMovies.Models.DataConstants;
 
-namespace MoreMovies.Services.Dto
+namespace MoreMovies.Services.Dto.Input
 {
     public class ComingSoonAddModel
     {

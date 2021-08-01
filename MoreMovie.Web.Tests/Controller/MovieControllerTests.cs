@@ -29,10 +29,8 @@ namespace MoreMovie.Web.Tests.Controller
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-
-
-
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
+            
+            var movieService = new MovieService(commentService, data, languageService, genreService, countryService, mapper);
 
             var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, null);
 

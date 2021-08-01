@@ -1,5 +1,5 @@
 ﻿using MoreMovies.Models;
-using MoreMovies.Services.Dto;
+using MoreMovies.Services.Dto.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +11,7 @@ namespace MoreMovies.Services.Interfaces
     public interface IComingSoonService
     {
         public Task Add(ComingSoonAddModel model);
+
         public Task Delete(int id);
 
         public Task<ComingSoon> GetWithId(int id);

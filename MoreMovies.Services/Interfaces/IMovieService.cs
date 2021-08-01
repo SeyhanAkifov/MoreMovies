@@ -1,5 +1,7 @@
 ﻿using MoreMovies.Models;
 using MoreMovies.Services.Dto;
+using MoreMovies.Services.Dto.Input;
+using MoreMovies.Services.Dto.Output;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -21,9 +23,9 @@ namespace MoreMovies.Services.Interfaces
 
         public Task AddComment(AddCommentInputModel model);
 
-        public Task EditMovieWithId(int id, AddMovieInputModel model);
+        public Task EditMovieWithId(int id, EditMovieInputModel model);
 
-        public Task<Movie> GetMovieWithId(int id);
+        public Task<MovieOutputDto> GetMovieWithId(int id);
 
         public Task<ICollection<Movie>> GetAllMovie();
 
@@ -43,6 +45,6 @@ namespace MoreMovies.Services.Interfaces
 
         public Task Ratemovie(int rating, int movieId);
 
-        public Task<Movie> GetDetails(int id);
+        public Task<DetailsOutputDto> GetDetails(int id);
     }
 }

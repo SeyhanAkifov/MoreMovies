@@ -29,7 +29,7 @@ namespace MoreMovie.Web.Tests.Controller
             var newsService = new NewsService(data);
             var comingSoonService = new ComingSoonService(data);
 
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
+            var movieService = new MovieService(commentService, data, languageService, genreService, countryService, mapper);
 
             var homeController = new HomeController(movieService, mapper, newsService, comingSoonService, genreService);
 

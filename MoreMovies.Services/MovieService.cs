@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MoreMovies.Data;
 using MoreMovies.Models;
 using MoreMovies.Services.Dto;
+using MoreMovies.Services.Dto.Input;
+using MoreMovies.Services.Dto.Output;
 using MoreMovies.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -21,7 +24,7 @@ namespace MoreMovies.Services
         private readonly IGenreService genreService;
         private readonly ICountryService countryService;
         
-        public MovieService(ICommentService commentService, ApplicationDbContext db, ILanguageService languageService, IGenreService genreService, ICountryService countryService)
+        public MovieService(ICommentService commentService, ApplicationDbContext db, ILanguageService languageService, IGenreService genreService, ICountryService countryService, IMapper mapper)
         {
             this.commentService = commentService;
             this.languageService = languageService;
@@ -120,13 +123,13 @@ namespace MoreMovies.Services
             await db.SaveChangesAsync();
         }
 
-        public async Task EditMovieWithId(int id, AddMovieInputModel model)
+        public async Task EditMovieWithId(int id, EditMovieInputModel model)
         {
             var movie = await this.db.Movies.FindAsync(id);
 
             movie.Title = model.Title;
             movie.HomePage = model.HomePage;
-            movie.ImageUrl = model.Image;
+            movie.ImageUrl = model.ImageUrl;
             movie.Description = model.Description;
 
             await db.SaveChangesAsync();
@@ -177,17 +180,26 @@ namespace MoreMovies.Services
             return movies;
         }
 
-        public async Task<Movie> GetMovieWithId(int id)
+        public async Task<MovieOutputDto> GetMovieWithId(int id)
         {
-            Movie movie = await db.Movies
-                .Include(x => x.Genre.Genre)
-                .Include(x => x.Language.Language)
-                .Include(x => x.Country.Country)
-                .Include(x => x.Comments)
-                .Include(x => x.Actors)
-                .FirstAsync(x => x.Id == id);
+            Movie movie = await db.Movies.FindAsync(id);
 
-            return movie;
+                var result  = new MovieOutputDto 
+                {
+                    Id = movie.Id,
+                    Title = movie.Title,
+                    Creator = movie.Creator,
+                    Likes = movie.Likes,
+                    Rating = movie.Rating,
+                    RatingCount = movie.RatingCount,
+                    ImageUrl = movie.ImageUrl,
+                    Comments = movie.Comments,
+                    Actors = movie.Actors,
+                    HomePage = movie.HomePage
+                };
+
+
+            return result;
         }
 
         public async Task<int> SearchMovie(string name)
@@ -307,24 +319,29 @@ namespace MoreMovies.Services
 
         public async Task Ratemovie(int rating, int movieId)
         {
-            var movie = await this.GetMovieWithId(movieId);
+            var movie = await this.db.Movies.FindAsync(movieId);
             movie.Rating = rating;
             movie.RatingCount++;
 
             await this.db.SaveChangesAsync();
         }
 
-        public async Task<Movie> GetDetails(int id)
+        public async Task<DetailsOutputDto> GetDetails(int id)
         {
-            Movie movie = await db.Movies
-                .Include(x => x.Genre.Genre)
-                .Include(x => x.Language.Language)
-                .Include(x => x.Country.Country)
-                .Include(x => x.Comments)
-                .FirstOrDefaultAsync(y => y.Id == id);
-                
+            DetailsOutputDto movie = await db.Movies
+                .Select(x => new DetailsOutputDto
+                {
+                    Id = x.Id,
+                    Description = x.Description,
+                    ReleaseDate = x.ReleaseDate,
+                    Budget = x.Budget,
+                    Language = x.Language.Language.Name,
+                    Country = x.Country.Country.Name,
+                    Genre = x.Genre.Genre.Name,
+                    HomePage = x.HomePage,
 
-
+                }).FirstOrDefaultAsync(x => x.Id == id);
+            
             return movie;
         }
     }

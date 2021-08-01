@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MoreMovies.Data;
 using MoreMovies.Models;
-using MoreMovies.Services.Dto;
+using MoreMovies.Services.Dto.Input;
 using MoreMovies.Services.Interfaces;
 using System.Collections.Generic;
 using System.Linq;

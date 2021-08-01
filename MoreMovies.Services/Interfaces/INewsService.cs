@@ -1,5 +1,5 @@
 ﻿using MoreMovies.Models;
-using MoreMovies.Services.Dto;
+using MoreMovies.Services.Dto.Input;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

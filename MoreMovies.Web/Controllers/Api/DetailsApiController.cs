@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MoreMovies.Models;
+using MoreMovies.Services.Dto.Output;
 using MoreMovies.Services.Interfaces;
 using MoreMovies.Web.Models;
+using MoreMovies.Web.Models.Movie;
 using System.Threading.Tasks;
 
 namespace MoreMovies.Web.Controllers.Api
@@ -21,10 +23,10 @@ namespace MoreMovies.Web.Controllers.Api
         }
 
 
-        public async Task<MovieViewModel> GetDetails(int id)
+        public async Task<MovieDetailsViewModel> GetDetails(int id)
         {
             var details = await movieService.GetDetails(id);
-            var result = mapper.Map<Movie, MovieViewModel>(details);
+            var result = mapper.Map<DetailsOutputDto, MovieDetailsViewModel>(details);
 
             return result;
         }

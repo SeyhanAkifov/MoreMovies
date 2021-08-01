@@ -4,9 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using MoreMovies.Models;
 using MoreMovies.Services.Dto;
+using MoreMovies.Services.Dto.Input;
+using MoreMovies.Services.Dto.Output;
 using MoreMovies.Services.Interfaces;
 using MoreMovies.Web.Hubs;
 using MoreMovies.Web.Models;
+using MoreMovies.Web.Models.Movie;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -47,7 +50,7 @@ namespace MoreMovies.Web.Controllers
             {
                 var movie = await movieService.GetMovieWithId(id);
 
-                var result = mapper.Map<Movie, MovieViewModel>(movie);
+                var result = mapper.Map<MovieOutputDto, MovieViewModel>(movie);
 
                 result.Comments = this.commentService.GetMovieComments(result.Id);
 
@@ -127,6 +130,7 @@ namespace MoreMovies.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
+
             var movie = await movieService.GetMovieWithId(id);
             var userEmail = User.FindFirstValue(ClaimTypes.Email);
             if (userEmail != movie.Creator)
@@ -136,16 +140,20 @@ namespace MoreMovies.Web.Controllers
 
 
 
-            var result = mapper.Map<Movie, MovieViewModel>(movie);
+            var result = mapper.Map<MovieOutputDto, EditMovieInputModel>(movie);
 
             return this.View(result);
         }
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> EditMovie(int id, AddMovieInputModel model)
+        public async Task<IActionResult> EditMovie(int id, EditMovieInputModel model)
         {
-
+            if (!ModelState.IsValid)
+            {
+                
+                return View("Edit", model);
+            }
             await movieService.EditMovieWithId(id, model);
 
             return RedirectToAction("Details", "Movie", new { id });
