@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using static MoreMovies.Models.DataConstants;
 
 namespace MoreMovies.Models
@@ -58,5 +59,8 @@ namespace MoreMovies.Models
         public virtual MovieGenre Genre { get; set; }
 
         public virtual MovieCountry Country { get; set; }
+
+        [NotMapped]
+        public bool IsUserLiked { get; set; }
     }
 }

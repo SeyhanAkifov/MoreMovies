@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MoreMovies.Data;
 using MoreMovies.Models;
-using MoreMovies.Services.Dto;
 using MoreMovies.Services.Dto.Input;
 using MoreMovies.Services.Dto.Output;
 using MoreMovies.Services.Interfaces;
@@ -11,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 
@@ -23,7 +22,7 @@ namespace MoreMovies.Services
         private readonly ILanguageService languageService;
         private readonly IGenreService genreService;
         private readonly ICountryService countryService;
-        
+
         public MovieService(ICommentService commentService, ApplicationDbContext db, ILanguageService languageService, IGenreService genreService, ICountryService countryService, IMapper mapper)
         {
             this.commentService = commentService;
@@ -35,7 +34,7 @@ namespace MoreMovies.Services
 
         public async Task AddMovie(AddMovieInputModel model)
         {
-            //var user = await userManager.FindByEmailAsync(model.Creator);
+           
             var language = db.Languages.FirstOrDefault(x => x.Name == model.Language);
 
             if (language == null)
@@ -100,17 +99,9 @@ namespace MoreMovies.Services
                     movie.Actors.Add(new MovieActor { Actor = actor });
                 }
             }
-            //var userMovie = new UserMovie()
-            //{
-            //    Movies = movie,
-            //    User = user
-            //};
-
-
+            
             var result = db.Movies.Add(movie);
-
-            //this.db.UserMovies.Add(userMovie);
-
+            
             db.SaveChanges();
         }
 
@@ -135,11 +126,14 @@ namespace MoreMovies.Services
             await db.SaveChangesAsync();
         }
 
-        public async Task LikeMovie(int id)
+        public async Task LikeMovie(int id, string userId)
         {
             var movie = db.Movies.Find(id);
+            
 
             movie.Likes++;
+
+            this.db.UserMovies.Add(new UserMovie { MovieId = movie.Id, UserId = userId });
 
             await db.SaveChangesAsync();
         }
@@ -155,26 +149,54 @@ namespace MoreMovies.Services
             await db.SaveChangesAsync();
         }
 
-        public async Task<ICollection<Movie>> GetAllMovie()
+        public async Task<ICollection<MovieOutputDto>> GetAllMovie()
         {
 
-            ICollection<Movie> movies = await db.Movies
+            ICollection<MovieOutputDto> movies = await db.Movies
                 .Include(x => x.Genre.Genre)
                 .Include(x => x.Language.Language)
                 .Include(x => x.Country.Country)
                 .Include(x => x.Comments)
+                .Select(x => new MovieOutputDto 
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Creator = x.Creator,
+                    Likes = x.Likes,
+                    Rating = x.Rating,
+                    RatingCount = x.RatingCount,
+                    ImageUrl = x.ImageUrl,
+                    Comments = x.Comments,
+                    Actors = x.Actors,
+                    HomePage = x.HomePage,
+                    IsUserLiked = x.IsUserLiked,
+                })
                 //.Take(6)
                 .ToArrayAsync();
 
             return movies;
         }
 
-        public async Task<ICollection<Movie>> GetAllMyMovie(string userId)
+        public async Task<ICollection<MovieOutputDto>> GetAllMyMovie(string userName)
         {
 
 
-            ICollection<Movie> movies = await db.UserMovies.Where(um => um.UserId == userId)
-                .Select(x => x.Movies)
+            ICollection<MovieOutputDto> movies = await db.Movies
+                .Where(x => x.Creator == userName)
+                .Select(x => new MovieOutputDto
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Creator = x.Creator,
+                    Likes = x.Likes,
+                    Rating = x.Rating,
+                    RatingCount = x.RatingCount,
+                    ImageUrl = x.ImageUrl,
+                    Comments = x.Comments,
+                    Actors = x.Actors,
+                    HomePage = x.HomePage,
+                    IsUserLiked = x.IsUserLiked,
+                })
                 .ToArrayAsync();
 
             return movies;
@@ -183,20 +205,24 @@ namespace MoreMovies.Services
         public async Task<MovieOutputDto> GetMovieWithId(int id)
         {
             Movie movie = await db.Movies.FindAsync(id);
+           
+            
+            var result = new MovieOutputDto
+            {
+                Id = movie.Id,
+                Title = movie.Title,
+                Creator = movie.Creator,
+                Likes = movie.Likes,
+                Rating = movie.Rating,
+                RatingCount = movie.RatingCount,
+                ImageUrl = movie.ImageUrl,
+                Comments = movie.Comments,
+                Actors = movie.Actors,
+                HomePage = movie.HomePage,
+                IsUserLiked = movie.IsUserLiked,
+            };
 
-                var result  = new MovieOutputDto 
-                {
-                    Id = movie.Id,
-                    Title = movie.Title,
-                    Creator = movie.Creator,
-                    Likes = movie.Likes,
-                    Rating = movie.Rating,
-                    RatingCount = movie.RatingCount,
-                    ImageUrl = movie.ImageUrl,
-                    Comments = movie.Comments,
-                    Actors = movie.Actors,
-                    HomePage = movie.HomePage
-                };
+            
 
 
             return result;
@@ -210,108 +236,220 @@ namespace MoreMovies.Services
             return movie != null ? movie.Id : 0;
         }
 
-        public async Task<ICollection<Movie>> GetTopCommentedMovie()
+        public async Task<ICollection<MovieOutputDto>> GetTopCommentedMovie()
         {
-            ICollection<Movie> movies = await db.Movies
+            ICollection<MovieOutputDto> movies = await db.Movies
                 .Include(x => x.Genre.Genre)
                 .Include(x => x.Language.Language)
                 .Include(x => x.Country.Country)
                 .Include(x => x.Comments)
                 .OrderByDescending(x => x.Comments.Count)
                 .Take(6)
+                .Select(x => new MovieOutputDto
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Creator = x.Creator,
+                    Likes = x.Likes,
+                    Rating = x.Rating,
+                    RatingCount = x.RatingCount,
+                    ImageUrl = x.ImageUrl,
+                    Comments = x.Comments,
+                    Actors = x.Actors,
+                    HomePage = x.HomePage,
+                    IsUserLiked = x.IsUserLiked,
+                })
                 .ToArrayAsync();
 
             return movies;
         }
 
-        public async Task<ICollection<Movie>> GetTopCommentedAllMovie()
+        public async Task<ICollection<MovieOutputDto>> GetTopCommentedAllMovie()
         {
-            ICollection<Movie> movies = await db.Movies
+            ICollection<MovieOutputDto> movies = await db.Movies
                 .Include(x => x.Genre.Genre)
                 .Include(x => x.Language.Language)
                 .Include(x => x.Country.Country)
                 .Include(x => x.Comments)
+                .Select(x => new MovieOutputDto
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Creator = x.Creator,
+                    Likes = x.Likes,
+                    Rating = x.Rating,
+                    RatingCount = x.RatingCount,
+                    ImageUrl = x.ImageUrl,
+                    Comments = x.Comments,
+                    Actors = x.Actors,
+                    HomePage = x.HomePage,
+                    IsUserLiked = x.IsUserLiked,
+                })
                 .OrderByDescending(x => x.Comments.Count)
                 .ToArrayAsync();
 
             return movies;
         }
 
-        public async Task<ICollection<Movie>> GetTopLikedMovie()
+        public async Task<ICollection<MovieOutputDto>> GetTopLikedMovie()
         {
-            ICollection<Movie> movies = await db.Movies
+            ICollection<MovieOutputDto> movies = await db.Movies
                 .Include(x => x.Genre.Genre)
                 .Include(x => x.Language.Language)
                 .Include(x => x.Country.Country)
                 .Include(x => x.Comments)
                 .OrderByDescending(x => x.Likes)
                 .Take(6)
+                .Select(x => new MovieOutputDto
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Creator = x.Creator,
+                    Likes = x.Likes,
+                    Rating = x.Rating,
+                    RatingCount = x.RatingCount,
+                    ImageUrl = x.ImageUrl,
+                    Comments = x.Comments,
+                    Actors = x.Actors,
+                    HomePage = x.HomePage,
+                    IsUserLiked = x.IsUserLiked,
+                })
                 .ToArrayAsync();
 
             return movies;
         }
 
-        public async Task<ICollection<Movie>> GetTopLikedAllMovie()
+        public async Task<ICollection<MovieOutputDto>> GetTopLikedAllMovie()
         {
-            ICollection<Movie> movies = await db.Movies
+            ICollection<MovieOutputDto> movies = await db.Movies
                 .Include(x => x.Genre.Genre)
                 .Include(x => x.Language.Language)
                 .Include(x => x.Country.Country)
                 .Include(x => x.Comments)
                 .OrderByDescending(x => x.Likes)
+                .Select(x => new MovieOutputDto
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Creator = x.Creator,
+                    Likes = x.Likes,
+                    Rating = x.Rating,
+                    RatingCount = x.RatingCount,
+                    ImageUrl = x.ImageUrl,
+                    Comments = x.Comments,
+                    Actors = x.Actors,
+                    HomePage = x.HomePage,
+                    IsUserLiked = x.IsUserLiked,
+                })
                 .ToArrayAsync();
 
             return movies;
         }
 
-        public async Task<ICollection<Movie>> GetNewestAddedMovie()
+        public async Task<ICollection<MovieOutputDto>> GetNewestAddedMovie()
         {
-            ICollection<Movie> movies = await db.Movies
+            ICollection<MovieOutputDto> movies = await db.Movies
                 .Include(x => x.Genre.Genre)
                 .Include(x => x.Language.Language)
                 .Include(x => x.Country.Country)
                 .Include(x => x.Comments)
                 .OrderByDescending(x => x.ReleaseDate)
                 .Take(6)
+                .Select(x => new MovieOutputDto
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Creator = x.Creator,
+                    Likes = x.Likes,
+                    Rating = x.Rating,
+                    RatingCount = x.RatingCount,
+                    ImageUrl = x.ImageUrl,
+                    Comments = x.Comments,
+                    Actors = x.Actors,
+                    HomePage = x.HomePage,
+                    IsUserLiked = x.IsUserLiked,
+                })
                 .ToArrayAsync();
 
             return movies;
         }
 
-        public async Task<ICollection<Movie>> GetNewestAddedAllMovie()
+        public async Task<ICollection<MovieOutputDto>> GetNewestAddedAllMovie()
         {
-            ICollection<Movie> movies = await db.Movies
+            ICollection<MovieOutputDto> movies = await db.Movies
                 .Include(x => x.Genre.Genre)
                 .Include(x => x.Language.Language)
                 .Include(x => x.Country.Country)
                 .Include(x => x.Comments)
                 .OrderByDescending(x => x.ReleaseDate)
+                .Select(x => new MovieOutputDto
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Creator = x.Creator,
+                    Likes = x.Likes,
+                    Rating = x.Rating,
+                    RatingCount = x.RatingCount,
+                    ImageUrl = x.ImageUrl,
+                    Comments = x.Comments,
+                    Actors = x.Actors,
+                    HomePage = x.HomePage,
+                    IsUserLiked = x.IsUserLiked,
+                })
                 .ToArrayAsync();
 
             return movies;
         }
 
-        public async Task<ICollection<Movie>> SearchMovieByGenre(string genre)
+        public async Task<ICollection<MovieOutputDto>> SearchMovieByGenre(string genre)
         {
-            ICollection<Movie> movies = await db.Movies
+            ICollection<MovieOutputDto> movies = await db.Movies
                 .Include(x => x.Genre.Genre)
                 .Include(x => x.Language.Language)
                 .Include(x => x.Country.Country)
                 .Include(x => x.Comments)
                 .Where(x => x.Genre.Genre.Name == genre)
+                .Select(x => new MovieOutputDto
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Creator = x.Creator,
+                    Likes = x.Likes,
+                    Rating = x.Rating,
+                    RatingCount = x.RatingCount,
+                    ImageUrl = x.ImageUrl,
+                    Comments = x.Comments,
+                    Actors = x.Actors,
+                    HomePage = x.HomePage,
+                    IsUserLiked = x.IsUserLiked,
+                })
                 .ToArrayAsync();
 
             return movies;
         }
 
-        public async Task<ICollection<Movie>> SearchMovieByYear(string year)
+        public async Task<ICollection<MovieOutputDto>> SearchMovieByYear(string year)
         {
-            ICollection<Movie> movies = await db.Movies
+            ICollection<MovieOutputDto> movies = await db.Movies
                 .Include(x => x.Genre.Genre)
                 .Include(x => x.Language.Language)
                 .Include(x => x.Country.Country)
                 .Include(x => x.Comments)
                 .Where(x => x.ReleaseDate.Year == int.Parse(year))
+                .Select(x => new MovieOutputDto
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Creator = x.Creator,
+                    Likes = x.Likes,
+                    Rating = x.Rating,
+                    RatingCount = x.RatingCount,
+                    ImageUrl = x.ImageUrl,
+                    Comments = x.Comments,
+                    Actors = x.Actors,
+                    HomePage = x.HomePage,
+                    IsUserLiked = x.IsUserLiked,
+                })
                 .ToArrayAsync();
 
             return movies;
@@ -320,7 +458,7 @@ namespace MoreMovies.Services
         public async Task Ratemovie(int rating, int movieId)
         {
             var movie = await this.db.Movies.FindAsync(movieId);
-            movie.Rating = rating;
+            movie.Rating += rating;
             movie.RatingCount++;
 
             await this.db.SaveChangesAsync();
@@ -341,8 +479,37 @@ namespace MoreMovies.Services
                     HomePage = x.HomePage,
 
                 }).FirstOrDefaultAsync(x => x.Id == id);
-            
+
             return movie;
+        }
+
+        public bool IsUserLiked(int id, string userId)
+        {
+            return this.db.UserMovies.Any(x => x.MovieId == id && x.UserId == userId);
+
+        }
+
+        public async Task<ICollection<MovieOutputDto>> GetAllMyLiked(string userId)
+        {
+            ICollection<MovieOutputDto> movies = await db.UserMovies.Where(um => um.UserId == userId)
+                 .Select(x => x.Movies)
+                 .Select(x => new MovieOutputDto
+                 {
+                     Id = x.Id,
+                     Title = x.Title,
+                     Creator = x.Creator,
+                     Likes = x.Likes,
+                     Rating = x.Rating,
+                     RatingCount = x.RatingCount,
+                     ImageUrl = x.ImageUrl,
+                     Comments = x.Comments,
+                     Actors = x.Actors,
+                     HomePage = x.HomePage,
+                     IsUserLiked = x.IsUserLiked,
+                 })
+                 .ToArrayAsync();
+
+            return movies;
         }
     }
 }

@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MoreMovie.Web.Models.Administration;
-using MoreMovies.Data;
-using MoreMovies.Models;
+using MoreMovies.Services.Dto.Output;
 using MoreMovies.Services.Interfaces;
 using MoreMovies.Web.Models;
 using MoreMovies.Web.Models.News;
@@ -45,7 +43,7 @@ namespace MoreMovie.Web.Controllers
         public async Task<IActionResult> EditComingSoon()
         {
             var comingSoon = await this.comingSoonService.GetAll();
-            var comingSoonResult = mapper.Map<ICollection<ComingSoon>, ICollection<ComingSoonViewModel>>(comingSoon);
+            var comingSoonResult = mapper.Map<ICollection<ComingSoonOutputDto>, ICollection<ComingSoonViewModel>>(comingSoon);
 
 
             return this.View(comingSoonResult);
@@ -64,7 +62,7 @@ namespace MoreMovie.Web.Controllers
         public async Task<IActionResult> EditNews()
         {
             var news = await this.newsService.GetAllNews();
-            var newsResult = mapper.Map<ICollection<News>, ICollection<NewsViewModel>>(news);
+            var newsResult = mapper.Map<ICollection<NewsOutputDto>, ICollection<NewsViewModel>>(news);
 
             return this.View(newsResult);
         }
@@ -252,7 +250,7 @@ namespace MoreMovie.Web.Controllers
 
             return this.View(model);
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> DeleteUser(string id)
         {
@@ -277,7 +275,7 @@ namespace MoreMovie.Web.Controllers
             return RedirectToAction("All", "Administration");
 
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> All()
         {

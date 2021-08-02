@@ -1,9 +1,6 @@
-﻿using MoreMovies.Models;
-using MoreMovies.Services.Dto.Input;
-using System;
+﻿using MoreMovies.Services.Dto.Input;
+using MoreMovies.Services.Dto.Output;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MoreMovies.Services.Interfaces
@@ -14,10 +11,10 @@ namespace MoreMovies.Services.Interfaces
 
         public Task Delete(int id);
 
-        public Task<ComingSoon> GetWithId(int id);
+        public Task<ComingSoonOutputDto> GetWithId(int id);
 
-        public Task<ICollection<ComingSoon>> GetAll();
+        public Task<ICollection<ComingSoonOutputDto>> GetAll();
 
-        public Task<ICollection<ComingSoon>> GetForHomePage();
+        public Task<ICollection<ComingSoonOutputDto>> GetForHomePage();
     }
 }

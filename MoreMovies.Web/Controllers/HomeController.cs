@@ -1,13 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using MoreMovies.Data;
-using MoreMovies.Models;
+using MoreMovies.Services.Dto.Output;
 using MoreMovies.Services.Interfaces;
 using MoreMovies.Web.Models;
 using MoreMovies.Web.Models.News;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MoreMovies.Web.Controllers
@@ -19,8 +16,6 @@ namespace MoreMovies.Web.Controllers
         private readonly INewsService newsService;
         private readonly IComingSoonService comingSoonService;
         private readonly IMapper mapper;
-        
-
 
         public HomeController(IMovieService service, IMapper mapper, INewsService newsService, IComingSoonService comingSoonService, IGenreService genreService)
         {
@@ -31,19 +26,6 @@ namespace MoreMovies.Web.Controllers
             this.genreService = genreService;
         }
 
-        //public async Task<IActionResult> Details(int id)
-        //{
-        //    var movie = await service.GetMovieWithId(id);
-
-        //    var result = mapper.Map<Movie, MovieViewModel>(movie);
-        //    //var comments = db.MovieComments
-        //    //               .Join(db.Comments, c => c.CommentId, b => b.Id, (comment, c) => c)
-        //    //               .ToList();
-
-        //    //result.Comments = comments;
-        //    return this.View(result);
-        //}
-
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -53,11 +35,11 @@ namespace MoreMovies.Web.Controllers
             var news = await newsService.GetNewsForHomePage();
             var comingSoon = await comingSoonService.GetForHomePage();
 
-            var topCommentedResult = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(topcomentedMovies);
-            var topLikedResult = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(topLikedMovies);
-            var newestAddedResult = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(newestAddedMovies);
-            var newsResult = mapper.Map<ICollection<News>, ICollection<NewsViewModel>>(news);
-            var comingSoonResult = mapper.Map<ICollection<ComingSoon>, ICollection<ComingSoonViewModel>>(comingSoon);
+            var topCommentedResult = mapper.Map<ICollection<MovieOutputDto>, ICollection<MovieViewModel>>(topcomentedMovies);
+            var topLikedResult = mapper.Map<ICollection<MovieOutputDto>, ICollection<MovieViewModel>>(topLikedMovies);
+            var newestAddedResult = mapper.Map<ICollection<MovieOutputDto>, ICollection<MovieViewModel>>(newestAddedMovies);
+            var newsResult = mapper.Map<ICollection<NewsOutputDto>, ICollection<NewsViewModel>>(news);
+            var comingSoonResult = mapper.Map<ICollection<ComingSoonOutputDto>, ICollection<ComingSoonViewModel>>(comingSoon);
             var genres = await genreService.GetGenres();
 
             var movies = new MovieListViewModel()
@@ -70,18 +52,7 @@ namespace MoreMovies.Web.Controllers
                 Genres = genres
             };
 
-
             return this.View(movies);
-        }
-
-        public IActionResult HomePage()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

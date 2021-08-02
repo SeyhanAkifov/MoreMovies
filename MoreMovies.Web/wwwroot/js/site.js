@@ -113,6 +113,9 @@ infoButton.addEventListener('click', (e) => {
 
 });
 
+//Preload logo
+
+
 
 
 

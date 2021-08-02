@@ -45,12 +45,16 @@ namespace MoreMovie.Web.Tests.Controller
             var topLiked = await movieService.GetTopLikedMovie();
             var topCommented = await movieService.GetTopCommentedMovie();
             var newest = await movieService.GetNewestAddedMovie();
+            var news = await newsService.GetNewsForHomePage();
+            var comingSoon = await comingSoonService.GetForHomePage();
 
             var indexViewModel = Assert.IsType<MovieListViewModel>(model);
 
             Assert.Equal(topLiked.Count, indexViewModel.TopLiked.Count);
             Assert.Equal(topCommented.Count, indexViewModel.TopCommented.Count);
             Assert.Equal(newest.Count, indexViewModel.Newest.Count);
+            Assert.Equal(news.Count, indexViewModel.News.Count);
+            Assert.Equal(comingSoon.Count, indexViewModel.ComingSoon.Count);
 
         }
 

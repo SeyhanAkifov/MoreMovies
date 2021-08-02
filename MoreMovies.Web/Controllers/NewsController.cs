@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MoreMovies.Models;
 using MoreMovies.Services.Dto.Input;
+using MoreMovies.Services.Dto.Output;
 using MoreMovies.Services.Interfaces;
 using MoreMovies.Web.Models.News;
 using System.Collections.Generic;
@@ -52,7 +52,7 @@ namespace MoreMovies.Web.Controllers
         public async Task<IActionResult> All()
         {
             var news = await this.newsService.GetAllNews();
-            var newsResult = mapper.Map<ICollection<News>, ICollection<NewsViewModel>>(news);
+            var newsResult = mapper.Map<ICollection<NewsOutputDto>, ICollection<NewsViewModel>>(news);
 
             return this.View(newsResult);
         }
@@ -61,7 +61,7 @@ namespace MoreMovies.Web.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var news = await this.newsService.GetNewsWithId(id);
-            var newsResult = mapper.Map<News, NewsViewModel>(news);
+            var newsResult = mapper.Map<NewsOutputDto, NewsViewModel>(news);
 
             return this.View(newsResult);
         }

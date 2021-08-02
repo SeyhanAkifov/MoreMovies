@@ -10,6 +10,7 @@
 
 </head>
 <body>
+    <div class="se-pre-con"></div>
     <span id="status" class="text-danger"></span>
     <header>
         <nav class="navbar navbar-expand-md navbar-toggleable-sm navbar-light  border-bottom box-shadow mb-3">
@@ -24,6 +25,7 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item"><a class="nav-link text-white" asp-controller="Movie" asp-action="MyMovies">My Movies</a></li>
+                            <li class="nav-item"><a class="nav-link text-white" asp-controller="Movie" asp-action="MyLiked">My Liked</a></li>
                             <li class="nav-item"><a class="nav-link text-white" asp-controller="Movie" asp-action="Add">Add Movie</a></li>
                         }
 
@@ -82,5 +84,14 @@
 
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
+
 </body>
+<script>
+    $(window).load(function () {
+        // Animate loader off screen
+        $(".se-pre-con").fadeOut("slow");;
+    });</script>
+
 </html>

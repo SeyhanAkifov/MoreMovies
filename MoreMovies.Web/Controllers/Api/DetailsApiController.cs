@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using MoreMovies.Models;
 using MoreMovies.Services.Dto.Output;
 using MoreMovies.Services.Interfaces;
-using MoreMovies.Web.Models;
 using MoreMovies.Web.Models.Movie;
 using System.Threading.Tasks;
 

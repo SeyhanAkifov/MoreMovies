@@ -1,6 +1,4 @@
-﻿using MoreMovies.Models;
-using MoreMovies.Services.Dto;
-using MoreMovies.Services.Dto.Input;
+﻿using MoreMovies.Services.Dto.Input;
 using MoreMovies.Services.Dto.Output;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -15,11 +13,11 @@ namespace MoreMovies.Services.Interfaces
 
         public Task<int> SearchMovie(string name);
 
-        public Task<ICollection<Movie>> SearchMovieByGenre(string genre);
+        public Task<ICollection<MovieOutputDto>> SearchMovieByGenre(string genre);
 
-        public Task<ICollection<Movie>> SearchMovieByYear(string year);
+        public Task<ICollection<MovieOutputDto>> SearchMovieByYear(string year);
 
-        public Task LikeMovie(int id);
+        public Task LikeMovie(int id, string userId);
 
         public Task AddComment(AddCommentInputModel model);
 
@@ -27,24 +25,28 @@ namespace MoreMovies.Services.Interfaces
 
         public Task<MovieOutputDto> GetMovieWithId(int id);
 
-        public Task<ICollection<Movie>> GetAllMovie();
+        public Task<ICollection<MovieOutputDto>> GetAllMovie();
 
-        public Task<ICollection<Movie>> GetAllMyMovie(string email);
+        public Task<ICollection<MovieOutputDto>> GetAllMyMovie(string email);
 
-        public Task<ICollection<Movie>> GetTopCommentedMovie();
+        public Task<ICollection<MovieOutputDto>> GetAllMyLiked(string userName);
 
-        public Task<ICollection<Movie>> GetTopCommentedAllMovie();
+        public Task<ICollection<MovieOutputDto>> GetTopCommentedMovie();
 
-        public Task<ICollection<Movie>> GetTopLikedMovie();
+        public Task<ICollection<MovieOutputDto>> GetTopCommentedAllMovie();
 
-        public Task<ICollection<Movie>> GetTopLikedAllMovie();
+        public Task<ICollection<MovieOutputDto>> GetTopLikedMovie();
 
-        public Task<ICollection<Movie>> GetNewestAddedMovie();
+        public Task<ICollection<MovieOutputDto>> GetTopLikedAllMovie();
 
-        public Task<ICollection<Movie>> GetNewestAddedAllMovie();
+        public Task<ICollection<MovieOutputDto>> GetNewestAddedMovie();
+
+        public Task<ICollection<MovieOutputDto>> GetNewestAddedAllMovie();
 
         public Task Ratemovie(int rating, int movieId);
 
         public Task<DetailsOutputDto> GetDetails(int id);
+
+        public bool IsUserLiked(int id, string userId);
     }
 }

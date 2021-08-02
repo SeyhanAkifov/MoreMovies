@@ -2,6 +2,7 @@
 using MoreMovies.Data;
 using MoreMovies.Models;
 using MoreMovies.Services.Dto.Input;
+using MoreMovies.Services.Dto.Output;
 using MoreMovies.Services.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,25 +41,48 @@ namespace MoreMovies.Services
             await this.db.SaveChangesAsync();
         }
 
-        public async Task<ICollection<News>> GetAllNews()
+        public async Task<ICollection<NewsOutputDto>> GetAllNews()
         {
-            var news = await this.db.News.Select(x => x).ToArrayAsync();
+            var news = await this.db.News
+                .Select(x => new NewsOutputDto
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Description = x.Description
+                })
+                .ToArrayAsync();
 
             return news;
         }
 
-        public async Task<ICollection<News>> GetNewsForHomePage()
+        public async Task<ICollection<NewsOutputDto>> GetNewsForHomePage()
         {
-            var news = await this.db.News.Select(x => x).OrderByDescending(x => x.AddedOn).Take(3).ToArrayAsync();
+            var news = await this.db.News
+                .OrderByDescending(x => x.AddedOn)
+                .Take(3)
+                .Select(x => new NewsOutputDto 
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Description = x.Description
+                })
+                .ToArrayAsync();
 
             return news;
         }
 
-        public async Task<News> GetNewsWithId(int id)
+        public async Task<NewsOutputDto> GetNewsWithId(int id)
         {
             var news = await this.db.News.FindAsync(id);
+            
+            var result  = new NewsOutputDto
+            {
+                Id = news.Id,
+                Title = news.Title,
+                Description = news.Description
+            };
 
-            return news;
+            return result;
         }
     }
 }

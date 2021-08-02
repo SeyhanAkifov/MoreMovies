@@ -2,6 +2,7 @@
 using MoreMovies.Data;
 using MoreMovies.Models;
 using MoreMovies.Services.Dto.Input;
+using MoreMovies.Services.Dto.Output;
 using MoreMovies.Services.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,46 +21,72 @@ namespace MoreMovies.Services
 
         public async Task Add(ComingSoonAddModel model)
         {
-            var item = new ComingSoon()
+            var comingSoon = new ComingSoon()
             {
                 Title = model.Title,
                 Description = model.Description,
                 ImageUrl = model.ImageUrl
             };
 
-            this.db.ComingSoons.Add(item);
+            this.db.ComingSoons.Add(comingSoon);
 
             await this.db.SaveChangesAsync();
         }
 
         public async Task Delete(int id)
         {
-            var item = await this.db.ComingSoons.FindAsync(id);
+            var comingSoon = await this.db.ComingSoons.FindAsync(id);
 
-            this.db.ComingSoons.Remove(item);
+            this.db.ComingSoons.Remove(comingSoon);
 
             await this.db.SaveChangesAsync();
         }
 
-        public async Task<ICollection<ComingSoon>> GetAll()
+        public async Task<ICollection<ComingSoonOutputDto>> GetAll()
         {
-            var item = await this.db.ComingSoons.Select(x => x).ToArrayAsync();
+            var comingSoon = await this.db.ComingSoons
+                .Select(x => new ComingSoonOutputDto
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Description = x.Description,
+                    ImageUrl = x.ImageUrl
+                })
+                .ToArrayAsync();
 
-            return item;
+            return comingSoon;
         }
 
-        public async Task<ICollection<ComingSoon>> GetForHomePage()
+        public async Task<ICollection<ComingSoonOutputDto>> GetForHomePage()
         {
-            var item = await this.db.ComingSoons.Select(x => x).OrderByDescending(x => x.AddedOn).Take(2).ToArrayAsync();
+            var comingSoon = await this.db.ComingSoons
+                .OrderByDescending(x => x.AddedOn)
+                .Take(2)
+                 .Select(x => new ComingSoonOutputDto
+                 {
+                     Id = x.Id,
+                     Title = x.Title,
+                     Description = x.Description,
+                     ImageUrl = x.ImageUrl
+                 })
+                 .ToArrayAsync();
 
-            return item;
+            return comingSoon;
         }
 
-        public async Task<ComingSoon> GetWithId(int id)
+        public async Task<ComingSoonOutputDto> GetWithId(int id)
         {
-            var news = await this.db.ComingSoons.FindAsync(id);
+            var comingSoon = await this.db.ComingSoons.FindAsync(id);
 
-            return news;
+            var result = new ComingSoonOutputDto
+            {
+                Id = comingSoon.Id,
+                Title = comingSoon.Title,
+                Description = comingSoon.Description,
+                ImageUrl = comingSoon.ImageUrl
+            };
+
+            return result;
         }
     }
 }

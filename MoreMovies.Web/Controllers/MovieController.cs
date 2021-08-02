@@ -2,14 +2,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using MoreMovies.Models;
-using MoreMovies.Services.Dto;
 using MoreMovies.Services.Dto.Input;
 using MoreMovies.Services.Dto.Output;
 using MoreMovies.Services.Interfaces;
 using MoreMovies.Web.Hubs;
 using MoreMovies.Web.Models;
-using MoreMovies.Web.Models.Movie;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -49,6 +46,9 @@ namespace MoreMovies.Web.Controllers
             if (id != 0)
             {
                 var movie = await movieService.GetMovieWithId(id);
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                movie.IsUserLiked = movieService.IsUserLiked(id, userId);
 
                 var result = mapper.Map<MovieOutputDto, MovieViewModel>(movie);
 
@@ -120,7 +120,6 @@ namespace MoreMovies.Web.Controllers
                 return View("Add", model);
             }
 
-            //model.Creator = User.FindFirstValue(ClaimTypes.Email);
             await movieService.AddMovie(model);
 
             return RedirectToAction("Index", "Home");
@@ -151,7 +150,6 @@ namespace MoreMovies.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                
                 return View("Edit", model);
             }
             await movieService.EditMovieWithId(id, model);
@@ -163,9 +161,20 @@ namespace MoreMovies.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> MyMovies()
         {
+            var userName = User.FindFirstValue(ClaimTypes.Email);
+            var movies = await movieService.GetAllMyMovie(userName);
+            var result = mapper.Map<ICollection<MovieOutputDto>, ICollection<MovieViewModel>>(movies);
+
+            return View(result);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> MyLiked()
+        {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var movies = await movieService.GetAllMyMovie(userId);
-            var result = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(movies);
+            var movies = await movieService.GetAllMyLiked(userId);
+            var result = mapper.Map<ICollection<MovieOutputDto>, ICollection<MovieViewModel>>(movies);
 
             return View(result);
         }
@@ -183,7 +192,12 @@ namespace MoreMovies.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Like(int id)
         {
-            await movieService.LikeMovie(id);
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!movieService.IsUserLiked(id, userId))
+            {
+                await movieService.LikeMovie(id, userId);
+            }
 
             return RedirectToAction("Details", "Movie", new { id });
         }
@@ -203,9 +217,8 @@ namespace MoreMovies.Web.Controllers
             await movieService.AddComment(model);
             var movie = await movieService.GetMovieWithId(model.MovieId);
             await this.movieHub.Clients.All.SendAsync("NewMessage", model.UserId, movie.Title);
-
-
-            return RedirectToAction("Details", "Movie", new {id});
+            
+            return RedirectToAction("Details", "Movie", new { id });
         }
 
         [Authorize]
@@ -237,7 +250,7 @@ namespace MoreMovies.Web.Controllers
         public async Task<IActionResult> SearchByGenre(string genre)
         {
             var movies = await movieService.SearchMovieByGenre(genre);
-            var result = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(movies);
+            var result = mapper.Map<ICollection<MovieOutputDto>, ICollection<MovieViewModel>>(movies);
 
             return View("All", result);
         }
@@ -246,7 +259,7 @@ namespace MoreMovies.Web.Controllers
         public async Task<IActionResult> SearchByYear(string year)
         {
             var movies = await movieService.SearchMovieByYear(year);
-            var result = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(movies);
+            var result = mapper.Map<ICollection<MovieOutputDto>, ICollection<MovieViewModel>>(movies);
 
             return View("All", result);
         }
@@ -256,7 +269,7 @@ namespace MoreMovies.Web.Controllers
         {
 
             var movies = await movieService.GetAllMovie();
-            var result = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(movies);
+            var result = mapper.Map<ICollection<MovieOutputDto>, ICollection<MovieViewModel>>(movies);
 
             return this.View(result);
         }
@@ -266,7 +279,7 @@ namespace MoreMovies.Web.Controllers
         {
 
             var movies = await movieService.GetNewestAddedAllMovie();
-            var result = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(movies);
+            var result = mapper.Map<ICollection<MovieOutputDto>, ICollection<MovieViewModel>>(movies);
 
             return this.View(result);
         }
@@ -276,7 +289,7 @@ namespace MoreMovies.Web.Controllers
         {
 
             var movies = await movieService.GetTopCommentedMovie();
-            var result = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(movies);
+            var result = mapper.Map<ICollection<MovieOutputDto>, ICollection<MovieViewModel>>(movies);
 
             return this.View(result);
         }
@@ -286,7 +299,7 @@ namespace MoreMovies.Web.Controllers
         {
 
             var movies = await movieService.GetTopCommentedAllMovie();
-            var result = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(movies);
+            var result = mapper.Map<ICollection<MovieOutputDto>, ICollection<MovieViewModel>>(movies);
 
             return this.View(result);
         }
@@ -296,7 +309,7 @@ namespace MoreMovies.Web.Controllers
         {
 
             var movies = await movieService.GetTopLikedMovie();
-            var result = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(movies);
+            var result = mapper.Map<ICollection<MovieOutputDto>, ICollection<MovieViewModel>>(movies);
 
             return this.View(result);
         }
@@ -304,9 +317,8 @@ namespace MoreMovies.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> AllTopLiked()
         {
-
             var movies = await movieService.GetTopLikedAllMovie();
-            var result = mapper.Map<ICollection<Movie>, ICollection<MovieViewModel>>(movies);
+            var result = mapper.Map<ICollection<MovieOutputDto>, ICollection<MovieViewModel>>(movies);
 
             return this.View(result);
         }

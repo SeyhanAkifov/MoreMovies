@@ -15,6 +15,8 @@ namespace MoreMovies.Services.Dto.Output
 
         public int Likes { get; set; }
 
+        public bool IsUserLiked { get; set; }
+
         public string Creator { get; set; }
 
         public string HomePage { get; set; }

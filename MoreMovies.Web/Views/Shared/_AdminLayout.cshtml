@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Find More Movies</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
     @*<link rel="stylesheet" href="~/css/site.css" />*@
     <link rel="stylesheet" href="~/css/style.css" />
     
 </head>
 <body>
+    <div class="se-pre-con"></div>
     <span id="status" class="text-danger"></span>
     <header>
         <nav class="navbar navbar-expand-md navbar-toggleable-sm navbar-light  border-bottom box-shadow mb-3">
@@ -81,8 +83,13 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+<script>$(window).load(function () {
+        // Animate loader off screen
+        $(".se-pre-con").fadeOut("slow");;
+    });</script>
 </html>

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MoreMovies.Data;
 using MoreMovies.Services.Interfaces;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace MoreMovies.Services
@@ -22,5 +23,7 @@ namespace MoreMovies.Services
 
             return users;
         }
+
+        
     }
 }

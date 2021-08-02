@@ -21,7 +21,7 @@ namespace MoreMovie.Web.Tests.Service
             Assert.NotNull(result);
             Assert.Equal("Test", result.Title);
             Assert.Equal("Test", result.Description);
-            Assert.Equal("01/01/2020", result.AddedOn.ToString());
+            
         }
 
         private static INewsService GetNewsService()
