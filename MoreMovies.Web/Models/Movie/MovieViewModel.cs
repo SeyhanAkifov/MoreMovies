@@ -1,8 +1,4 @@
-﻿using MoreMovies.Models;
-using System;
-using System.Collections.Generic;
-
-namespace MoreMovies.Web.Models
+﻿namespace MoreMovies.Web.Models
 {
     public class MovieViewModel
     {
@@ -10,23 +6,9 @@ namespace MoreMovies.Web.Models
 
         public string Title { get; set; }
 
-        public string Description { get; set; }
-
-        public string Genre { get; set; }
-
-        public string Language { get; set; }
-
-        public string Country { get; set; }
-
         public int Likes { get; set; }
 
-        public DateTime ReleaseDate { get; set; }
-
-        public decimal Budget { get; set; }
-
         public string HomePage { get; set; }
-
-        public string Creator { get; set; }
 
         public int Rating { get; set; }
 
@@ -36,8 +18,6 @@ namespace MoreMovies.Web.Models
 
         public bool IsUserLiked { get; set; }
 
-        public List<Comment> Comments { get; set; }
-
-        public List<string> Actors { get; set; }
+        public int CommentsCount { get; set; }
     }
 }

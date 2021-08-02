@@ -7,6 +7,7 @@ using MoreMovies.Services.Dto.Output;
 using MoreMovies.Services.Interfaces;
 using MoreMovies.Web.Hubs;
 using MoreMovies.Web.Models;
+using MoreMovies.Web.Models.Movie;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -16,7 +17,6 @@ namespace MoreMovies.Web.Controllers
 {
     public class MovieController : Controller
     {
-
         private readonly IMovieService movieService;
         private readonly ICommentService commentService;
         private readonly IActorService actorService;
@@ -27,7 +27,15 @@ namespace MoreMovies.Web.Controllers
         private readonly IMapper mapper;
 
 
-        public MovieController(IMovieService movieService, IMapper mapper, ICommentService commentService, IActorService actorService, ILanguageService languageService, IGenreService genreService, ICountryService countryService, IHubContext<MovieHub> movieHub)
+        public MovieController(
+            IMovieService movieService,
+            IMapper mapper,
+            ICommentService commentService,
+            IActorService actorService,
+            ILanguageService languageService,
+            IGenreService genreService,
+            ICountryService countryService,
+            IHubContext<MovieHub> movieHub)
         {
             this.movieService = movieService;
             this.mapper = mapper;
@@ -50,7 +58,7 @@ namespace MoreMovies.Web.Controllers
 
                 movie.IsUserLiked = movieService.IsUserLiked(id, userId);
 
-                var result = mapper.Map<MovieOutputDto, MovieViewModel>(movie);
+                var result = mapper.Map<MovieDetailOutputDto, MovieDetailsViewModel>(movie);
 
                 result.Comments = this.commentService.GetMovieComments(result.Id);
 
@@ -70,7 +78,6 @@ namespace MoreMovies.Web.Controllers
             await movieService.Ratemovie(rating, movieId);
 
             return RedirectToAction("Details", "Movie", new { Id = movieId });
-
         }
 
         [Authorize]
@@ -136,10 +143,8 @@ namespace MoreMovies.Web.Controllers
             {
                 return RedirectToAction("Index", "Home");
             };
-
-
-
-            var result = mapper.Map<MovieOutputDto, EditMovieInputModel>(movie);
+            
+            var result = mapper.Map<MovieDetailOutputDto, EditMovieInputModel>(movie);
 
             return this.View(result);
         }
@@ -152,6 +157,7 @@ namespace MoreMovies.Web.Controllers
             {
                 return View("Edit", model);
             }
+
             await movieService.EditMovieWithId(id, model);
 
             return RedirectToAction("Details", "Movie", new { id });
@@ -217,7 +223,7 @@ namespace MoreMovies.Web.Controllers
             await movieService.AddComment(model);
             var movie = await movieService.GetMovieWithId(model.MovieId);
             await this.movieHub.Clients.All.SendAsync("NewMessage", model.UserId, movie.Title);
-            
+
             return RedirectToAction("Details", "Movie", new { id });
         }
 

@@ -1,5 +1,6 @@
 ﻿using MoreMovies.Models;
 using MoreMovies.Services.Dto.Input;
+using MoreMovies.Services.Dto.Output;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,6 +12,6 @@ namespace MoreMovies.Services.Interfaces
 
         public Task Delete();
 
-        public List<Comment> GetMovieComments(int id);
+        public List<CommentOutputDto> GetMovieComments(int id);
     }
 }

@@ -15,10 +15,6 @@ namespace SocialNetworkCustom.Web.MappingConfiguration
 
         public ApplicationProfile()
         {
-            //this.CreateMap<Movie, MovieViewModel>()
-            //    .ForMember(x => x.Comments, y => y.MapFrom(s => s.Comments.Select(x => x.Comment).ToList()))
-            //    .ForMember(x => x.Actors, y => y.MapFrom(s => s.Actors.Where(z => z.MovieId == s.Id).Select(x => x.Actor.Name).ToList()));
-
             this.CreateMap<IdentityUser, MyProfileViewModel>()
                .ForMember(x => x.Id, y => y.MapFrom(s => s.Id))
                .ForMember(x => x.Email, y => y.MapFrom(s => s.Email));
@@ -26,16 +22,17 @@ namespace SocialNetworkCustom.Web.MappingConfiguration
             this.CreateMap<NewsOutputDto, NewsViewModel>();
 
             this.CreateMap<ComingSoonOutputDto, ComingSoonViewModel>();
-
+            
+            this.CreateMap<DetailsOutputDto, MovieDetailsApiModel>();
+            
             this.CreateMap<DetailsOutputDto, MovieDetailsViewModel>();
-
+            
             this.CreateMap<MovieOutputDto, EditMovieInputModel>();
 
-            this.CreateMap<MovieOutputDto, MovieViewModel>()
-                .ForMember(x => x.Comments, y => y.MapFrom(s => s.Comments.Select(x => x.Comment).ToList()))
-                .ForMember(x => x.Actors, y => y.MapFrom(s => s.Actors.Where(z => z.MovieId == s.Id).Select(x => x.Actor.Name).ToList()));
+            this.CreateMap<MovieOutputDto, MovieViewModel>();
+            
+            this.CreateMap<MovieDetailOutputDto, MovieDetailsViewModel>();
 
         }
-
     }
 }

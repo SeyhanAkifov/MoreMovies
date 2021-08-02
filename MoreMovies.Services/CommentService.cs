@@ -1,6 +1,7 @@
 ﻿using MoreMovies.Data;
 using MoreMovies.Models;
 using MoreMovies.Services.Dto.Input;
+using MoreMovies.Services.Dto.Output;
 using MoreMovies.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,7 @@ namespace MoreMovies.Services
             return comment;
         }
 
-        public List<Comment> GetMovieComments(int id)
+        public List<CommentOutputDto> GetMovieComments(int id)
         {
             var d = this.db.MovieComments
                 .Where(x => x.MovieId == id)
@@ -44,6 +45,13 @@ namespace MoreMovies.Services
                 b => b.Id,
                 (a, b) => b)
                 .OrderByDescending(x => x.CreatedOn)
+                .Select(x => new CommentOutputDto 
+                {
+                    Id = x.Id,
+                    Description = x.Description,
+                    CreatedOn = x.CreatedOn,
+                    UserEmail = x.UserEmail
+                })
                 .ToList();
 
             return d;

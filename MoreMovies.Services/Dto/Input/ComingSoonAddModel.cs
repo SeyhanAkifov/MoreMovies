@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
 using static MoreMovies.Models.DataConstants;
 
 namespace MoreMovies.Services.Dto.Input

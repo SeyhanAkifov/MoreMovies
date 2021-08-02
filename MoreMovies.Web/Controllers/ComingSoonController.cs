@@ -12,7 +12,6 @@ namespace MoreMovies.Web.Controllers
 {
     public class ComingSoonController : Controller
     {
-
         private readonly IComingSoonService comingSoonService;
         private readonly IMapper mapper;
 

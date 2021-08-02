@@ -34,14 +34,14 @@ namespace MoreMovies.Web.Controllers
             var newestAddedMovies = await service.GetNewestAddedMovie();
             var news = await newsService.GetNewsForHomePage();
             var comingSoon = await comingSoonService.GetForHomePage();
+            var genres = await genreService.GetGenres();
 
             var topCommentedResult = mapper.Map<ICollection<MovieOutputDto>, ICollection<MovieViewModel>>(topcomentedMovies);
             var topLikedResult = mapper.Map<ICollection<MovieOutputDto>, ICollection<MovieViewModel>>(topLikedMovies);
             var newestAddedResult = mapper.Map<ICollection<MovieOutputDto>, ICollection<MovieViewModel>>(newestAddedMovies);
             var newsResult = mapper.Map<ICollection<NewsOutputDto>, ICollection<NewsViewModel>>(news);
             var comingSoonResult = mapper.Map<ICollection<ComingSoonOutputDto>, ICollection<ComingSoonViewModel>>(comingSoon);
-            var genres = await genreService.GetGenres();
-
+            
             var movies = new MovieListViewModel()
             {
                 TopCommented = topCommentedResult,

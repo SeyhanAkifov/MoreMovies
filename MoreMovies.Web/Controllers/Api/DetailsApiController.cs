@@ -20,11 +20,10 @@ namespace MoreMovies.Web.Controllers.Api
             this.mapper = mapper;
         }
 
-
-        public async Task<MovieDetailsViewModel> GetDetails(int id)
+        public async Task<MovieDetailsApiModel> GetDetails(int id)
         {
             var details = await movieService.GetDetails(id);
-            var result = mapper.Map<DetailsOutputDto, MovieDetailsViewModel>(details);
+            var result = mapper.Map<DetailsOutputDto, MovieDetailsApiModel>(details);
 
             return result;
         }

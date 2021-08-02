@@ -23,7 +23,7 @@ namespace MoreMovies.Services.Interfaces
 
         public Task EditMovieWithId(int id, EditMovieInputModel model);
 
-        public Task<MovieOutputDto> GetMovieWithId(int id);
+        public Task<MovieDetailOutputDto> GetMovieWithId(int id);
 
         public Task<ICollection<MovieOutputDto>> GetAllMovie();
 

@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 
@@ -34,7 +33,7 @@ namespace MoreMovies.Services
 
         public async Task AddMovie(AddMovieInputModel model)
         {
-           
+
             var language = db.Languages.FirstOrDefault(x => x.Name == model.Language);
 
             if (language == null)
@@ -99,9 +98,9 @@ namespace MoreMovies.Services
                     movie.Actors.Add(new MovieActor { Actor = actor });
                 }
             }
-            
+
             var result = db.Movies.Add(movie);
-            
+
             db.SaveChanges();
         }
 
@@ -129,7 +128,7 @@ namespace MoreMovies.Services
         public async Task LikeMovie(int id, string userId)
         {
             var movie = db.Movies.Find(id);
-            
+
 
             movie.Likes++;
 
@@ -157,19 +156,16 @@ namespace MoreMovies.Services
                 .Include(x => x.Language.Language)
                 .Include(x => x.Country.Country)
                 .Include(x => x.Comments)
-                .Select(x => new MovieOutputDto 
+                .Select(x => new MovieOutputDto
                 {
                     Id = x.Id,
                     Title = x.Title,
-                    Creator = x.Creator,
                     Likes = x.Likes,
                     Rating = x.Rating,
                     RatingCount = x.RatingCount,
                     ImageUrl = x.ImageUrl,
-                    Comments = x.Comments,
-                    Actors = x.Actors,
+                    CommentsCount = x.Comments.Count,
                     HomePage = x.HomePage,
-                    IsUserLiked = x.IsUserLiked,
                 })
                 //.Take(6)
                 .ToArrayAsync();
@@ -187,42 +183,39 @@ namespace MoreMovies.Services
                 {
                     Id = x.Id,
                     Title = x.Title,
-                    Creator = x.Creator,
                     Likes = x.Likes,
                     Rating = x.Rating,
                     RatingCount = x.RatingCount,
                     ImageUrl = x.ImageUrl,
-                    Comments = x.Comments,
-                    Actors = x.Actors,
-                    HomePage = x.HomePage,
-                    IsUserLiked = x.IsUserLiked,
+                    CommentsCount = x.Comments.Count,
+                    HomePage = x.HomePage
                 })
                 .ToArrayAsync();
 
             return movies;
         }
 
-        public async Task<MovieOutputDto> GetMovieWithId(int id)
+        public async Task<MovieDetailOutputDto> GetMovieWithId(int id)
         {
             Movie movie = await db.Movies.FindAsync(id);
-           
-            
-            var result = new MovieOutputDto
+
+
+            var result = new MovieDetailOutputDto
             {
                 Id = movie.Id,
                 Title = movie.Title,
-                Creator = movie.Creator,
                 Likes = movie.Likes,
+                IsUserLiked = movie.IsUserLiked,
                 Rating = movie.Rating,
                 RatingCount = movie.RatingCount,
                 ImageUrl = movie.ImageUrl,
                 Comments = movie.Comments,
                 Actors = movie.Actors,
                 HomePage = movie.HomePage,
-                IsUserLiked = movie.IsUserLiked,
+                Creator = movie.Creator
             };
 
-            
+
 
 
             return result;
@@ -249,15 +242,12 @@ namespace MoreMovies.Services
                 {
                     Id = x.Id,
                     Title = x.Title,
-                    Creator = x.Creator,
                     Likes = x.Likes,
                     Rating = x.Rating,
                     RatingCount = x.RatingCount,
                     ImageUrl = x.ImageUrl,
-                    Comments = x.Comments,
-                    Actors = x.Actors,
-                    HomePage = x.HomePage,
-                    IsUserLiked = x.IsUserLiked,
+                    CommentsCount = x.Comments.Count,
+                    HomePage = x.HomePage
                 })
                 .ToArrayAsync();
 
@@ -271,21 +261,18 @@ namespace MoreMovies.Services
                 .Include(x => x.Language.Language)
                 .Include(x => x.Country.Country)
                 .Include(x => x.Comments)
+                .OrderByDescending(x => x.Comments.Count)
                 .Select(x => new MovieOutputDto
                 {
                     Id = x.Id,
                     Title = x.Title,
-                    Creator = x.Creator,
                     Likes = x.Likes,
                     Rating = x.Rating,
                     RatingCount = x.RatingCount,
                     ImageUrl = x.ImageUrl,
-                    Comments = x.Comments,
-                    Actors = x.Actors,
-                    HomePage = x.HomePage,
-                    IsUserLiked = x.IsUserLiked,
+                    CommentsCount = x.Comments.Count,
+                    HomePage = x.HomePage
                 })
-                .OrderByDescending(x => x.Comments.Count)
                 .ToArrayAsync();
 
             return movies;
@@ -304,15 +291,12 @@ namespace MoreMovies.Services
                 {
                     Id = x.Id,
                     Title = x.Title,
-                    Creator = x.Creator,
                     Likes = x.Likes,
                     Rating = x.Rating,
                     RatingCount = x.RatingCount,
                     ImageUrl = x.ImageUrl,
-                    Comments = x.Comments,
-                    Actors = x.Actors,
-                    HomePage = x.HomePage,
-                    IsUserLiked = x.IsUserLiked,
+                    CommentsCount = x.Comments.Count,
+                    HomePage = x.HomePage
                 })
                 .ToArrayAsync();
 
@@ -331,15 +315,12 @@ namespace MoreMovies.Services
                 {
                     Id = x.Id,
                     Title = x.Title,
-                    Creator = x.Creator,
                     Likes = x.Likes,
                     Rating = x.Rating,
                     RatingCount = x.RatingCount,
                     ImageUrl = x.ImageUrl,
-                    Comments = x.Comments,
-                    Actors = x.Actors,
-                    HomePage = x.HomePage,
-                    IsUserLiked = x.IsUserLiked,
+                    CommentsCount = x.Comments.Count,
+                    HomePage = x.HomePage
                 })
                 .ToArrayAsync();
 
@@ -359,15 +340,12 @@ namespace MoreMovies.Services
                 {
                     Id = x.Id,
                     Title = x.Title,
-                    Creator = x.Creator,
                     Likes = x.Likes,
                     Rating = x.Rating,
                     RatingCount = x.RatingCount,
                     ImageUrl = x.ImageUrl,
-                    Comments = x.Comments,
-                    Actors = x.Actors,
-                    HomePage = x.HomePage,
-                    IsUserLiked = x.IsUserLiked,
+                    CommentsCount = x.Comments.Count,
+                    HomePage = x.HomePage
                 })
                 .ToArrayAsync();
 
@@ -386,15 +364,12 @@ namespace MoreMovies.Services
                 {
                     Id = x.Id,
                     Title = x.Title,
-                    Creator = x.Creator,
                     Likes = x.Likes,
                     Rating = x.Rating,
                     RatingCount = x.RatingCount,
                     ImageUrl = x.ImageUrl,
-                    Comments = x.Comments,
-                    Actors = x.Actors,
-                    HomePage = x.HomePage,
-                    IsUserLiked = x.IsUserLiked,
+                    CommentsCount = x.Comments.Count,
+                    HomePage = x.HomePage
                 })
                 .ToArrayAsync();
 
@@ -413,15 +388,12 @@ namespace MoreMovies.Services
                 {
                     Id = x.Id,
                     Title = x.Title,
-                    Creator = x.Creator,
                     Likes = x.Likes,
                     Rating = x.Rating,
                     RatingCount = x.RatingCount,
                     ImageUrl = x.ImageUrl,
-                    Comments = x.Comments,
-                    Actors = x.Actors,
-                    HomePage = x.HomePage,
-                    IsUserLiked = x.IsUserLiked,
+                    CommentsCount = x.Comments.Count,
+                    HomePage = x.HomePage
                 })
                 .ToArrayAsync();
 
@@ -440,15 +412,12 @@ namespace MoreMovies.Services
                 {
                     Id = x.Id,
                     Title = x.Title,
-                    Creator = x.Creator,
                     Likes = x.Likes,
                     Rating = x.Rating,
                     RatingCount = x.RatingCount,
                     ImageUrl = x.ImageUrl,
-                    Comments = x.Comments,
-                    Actors = x.Actors,
-                    HomePage = x.HomePage,
-                    IsUserLiked = x.IsUserLiked,
+                    CommentsCount = x.Comments.Count,
+                    HomePage = x.HomePage
                 })
                 .ToArrayAsync();
 
@@ -497,15 +466,12 @@ namespace MoreMovies.Services
                  {
                      Id = x.Id,
                      Title = x.Title,
-                     Creator = x.Creator,
                      Likes = x.Likes,
                      Rating = x.Rating,
                      RatingCount = x.RatingCount,
                      ImageUrl = x.ImageUrl,
-                     Comments = x.Comments,
-                     Actors = x.Actors,
-                     HomePage = x.HomePage,
-                     IsUserLiked = x.IsUserLiked,
+                     CommentsCount = x.Comments.Count,
+                     HomePage = x.HomePage
                  })
                  .ToArrayAsync();
 

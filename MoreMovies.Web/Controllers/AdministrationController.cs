@@ -23,7 +23,12 @@ namespace MoreMovie.Web.Controllers
         private readonly IComingSoonService comingSoonService;
         private readonly IUserService userService;
 
-        public AdministrationController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IMapper mapper, INewsService newsService, IComingSoonService comingSoonService, IUserService userService)
+        public AdministrationController(
+            UserManager<IdentityUser> userManager, 
+            RoleManager<IdentityRole> roleManager, 
+            IMapper mapper, INewsService newsService, 
+            IComingSoonService comingSoonService, 
+            IUserService userService)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
@@ -44,8 +49,7 @@ namespace MoreMovie.Web.Controllers
         {
             var comingSoon = await this.comingSoonService.GetAll();
             var comingSoonResult = mapper.Map<ICollection<ComingSoonOutputDto>, ICollection<ComingSoonViewModel>>(comingSoon);
-
-
+            
             return this.View(comingSoonResult);
         }
 
@@ -53,8 +57,7 @@ namespace MoreMovie.Web.Controllers
         public async Task<IActionResult> DeleteComingSoon(int id)
         {
             await this.comingSoonService.Delete(id);
-
-
+            
             return this.RedirectToAction("EditComingSoon");
         }
 
@@ -71,8 +74,7 @@ namespace MoreMovie.Web.Controllers
         public async Task<IActionResult> DeleteNews(int id)
         {
             await this.newsService.Delete(id);
-
-
+            
             return this.RedirectToAction("EditNews");
         }
 
@@ -144,7 +146,6 @@ namespace MoreMovie.Web.Controllers
                 {
                     UserId = user.Id,
                     UserName = user.UserName
-
                 };
 
                 if (await userManager.IsInRoleAsync(user, role.Name))
@@ -262,10 +263,8 @@ namespace MoreMovie.Web.Controllers
             }
             else
             {
-
                 var result = await userManager.DeleteAsync(user);
-
-
+                
                 if (result.Succeeded)
                 {
                     return RedirectToAction("All", "Administration");
@@ -273,7 +272,6 @@ namespace MoreMovie.Web.Controllers
             }
 
             return RedirectToAction("All", "Administration");
-
         }
 
         [HttpGet]
@@ -285,7 +283,5 @@ namespace MoreMovie.Web.Controllers
 
             return this.View(usersResult);
         }
-
-
     }
 }
