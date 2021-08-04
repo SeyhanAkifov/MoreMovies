@@ -45,13 +45,7 @@ namespace MoreMovies.Services
         public async Task<ICollection<ComingSoonOutputDto>> GetAll()
         {
             var comingSoon = await this.db.ComingSoons
-                .Select(x => new ComingSoonOutputDto
-                {
-                    Id = x.Id,
-                    Title = x.Title,
-                    Description = x.Description,
-                    ImageUrl = x.ImageUrl
-                })
+                .Select(x => GetComingSoonOutputDto(x))
                 .ToArrayAsync();
 
             return comingSoon;
@@ -62,13 +56,7 @@ namespace MoreMovies.Services
             var comingSoon = await this.db.ComingSoons
                 .OrderByDescending(x => x.AddedOn)
                 .Take(2)
-                 .Select(x => new ComingSoonOutputDto
-                 {
-                     Id = x.Id,
-                     Title = x.Title,
-                     Description = x.Description,
-                     ImageUrl = x.ImageUrl
-                 })
+                 .Select(x => GetComingSoonOutputDto(x))
                  .ToArrayAsync();
 
             return comingSoon;
@@ -78,15 +66,20 @@ namespace MoreMovies.Services
         {
             var comingSoon = await this.db.ComingSoons.FindAsync(id);
 
-            var result = new ComingSoonOutputDto
+            var result = GetComingSoonOutputDto(comingSoon);
+
+            return result;
+        }
+
+        private static ComingSoonOutputDto GetComingSoonOutputDto(ComingSoon comingSoon)
+        {
+            return new ComingSoonOutputDto
             {
                 Id = comingSoon.Id,
                 Title = comingSoon.Title,
                 Description = comingSoon.Description,
                 ImageUrl = comingSoon.ImageUrl
             };
-
-            return result;
         }
     }
 }

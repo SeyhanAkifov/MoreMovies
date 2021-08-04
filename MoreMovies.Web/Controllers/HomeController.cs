@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using MoreMovies.Services.Dto.Output;
 using MoreMovies.Services.Interfaces;
 using MoreMovies.Web.Models;
 using MoreMovies.Web.Models.News;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -16,26 +18,58 @@ namespace MoreMovies.Web.Controllers
         private readonly INewsService newsService;
         private readonly IComingSoonService comingSoonService;
         private readonly IMapper mapper;
+        private readonly IMemoryCache cache;
 
-        public HomeController(IMovieService service, IMapper mapper, INewsService newsService, IComingSoonService comingSoonService, IGenreService genreService)
+        public HomeController(IMovieService service, 
+            IMapper mapper, 
+            INewsService newsService, 
+            IComingSoonService comingSoonService, 
+            IGenreService genreService, 
+            IMemoryCache cache)
         {
             this.service = service;
             this.mapper = mapper;
             this.newsService = newsService;
             this.comingSoonService = comingSoonService;
             this.genreService = genreService;
+            this.cache = cache;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var topcomentedMovies = await service.GetTopCommentedMovie();
-            var topLikedMovies = await service.GetTopLikedMovie();
-            var newestAddedMovies = await service.GetNewestAddedMovie();
-            var news = await newsService.GetNewsForHomePage();
-            var comingSoon = await comingSoonService.GetForHomePage();
-            var genres = await genreService.GetGenres();
+            const string topcomentedMoviesCacheKey = "TopcomentedMoviesCasheKey";
+            const string topLikedMoviesCacheKey = "TopLikedMoviesCasheKey";
+            const string newsCacheKey = "NewsCasheKey";
+            const string comingSoonCacheKey = "ComingSoonCasheKey";
+            const string genresCacheKey = "GenresCasheKey";
 
+            var topcomentedMovies = this.cache.Get<ICollection<MovieOutputDto>>(topcomentedMoviesCacheKey);
+            var topLikedMovies = this.cache.Get<ICollection<MovieOutputDto>>(topLikedMoviesCacheKey);
+            var news = this.cache.Get<ICollection<NewsOutputDto>>(newsCacheKey);
+            var comingSoon = this.cache.Get<ICollection<ComingSoonOutputDto>>(comingSoonCacheKey);
+            var genres = this.cache.Get<ICollection<MoreMovies.Models.Genre>>(genresCacheKey);
+
+            var cacheOptions = new MemoryCacheEntryOptions()
+                .SetAbsoluteExpiration(TimeSpan.FromMinutes(15));
+
+            if (topcomentedMovies == null)
+            {
+                topcomentedMovies = await service.GetTopCommentedMovie();
+                topLikedMovies = await service.GetTopLikedMovie();
+                news = await newsService.GetNewsForHomePage();
+                comingSoon = await comingSoonService.GetForHomePage();
+                genres = await genreService.GetGenres();
+
+                this.cache.Set(topcomentedMoviesCacheKey, topcomentedMovies, cacheOptions);
+                this.cache.Set(topLikedMoviesCacheKey, topLikedMovies, cacheOptions);
+                this.cache.Set(newsCacheKey, news, cacheOptions);
+                this.cache.Set(comingSoonCacheKey, comingSoon, cacheOptions);
+                this.cache.Set(genresCacheKey, genres, cacheOptions);
+            }
+            
+            var newestAddedMovies = await service.GetNewestAddedMovie();
+            
             var topCommentedResult = mapper.Map<ICollection<MovieOutputDto>, ICollection<MovieViewModel>>(topcomentedMovies);
             var topLikedResult = mapper.Map<ICollection<MovieOutputDto>, ICollection<MovieViewModel>>(topLikedMovies);
             var newestAddedResult = mapper.Map<ICollection<MovieOutputDto>, ICollection<MovieViewModel>>(newestAddedMovies);

@@ -128,8 +128,7 @@ namespace MoreMovies.Services
         public async Task LikeMovie(int id, string userId)
         {
             var movie = db.Movies.Find(id);
-
-
+            
             movie.Likes++;
 
             this.db.UserMovies.Add(new UserMovie { MovieId = movie.Id, UserId = userId });
@@ -150,46 +149,22 @@ namespace MoreMovies.Services
 
         public async Task<ICollection<MovieOutputDto>> GetAllMovie()
         {
-
             ICollection<MovieOutputDto> movies = await db.Movies
                 .Include(x => x.Genre.Genre)
                 .Include(x => x.Language.Language)
                 .Include(x => x.Country.Country)
                 .Include(x => x.Comments)
-                .Select(x => new MovieOutputDto
-                {
-                    Id = x.Id,
-                    Title = x.Title,
-                    Likes = x.Likes,
-                    Rating = x.Rating,
-                    RatingCount = x.RatingCount,
-                    ImageUrl = x.ImageUrl,
-                    CommentsCount = x.Comments.Count,
-                    HomePage = x.HomePage,
-                })
-                //.Take(6)
+                .Select(x => GetMovieOutputDto(x))
                 .ToArrayAsync();
 
             return movies;
         }
-
+        
         public async Task<ICollection<MovieOutputDto>> GetAllMyMovie(string userName)
         {
-
-
             ICollection<MovieOutputDto> movies = await db.Movies
                 .Where(x => x.Creator == userName)
-                .Select(x => new MovieOutputDto
-                {
-                    Id = x.Id,
-                    Title = x.Title,
-                    Likes = x.Likes,
-                    Rating = x.Rating,
-                    RatingCount = x.RatingCount,
-                    ImageUrl = x.ImageUrl,
-                    CommentsCount = x.Comments.Count,
-                    HomePage = x.HomePage
-                })
+                .Select(x => GetMovieOutputDto(x))
                 .ToArrayAsync();
 
             return movies;
@@ -199,31 +174,11 @@ namespace MoreMovies.Services
         {
             Movie movie = await db.Movies.FindAsync(id);
 
-
-            var result = new MovieDetailOutputDto
-            {
-                Id = movie.Id,
-                Title = movie.Title,
-                Likes = movie.Likes,
-                IsUserLiked = movie.IsUserLiked,
-                Rating = movie.Rating,
-                RatingCount = movie.RatingCount,
-                ImageUrl = movie.ImageUrl,
-                Comments = movie.Comments,
-                Actors = movie.Actors,
-                HomePage = movie.HomePage,
-                Creator = movie.Creator
-            };
-
-
-
-
-            return result;
+            return GetMovieDetailOutputDto(movie);
         }
 
         public async Task<int> SearchMovie(string name)
         {
-
             var movie = await this.db.Movies.FirstOrDefaultAsync(x => x.Title.Contains(name));
 
             return movie != null ? movie.Id : 0;
@@ -238,17 +193,7 @@ namespace MoreMovies.Services
                 .Include(x => x.Comments)
                 .OrderByDescending(x => x.Comments.Count)
                 .Take(6)
-                .Select(x => new MovieOutputDto
-                {
-                    Id = x.Id,
-                    Title = x.Title,
-                    Likes = x.Likes,
-                    Rating = x.Rating,
-                    RatingCount = x.RatingCount,
-                    ImageUrl = x.ImageUrl,
-                    CommentsCount = x.Comments.Count,
-                    HomePage = x.HomePage
-                })
+                .Select(x => GetMovieOutputDto(x))
                 .ToArrayAsync();
 
             return movies;
@@ -262,17 +207,7 @@ namespace MoreMovies.Services
                 .Include(x => x.Country.Country)
                 .Include(x => x.Comments)
                 .OrderByDescending(x => x.Comments.Count)
-                .Select(x => new MovieOutputDto
-                {
-                    Id = x.Id,
-                    Title = x.Title,
-                    Likes = x.Likes,
-                    Rating = x.Rating,
-                    RatingCount = x.RatingCount,
-                    ImageUrl = x.ImageUrl,
-                    CommentsCount = x.Comments.Count,
-                    HomePage = x.HomePage
-                })
+                .Select(x => GetMovieOutputDto(x))
                 .ToArrayAsync();
 
             return movies;
@@ -287,17 +222,7 @@ namespace MoreMovies.Services
                 .Include(x => x.Comments)
                 .OrderByDescending(x => x.Likes)
                 .Take(6)
-                .Select(x => new MovieOutputDto
-                {
-                    Id = x.Id,
-                    Title = x.Title,
-                    Likes = x.Likes,
-                    Rating = x.Rating,
-                    RatingCount = x.RatingCount,
-                    ImageUrl = x.ImageUrl,
-                    CommentsCount = x.Comments.Count,
-                    HomePage = x.HomePage
-                })
+                .Select(x => GetMovieOutputDto(x))
                 .ToArrayAsync();
 
             return movies;
@@ -311,17 +236,7 @@ namespace MoreMovies.Services
                 .Include(x => x.Country.Country)
                 .Include(x => x.Comments)
                 .OrderByDescending(x => x.Likes)
-                .Select(x => new MovieOutputDto
-                {
-                    Id = x.Id,
-                    Title = x.Title,
-                    Likes = x.Likes,
-                    Rating = x.Rating,
-                    RatingCount = x.RatingCount,
-                    ImageUrl = x.ImageUrl,
-                    CommentsCount = x.Comments.Count,
-                    HomePage = x.HomePage
-                })
+                .Select(x => GetMovieOutputDto(x))
                 .ToArrayAsync();
 
             return movies;
@@ -336,17 +251,7 @@ namespace MoreMovies.Services
                 .Include(x => x.Comments)
                 .OrderByDescending(x => x.ReleaseDate)
                 .Take(6)
-                .Select(x => new MovieOutputDto
-                {
-                    Id = x.Id,
-                    Title = x.Title,
-                    Likes = x.Likes,
-                    Rating = x.Rating,
-                    RatingCount = x.RatingCount,
-                    ImageUrl = x.ImageUrl,
-                    CommentsCount = x.Comments.Count,
-                    HomePage = x.HomePage
-                })
+                .Select(x => GetMovieOutputDto(x))
                 .ToArrayAsync();
 
             return movies;
@@ -360,17 +265,7 @@ namespace MoreMovies.Services
                 .Include(x => x.Country.Country)
                 .Include(x => x.Comments)
                 .OrderByDescending(x => x.ReleaseDate)
-                .Select(x => new MovieOutputDto
-                {
-                    Id = x.Id,
-                    Title = x.Title,
-                    Likes = x.Likes,
-                    Rating = x.Rating,
-                    RatingCount = x.RatingCount,
-                    ImageUrl = x.ImageUrl,
-                    CommentsCount = x.Comments.Count,
-                    HomePage = x.HomePage
-                })
+                .Select(x => GetMovieOutputDto(x))
                 .ToArrayAsync();
 
             return movies;
@@ -384,17 +279,7 @@ namespace MoreMovies.Services
                 .Include(x => x.Country.Country)
                 .Include(x => x.Comments)
                 .Where(x => x.Genre.Genre.Name == genre)
-                .Select(x => new MovieOutputDto
-                {
-                    Id = x.Id,
-                    Title = x.Title,
-                    Likes = x.Likes,
-                    Rating = x.Rating,
-                    RatingCount = x.RatingCount,
-                    ImageUrl = x.ImageUrl,
-                    CommentsCount = x.Comments.Count,
-                    HomePage = x.HomePage
-                })
+                .Select(x => GetMovieOutputDto(x))
                 .ToArrayAsync();
 
             return movies;
@@ -408,17 +293,7 @@ namespace MoreMovies.Services
                 .Include(x => x.Country.Country)
                 .Include(x => x.Comments)
                 .Where(x => x.ReleaseDate.Year == int.Parse(year))
-                .Select(x => new MovieOutputDto
-                {
-                    Id = x.Id,
-                    Title = x.Title,
-                    Likes = x.Likes,
-                    Rating = x.Rating,
-                    RatingCount = x.RatingCount,
-                    ImageUrl = x.ImageUrl,
-                    CommentsCount = x.Comments.Count,
-                    HomePage = x.HomePage
-                })
+                .Select(x => GetMovieOutputDto(x))
                 .ToArrayAsync();
 
             return movies;
@@ -462,20 +337,43 @@ namespace MoreMovies.Services
         {
             ICollection<MovieOutputDto> movies = await db.UserMovies.Where(um => um.UserId == userId)
                  .Select(x => x.Movies)
-                 .Select(x => new MovieOutputDto
-                 {
-                     Id = x.Id,
-                     Title = x.Title,
-                     Likes = x.Likes,
-                     Rating = x.Rating,
-                     RatingCount = x.RatingCount,
-                     ImageUrl = x.ImageUrl,
-                     CommentsCount = x.Comments.Count,
-                     HomePage = x.HomePage
-                 })
+                 .Select(x => GetMovieOutputDto(x))
                  .ToArrayAsync();
 
             return movies;
+        }
+
+        private static MovieOutputDto GetMovieOutputDto(Movie movie)
+        {
+            return new MovieOutputDto
+            {
+                Id = movie.Id,
+                Title = movie.Title,
+                Likes = movie.Likes,
+                Rating = movie.Rating,
+                RatingCount = movie.RatingCount,
+                ImageUrl = movie.ImageUrl,
+                CommentsCount = movie.Comments.Count,
+                HomePage = movie.HomePage,
+            };
+        }
+
+        private static MovieDetailOutputDto GetMovieDetailOutputDto(Movie movie)
+        {
+            return new MovieDetailOutputDto
+            {
+                Id = movie.Id,
+                Title = movie.Title,
+                Likes = movie.Likes,
+                IsUserLiked = movie.IsUserLiked,
+                Rating = movie.Rating,
+                RatingCount = movie.RatingCount,
+                ImageUrl = movie.ImageUrl,
+                Comments = movie.Comments,
+                Actors = movie.Actors,
+                HomePage = movie.HomePage,
+                Creator = movie.Creator
+            };
         }
     }
 }

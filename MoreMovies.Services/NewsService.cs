@@ -44,12 +44,7 @@ namespace MoreMovies.Services
         public async Task<ICollection<NewsOutputDto>> GetAllNews()
         {
             var news = await this.db.News
-                .Select(x => new NewsOutputDto
-                {
-                    Id = x.Id,
-                    Title = x.Title,
-                    Description = x.Description
-                })
+                .Select(x => GetNewsOutputDto(x))
                 .ToArrayAsync();
 
             return news;
@@ -59,13 +54,8 @@ namespace MoreMovies.Services
         {
             var news = await this.db.News
                 .OrderByDescending(x => x.AddedOn)
-                .Take(3)
-                .Select(x => new NewsOutputDto 
-                {
-                    Id = x.Id,
-                    Title = x.Title,
-                    Description = x.Description
-                })
+                .Take(2)
+                .Select(x => GetNewsOutputDto(x))
                 .ToArrayAsync();
 
             return news;
@@ -74,15 +64,20 @@ namespace MoreMovies.Services
         public async Task<NewsOutputDto> GetNewsWithId(int id)
         {
             var news = await this.db.News.FindAsync(id);
-            
-            var result  = new NewsOutputDto
+
+            var result = GetNewsOutputDto(news);
+
+            return result;
+        }
+
+        private static NewsOutputDto GetNewsOutputDto(News news)
+        {
+            return new NewsOutputDto
             {
                 Id = news.Id,
                 Title = news.Title,
                 Description = news.Description
             };
-
-            return result;
         }
     }
 }
