@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
+using Moq;
 using MoreMovie.Web.Tests.Mocks;
 using MoreMovies.Models;
 using MoreMovies.Services;
 using MoreMovies.Web.Controllers;
 using MoreMovies.Web.Models;
 using SocialNetworkCustom.Web.MappingConfiguration;
+using System;
 using System.Linq;
 using Xunit;
 
@@ -17,8 +20,12 @@ namespace MoreMovie.Web.Tests.Controller
         public async void IndexShouldReturnViewWithCorrectModel()
         {
             //Arrange
+            
             var data = DatabaseMock.Instance;
             var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
+            var cache = new MemoryCache(new MemoryCacheOptions());
+
+
 
             data.Movies.AddRange(Enumerable.Range(0, 10).Select(i => new Movie()));
             data.SaveChanges();
@@ -31,7 +38,7 @@ namespace MoreMovie.Web.Tests.Controller
 
             var movieService = new MovieService(commentService, data, languageService, genreService, countryService, mapper);
 
-            var homeController = new HomeController(movieService, mapper, newsService, comingSoonService, genreService);
+            var homeController = new HomeController(movieService, mapper, newsService, comingSoonService, genreService, cache);
 
             //Act
             var result = await homeController.Index();
@@ -62,7 +69,7 @@ namespace MoreMovie.Web.Tests.Controller
         public void ErrorShouldReturnView()
         {
             //Arrange
-            var homeController = new HomeController(null, MapperMock.Instanse, null, null, null);
+            var homeController = new HomeController(null, MapperMock.Instanse, null, null, null, null);
 
             //Act
             var result = homeController.Error();

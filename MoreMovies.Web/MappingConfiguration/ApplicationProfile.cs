@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using MoreMovie.Web.Models.Administration;
+using MoreMovies.Web.Models.Administration;
 using MoreMovies.Services.Dto.Input;
 using MoreMovies.Services.Dto.Output;
 using MoreMovies.Web.Models;
+using MoreMovies.Web.Models.Cinema;
 using MoreMovies.Web.Models.Movie;
 using MoreMovies.Web.Models.News;
 using System.Linq;
@@ -32,6 +33,9 @@ namespace SocialNetworkCustom.Web.MappingConfiguration
             this.CreateMap<MovieOutputDto, MovieViewModel>();
             
             this.CreateMap<MovieDetailOutputDto, MovieDetailsViewModel>();
+
+            this.CreateMap<CinemaProjectionOutputDto, CinemaProjectionViewModel>()
+                .ForMember(x => x.CinemaHall, y => y.MapFrom(s => s.CinemaHall.Name));
 
         }
     }

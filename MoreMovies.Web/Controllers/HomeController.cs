@@ -60,7 +60,7 @@ namespace MoreMovies.Web.Controllers
                 news = await newsService.GetNewsForHomePage();
                 comingSoon = await comingSoonService.GetForHomePage();
                 genres = await genreService.GetGenres();
-
+                
                 this.cache.Set(topcomentedMoviesCacheKey, topcomentedMovies, cacheOptions);
                 this.cache.Set(topLikedMoviesCacheKey, topLikedMovies, cacheOptions);
                 this.cache.Set(newsCacheKey, news, cacheOptions);

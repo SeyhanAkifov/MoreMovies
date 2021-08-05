@@ -1,4 +1,4 @@
-﻿namespace MoreMovie.Web.Models.Administration
+﻿namespace MoreMovies.Web.Models.Administration
 {
     public class MyProfileViewModel
     {

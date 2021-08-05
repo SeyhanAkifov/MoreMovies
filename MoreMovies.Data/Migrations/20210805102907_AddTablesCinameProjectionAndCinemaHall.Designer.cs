@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MoreMovies.Data;
 
 namespace MoreMovies.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210805102907_AddTablesCinameProjectionAndCinemaHall")]
+    partial class AddTablesCinameProjectionAndCinemaHall
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -255,7 +257,10 @@ namespace MoreMovies.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CinemaHallId")
+                    b.Property<int>("CinameHallId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CinemaHallId")
                         .HasColumnType("int");
 
                     b.Property<string>("MovieName")
@@ -264,10 +269,6 @@ namespace MoreMovies.Data.Migrations
 
                     b.Property<DateTime>("ProjectionTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Time")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -605,9 +606,7 @@ namespace MoreMovies.Data.Migrations
                 {
                     b.HasOne("MoreMovies.Models.CinemaHall", "CinemaHall")
                         .WithMany()
-                        .HasForeignKey("CinemaHallId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CinemaHallId");
 
                     b.Navigation("CinemaHall");
                 });

@@ -1,0 +1,66 @@
+﻿@model ICollection<CinemaProjectionViewModel>
+
+<div class="container">
+    <div class="timetable-img text-center">
+        <img src="img/content/timetable.png" alt="">
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered text-center">
+            <thead>
+                <tr class="bg-light-gray">
+                    <th class="text-uppercase">
+                        Time
+                    </th>
+                    <th class="text-uppercase">Monday</th>
+                    <th class="text-uppercase">Tuesday</th>
+                    <th class="text-uppercase">Wednesday</th>
+                    <th class="text-uppercase">Thursday</th>
+                    <th class="text-uppercase">Friday</th>
+                    <th class="text-uppercase">Saturday</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                <tr>
+                    <td class="align-middle">09:00am</td>
+                    @foreach (var item in Model.Where(x => x.Time == "09.00").Take(6))
+                    {
+
+                        <td>
+                            <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">@item.CinemaHall</span>
+
+                            <div class="font-size13 text-light-gray">@item.MovieName</div>
+                        </td>
+                    }
+
+                </tr>
+                
+                <tr>
+                    <td class="align-middle">12:00</td>
+                    @foreach (var item in Model.Where(x => x.Time == "12.00").Take(6))
+                    {
+
+                        <td>
+                            <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">@item.CinemaHall</span>
+
+                            <div class="font-size13 text-light-gray">@item.MovieName</div>
+                        </td>
+                    }
+                </tr>
+                
+                <tr>
+                    <td class="align-middle">15:00pm</td>
+                    @foreach (var item in Model.Where(x => x.Time == "15.00").Take(6))
+                    {
+
+                        <td>
+                            <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">@item.CinemaHall</span>
+
+                            <div class="font-size13 text-light-gray">@item.MovieName</div>
+                        </td>
+                    }
+                </tr>
+                </tbody>
+            </table>
+    </div>
+</div>

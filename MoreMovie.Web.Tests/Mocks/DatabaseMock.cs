@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MoreMovies.Data;
+using MoreMovies.Models;
 using System;
+using System.Linq;
 
 namespace MoreMovie.Web.Tests.Mocks
 {
@@ -14,7 +16,12 @@ namespace MoreMovie.Web.Tests.Mocks
                     .UseInMemoryDatabase(Guid.NewGuid().ToString())
                     .Options;
 
-                return new ApplicationDbContext(dbContextOptions);
+                var data  = new ApplicationDbContext(dbContextOptions);
+
+                data.Movies.AddRange(Enumerable.Range(0, 10).Select(i => new Movie()));
+                data.SaveChanges();
+
+                return data;
             }
         }
     }

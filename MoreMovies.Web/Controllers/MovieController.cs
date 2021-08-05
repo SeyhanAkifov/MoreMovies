@@ -49,6 +49,13 @@ namespace MoreMovies.Web.Controllers
 
         [Authorize]
         [HttpGet]
+        public IActionResult InCinema()
+        {
+            return this.View();
+        }
+
+            [Authorize]
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             if (id != 0)
