@@ -7,7 +7,7 @@ using MoreMovies.Models;
 using MoreMovies.Services;
 using MoreMovies.Web.Controllers;
 using MoreMovies.Web.Models;
-using SocialNetworkCustom.Web.MappingConfiguration;
+using MoreMovies.Web.MappingConfiguration;
 using System;
 using System.Linq;
 using Xunit;

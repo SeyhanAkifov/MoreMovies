@@ -12,7 +12,7 @@ using MoreMovies.Services;
 using MoreMovies.Services.Interfaces;
 using MoreMovies.Web.Hubs;
 using MoreMovies.Web.Infrastructure;
-using SocialNetworkCustom.Web.MappingConfiguration;
+using MoreMovies.Web.MappingConfiguration;
 
 namespace MoreMovies.Web
 {

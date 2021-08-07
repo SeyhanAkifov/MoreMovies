@@ -54,6 +54,11 @@ namespace MoreMovies.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
+            if (id < 1)
+            {
+                return BadRequest($"Invalid request for id {id}");
+            }
+
             var comingSoon = await this.comingSoonService.GetWithId(id);
             var comingSoonResult = mapper.Map<ComingSoonOutputDto, ComingSoonViewModel>(comingSoon);
 

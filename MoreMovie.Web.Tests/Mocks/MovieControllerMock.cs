@@ -3,7 +3,7 @@ using MoreMovies.Models;
 using MoreMovies.Services;
 using MoreMovies.Services.Interfaces;
 using MoreMovies.Web.Controllers;
-using SocialNetworkCustom.Web.MappingConfiguration;
+using MoreMovies.Web.MappingConfiguration;
 using System.Linq;
 
 namespace MoreMovie.Web.Tests.Mocks

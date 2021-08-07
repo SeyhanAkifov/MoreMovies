@@ -8,7 +8,7 @@ using MoreMovies.Services;
 using MoreMovies.Web.Controllers;
 using MoreMovies.Web.Models;
 using MoreMovies.Web.Models.Movie;
-using SocialNetworkCustom.Web.MappingConfiguration;
+using MoreMovies.Web.MappingConfiguration;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;

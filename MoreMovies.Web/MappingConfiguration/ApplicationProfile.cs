@@ -9,7 +9,7 @@ using MoreMovies.Web.Models.Movie;
 using MoreMovies.Web.Models.News;
 using System.Linq;
 
-namespace SocialNetworkCustom.Web.MappingConfiguration
+namespace MoreMovies.Web.MappingConfiguration
 {
     public class ApplicationProfile : Profile
     {

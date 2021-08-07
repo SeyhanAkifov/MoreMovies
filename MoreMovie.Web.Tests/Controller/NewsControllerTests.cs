@@ -5,7 +5,7 @@ using MoreMovie.Web.Tests.Mocks;
 using MoreMovies.Services;
 using MoreMovies.Services.Dto.Input;
 using MoreMovies.Web.Controllers;
-using SocialNetworkCustom.Web.MappingConfiguration;
+using MoreMovies.Web.MappingConfiguration;
 using System.Linq;
 using System.Security.Claims;
 using Xunit;

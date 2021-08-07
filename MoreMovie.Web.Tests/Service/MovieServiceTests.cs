@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MoreMovie.Web.Tests.Mocks;
 using MoreMovies.Services;
-using SocialNetworkCustom.Web.MappingConfiguration;
+using MoreMovies.Web.MappingConfiguration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
