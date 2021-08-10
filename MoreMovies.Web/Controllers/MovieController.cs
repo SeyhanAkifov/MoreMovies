@@ -54,7 +54,7 @@ namespace MoreMovies.Web.Controllers
             return this.View();
         }
 
-            [Authorize]
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
@@ -193,7 +193,7 @@ namespace MoreMovies.Web.Controllers
         }
 
         [Authorize]
-        [HttpPost]
+        
         public async Task<IActionResult> Delete(int id)
         {
             await movieService.DeleteMovie(id);
