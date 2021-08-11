@@ -39,6 +39,25 @@ namespace MoreMovie.Web.Tests
             response.EnsureSuccessStatusCode(); // Status Code 200-299
             Assert.Equal("text/html; charset=utf-8",
                 response.Content.Headers.ContentType.ToString());
+
+            
+        }
+
+        [Fact]
+        public async Task HomePage()
+        {
+            // Arrange
+            var client = _factory.CreateClient();
+
+            // Act
+            var response = await client.GetAsync("/");
+
+            // Assert
+            var html  = await response.Content.ReadAsStringAsync();
+
+            Assert.Contains(" <h2>LATEST TRAILERS</h2>", html);
+
+            
         }
     }
 }
