@@ -177,12 +177,7 @@ namespace MoreMovies.Services
             return GetMovieDetailOutputDto(movie);
         }
 
-        public async Task<int> SearchMovie(string name)
-        {
-            var movie = await this.db.Movies.FirstOrDefaultAsync(x => x.Title.Contains(name));
-
-            return movie != null ? movie.Id : 0;
-        }
+        
 
         public async Task<ICollection<MovieOutputDto>> GetTopCommentedMovie()
         {
@@ -267,6 +262,20 @@ namespace MoreMovies.Services
                 .OrderByDescending(x => x.ReleaseDate)
                 .Select(x => GetMovieOutputDto(x))
                 .ToArrayAsync();
+
+            return movies;
+        }
+
+        public async Task<ICollection<MovieOutputDto>> SearchMovie(string name)
+        {
+            ICollection<MovieOutputDto> movies = await db.Movies
+                            .Include(x => x.Genre.Genre)
+                            .Include(x => x.Language.Language)
+                            .Include(x => x.Country.Country)
+                            .Include(x => x.Comments)
+                            .Where(x => x.Title.ToLower().Contains(name.ToLower()))
+                            .Select(x => GetMovieOutputDto(x))
+                            .ToArrayAsync();
 
             return movies;
         }

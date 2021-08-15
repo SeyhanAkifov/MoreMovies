@@ -249,14 +249,10 @@ namespace MoreMovies.Web.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            var movieId = await movieService.SearchMovie(name);
+            var movies = await movieService.SearchMovie(name);
+            var result = mapper.Map<ICollection<MovieOutputDto>, ICollection<MovieViewModel>>(movies);
 
-            if (movieId != 0)
-            {
-                return RedirectToAction("Details", "Movie", new { id = movieId });
-            }
-
-            return RedirectToAction("Details", "Movie", 0);
+            return View("All", result);
         }
 
         [HttpGet]
