@@ -1,4 +1,7 @@
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
+using MoreMovies.Data;
+using System;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -13,6 +16,7 @@ namespace MoreMovie.Web.Tests
             _factory = factory;
         }
 
+        
         [Theory]
         [InlineData("/")]
         [InlineData("/Home/Index")]
@@ -31,7 +35,7 @@ namespace MoreMovie.Web.Tests
         {
             // Arrange
             var client = _factory.CreateClient();
-
+            
             // Act
             var response = await client.GetAsync(url);
 

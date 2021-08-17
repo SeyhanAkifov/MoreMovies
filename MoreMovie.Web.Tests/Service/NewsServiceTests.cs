@@ -23,7 +23,7 @@ namespace MoreMovie.Web.Tests.Service
             Assert.NotNull(result);
             Assert.Equal("Test", result.Title);
             Assert.Equal("Test", result.Description);
-            
+
         }
 
         private static INewsService GetNewsService()
@@ -33,7 +33,7 @@ namespace MoreMovie.Web.Tests.Service
             data.News.Add(new News
             {
                 Id = 1,
-                Title = "Test", 
+                Title = "Test",
                 Description = "Test",
                 AddedOn = new DateTime(01 / 01 / 2020)
             });
@@ -90,7 +90,7 @@ namespace MoreMovie.Web.Tests.Service
             Assert.Equal("Test", result.Result.Title);
             Assert.Equal("Test", result.Result.Description);
             Assert.Equal(1, result.Result.Id);
-            
+
         }
 
         [Fact]

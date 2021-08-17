@@ -1,14 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using MoreMovie.Web.Tests.Mocks;
-using MoreMovies.Data;
-using MoreMovies.Models;
-using MoreMovies.Services;
 using MoreMovies.Services.Dto.Input;
 using MoreMovies.Services.Interfaces;
 using MoreMovies.Web.Controllers;
-using MoreMovies.Web.Models;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -19,15 +14,13 @@ namespace MoreMovie.Web.Tests.Controller
         private readonly Mock<IMapper> mapper;
         private readonly Mock<IComingSoonService> service;
         private readonly ComingSoonController controller;
-       
         
-
         public ComingSoonControllerTests()
         {
             this.mapper = new Mock<IMapper>();
             this.service = new Mock<IComingSoonService>();
             this.controller = new ComingSoonController(this.service.Object, this.mapper.Object);
-            
+
         }
 
         [Fact]
@@ -60,7 +53,7 @@ namespace MoreMovie.Web.Tests.Controller
 
             IActionResult result = await controller.Add(comingSoon);
 
-            ViewResult viewResult  = Assert.IsType<ViewResult>(result);
+            ViewResult viewResult = Assert.IsType<ViewResult>(result);
 
             var model = Assert.IsType<ComingSoonAddModel>(viewResult.Model);
 
@@ -88,9 +81,7 @@ namespace MoreMovie.Web.Tests.Controller
         public async Task SaveComingSoonWhenValidModel()
         {
             ComingSoonAddModel savedComingSoon = null;
-
             
-
             service.Setup(x => x.Add(It.IsAny<ComingSoonAddModel>()))
                 .Returns(Task.CompletedTask)
                 .Callback<ComingSoonAddModel>(x => savedComingSoon = x);
@@ -108,39 +99,10 @@ namespace MoreMovie.Web.Tests.Controller
 
             Assert.Equal(comingSoon.Description, savedComingSoon.Description);
         }
-
-        [Fact]
-        public async Task SaveComingSoonDetailsWhenValidModel()
-        {
-            var data = DatabaseMock.Instance;
-            var comingSoon = new ComingSoonAddModel
-            {
-                
-                Title = "New Soon",
-                Description = "Coming",
-                ImageUrl = "url"
-            };
-
-            var comingSoonService = new ComingSoonService(data);
-
-            await comingSoonService.Add(comingSoon);
-            
-
-            IActionResult result = await controller.Details(1);
-
-            ViewResult viewResult = Assert.IsType<ViewResult>(result);
-
-            var model = Assert.IsType<ComingSoonViewModel>(viewResult.Model);
-
-            Assert.Equal(comingSoon.Title, model.Title);
-            Assert.Equal(comingSoon.Title, model.Title);
-            Assert.Equal(comingSoon.Title, model.Title);
-        }
-
+        
         [Fact]
         public async void ReturnBadRequest()
         {
-
             IActionResult result = await controller.Details(0);
 
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);

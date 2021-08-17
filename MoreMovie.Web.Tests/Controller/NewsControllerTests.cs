@@ -136,8 +136,8 @@ namespace MoreMovie.Web.Tests.Controller
             };
 
             await newsController.Add(new NewsAddModel());
-            
-            
+
+
 
 
 
@@ -147,7 +147,7 @@ namespace MoreMovie.Web.Tests.Controller
 
             var model = Assert.IsType<NewsViewModel>(viewResult.Model);
 
-            
+
 
         }
     }

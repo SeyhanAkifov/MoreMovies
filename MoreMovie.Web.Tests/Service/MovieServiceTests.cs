@@ -4,10 +4,8 @@ using MoreMovies.Models;
 using MoreMovies.Services;
 using MoreMovies.Web.MappingConfiguration;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -61,7 +59,7 @@ namespace MoreMovie.Web.Tests.Service
 
             //Assert
             Assert.Equal(expectedCount, newstMovies.Count);
-           
+
         }
 
         [Fact]
@@ -110,7 +108,7 @@ namespace MoreMovie.Web.Tests.Service
             var expectedCount = 6;
             //Assert
             Assert.Equal(expectedCount, topCommentedMovies.Count);
-            
+
         }
 
         [Fact]
@@ -178,7 +176,7 @@ namespace MoreMovie.Web.Tests.Service
 
             data.Movies.Add(new Movie
             {
-                
+
                 Genre = new MovieGenre { Genre = new Genre { Name = "Action" } }
             });
 
@@ -188,7 +186,7 @@ namespace MoreMovie.Web.Tests.Service
 
             //Assert
             Assert.Equal(1, result.Count);
-           
+
         }
 
         [Fact]
@@ -217,7 +215,7 @@ namespace MoreMovie.Web.Tests.Service
             //Assert
             Assert.Equal(1, result.Count);
 
-           
+
         }
     }
 }

@@ -36,30 +36,14 @@ namespace MoreMovies.Services
 
             var language = db.Languages.FirstOrDefault(x => x.Name == model.Language);
 
-            if (language == null)
-            {
-                await languageService.Add(model.Language);
-
-                language = db.Languages.FirstOrDefault(x => x.Name == model.Language);
-            }
 
             var genre = db.Genre.FirstOrDefault(x => x.Name == model.Genre);
 
-            if (genre == null)
-            {
-                await genreService.Add(model.Genre);
-
-                genre = db.Genre.FirstOrDefault(x => x.Name == model.Genre);
-            }
+            
 
             var country = db.Country.FirstOrDefault(x => x.Name == model.Country);
 
-            if (country == null)
-            {
-                await countryService.Add(model.Country);
-
-                country = db.Country.FirstOrDefault(x => x.Name == model.Country);
-            }
+            
 
             var editedHomePage = model.HomePage.Replace("watch?v=", "embed/");
 

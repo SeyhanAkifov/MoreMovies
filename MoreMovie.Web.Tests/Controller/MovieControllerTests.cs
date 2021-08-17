@@ -1,31 +1,31 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
+using Moq;
 using MoreMovie.Web.Tests.Mocks;
 using MoreMovies.Data;
 using MoreMovies.Models;
 using MoreMovies.Services;
+using MoreMovies.Services.Dto.Input;
 using MoreMovies.Web.Controllers;
+using MoreMovies.Web.Hubs;
+using MoreMovies.Web.MappingConfiguration;
 using MoreMovies.Web.Models;
 using MoreMovies.Web.Models.Movie;
-using MoreMovies.Web.MappingConfiguration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using Xunit;
 using System.Threading.Tasks;
-using MoreMovies.Services.Dto.Input;
-using MoreMovies.Web.Hubs;
-using Microsoft.AspNetCore.SignalR;
-using Moq;
-using Microsoft.EntityFrameworkCore;
-using System;
+using Xunit;
 
 namespace MoreMovie.Web.Tests.Controller
 {
     public class MovieControllerTests
     {
-      
+
 
         private MovieController PrepareController()
         {
@@ -40,10 +40,10 @@ namespace MoreMovie.Web.Tests.Controller
             var actorService = new ActorService(data);
             var movieService = new MovieService(commentService, data, languageService, genreService, countryService, mapper);
 
-            return new  MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, null);
+            return new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, null);
         }
 
-       
+
 
         [Fact]
         public async void AllShoudReturnAllmovies()
@@ -66,9 +66,9 @@ namespace MoreMovie.Web.Tests.Controller
             //Assert
             Assert.NotNull(result);
             var viewResult = Assert.IsType<ViewResult>(result);
-            
+
             var model = viewResult.Model;
-            
+
             var allViewmodel = Assert.IsType<List<MovieViewModel>>(model);
             Assert.Equal(10, allViewmodel.Count);
         }
@@ -140,7 +140,7 @@ namespace MoreMovie.Web.Tests.Controller
 
             var model = viewResult.Model;
 
-            
+
             var detailViewModel = Assert.IsType<MovieDetailsViewModel>(model);
             Assert.Equal(5, detailViewModel.Rating);
             Assert.Equal(1, detailViewModel.RatingCount);
@@ -278,7 +278,7 @@ namespace MoreMovie.Web.Tests.Controller
                 HttpContext = new DefaultHttpContext() { User = user }
             };
 
-            
+
 
 
             IActionResult result = await movieController.AddMovie(new AddMovieInputModel());
@@ -287,7 +287,7 @@ namespace MoreMovie.Web.Tests.Controller
 
             var model = Assert.IsType<AddMovieInputModel>(viewResult.Model);
 
-            
+
 
         }
 
@@ -372,14 +372,14 @@ namespace MoreMovie.Web.Tests.Controller
                 new Claim(ClaimTypes.NameIdentifier, "1"),
                 new Claim("custom-claim", "example claim value"),
             }, "mock"));
-            
+
             IActionResult result = await movieController.Details(0);
 
             ViewResult viewResult = Assert.IsType<ViewResult>(result);
 
             Assert.Null(viewResult.Model);
 
-            
+
         }
 
         [Fact]
@@ -486,7 +486,7 @@ namespace MoreMovie.Web.Tests.Controller
 
             var hubContext = new Mock<IHubContext<MovieHub>>();
             hubContext.Setup(x => x.Clients).Returns(() => mockClients.Object);
-            
+
             var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
             var commentService = new CommentService(data);
             var languageService = new LanguageService(data);
@@ -495,8 +495,8 @@ namespace MoreMovie.Web.Tests.Controller
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
             var movieService = new MovieService(commentService, data, languageService, genreService, countryService, mapper);
-           
-        var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, hubContext.Object);
+
+            var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, hubContext.Object);
 
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
@@ -570,8 +570,6 @@ namespace MoreMovie.Web.Tests.Controller
             var expectedCount = 1;
 
             Assert.Equal(expectedCount, model.Count);
-
-            
         }
 
         [Fact]
@@ -584,12 +582,8 @@ namespace MoreMovie.Web.Tests.Controller
             ApplicationDbContext db = new ApplicationDbContext();
             db.Database.EnsureDeleted();
 
-            var migrator = db;
-
             // Retrieve migrations
             db.Database.Migrate();
-            
-            
 
             // Optional: delete database
             db.Database.EnsureDeleted();

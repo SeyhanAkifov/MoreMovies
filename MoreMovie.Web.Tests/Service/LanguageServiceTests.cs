@@ -1,11 +1,7 @@
 ﻿using MoreMovie.Web.Tests.Mocks;
 using MoreMovies.Models;
 using MoreMovies.Services;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace MoreMovie.Web.Tests.Service
@@ -19,7 +15,7 @@ namespace MoreMovie.Web.Tests.Service
 
             data.Languages.Add(new Language
             {
-               Name = "English"
+                Name = "English"
             });
 
             data.SaveChanges();
@@ -32,7 +28,7 @@ namespace MoreMovie.Web.Tests.Service
             //Assert
             Assert.NotNull(result);
             Assert.Equal(1, result.Count);
-            
+
 
         }
 
@@ -42,9 +38,9 @@ namespace MoreMovie.Web.Tests.Service
             var data = DatabaseMock.Instance;
 
             var name = "English";
-            
 
-            
+
+
 
             var languageService = new LanguageService(data);
 
@@ -52,7 +48,7 @@ namespace MoreMovie.Web.Tests.Service
             await languageService.Add(name);
 
             //Assert
-            
+
             Assert.Equal(1, data.Languages.Count());
             Assert.Equal(1, data.Languages.First().Id);
             Assert.Equal("English", data.Languages.First().Name);
