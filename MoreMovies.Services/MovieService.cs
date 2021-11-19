@@ -365,6 +365,7 @@ namespace MoreMovies.Services
                 Id = movie.Id,
                 Title = movie.Title,
                 Likes = movie.Likes,
+                Description = movie.Description,
                 IsUserLiked = movie.IsUserLiked,
                 Rating = movie.Rating,
                 RatingCount = movie.RatingCount,

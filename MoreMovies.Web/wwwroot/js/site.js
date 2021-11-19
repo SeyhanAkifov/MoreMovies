@@ -86,7 +86,7 @@ infoButton.addEventListener('click', (e) => {
 
     if (infoButton.innerHTML === "Show info") {
         var id = infoButton.value;
-        fetch(`https://localhost:44321/api/GetDetails/${id}`, {
+        fetch(`https://localhost:5001/api/GetDetails/${id}`, {
             method: 'Get',
             headers: {
                 'Content-Type': 'application/json',
