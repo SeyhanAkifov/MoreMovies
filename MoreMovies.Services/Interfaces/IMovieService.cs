@@ -11,7 +11,7 @@ namespace MoreMovies.Services.Interfaces
 
         public Task DeleteMovie(int id);
 
-        public Task<int> SearchMovie(string name);
+        public Task<ICollection<MovieOutputDto>> SearchMovie(string name);
 
         public Task<ICollection<MovieOutputDto>> SearchMovieByGenre(string genre);
 

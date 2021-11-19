@@ -54,7 +54,7 @@ namespace MoreMovies.Web.Controllers
             return this.View();
         }
 
-            [Authorize]
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
@@ -105,7 +105,7 @@ namespace MoreMovies.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddMovie(AddMovieInputModel model)
-        {
+         {
             var languages = await languageService.GetLanguages();
             var countries = await countryService.GetCountries();
             var genres = await genreService.GetGenres();
@@ -193,7 +193,7 @@ namespace MoreMovies.Web.Controllers
         }
 
         [Authorize]
-        [HttpPost]
+        
         public async Task<IActionResult> Delete(int id)
         {
             await movieService.DeleteMovie(id);
@@ -249,14 +249,10 @@ namespace MoreMovies.Web.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            var movieId = await movieService.SearchMovie(name);
+            var movies = await movieService.SearchMovie(name);
+            var result = mapper.Map<ICollection<MovieOutputDto>, ICollection<MovieViewModel>>(movies);
 
-            if (movieId != 0)
-            {
-                return RedirectToAction("Details", "Movie", new { id = movieId });
-            }
-
-            return RedirectToAction("Details", "Movie", 0);
+            return View("All", result);
         }
 
         [HttpGet]

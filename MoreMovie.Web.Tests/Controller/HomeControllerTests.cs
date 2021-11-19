@@ -1,14 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
-using Moq;
 using MoreMovie.Web.Tests.Mocks;
 using MoreMovies.Models;
 using MoreMovies.Services;
 using MoreMovies.Web.Controllers;
-using MoreMovies.Web.Models;
 using MoreMovies.Web.MappingConfiguration;
-using System;
+using MoreMovies.Web.Models;
 using System.Linq;
 using Xunit;
 
@@ -20,7 +18,7 @@ namespace MoreMovie.Web.Tests.Controller
         public async void IndexShouldReturnViewWithCorrectModel()
         {
             //Arrange
-            
+
             var data = DatabaseMock.Instance;
             var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
             var cache = new MemoryCache(new MemoryCacheOptions());
@@ -45,7 +43,7 @@ namespace MoreMovie.Web.Tests.Controller
 
             //Assert
             Assert.NotNull(result);
-            var viewResult  = Assert.IsType<ViewResult>(result);
+            var viewResult = Assert.IsType<ViewResult>(result);
 
             var model = viewResult.Model;
 
