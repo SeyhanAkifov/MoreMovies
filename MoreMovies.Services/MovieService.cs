@@ -36,30 +36,14 @@ namespace MoreMovies.Services
 
             var language = db.Languages.FirstOrDefault(x => x.Name == model.Language);
 
-            if (language == null)
-            {
-                await languageService.Add(model.Language);
-
-                language = db.Languages.FirstOrDefault(x => x.Name == model.Language);
-            }
 
             var genre = db.Genre.FirstOrDefault(x => x.Name == model.Genre);
 
-            if (genre == null)
-            {
-                await genreService.Add(model.Genre);
-
-                genre = db.Genre.FirstOrDefault(x => x.Name == model.Genre);
-            }
+            
 
             var country = db.Country.FirstOrDefault(x => x.Name == model.Country);
 
-            if (country == null)
-            {
-                await countryService.Add(model.Country);
-
-                country = db.Country.FirstOrDefault(x => x.Name == model.Country);
-            }
+            
 
             var editedHomePage = model.HomePage.Replace("watch?v=", "embed/");
 
@@ -177,12 +161,7 @@ namespace MoreMovies.Services
             return GetMovieDetailOutputDto(movie);
         }
 
-        public async Task<int> SearchMovie(string name)
-        {
-            var movie = await this.db.Movies.FirstOrDefaultAsync(x => x.Title.Contains(name));
-
-            return movie != null ? movie.Id : 0;
-        }
+        
 
         public async Task<ICollection<MovieOutputDto>> GetTopCommentedMovie()
         {
@@ -267,6 +246,20 @@ namespace MoreMovies.Services
                 .OrderByDescending(x => x.ReleaseDate)
                 .Select(x => GetMovieOutputDto(x))
                 .ToArrayAsync();
+
+            return movies;
+        }
+
+        public async Task<ICollection<MovieOutputDto>> SearchMovie(string name)
+        {
+            ICollection<MovieOutputDto> movies = await db.Movies
+                            .Include(x => x.Genre.Genre)
+                            .Include(x => x.Language.Language)
+                            .Include(x => x.Country.Country)
+                            .Include(x => x.Comments)
+                            .Where(x => x.Title.ToLower().Contains(name.ToLower()))
+                            .Select(x => GetMovieOutputDto(x))
+                            .ToArrayAsync();
 
             return movies;
         }
@@ -365,6 +358,7 @@ namespace MoreMovies.Services
                 Id = movie.Id,
                 Title = movie.Title,
                 Likes = movie.Likes,
+                Description = movie.Description,
                 IsUserLiked = movie.IsUserLiked,
                 Rating = movie.Rating,
                 RatingCount = movie.RatingCount,

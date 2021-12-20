@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
-using MoreMovies.Models;
 using MoreMovies.Services;
-using MoreMovies.Services.Interfaces;
 using MoreMovies.Web.Controllers;
 using MoreMovies.Web.MappingConfiguration;
-using System.Linq;
 
 namespace MoreMovie.Web.Tests.Mocks
 {
@@ -15,7 +12,7 @@ namespace MoreMovie.Web.Tests.Mocks
             get
             {
                 var data = DatabaseMock.Instance;
-                
+
                 var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
                 var commentService = new CommentService(data);
                 var languageService = new LanguageService(data);
@@ -29,10 +26,10 @@ namespace MoreMovie.Web.Tests.Mocks
             }
             set
             {
-                
+
             }
         }
 
-        
+
     }
 }
