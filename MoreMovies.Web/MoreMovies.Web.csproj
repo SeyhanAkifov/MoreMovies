@@ -27,4 +27,15 @@
   </ItemGroup>
 
 
+
+  <ItemGroup>
+    <Content Update="wwwroot\css\images\banner2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\css\images\logo2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+
 </Project>

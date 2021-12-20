@@ -1,17 +1,30 @@
 ﻿@model MovieViewModel
 
 
-<div class="movie">
-    <div class="movie-image"> <span class="play"><span class="name">@Model.Title</span></span><span id="trailerUrl" style="display:none;">@Model.HomePage</span> <a href="#"><img src="@Model.ImageUrl" alt="" /></a> </div>
+<article class="movie">
+
+    <div class="movie-image">
+        <span class="play">
+            <span class="name">@Model.Title</span>
+        </span>
+        <span id="trailerUrl" style="display:none;">@Model.HomePage</span>
+        <a href="#"><img src="@Model.ImageUrl" alt="" /></a>
+    </div>
+    <hr />
     <div class="rating">
         <p>RATING</p>
         <div class="stars">
             <div class="stars-in" style="width: @(Model.Rating > 0 ? Model.Rating / Model.RatingCount * 12 +  "px" : 0)"> </div>
         </div>
+
+    </div>
+    <div class="rating">
         <span class="comments">@Model.CommentsCount.ToString()</span>
-        <span style="padding: 3px">Likes: @Model.Likes</span>
-    </div>
-    <div class="text-center">
-        <a class="btn btn-primary " asp-controller="Movie" asp-action="Details" asp-route-id=@Model.Id>Details</a>
-    </div>
-</div>
+        </div>
+        <div class="rating">
+            <span style="padding: 3px">Likes: @Model.Likes</span>
+            </div>
+            <div class="text-center">
+                <a class="btn-flip" data-back="Details" data-front="Details" asp-controller="Movie" asp-action="Details" asp-route-id=@Model.Id></a>
+            </div>
+</article>

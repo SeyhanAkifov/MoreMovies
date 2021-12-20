@@ -30,6 +30,8 @@ namespace MoreMovies.Web.MappingConfiguration
             
             this.CreateMap<MovieOutputDto, EditMovieInputModel>();
 
+            this.CreateMap<MovieDetailOutputDto, EditMovieInputModel>();
+
             this.CreateMap<MovieOutputDto, MovieViewModel>();
             
             this.CreateMap<MovieDetailOutputDto, MovieDetailsViewModel>();

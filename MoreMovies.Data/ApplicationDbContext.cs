@@ -21,7 +21,7 @@ namespace MoreMovies.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=DESKTOP-11LDN42\\SQLEXPRESS;Database=MoreMovies;Integrated Security=true;");
+                optionsBuilder.UseSqlServer("Server=KABALSKYIT\\SQLEXPRESS;Database=MoreMovies;Integrated Security=true;");
             }
         }
 

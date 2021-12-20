@@ -4,10 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Find More Movies</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-
-    @*<link rel="stylesheet" href="~/css/site.css" />*@
-    <link rel="stylesheet" href="~/css/style.css" />
+    
+    <link rel="stylesheet" href="~/css/site.css" />
     
 </head>
 <body>
@@ -16,24 +14,33 @@
     <header>
         <nav class="navbar navbar-expand-md navbar-toggleable-sm navbar-light  border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">MoreMovies</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                <article class="logo">
+                    <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">MoreMovies</a>
+                    <span> by </span>
+                    <a class="navbar-logo" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/css/images/logo2.png" /></a>
+                </article>
+                
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item"><a class="nav-link text-white" asp-controller="Movie" asp-action="MyMovies">My Movies</a></li>
-                            <li class="nav-item"><a class="nav-link text-white" asp-controller="Movie" asp-action="Add">ADD Movie</a></li>
+
+                            <li class="nav-item"><a class="btn-flip" data-back="My Movie" data-front="My Movie" asp-controller="Movie" asp-action="MyMovies"></a></li>
+                            <li class="nav-item"><a class="btn-flip" data-back="My Liked" data-front="My Liked" asp-controller="Movie" asp-action="MyLiked"></a></li>
+                            <li class="nav-item"><a class="btn-flip" data-back="Add Movie" data-front="Add Movie" asp-controller="Movie" asp-action="Add"></a></li>
+
                         }
 
-                        <li class="nav-item"><a class="nav-link text-white" asp-controller="Cinema" asp-action="InCinema">IN THEATERS</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" asp-controller="ComingSoon" asp-action="All">COMING SOON</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" asp-controller="News" asp-action="All">News</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" asp-controller="Contact" asp-action="ContactPage">CONTACT</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" asp-area="" asp-controller="Administration" asp-action="Index">Administration</a></li>
+                        <li class="nav-item"><a class="btn-flip" data-back="In Cinema" data-front="In Cinema" asp-controller="Cinema" asp-action="InCinema"></a></li>
+                        <li class="nav-item"><a class="btn-flip" data-back="Coming Soon" data-front="Coming Soon" asp-controller="ComingSoon" asp-action="All"></a></li>
+                        <li class="nav-item"><a class="btn-flip" data-back="News" data-front="News" asp-controller="News" asp-action="All"></a></li>
+                        <li class="nav-item"><a class="btn-flip" data-back="Contact" data-front="Contact" asp-controller="Contact" asp-action="ContactPage"></a></li>
+                        <li class="nav-item"><a class="btn-flip" data-back="Administration" data-front="Administration" asp-area="" asp-controller="Administration" asp-action="Index"></a></li>
+
+
+
+
+
 
                     </ul>
                     <partial name="_LoginPartial" />
@@ -49,22 +56,25 @@
 
     <!-- Modal -->
     <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog align-center " style="transform: translate(-50%, -50%); position: relative; top:50%; left: -8%" role="document">
-            <div class="modal-content align-center" style="width:fit-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <iframe width="1260" height="715" src="" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=allowfullscreen></iframe>
+        <div class="modal-dialog"
+             style="width: 100%; max-width: 969px;">
+            <div class="modal-content">
 
+                <div class="modal-body" style="margin: 0 auto; padding: 0px;">
+                    <div align="center"
+                         style="width: 100%; height: 0;
+                            padding-bottom: 64.5%;
+                            position: relative;
+                            margin : 0 auto">
+                        <iframe style="position: absolute;
+                                   top: 0;
+                                   left: 0;
+                                   width: 100%;
+                                   height: 100%;"
+                                src="" frameborder="0" allowfullscreen></iframe>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
+
             </div>
         </div>
     </div>
@@ -81,7 +91,7 @@
     </footer>
     <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>

@@ -4,18 +4,20 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Find More Movies</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    @*<link rel="stylesheet" href="~/css/site.css" />*@
-    <link rel="stylesheet" href="~/css/style.css" />
+   
+    <link rel="stylesheet" href="~/css/site.css" />
 
 </head>
 <body>
     <div class="se-pre-con"></div>
     <span id="status" class="text-danger"></span>
     <header>
-        <nav class="navbar navbar-expand-md navbar-toggleable-sm navbar-light  border-bottom box-shadow mb-3">
+        <nav class="navbar">
             <div class="container">
-                <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">MoreMovies</a>
+                <article class="logo">
+                    <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">MoreMovies</a>
+                    <a class="navbar-logo" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/css/images/logo2.png" /></a>
+                </article>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -24,15 +26,15 @@
                     <ul class="navbar-nav flex-grow-1">
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item"><a class="nav-link text-white" asp-controller="Movie" asp-action="MyMovies">My Movies</a></li>
-                            <li class="nav-item"><a class="nav-link text-white" asp-controller="Movie" asp-action="MyLiked">My Liked</a></li>
-                            <li class="nav-item"><a class="nav-link text-white" asp-controller="Movie" asp-action="Add">Add Movie</a></li>
+                            <li class="nav-item"><a href="#" class="btn-flip" data-back="My Movies" data-front="My Movies"></a></li>
+                            <li class="nav-item"><a href="#" class="btn-flip" data-back="My Liked" data-front="My Liked"></a></li>
+                            <li class="nav-item"><a href="#" class="btn-flip" data-back="Add Movie" data-front="Add Movie"></a></li>
                         }
 
-                        <li class="nav-item"><a class="nav-link text-white" href="#">In theathers</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" asp-controller="ComingSoon" asp-action="All">Coming soon</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" asp-controller="News" asp-action="All">News</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" asp-controller="Contact" asp-action="ContactPage">CONTACT</a></li>
+                        <li class="nav-item"><a href="#" class="btn-flip" data-back="In Cinema" data-front="In Cinema"></a></li>
+                        <li class="nav-item"><a href="#" class="btn-flip" data-back="Coming Soon" data-front="Coming Soon"></a></li>
+                        <li class="nav-item"><a href="#" class="btn-flip" data-back="News" data-front="News"></a></li>
+                        <li class="nav-item"><a href="#" class="btn-flip" data-back="Contact" data-front="Contact"></a></li>
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
@@ -46,7 +48,7 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    @*<div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog align-center " style="transform: translate(-50%, -50%); position: relative; top:50%; left: -8%" role="document">
             <div class="modal-content align-center" style="width:fit-content">
                 <div class="modal-header">
@@ -65,7 +67,30 @@
                 </div>
             </div>
         </div>
+    </div>*@
+<div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog"
+         style="width: 100%; max-width: 969px;">
+        <div class="modal-content">
+            
+            <div class="modal-body" style="margin: 0 auto; padding: 0px;">
+                <div align="center"
+                     style="width: 100%; height: 0;
+                            padding-bottom: 64.5%;
+                            position: relative;
+                            margin : 0 auto">
+                    <iframe style="position: absolute;
+                                   top: 0;
+                                   left: 0;
+                                   width: 100%;
+                                   height: 100%;"
+                            src="" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+
+        </div>
     </div>
+</div>
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -92,6 +117,9 @@
     $(window).load(function () {
         // Animate loader off screen
         $(".se-pre-con").fadeOut("slow");;
-    });</script>
+    });
+
+    
+</script>
 
 </html>

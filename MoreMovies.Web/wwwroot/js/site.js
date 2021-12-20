@@ -17,13 +17,18 @@ console.log('my js file');
 var playButtons = document.querySelectorAll(".movie-image");
 var holder = document.querySelector(".holder > button");
 
-
+$(function () {
+    $('.modal').on('hidden.bs.modal', function (e) {
+        $iframe = $(this).find("iframe");
+        $iframe.attr("src", $iframe.attr("src"));
+    });
+});
 
 playButtons.forEach(button => button.addEventListener("click", (e) => {
     e.preventDefault();
     var trailerUrl = e.currentTarget.querySelector("#trailerUrl").innerHTML;
 
-    var current = document.querySelector(".modal-body > iframe")
+    var current = document.querySelector(".modal-body > div >  iframe")
     current.src = trailerUrl;
     holder.click();
 }));
@@ -86,7 +91,7 @@ infoButton.addEventListener('click', (e) => {
 
     if (infoButton.innerHTML === "Show info") {
         var id = infoButton.value;
-        fetch(`https://localhost:44321/api/GetDetails/${id}`, {
+        fetch(`https://localhost:5001/api/GetDetails/${id}`, {
             method: 'Get',
             headers: {
                 'Content-Type': 'application/json',
