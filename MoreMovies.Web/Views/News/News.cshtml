@@ -9,5 +9,6 @@
     <h4>@Model.Title</h4>
     <hr />
     <p>@Model.Description</p>
-    <a asp-controller="News" asp-action="Details" asp-route-id="@Model.Id">Read more</a>
+   
+    <a class="btn-flip" data-back="Read More" data-front="Read More" asp-controller="News" asp-action="Details" asp-route-id="@Model.Id"></a>
 </div>

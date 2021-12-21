@@ -1,10 +1,14 @@
 ﻿@model ComingSoonViewModel
-<div class="content">
-    <h4>@Model.Title</h4>
-    <a href="#"><img src="@Model.ImageUrl" alt="" /></a>
+<article class="content">
+    <article class="soon-header">
+        <h4>@Model.Title</h4>
+        <a href="#"><img src="@Model.ImageUrl" alt="" /></a>
+    </article>
+    <hr/>
     <p>@Model.Description</p>
-    <a asp-controller="ComingSoon" asp-action="Details" asp-route-id="@Model.Id">Read more</a>
-</div>
+    
+    <a class="btn-flip" data-back="Read More" data-front="Read More" asp-controller="ComingSoon" asp-action="Details" asp-route-id="@Model.Id"></a>
+</article>
 <div class="cl">&nbsp;</div>
 
  

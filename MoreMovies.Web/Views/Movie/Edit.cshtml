@@ -4,7 +4,7 @@
     ViewData["Title"] = "Movie edit";
 }
 
-<form class="text-center border border-light p-5" asp-controller="Movie" asp-action="EditMovie" asp-route-id="@Model.Id" name="@Model.Id" method="post">
+<form class="add-form" asp-controller="Movie" asp-action="EditMovie" asp-route-id="@Model.Id" name="@Model.Id" method="post">
     <div class="form-group">
         <label asp-for="Title">Title</label>
         <input asp-for="Title" type="text" class="form-control" placeholder="Title" name="title" value="@Model.Title">
