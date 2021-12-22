@@ -536,6 +536,57 @@ button{
         color: white;
     }
 
+#news-item {
+    background: white;
+    margin: 10px;
+    border-radius: 3px;
+    padding: 5px;
+    
+}
+
+.soon-item {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 26px;
+    border-radius : 12px;
+    /* IE10+ */
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 49%, rgba(255, 255, 255, 0) 100%);
+    /* W3C */
+}
+
+.soon-body {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    margin-left: 33px;
+    flex-basis : 25%;
+}
+
+#registerForm {
+    display: flex;
+    border-radius: 9px;
+    box-shadow: 6px 6px 6px 3px darkgrey;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    color: white;
+    justify-content: center;
+    flex-direction: column;
+}
+
+    #registerForm .form-group {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin: 14px;
+        flex-direction: column;
+        width: 80%;
+    }
+
+.soon-head{
+    flex-basis :5%;
+}
+
 #account, .form-group {
     display: flex;
     flex-wrap: wrap;
@@ -544,6 +595,29 @@ button{
     flex-direction : column;
    width : 80%;
 }
+
+p a{
+    text-decoration : none;
+    color : white;
+}
+
+#account {
+    display: flex;
+    border-radius: 9px;
+    box-shadow: 6px 6px 6px 3px darkgrey;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    color: white;
+    justify-content: center;
+    flex-direction: column;
+    margin : 0 auto;
+}
+
+#account label input{
+    width : 15px
+;}
+
+
 
 .form-group label, #account label{
     font-size : 22px;
@@ -565,6 +639,59 @@ button{
     width: 170px;
 }
 
+.fancy {
+    line-height: 0.5;
+    text-align: center;
+    color : white;
+}
+
+    .fancy {
+        display: inline-block;
+        position: relative;
+    }
+
+        .fancy:before,
+        .fancy:after {
+            content: "";
+            position: absolute;
+            height: 10px;
+            border-bottom: 1px solid white;
+            border-top: 1px solid white;
+            top: 0;
+            width: 100%;
+        }
+
+        button{
+            display : block;
+        }
+
+        .fancy:before {
+            right: 100%;
+            margin-right: 15px;
+        }
+
+        .fancy:after {
+            left: 100%;
+            margin-left: 15px;
+        }
+
+        .form-group>button{
+           background-color : red
+        }
+
+#registerSubmit {
+    padding: 15px;
+    width: 121px;
+    border-radius: 6px;
+    background: white;
+}
+
+#login-submit {
+    padding: 15px;
+    width: 121px;
+    border-radius: 6px;
+    background: white;
+}
 
 
     @media screen and (max-width : 600px){
@@ -576,6 +703,7 @@ button{
         #content{
             display : inline-block;
             margin : 0 auto;
+            text-align : center;
         }
 
         .box{
@@ -614,8 +742,30 @@ button{
             display : block;
         }
 
+        .modal{
+            margin : 0;
+        }
+
         iframe{
             width : 100%
+        }
+
+        .head{
+            display : block;
+        }
+
+        .soon-header{
+            flex-direction : column;
+        }
+
+        .soon-item {
+            flex-direction: column;
+            align-items: center;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 49%, rgba(255, 255, 255, 1) 100%);
+        }
+
+        .movie-image-details {
+            height: 450px;
         }
         
         

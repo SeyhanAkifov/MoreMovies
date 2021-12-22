@@ -3,7 +3,8 @@
 @{
     ViewData["Title"] = "All News";
 }
-<h1 class="text-center">All News</h1>
+<h1 class="subtitle fancy">All News</h1>
+
 <hr class="hr-2" />
 
 <div class=" mt-3 ">
@@ -11,7 +12,7 @@
         @foreach (var item in Model)
         {
            
-                <article class="card mb-xl-5">
+                <article id="news-item" class="card mb-xl-5">
                     <h1 style="color:darkgoldenrod">@item.Title</h1>
                 
                     <p style="color:black">
