@@ -83,13 +83,14 @@ $(document).ready(function () {
 });
 
 //Show movie info
+var clicked = false;
 var infoButton = document.querySelector("#movieInfo");
 infoButton.addEventListener('click', (e) => {
     e.preventDefault();
-
+    
     var infoDiv = document.querySelector('#info');
 
-    if (infoButton.innerHTML === "Show info") {
+    if (!clicked) {
         var id = infoButton.value;
         fetch(`https://localhost:5001/api/GetDetails/${id}`, {
             method: 'Get',
@@ -110,10 +111,11 @@ infoButton.addEventListener('click', (e) => {
             });
 
         infoDiv.style.display = "block";
-        infoButton.innerHTML = "Hide info";
+       
+        clicked = true;
     } else {
         infoDiv.style.display = "none";
-        infoButton.innerHTML = "Show info";
+        clicked = false;
     }
 
 });
