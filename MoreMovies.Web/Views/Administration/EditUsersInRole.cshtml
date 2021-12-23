@@ -3,10 +3,10 @@
 @{
     var roleId = ViewBag.roleId;
 }
-
+<article class="admin-main-item">
 <form method="post">
     <div class=" card">
-        <div class="card-header">
+        <div class="admin-main-item-title">
             <h2>Add or remove users from this role</h2>
         </div>
         <div class="card-body">
@@ -22,9 +22,10 @@
                 </div>
             }
         </div>
-        <div class="card-footer">
+        <article class="admin-main-item-footer">
             <input type="submit" value="Update" class="btn btn-primary" style="width:auto" />
-            <a asp-action="EditRoles" asp-route-id="@roleId" class="btn btn-primary" style="width:auto">Cancel</a>
-        </div>
+            <button><a asp-action="EditRoles" asp-route-id="@roleId" class="btn btn-primary" style="width:auto">Cancel</a></button>
+        </article>
     </div>
 </form>
+    </article>
