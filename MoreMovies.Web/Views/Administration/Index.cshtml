@@ -1,56 +1,10 @@
-﻿<div class="card mb-3">
-    <div class="card-header">
-        Manage Role
-    </div>
-    <div class="card-body">
-        
-    </div>
-    <div class="card-footer">
-        <a class="btn btn-danger mb-3" style="width:auto" asp-controller="Administration" asp-action="ListRoles">Edit</a>
-    </div>
+﻿@*
 
-</div>
 
-<div class="card mb-3">
-    <div class="card-header">
-        Manage Users
-    </div>
-    <div class="card-body">
 
-    </div>
-    <div class="card-footer">
-        <a class="btn btn-danger mb-3" style="width:auto" asp-controller="Administration" asp-action="All">Edit</a>
-    </div>
 
-</div>
 
-<div class="card mb-3">
-    <div class="card-header">
-        Add Or Delete News
-    </div>
-    <div class="card-body">
 
-    </div>
-    <div class="card-footer">
-        <a class="btn btn-danger mb-3" style="width:auto" asp-controller="News" asp-action="Add">Add</a>
-        <a class="btn btn-danger mb-3" style="width:auto" asp-controller="Administration" asp-action="EditNews">Edit</a>
-    </div>
-
-</div>
-
-<div class="card mb-3">
-    <div class="card-header">
-        Add Or Delete ComingSoon
-    </div>
-    <div class="card-body">
-
-    </div>
-    <div class="card-footer">
-        <a class="btn btn-danger mb-3" style="width:auto" asp-controller="ComingSoon" asp-action="Add">Add</a>
-        <a class="btn btn-danger mb-3" style="width:auto" asp-controller="Administration" asp-action="EditComingSoon">Edit</a>
-    </div>
-
-</div>
 
 <div class="card mb-3">
     <div class="card-header">
@@ -64,4 +18,70 @@
         <a class="btn btn-danger mb-3" style="width:auto" asp-controller="Cinema" asp-action="List">Edit</a>
     </div>
 
-</div>
+</div>*@
+
+<section class="admin-main">
+    <article class="admin-main-item">
+        <article class="admin-main-item-title">
+            <h2>Manage Role</h2>
+        </article>
+        <hr/>
+        <article class="admin-main-item-body">
+            <p>sdsd d d d d ddddd dd ddddddddddd dddddddd dddddd dd d</p>
+        </article>
+        <article class="admin-main-item-footer">
+            <button class="btn btn-danger mb-3" style="width:auto"><a asp-controller="Administration" asp-action="ListRoles">Edit</a></button>
+        </article>
+    </article>
+    <article class="admin-main-item">
+        <article class="admin-main-item-title">
+            <h2>Manage Users</h2>
+        </article>
+        <hr />
+        <article class="admin-main-item-body">
+            <p>sdsd d d d d ddddd dd ddddddddddd dddddddd dddddd dd d</p>
+        </article>
+        <article class="admin-main-item-footer">
+            <button class="btn btn-danger mb-3" style="width:auto"><a asp-controller="Administration" asp-action="All">Edit</a></button>
+        </article>
+    </article>
+    <article class="admin-main-item">
+        <article class="admin-main-item-title">
+            <h2>Add Or Delete News</h2>
+        </article>
+        <hr />
+        <article class="admin-main-item-body">
+            <p>sdsd d d d d ddddd dd ddddddddddd dddddddd dddddd dd d</p>
+        </article>
+        <article class="admin-main-item-footer">
+            <button class="btn btn-danger mb-3" style="width:auto"><a asp-controller="News" asp-action="Add">Add</a></button>
+            <button class="btn btn-danger mb-3" style="width:auto"><a asp-controller="Administration" asp-action="EditNews">Edit</a></button>
+        </article>
+    </article>
+    <article class="admin-main-item">
+        <article class="admin-main-item-title">
+            <h2>Add Or Delete ComingSoon</h2>
+        </article>
+        <hr />
+        <article class="admin-main-item-body">
+            <p>sdsd d d d d ddddd dd ddddddddddd dddddddd dddddd dd d</p>
+        </article>
+        <article class="admin-main-item-footer">
+            <button class="btn btn-danger mb-3" style="width:auto"><a asp-controller="ComingSoon" asp-action="Add">Add</a></button>
+            <button class="btn btn-danger mb-3" style="width:auto"><a asp-controller="Administration" asp-action="EditComingSoon">Edit</a></button>
+        </article>
+    </article>
+    <article class="admin-main-item">
+        <article class="admin-main-item-title">
+            <h2>Add Or Delete Cinema projection</h2>
+        </article>
+        <hr />
+        <article class="admin-main-item-body">
+            <p>sdsd d d d d ddddd dd ddddddddddd dddddddd dddddd dd d</p>
+        </article>
+        <article class="admin-main-item-footer">
+            <button class="btn btn-danger mb-3" style="width:auto"><a asp-controller="Cinema" asp-action="Add">Add</a></button>
+            <button class="btn btn-danger mb-3" style="width:auto"><a asp-controller="Cinema" asp-action="List">Edit</a></button>
+        </article>
+    </article>
+</section>

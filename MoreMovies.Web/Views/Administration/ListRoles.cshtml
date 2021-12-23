@@ -5,37 +5,76 @@
 
 <h1>All Roles</h1>
 
-@if (Model.Any())
-{
-    <a class="btn btn-primary mb-3" style="width:auto" asp-controller="Administration" asp-action="CreateRole">Add new role</a>
-
-    foreach (var role in Model)
+@*@if (Model.Any())
     {
-<div class="card mb-3">
-    <div class="card-header text-black-50">
-        Role Id: @role.Id
-    </div>
-    <div class="card-header text-black-50">
-        Role Name: @role.Name
-    </div>
+        <a class="btn btn-primary mb-3" style="width:auto" asp-controller="Administration" asp-action="CreateRole">Add new role</a>
 
-    <div class="card-footer">
-        <a class="btn btn-danger mb-3" style="width:auto" asp-controller="Administration" asp-action="EditRoles" asp-route-id="@role.Id">Edit</a>
-        <a class="btn btn-primary mb-3" style="width:auto" asp-controller="Administration" asp-action="DeleteRole" asp-route-id="@role.Id">Delete</a>
-    </div>
+        foreach (var role in Model)
+        {
+            <div class="card mb-3">
+                <div class="card-header text-black-50">
+                    Role Id: @role.Id
+                </div>
+                <div class="card-header text-black-50">
+                    Role Name: @role.Name
+                </div>
 
-</div>
+                <div class="card-footer">
+                    <a class="btn btn-danger mb-3" style="width:auto" asp-controller="Administration" asp-action="EditRoles" asp-route-id="@role.Id">Edit</a>
+                    <a class="btn btn-primary mb-3" style="width:auto" asp-controller="Administration" asp-action="DeleteRole" asp-route-id="@role.Id">Delete</a>
+                </div>
+
+            </div>
+        }
     }
-}
-else
-{
-    <div class="card">
-        <div class="card-header text-black-50">
-            No roles created yet
-        </div>>
-        <div class="card-body text-black-50">
-            <h5>Use the button below to create a role</h5>>
-            <a class="btn btn-primary" style="width:auto" asp-controller="Administration" asp-action="CreateRole">Create Role</a>
-        </div>>
-    </div>
-}
+    else
+    {
+        <div class="card">
+            <div class="card-header text-black-50">
+                No roles created yet
+            </div>>
+            <div class="card-body text-black-50">
+                <h5>Use the button below to create a role</h5>>
+                <a class="btn btn-primary" style="width:auto" asp-controller="Administration" asp-action="CreateRole">Create Role</a>
+            </div>>
+        </div>
+    }*@
+
+<article class="admin-button">
+    <button><a class="btn btn-primary mb-3" style="width:auto" asp-controller="Administration" asp-action="CreateRole">Add new role</a></button>
+</article>
+<section class="admin-main">
+    @if (Model.Any())
+    {
+        
+        foreach (var role in Model)
+        {
+            <article class="admin-main-item">
+                <article class="admin-main-item-title">
+                    Role Id: @role.Id
+                </article>
+                <article class="admin-main-item-title">
+                    Role Name: @role.Name
+                </article>
+                <article class="admin-main-item-footer">
+                    <button><a class="btn btn-danger mb-3" style="width:auto" asp-controller="Administration" asp-action="EditRoles" asp-route-id="@role.Id">Edit</a></button>
+                    <button><a class="btn btn-primary mb-3" style="width:auto" asp-controller="Administration" asp-action="DeleteRole" asp-route-id="@role.Id">Delete</a></button>
+                </article>
+            </article>
+        }
+    }
+    else
+    {
+        <article class="admin-main-item">
+            <article class="admin-main-item-title">
+                No roles created yet
+            </article>
+            <article class="admin-main-item">
+                <h5>Use the button below to create a role</h5>>
+                <button><a class="btn btn-primary" style="width:auto" asp-controller="Administration" asp-action="CreateRole">Create Role</a></button>
+            </article>
+        </article>
+    }
+
+
+</section>

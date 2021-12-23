@@ -1,21 +1,29 @@
 ﻿@model CreateRoleViewModel
 
-@{ 
+@{
     ViewBag.Title = "Create New Role";
 
 
 }
 
-<h1>Create New Role</h1>
+<article class="admin-main-item">
+    <article class="admin-main-item-title">
+        <h1>Create New Role</h1>
+    </article>
+    <hr />
+    <article class="admin-main-item-body">
+        <form class="text-center border border-light p-5" asp-controller="Administration" asp-action="CreateRole" method="post">
+            <div class="form-group">
+                <label for="RoleName">RoleName</label>
+                <input type="text" class="form-control" placeholder="RoleName" name="RoleName" value="">
+            </div>
 
 
-<form class="text-center border border-light p-5" asp-controller="Administration" asp-action="CreateRole" method="post">
-    <div class="form-group">
-        <label for="RoleName">RoleName</label>
-        <input type="text" class="form-control" placeholder="RoleName" name="RoleName" value="">
-    </div>
+            <article class="admin-main-item-footer">
+                <button style="width:auto" type="submit" class="btn btn-primary">Create Role</button>
+            </article>
+        </form>
+    </article>
     
-
-    <button style="width:auto" type="submit" class="btn btn-primary">Create Role</button>
-</form>
+</article>
 
