@@ -10,28 +10,28 @@
     <div class="row d-flex d-wrap">
         @foreach (var item in Model)
         {
-        <div class="card mb-3">
-            <div class="card-header">
-                ComingSoon Id: @item.Id
-            </div>
-            <a href="#"><img src=/@item.ImageUrl alt="" /></a>
+            <article class="admin-main-item">
+                <div class="card-header">
+                    ComingSoon Id: @item.Id
+                </div>
+                <a href="#"><img src=/@item.ImageUrl alt="" /></a>
 
-            <div class="card-body">
-                title: @item.Title
-            </div>
+                <div class="card-body">
+                    title: @item.Title
+                </div>
 
-            <div class="card-body">
-                Description: @item.Description
-            </div>
+                <div class="card-body">
+                    Description: @item.Description
+                </div>
 
-            <div class="card-footer">
-                <form asp-controller="Administration" asp-action="DeleteComingSoon" asp-route-id="@item.Id" method="post">
-
-                    <button type="submit" class="btn btn-danger">Delete</button>
-
-                </form>
-            </div>
-        </div>
+                <div class="card-footer">
+                    <form asp-controller="Administration" asp-action="DeleteComingSoon" asp-route-id="@item.Id" method="post">
+                        <div class="admin-main-item-footer">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </div>
+                    </form>
+                </div>
+            </article>
         }
     </div>
 </div>

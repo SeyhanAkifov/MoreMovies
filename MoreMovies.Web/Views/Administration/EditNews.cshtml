@@ -10,7 +10,7 @@
     <div class="row d-flex d-wrap">
         @foreach (var item in Model)
         {
-            <div class="card mb-3">
+            <article class="admin-main-item">
                 <div class="card-header text-black-50" >
                     News Id: @item.Id
                 </div>
@@ -25,12 +25,12 @@
 
                 <div class="card-footer">
                     <form asp-controller="Administration" asp-action="DeleteNews" asp-route-id="@item.Id" method="post">
-
-                        <button type="submit" class="btn btn-danger">Delete</button>
-
+                        <div class="admin-main-item-footer">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </div>
                     </form>
                 </div>
-            </div>
+            </article>
         }
     </div>
 </div>

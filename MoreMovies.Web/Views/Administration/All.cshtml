@@ -18,22 +18,22 @@
         @for (var i = 0; i < Model.Count(); i++)
         {
 
-            <div class="card mb-3">
-                <div class="card-header">
+            <article class="admin-main-item">
+                <div class="admin-main-item-title">
                     User Id: @Model[i].Id
                 </div>
                 
                 <div class="card-body">
                     Email: @Model[i].Email
                 </div>
-                <div class="card-footer">
+                <div class="admin-main-item-footer">
                     <form asp-controller="Administration" asp-action="DeleteUser" asp-route-id="@Model[i].Id" method="post">
                        
                         <button type="submit" class="btn btn-danger">Delete</button>
 
                     </form>
                 </div>
-            </div>
+            </article>
 
         }
 

@@ -3,8 +3,9 @@
 @{
     ViewData["Title"] = "Add Projection";
 
-    <h1>ADD Coming Soon</h1>
 }
+<article class="admin-main-item">
+<h1>ADD Coming Soon</h1>
 <form class="text-center border border-light p-5" asp-controller="Cinema" asp-action="Add" method="post">
     <div class="form-group">
         <label asp-for="ProjectionTime">Date</label>
@@ -28,5 +29,8 @@
         <input asp-for="Time" type="text" class="form-control" placeholder="Time" name="time" value="">
         <span asp-validation-for="Time" class="small text-danger"></span>
     </div>
+    <div class="admin-main-item-footer form-group">
     <button type="submit" class="btn btn-primary" value="submit">Add</button>
+        </div>
 </form>
+</article>

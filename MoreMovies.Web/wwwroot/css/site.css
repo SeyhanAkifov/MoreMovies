@@ -416,7 +416,6 @@ body {
 }
 
 
-
 #footer {
     position: relative;
     bottom: 0;
@@ -580,8 +579,10 @@ button{
         justify-content: center;
         margin: 14px;
         flex-direction: column;
-        width: 80%;
+        width: 100%;
     }
+
+    
 
 .soon-head{
     flex-basis :5%;
@@ -757,6 +758,9 @@ p a{
     }
 
 
+.form-group {
+    width: 100%;
+}
 
     @media screen and (max-width : 600px) {
         header nav .container, .navbar-collapse {
