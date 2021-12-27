@@ -3,15 +3,18 @@
 @{
     ViewData["Title"] = "Add Comment";
 }
+<article class="admin-main-item">
+    <h1>ADD COMMENT</h1>
 
-<h1>ADD COMMENT</h1>
-
-<form class="text-center border border-light p-5" asp-controller="Movie" asp-action="AddComment"   method="post">
-    <div class="form-group">
-        <label asp-for="Description">Description</label>
-        <input asp-for="Description" type="text" class="form-control" placeholder="Description" name="description" value="">
-        <input  id="user" type="hidden" class="form-control" placeholder="User" name="user" value="@Model.UserId">
-        <span asp-validation-for="Description" class="m-md-0 text-danger"></span>
-    </div>
-    <button id="submitComment" type="submit" class="btn btn-primary" value="submit">Add comment</button>
-</form>
+    <form class="text-center border border-light p-5" asp-controller="Movie" asp-action="AddComment" method="post">
+        <div class="form-group">
+            <label asp-for="Description">Description</label>
+            <input asp-for="Description" type="text" class="form-control" placeholder="Description" name="description" value="">
+            <input id="user" type="hidden" class="form-control" placeholder="User" name="user" value="@Model.UserId">
+            <span asp-validation-for="Description" class="m-md-0 text-danger"></span>
+        </div>
+        <div class="admin-main-item-footer">
+            <button id="submitComment" type="submit" class="btn btn-primary" value="submit">Add comment</button>
+        </div>
+    </form>
+</article>

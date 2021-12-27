@@ -19,6 +19,8 @@ namespace MoreMovies.Services.Interfaces
 
         public Task LikeMovie(int id, string userId);
 
+        public Task DisLikeMovie(int id, string userId);
+
         public Task AddComment(AddCommentInputModel model);
 
         public Task EditMovieWithId(int id, EditMovieInputModel model);

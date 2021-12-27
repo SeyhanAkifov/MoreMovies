@@ -51,7 +51,7 @@ namespace MoreMovies.Web.Controllers
             var genres = this.cache.Get<ICollection<MoreMovies.Models.Genre>>(genresCacheKey);
 
             var cacheOptions = new MemoryCacheEntryOptions()
-                .SetAbsoluteExpiration(TimeSpan.FromMinutes(15));
+                .SetAbsoluteExpiration(TimeSpan.FromMinutes(1));
 
             if (topcomentedMovies == null)
             {

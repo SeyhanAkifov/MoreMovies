@@ -1,4 +1,12 @@
-﻿header nav .container {
+﻿body, html{
+    margin : 0;
+    padding : 0;
+}
+* {
+    box-sizing: border-box;
+}
+
+header nav .container {
     display: flex;
     justify-content: space-between;
 }
@@ -96,12 +104,12 @@ main {
     margin: 38px;
 }
 
+#shell {
+    margin: 0 auto;
+}
+
 body {
-    background-image: url('./images/banner2.jpg');
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-attachment: fixed;
-    background-size: cover;
+    background: #7B9EA2;
 }
 
 .navbar-collapse{
@@ -291,9 +299,14 @@ body {
         margin: 10px;
     }
 
-    .movie hr{
-        width : 250px;
-    }
+.form-check-inline button, .add-form button{
+    background : transparent;
+    border : none;
+}
+
+hr {
+    width: 250px;
+}
 .main{
     display : flex;
 }
@@ -308,6 +321,7 @@ body {
     display: flex ;
     margin: 0 auto;
     flex-wrap : wrap;
+    justify-content : center;
 }
 
 .head {
@@ -352,7 +366,7 @@ body {
 
     .rating .stars-in {
         width: 48px;
-        display: inline;
+        
         background: url('images/stars.gif') no-repeat 0 bottom;
         position: absolute;
         height: 11px;
@@ -360,6 +374,85 @@ body {
         line-height: 0;
         text-indent: -2000px;
     }
+
+.rating {
+    float: left;
+}
+
+    /* :not(:checked) is a filter, so that browsers that don’t support :checked don’t 
+   follow these rules. Every browser that supports :checked also supports :not(), so
+   it doesn’t make the test unnecessarily selective */
+    .rating:not(:checked) > input {
+        position: absolute;
+        top: -9999px;
+        clip: rect(0,0,0,0);
+    }
+
+    .rating:not(:checked) > label {
+        float: right;
+        width: 1em;
+        padding: 0 .1em;
+        overflow: hidden;
+        white-space: nowrap;
+        cursor: pointer;
+        font-size: 200%;
+        line-height: 1.2;
+        color: #ddd;
+        text-shadow: 1px 1px #bbb, 2px 2px #666, .1em .1em .2em rgba(0,0,0,.5);
+    }
+
+        .rating:not(:checked) > label:before {
+            content: '★ ';
+        }
+
+    .rating > input:checked ~ label {
+        color: #f70;
+        text-shadow: 1px 1px #c60, 2px 2px #940, .1em .1em .2em rgba(0,0,0,.5);
+    }
+
+    .rating:not(:checked) > label:hover,
+    .rating:not(:checked) > label:hover ~ label {
+        color: gold;
+        text-shadow: 1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
+    }
+
+    .rating > input:checked + label:hover,
+    .rating > input:checked + label:hover ~ label,
+    .rating > input:checked ~ label:hover,
+    .rating > input:checked ~ label:hover ~ label,
+    .rating > label:hover ~ input:checked ~ label {
+        color: #ea0;
+        text-shadow: 1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
+    }
+
+    .rating > label:active {
+        position: relative;
+        top: 2px;
+        left: 2px;
+    }
+/* Paste this css to your style sheet file or under head tag */
+/* This only works with JavaScript, 
+if it's not present, don't show loader */
+.no-js #loader {
+    display: none;
+}
+
+.js #loader {
+    display: block;
+    position: absolute;
+    left: 100px;
+    top: 0;
+}
+
+.se-pre-con {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: url("images/preloader.gif") center no-repeat #fff;
+}
 
 .comments {
     background: url('images/comments.gif') no-repeat 0 center;
@@ -612,6 +705,7 @@ p a{
     justify-content: center;
     flex-direction: column;
     margin : 0 auto;
+    width : 100%;
 }
 
 #account label input{
@@ -627,7 +721,7 @@ p a{
 }
 
     .form-group input, .form-group select, .form-group textarea {
-        width: 100%;
+        width: 89%;
         border-radius: 4px;
         height: 50px;
     }
@@ -697,7 +791,7 @@ p a{
 .admin-main {
     display: flex;
     flex-wrap: wrap;
-    
+    justify-content: center;
 }
 
 .admin-main-item {
@@ -773,7 +867,7 @@ p a{
         }
 
         #content{
-            display : inline-block;
+            
             margin : 0 auto;
             text-align : center;
         }

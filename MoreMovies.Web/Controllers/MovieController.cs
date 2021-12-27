@@ -216,6 +216,20 @@ namespace MoreMovies.Web.Controllers
         }
 
         [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> DisLike(int id)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (movieService.IsUserLiked(id, userId))
+            {
+                await movieService.DisLikeMovie(id, userId);
+            }
+
+            return RedirectToAction("Details", "Movie", new { id });
+        }
+
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddComment(int id, AddCommentInputModel model)
         {

@@ -15,8 +15,8 @@
                 <img src="@Model.ImageUrl" alt="Image" width="200" height="300">
             </article>
             <article class="details-buttons">
-                <button class="btn-flip" data-back="Show info" data-front="Show info" id="movieInfo" name="id" value="@Model.Id"></button>
-               
+                <a class="btn-flip" data-back="Show info" data-front="Show info" id="movieInfo" name="id" value="@Model.Id"></a>
+
                 @if (Model.Creator == User.Identity.Name)
                 {
 
@@ -25,12 +25,19 @@
 
                     <a class="btn-flip" data-back="Edit" data-front="Edit" asp-controller="Movie" asp-action="Edit" asp-route-id="@Model.Id" name="@Model.Id"></a>
                 }
-                @if (!Model.IsUserLiked)
+                else
                 {
+                    @if (!Model.IsUserLiked)
+                    {
 
-                    <a class="btn-flip" data-back="Like" data-front="Edit" asp-controller="Movie" asp-action="Like" asp-route-id="@Model.Id" name="@Model.Id"></a>
+                        <a class="btn-flip" data-back="Like" data-front="Like" asp-controller="Movie" asp-action="Like" asp-route-id="@Model.Id" name="@Model.Id"></a>
+                    }
+                    else
+                    {
+                        <a class="btn-flip" data-back="DisLike" data-front="DisLike" asp-controller="Movie" asp-action="DisLike" asp-route-id="@Model.Id" name="@Model.Id"></a>
+                    }
                 }
-                <button class="btn btn-primary">Likes: @Model.Likes</button>
+
 
 
                 <a class="btn-flip" data-back="Write a comment" data-front="Write a comment" asp-controller="Movie" asp-action="AddComment" asp-route-id="@Model.Id"></a>
@@ -75,11 +82,11 @@
 
                     <div class="rating">
 
-                        <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="Rocks!">5 stars</label>
-                        <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="Pretty good">4 stars</label>
+                        <input type="radio" id="star1" name="rating" value="5" /><label for="star1" title="Rocks!">5 stars</label>
+                        <input type="radio" id="star2" name="rating" value="4" /><label for="star2" title="Pretty good">4 stars</label>
                         <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="Meh">3 stars</label>
-                        <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="Kinda bad">2 stars</label>
-                        <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="Sucks big time">1 star</label>
+                        <input type="radio" id="star4" name="rating" value="2" /><label for="star4" title="Kinda bad">2 stars</label>
+                        <input type="radio" id="star5" name="rating" value="1" /><label for="star5" title="Sucks big time">1 star</label>
                         <input type="hidden" name="movieId" value="@Model.Id" />
                     </div>
                     <input style="background:#43a7d5;color:#fff;padding:12px;border:0" type="submit" value="Please rate">

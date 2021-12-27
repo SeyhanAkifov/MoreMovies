@@ -120,6 +120,20 @@ namespace MoreMovies.Services
             await db.SaveChangesAsync();
         }
 
+        public async Task DisLikeMovie(int id, string userId)
+        {
+            var movie = db.Movies.Find(id);
+
+            movie.Likes--;
+
+            var usermovie = db.UserMovies.FirstOrDefault(x => x.MovieId == movie.Id && x.UserId == userId);
+
+            this.db.UserMovies.Remove(usermovie);
+
+            await db.SaveChangesAsync();
+        }
+
+
         public async Task AddComment(AddCommentInputModel model)
         {
             var movie = await GetMovieWithId(model.MovieId);

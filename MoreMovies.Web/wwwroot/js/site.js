@@ -85,6 +85,7 @@ $(document).ready(function () {
 //Show movie info
 var clicked = false;
 var infoButton = document.querySelector("#movieInfo");
+console.log(infoButton);
 infoButton.addEventListener('click', (e) => {
     e.preventDefault();
     
@@ -92,7 +93,7 @@ infoButton.addEventListener('click', (e) => {
 
     if (!clicked) {
         var id = infoButton.value;
-        fetch(`https://localhost:5001/api/GetDetails/${id}`, {
+        fetch(`http://localhost:44321/api/GetDetails/${id}`, {
             method: 'Get',
             headers: {
                 'Content-Type': 'application/json',

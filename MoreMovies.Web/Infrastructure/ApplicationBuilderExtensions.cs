@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MoreMovies.Web.Infrastructure
 {
@@ -20,7 +21,7 @@ namespace MoreMovies.Web.Infrastructure
         
 
         
-        public static IApplicationBuilder PrepareDatabase(this IApplicationBuilder app)
+        public static  IApplicationBuilder PrepareDatabase(this IApplicationBuilder app)
         {
             using var scopedServices = app.ApplicationServices.CreateScope();
             
@@ -63,7 +64,7 @@ namespace MoreMovies.Web.Infrastructure
                 new Genre { Name = "Action"},
             });
 
-            db.SaveChanges();
+            db.SaveChangesAsync();
 
         }
 
@@ -86,7 +87,7 @@ namespace MoreMovies.Web.Infrastructure
                 new Language { Name = "Spanish"},
             });
 
-            db.SaveChanges();
+            db.SaveChangesAsync();
 
         }
 
@@ -184,7 +185,7 @@ namespace MoreMovies.Web.Infrastructure
 
             }
 
-            db.SaveChanges();
+            db.SaveChangesAsync();
         }
 
         public static void SeedComingSoon(ApplicationDbContext db, IComingSoonService cs)
@@ -202,7 +203,7 @@ namespace MoreMovies.Web.Infrastructure
 
             }
 
-            db.SaveChanges();
+            db.SaveChangesAsync();
         }
     }
 }

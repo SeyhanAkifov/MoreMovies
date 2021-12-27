@@ -1,4 +1,4 @@
-﻿* {
+﻿/** {
 	margin:0;
 	padding:0;
 	outline:0;
@@ -308,7 +308,7 @@ h1#logo a {
 	font-size:10px;
 	color:#fff;
 	font-weight:bold;
-}
+}*/
 /*.comments {
 	width: 220px;
 	height: 100px;
@@ -319,7 +319,7 @@ h1#logo a {
 	border-radius: 100px / 50px;
 }*/
 
-.rating .stars {
+/*.rating .stars {
 	float:left;
 	width:60px;
 	height:11px;
@@ -433,8 +433,8 @@ h1#logo a {
 	position: absolute;
 	bottom: 0;
 	width: 100%;
-	height: 100px; /* Height of the footer */
-}
+	height: 100px;*/ /* Height of the footer */
+/*}
 #footer, #footer a {
 	color:#9c9c9c;
 	text-decoration:none;
@@ -457,12 +457,12 @@ h1#logo a {
 
 .rating {
     float:left;
-}
+}*/
 
 /* :not(:checked) is a filter, so that browsers that don’t support :checked don’t 
    follow these rules. Every browser that supports :checked also supports :not(), so
    it doesn’t make the test unnecessarily selective */
-.rating:not(:checked) > input {
+/*.rating:not(:checked) > input {
     position:absolute;
     top:-9999px;
     clip:rect(0,0,0,0);
@@ -509,11 +509,11 @@ h1#logo a {
     position:relative;
     top:2px;
     left:2px;
-}
+}*/
 /* Paste this css to your style sheet file or under head tag */
 /* This only works with JavaScript, 
 if it's not present, don't show loader */
-.no-js #loader {
+/*.no-js #loader {
 	display: none;
 }
 
@@ -532,10 +532,10 @@ if it's not present, don't show loader */
 	height: 100%;
 	z-index: 9999;
 	background: url("images/preloader.gif") center no-repeat #fff;
-}
+}*/
 
 /*form table*/
-body {
+/*body {
 	margin-top: 20px;
 }
 
@@ -657,4 +657,4 @@ body {
 	vertical-align: top;
 	border-top: 1px solid #dee2e6;
 	background-color: white;
-}
+}*/
