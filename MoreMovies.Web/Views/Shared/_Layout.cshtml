@@ -5,92 +5,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Find More Movies</title>
    
-    <link type="text/css" rel="stylesheet" href="~/css/site.css" />
+    <link type="text/css" rel="stylesheet" href="~/css/style.css" />
 
 </head>
 <body>
-    <div class="se-pre-con"></div>
-    <span id="status" class="text-danger"></span>
-    <header>
-        <nav class="navbar">
-            <div class="container">
-                <article class="logo">
-                    <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">MoreMovies</a>
-                    <span> by </span>
-                    <a class="navbar-logo" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/css/images/logo2.png" /></a>
-                </article>
-                
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                        <li class="nav-item"><a class="btn-flip" data-back="My Movie" data-front="My Movie" asp-controller="Movie" asp-action="MyMovies"></a></li>
-                        <li class="nav-item"><a class="btn-flip" data-back="My Liked" data-front="My Liked" asp-controller="Movie" asp-action="MyLiked"></a></li>
-                        <li class="nav-item"><a class="btn-flip" data-back="Add Movie" data-front="Add Movie" asp-controller="Movie" asp-action="Add"></a></li>
-                        }
+    <div class="back"></div>
+        <div class="se-pre-con"></div>
+        <span id="status" class="text-danger"></span>
+        <header>
+            <nav class="navbar">
+                <div class="container">
+                    <article class="logo">
+                        <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">MoreMovies</a>
+                        <span> by </span>
+                        <a class="navbar-logo" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/css/images/logo2.png" /></a>
+                    </article>
+
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <ul class="navbar-nav flex-grow-1">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li class="nav-item"><a class="btn-flip" data-back="My Movie" data-front="My Movie" asp-controller="Movie" asp-action="MyMovies"></a></li>
+                                <li class="nav-item"><a class="btn-flip" data-back="My Liked" data-front="My Liked" asp-controller="Movie" asp-action="MyLiked"></a></li>
+                                <li class="nav-item"><a class="btn-flip" data-back="Add Movie" data-front="Add Movie" asp-controller="Movie" asp-action="Add"></a></li>
+                            }
 
 
-                        <li class="nav-item"><a class="btn-flip" data-back="In Cinema" data-front="In Cinema" asp-controller="Cinema" asp-action="InCinema"></a></li>
-                        <li class="nav-item"><a class="btn-flip" data-back="Coming Soon" data-front="Coming Soon" asp-controller="ComingSoon" asp-action="All"></a></li>
-                        <li class="nav-item"><a class="btn-flip" data-back="News" data-front="News" asp-controller="News" asp-action="All"></a></li>
-                        <li class="nav-item"><a class="btn-flip" data-back="Contact" data-front="Contact" asp-controller="Contact" asp-action="ContactPage"></a></li>
+                            <li class="nav-item"><a class="btn-flip" data-back="In Cinema" data-front="In Cinema" asp-controller="Cinema" asp-action="InCinema"></a></li>
+                            <li class="nav-item"><a class="btn-flip" data-back="Coming Soon" data-front="Coming Soon" asp-controller="ComingSoon" asp-action="All"></a></li>
+                            <li class="nav-item"><a class="btn-flip" data-back="News" data-front="News" asp-controller="News" asp-action="All"></a></li>
+                            <li class="nav-item"><a class="btn-flip" data-back="Contact" data-front="Contact" asp-controller="Contact" asp-action="ContactPage"></a></li>
 
-                    </ul>
-                    <partial name="_LoginPartial" />
+                        </ul>
+                        <partial name="_LoginPartial" />
+                    </div>
                 </div>
-            </div>
-        </nav>
-    </header>
-    <div class="holder" style="display: none;">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="display: none;">
-            Launch demo modal
-        </button>
-    </div>
+            </nav>
+        </header>
+        <div class="holder" style="display: none;">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="display: none;">
+                Launch demo modal
+            </button>
+        </div>
 
 
-    <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog"
-             style="width: 100%; max-width: 969px;">
-            <div class="modal-content">
+        <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog"
+                 style="width: 100%; max-width: 969px;">
+                <div class="modal-content">
 
-                <div class="modal-body" style="margin: 0 auto; padding: 0px;">
-                    <div align="center"
-                         style="width: 100%; height: 0;
+                    <div class="modal-body" style="margin: 0 auto; padding: 0px;">
+                        <div align="center"
+                             style="width: 100%; height: 0;
                             padding-bottom: 64.5%;
                             position: relative;
                             margin : 0 auto">
-                        <iframe style="position: absolute;
+                            <iframe style="position: absolute;
                                    top: 0;
                                    left: 0;
                                    width: 100%;
                                    height: 100%;"
-                                src="" frameborder="0" allowfullscreen></iframe>
+                                    src="" frameborder="0" allowfullscreen></iframe>
+                        </div>
                     </div>
-                </div>
 
+                </div>
             </div>
         </div>
-    </div>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer id="footer" class="border-top footer ">
-        <div id="footer">
-            &copy; @DateTime.UtcNow.Year - MoreMovies - Seyhan Akifov
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
         </div>
-    </footer>
-    <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+        <footer id="footer" class="border-top footer ">
+            <div id="footer">
+                &copy; @DateTime.UtcNow.Year - MoreMovies - Seyhan Akifov
+            </div>
+        </footer>
+        <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
 
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        @await RenderSectionAsync("Scripts", required: false)
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
 
 </body>
 <script>

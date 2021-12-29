@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MoreMovies.Web.Models.Cinema
 {
@@ -13,5 +14,8 @@ namespace MoreMovies.Web.Models.Cinema
         public string CinemaHall { get; set; }
 
         public string Time { get; set; }
+
+        public List<string> CinemaNames { get; set; }
+
     }
 }

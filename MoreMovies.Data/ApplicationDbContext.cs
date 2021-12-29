@@ -45,6 +45,7 @@ namespace MoreMovies.Data
         public DbSet<ComingSoon> ComingSoons { get; set; }
         public DbSet<CinemaHall> CinemaHalls { get; set; }
         public DbSet<CinemaPojection> CinemaPojections { get; set; }
+        public DbSet<Cinema> Cinemas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

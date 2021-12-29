@@ -22,6 +22,9 @@ namespace MoreMovies.Services.Dto.Input
         [Required]
         public string Time { get; set; }
 
+        [Required]
+        public string CinemaName { get; set; }
+
 
     }
 }

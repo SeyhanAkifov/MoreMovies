@@ -25,5 +25,10 @@ namespace MoreMovies.Models
         public int CinemaHallId { get; set; }
         
         public CinemaHall CinemaHall { get; set; }
+
+        [Required]
+        public int CinemaId { get; set; }
+
+        public Cinema Cinema { get; set; }
     }
 }

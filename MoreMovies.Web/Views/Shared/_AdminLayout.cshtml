@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Find More Movies</title>
+    <title>@ViewData["Title"] - More Movies</title>
     
-    <link  type="text/css" rel="stylesheet" href="~/css/site.css" />
+    <link  type="text/css" rel="stylesheet" href="~/css/style.css" />
     
 </head>
 <body>
@@ -25,9 +25,19 @@
                         @if (User.Identity.IsAuthenticated)
                         {
 
-                        <li class="nav-item"><a class="btn-flip" data-back="My Movie" data-front="My Movie" asp-controller="Movie" asp-action="MyMovies"></a></li>
-                        <li class="nav-item"><a class="btn-flip" data-back="My Liked" data-front="My Liked" asp-controller="Movie" asp-action="MyLiked"></a></li>
-                        <li class="nav-item"><a class="btn-flip" data-back="Add Movie" data-front="Add Movie" asp-controller="Movie" asp-action="Add"></a></li>
+                            <li class="nav-item"><a class="btn-flip" data-back="My Movie" data-front="My Movie" asp-controller="Movie" asp-action="MyMovies"></a></li>
+                            <li class="nav-item"><a class="btn-flip" data-back="My Liked" data-front="My Liked" asp-controller="Movie" asp-action="MyLiked"></a></li>
+                            <li class="nav-item"><a class="btn-flip" data-back="Add Movie" data-front="Add Movie" asp-controller="Movie" asp-action="Add"></a></li>
+                            
+                            @if (User.IsInRole("Manager"))
+                            {
+                                <li class="nav-item"><a class="btn-flip" data-back="Add Projection" data-front="Add Projection" asp-controller="Cinema" asp-action="Add"></a></li>
+                            }
+                            else
+                            {
+                                <li class="nav-item"><a class="btn-flip" data-back="Become a Cinema Agent" data-front="Become a Cinema Agent" asp-controller="Cinema" asp-action="Become"></a></li>
+                            }
+
 
                         }
 

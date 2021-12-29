@@ -15,32 +15,32 @@
                 <img src="@Model.ImageUrl" alt="Image" width="200" height="300">
             </article>
             <article class="details-buttons">
-                <a class="btn-flip" data-back="Show info" data-front="Show info" id="movieInfo" name="id" value="@Model.Id"></a>
+                <a class="btn-flip" id="show-info-btn" data-back="Show info" data-front="Show info" id="movieInfo" name="id" value="@Model.Id"></a>
 
                 @if (Model.Creator == User.Identity.Name)
                 {
 
-                    <a class="btn-flip" data-back="Delete" data-front="Delete" asp-controller="Movie" asp-action="Delete" asp-route-id="@Model.Id" name="@Model.Id"></a>
+                    <a class="btn-flip" id="delete-btn" data-back="Delete" data-front="Delete" asp-controller="Movie" asp-action="Delete" asp-route-id="@Model.Id" name="@Model.Id"></a>
 
 
-                    <a class="btn-flip" data-back="Edit" data-front="Edit" asp-controller="Movie" asp-action="Edit" asp-route-id="@Model.Id" name="@Model.Id"></a>
+                    <a class="btn-flip" id="edit-btn" data-back="Edit" data-front="Edit" asp-controller="Movie" asp-action="Edit" asp-route-id="@Model.Id" name="@Model.Id"></a>
                 }
                 else
                 {
                     @if (!Model.IsUserLiked)
                     {
 
-                        <a class="btn-flip" data-back="Like" data-front="Like" asp-controller="Movie" asp-action="Like" asp-route-id="@Model.Id" name="@Model.Id"></a>
+                        <a class="btn-flip" id="like-btn" data-back="Like" data-front="Like" asp-controller="Movie" asp-action="Like" asp-route-id="@Model.Id" name="@Model.Id"></a>
                     }
                     else
                     {
-                        <a class="btn-flip" data-back="DisLike" data-front="DisLike" asp-controller="Movie" asp-action="DisLike" asp-route-id="@Model.Id" name="@Model.Id"></a>
+                        <a class="btn-flip" id="dislike-btn" data-back="DisLike" data-front="DisLike" asp-controller="Movie" asp-action="DisLike" asp-route-id="@Model.Id" name="@Model.Id"></a>
                     }
                 }
 
 
 
-                <a class="btn-flip" data-back="Write a comment" data-front="Write a comment" asp-controller="Movie" asp-action="AddComment" asp-route-id="@Model.Id"></a>
+                <a class="btn-flip" id="addcomment-btn" data-back="Write a comment" data-front="Write a comment" asp-controller="Movie" asp-action="AddComment" asp-route-id="@Model.Id"></a>
             </article>
             <article class="card-body" style="display: none" id="info">
                 <h3 id="genre-info"></h3>
@@ -98,13 +98,13 @@
 
 
 
-            <article class="comments">
+            <article class="comment">
                 <h1>Comments</h1>
 
 
                 @foreach (var item in Model.Comments)
                 {
-                    <div class="card-body d-flex text-justify justify-content-center" style="display:inline-block">
+                    <div class="card-body d-flex text-justify justify-content-center">
                         <div class="comment float-left " style="margin: 0 0 auto">
                             <h4>@item.UserEmail</h4>
                             <p class="text-justify justify-content-center" style="display:inline-block">@item.Description</p>

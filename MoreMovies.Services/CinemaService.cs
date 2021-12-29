@@ -14,14 +14,39 @@ namespace MoreMovies.Services
     public class CinemaService : ICinemaService
     {
         private readonly ApplicationDbContext db;
+        private readonly IUserService userService;
 
-        public CinemaService(ApplicationDbContext db)
+        public CinemaService(ApplicationDbContext db, IUserService userService)
         {
             this.db = db;
+            this.userService = userService;
+        }
+
+        public  List<string> GetCinema(string userName)
+        {
+            return  this.db.Cinemas.Where(x => x.User.Email == userName).Select(x => x.Name).ToList();
+        }
+
+        public async Task AddCinema(string cinemaName, string userName)
+        {
+            var user = await this.userService.GetUser(userName);
+
+
+            await this.userService.Become(user.Id);
+            var cinema = new Cinema
+            {
+                Name = cinemaName,
+                User = user,
+            };
+
+            this.db.Cinemas.Add(cinema);
+
+            await db.SaveChangesAsync();
         }
 
         public void Add(CinemaProjectionInputDto model)
         {
+
             
 
             var hall = this.db.CinemaHalls.FirstOrDefault(x => x.Name == model.CinemaHallName);
@@ -37,7 +62,7 @@ namespace MoreMovies.Services
                 hall = this.db.CinemaHalls.FirstOrDefault(x => x.Name == model.CinemaHallName);
             }
 
-          
+            var cinema = this.db.Cinemas.Where(x => x.Name == model.CinemaName).FirstOrDefault();
 
             this.db.CinemaPojections.Add(new CinemaPojection
             {
@@ -46,6 +71,7 @@ namespace MoreMovies.Services
                 ProjectionTime = model.ProjectionTime,
                 CinemaHallId = hall.Id,
                 CinemaHall = hall,
+                CinemaId = cinema.Id
             });
 
             this.db.SaveChanges();
@@ -58,16 +84,30 @@ namespace MoreMovies.Services
             this.db.CinemaPojections.Remove(cinemaProjection);
         }
 
-        public ICollection<CinemaProjectionOutputDto> GetAll()
+        public List<string> GetCinemaNames()
         {
-            return this.db.CinemaPojections.Select(x => new CinemaProjectionOutputDto
+            return this.db.Cinemas.Select(x => x.Name).ToList();
+        }
+
+        
+
+        public ICollection<CinemaProjectionOutputDto> GetAll(string cinemaName)
+        {
+
+            if (string.IsNullOrEmpty(cinemaName))
+            {
+                cinemaName = this.db.Cinemas.FirstOrDefault().Name;
+            }
+            return this.db.CinemaPojections
+                .Where(x => x.Cinema.Name == cinemaName)
+                .Select(x => new CinemaProjectionOutputDto
             {
                 MovieName = x.MovieName,
                 ProjectionTime = x.ProjectionTime,
                 CinemaHall = x.CinemaHall,
                 Time = x.Time
                 
-            }).ToList();
+            }) .ToList();
         }
     }
 }

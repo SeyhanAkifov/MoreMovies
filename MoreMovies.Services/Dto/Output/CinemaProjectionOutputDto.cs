@@ -18,5 +18,7 @@ namespace MoreMovies.Services.Dto.Output
         public string Time { get; set; }
         
         public CinemaHall CinemaHall { get; set; }
+
+        
     }
 }

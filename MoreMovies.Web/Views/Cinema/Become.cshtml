@@ -1,0 +1,21 @@
+﻿@model CinemaInputDto
+
+@{
+    ViewData["Title"] = "Add Projection";
+
+}
+<article class="admin-main-item">
+    <h1>Become a Cinema Manager</h1>
+    <p> As Cinema Manager you can add cinema projection and edit them</p>
+    <form class="text-center border border-light p-5" asp-controller="Cinema" asp-action="AddCinema" method="post">
+        <div class="form-group">
+            <label asp-for="CinemaName">Cinema Name</label>
+            <input asp-for="CinemaName" type="text" class="form-control" placeholder="Cinema Name" name="cinemaName" value="">
+            <span asp-validation-for="CinemaName" class="small text-danger"></span>
+        </div>
+
+        <div class="admin-main-item-footer form-group">
+            <button type="submit" class="btn btn-primary" value="submit">Add</button>
+        </div>
+    </form>
+</article>

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MoreMovies.Data;
 
 namespace MoreMovies.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211229120057_CinemaProperty")]
+    partial class CinemaProperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -244,13 +246,7 @@ namespace MoreMovies.Data.Migrations
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Cinemas");
                 });
@@ -629,17 +625,6 @@ namespace MoreMovies.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MoreMovies.Models.Cinema", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("MoreMovies.Models.CinemaPojection", b =>
                 {
                     b.HasOne("MoreMovies.Models.CinemaHall", "CinemaHall")
@@ -649,7 +634,7 @@ namespace MoreMovies.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("MoreMovies.Models.Cinema", "Cinema")
-                        .WithMany("CinemaPojections")
+                        .WithMany()
                         .HasForeignKey("CinemaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -771,11 +756,6 @@ namespace MoreMovies.Data.Migrations
                     b.Navigation("Movies");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("MoreMovies.Models.Cinema", b =>
-                {
-                    b.Navigation("CinemaPojections");
                 });
 
             modelBuilder.Entity("MoreMovies.Models.Movie", b =>

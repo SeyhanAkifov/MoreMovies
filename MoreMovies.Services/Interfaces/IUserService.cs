@@ -10,5 +10,7 @@ namespace MoreMovies.Services.Interfaces
     public interface IUserService
     {
         public Task<ICollection<IdentityUser>> GetAll();
+        public Task Become(string userId);
+        public Task<IdentityUser> GetUser(string userName);
     }
 }
