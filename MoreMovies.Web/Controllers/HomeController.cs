@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using MoreMovies.Services.Dto.Output;
@@ -6,7 +7,9 @@ using MoreMovies.Services.Interfaces;
 using MoreMovies.Web.Models;
 using MoreMovies.Web.Models.News;
 using System;
+
 using System.Collections.Generic;
+
 using System.Threading.Tasks;
 
 namespace MoreMovies.Web.Controllers
@@ -19,8 +22,11 @@ namespace MoreMovies.Web.Controllers
         private readonly IComingSoonService comingSoonService;
         private readonly IMapper mapper;
         private readonly IMemoryCache cache;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
-        public HomeController(IMovieService service, 
+        public HomeController(UserManager<IdentityUser> userManager,
+                              SignInManager<IdentityUser> signInManager, IMovieService service, 
             IMapper mapper, 
             INewsService newsService, 
             IComingSoonService comingSoonService, 
@@ -33,6 +39,8 @@ namespace MoreMovies.Web.Controllers
             this.comingSoonService = comingSoonService;
             this.genreService = genreService;
             this.cache = cache;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         [HttpGet]
@@ -91,6 +99,45 @@ namespace MoreMovies.Web.Controllers
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(string email, string password, bool rememberMe)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(email, password, rememberMe, false);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
+
+            }
+            return View("Index", "Home");
+        }
+
+        [HttpGet]
+
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Register(string email, string password, string confirmPassword)
         {
             return View();
         }

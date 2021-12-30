@@ -13,21 +13,19 @@ body, html {
    
 }
 
-h1{
+/*h1{
     font-size : 22px;
-}
+}*/
 
 * {
     box-sizing: border-box;
 }
-header {
-    font-family: fantasy, sans-serif;
-}
+
 
 header nav .container {
     display: flex;
     justify-content: space-between;
-    font-family: 'Raleway', sans-serif;
+    
     
 }
 
@@ -38,6 +36,8 @@ header nav .container {
 .logo {
     display: flex;
     align-items: center;
+    font-family: 'Roboto', sans-serif;
+    font-weight : 800;
 }
 
 .details {
@@ -86,6 +86,7 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 0 20px;
 }
 
 .actors h3{
@@ -96,7 +97,7 @@ main {
     font-size: 32px;
     color: white;
     text-decoration: none;
-    font-family: fantasy;
+    
     padding: 10px;
     margin: 15px;
 }
@@ -134,18 +135,9 @@ main {
 }
 
 body {
-    background-attachment: fixed;
-    font-size: 16px;
-    line-height: 1.642;
-    overflow-x: hidden;
-    transition: inherit;
-    -webkit-font-smoothing: antialiased;
-    -webkit-transition: all .4s ease;
-    -moz-transition: all .4s ease;
-    -ms-transition: all .4s ease;
-    -o-transition: all .4s ease;
-    transition: all .4s ease;
     background: url("images/banner2.jpg") no-repeat center center fixed;
+    background-attachment: fixed;
+    
     -moz-background-size: cover;
     -webkit-background-size: cover;
     -o-background-size: cover;
@@ -178,7 +170,7 @@ body {
             text-decoration: none;
             font-size: 16px;
             color: white;
-            font-family: fantasy;
+            
         }
 
 .rating {
@@ -193,9 +185,9 @@ body {
     color: white;
 }
 
-/* :not(:checked) is a filter, so that browsers that don’t support :checked don’t 
+ :not(:checked) is a filter, so that browsers that don’t support :checked don’t 
    follow these rules. Every browser that supports :checked also supports :not(), so
-   it doesn’t make the test unnecessarily selective */
+   it doesn’t make the test unnecessarily selective 
 .rating:not(:checked) > input {
     position: absolute;
     top: -9999px;
@@ -251,13 +243,13 @@ body {
     opacity: 1;
     outline: 0;
     color: #fff;
-    line-height: 20px;
+    
     position: relative;
     text-align: center;
     letter-spacing: 1px;
     display: inline-block;
     text-decoration: none;
-    font-family: "Open Sans";
+    
     text-transform: uppercase;
 }
 
@@ -453,7 +445,7 @@ hr {
         color: #fff;
         font-weight: bold;
     }
-    /*.comments {
+    .comments {
 	width: 220px;
 	height: 100px;
 	margin: 10px 0 0 -10px;
@@ -461,7 +453,7 @@ hr {
 	-moz-border-radius: 100px / 50px;
 	-webkit-border-radius: 100px / 50px;
 	border-radius: 100px / 50px;
-}*/
+}
 
     .rating .stars {
         float: left;
@@ -485,9 +477,9 @@ hr {
     float: left;
 }
 
-    /* :not(:checked) is a filter, so that browsers that don’t support :checked don’t 
+     :not(:checked) is a filter, so that browsers that don’t support :checked don’t 
    follow these rules. Every browser that supports :checked also supports :not(), so
-   it doesn’t make the test unnecessarily selective */
+   it doesn’t make the test unnecessarily selective 
     .rating:not(:checked) > input {
         position: absolute;
         top: -9999px;
@@ -536,9 +528,9 @@ hr {
         top: 2px;
         left: 2px;
     }
-/* Paste this css to your style sheet file or under head tag */
-/* This only works with JavaScript, 
-if it's not present, don't show loader */
+ Paste this css to your style sheet file or under head tag 
+ This only works with JavaScript, 
+if it's not present, don't show loader 
 .no-js #loader {
     display: none;
 }
@@ -620,7 +612,7 @@ if it's not present, don't show loader */
     position: relative;
     bottom: 0;
     width: 100%;
-    height: 20px; /* Height of the footer */
+    height: 20px;  Height of the footer 
 }
 
     #footer, #footer a {
@@ -748,9 +740,9 @@ button {
     justify-content: center;
     margin-bottom: 26px;
     border-radius: 12px;
-    /* IE10+ */
+     IE10+ 
     background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 49%, rgba(255, 255, 255, 0) 100%);
-    /* W3C */
+     W3C 
 }
 
 .soon-body {
@@ -764,12 +756,14 @@ button {
 #registerForm {
     display: flex;
     border-radius: 9px;
-    box-shadow: 6px 6px 6px 3px darkgrey;
-    background-color: rgba(0, 0, 0, 0.5);
+    background: rgba(0,0,0,.24);
+    box-shadow: 0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,0.5);
     align-items: center;
     color: white;
     justify-content: center;
     flex-direction: column;
+    width: 62%;
+    margin: 0 auto;
 }
 
     #registerForm .form-group {
@@ -805,14 +799,15 @@ p a {
 #account {
     display: flex;
     border-radius: 9px;
-    box-shadow: 6px 6px 6px 3px darkgrey;
-    background-color: rgba(0, 0, 0, 0.5);
+    background: rgba(0,0,0,.24);
+    box-shadow: 0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,0.5);
     align-items: center;
     color: white;
     justify-content: center;
     flex-direction: column;
+    width: 62%;
     margin: 0 auto;
-    width: 100%;
+    position: relative;
 }
 
     #account label input {
@@ -828,7 +823,7 @@ p a {
     }
 
 .form-group input, .form-group select, .form-group textarea {
-    width: 89%;
+    width: 1em 89%;
     border-radius: 4px;
     height: 50px;
 }
@@ -893,6 +888,8 @@ button {
     width: 121px;
     border-radius: 6px;
     background: white;
+    font-size: 19px;
+    color : black;
 }
 
 .admin-main {
@@ -1005,6 +1002,10 @@ button {
     flex-direction: column;
 }
 
+.container {
+    
+}
+
 .cinema-users {
     padding: 26px;
     margin: 0 auto;
@@ -1052,7 +1053,212 @@ button {
         height: 186px;
     }
 
+
+
+*, :after, :before {
+    box-sizing: border-box
+}
+
+.clearfix:after, .clearfix:before {
+    content: '';
+    display: table
+}
+
+.clearfix:after {
+    clear: both;
+    display: block
+}
+
+a {
+    color: inherit;
+    text-decoration: none
+}
+
+.login-wrap {
+    width: 100%;
+    margin: auto;
+    max-width: 525px;
+    min-height: 670px;
+    position: relative;
+    background: transparent;
+    box-shadow: 0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
+    
+}
+
+.login-html {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    padding: 90px 70px 50px 70px;
+   
+}
+
+    .login-html .sign-in-htm,
+    .login-html .sign-up-htm {
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        position: absolute;
+        transform: rotateY(180deg);
+        backface-visibility: hidden;
+        transition: all .4s linear;
+    }
+
+    .login-html .sign-in,
+    .login-html .sign-up,
+    .login-form .group .check {
+        display: none;
+    }
+
+    .login-html .tab,
+    .login-form .group .label,
+    .login-form .group .button {
+        text-transform: uppercase;
+    }
+
+    .login-html .tab {
+        font-size: 22px;
+        margin-right: 15px;
+        padding-bottom: 5px;
+        margin: 0 15px 10px 0;
+        display: inline-block;
+        border-bottom: 2px solid transparent;
+    }
+
+    .login-html .sign-in:checked + .tab,
+    .login-html .sign-up:checked + .tab {
+        color: #fff;
+        border-color: #1161ee;
+    }
+
+.login-form {
+    min-height: 345px;
+    position: relative;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+}
+
+    .login-form .group {
+        margin-bottom: 15px;
+    }
+
+        .login-form .group .label,
+        .login-form .group .input,
+        .login-form .group .button {
+            width: 100%;
+            color: #fff;
+            display: block;
+        }
+
+        .login-form .group .input,
+        .login-form .group .button {
+            border: none;
+            padding: 15px 20px;
+            border-radius: 25px;
+            
+        }
+
+        .login-form .group input[data-type="password"] {
+            text-security: circle;
+            -webkit-text-security: circle;
+        }
+
+        .login-form .group .label {
+            
+            font-size: 12px;
+        }
+
+        .login-form .group .button {
+            background: #1161ee;
+        }
+
+        .login-form .group label .icon {
+            width: 15px;
+            height: 15px;
+            border-radius: 2px;
+            position: relative;
+            display: inline-block;
+            background: rgba(255,255,255,.1);
+        }
+
+            .login-form .group label .icon:before,
+            .login-form .group label .icon:after {
+                content: '';
+                width: 10px;
+                height: 2px;
+                background: #fff;
+                position: absolute;
+                transition: all .2s ease-in-out 0s;
+            }
+
+            .login-form .group label .icon:before {
+                left: 3px;
+                width: 5px;
+                bottom: 6px;
+                transform: scale(0) rotate(0);
+            }
+
+            .login-form .group label .icon:after {
+                top: 6px;
+                right: 0;
+                transform: scale(0) rotate(0);
+            }
+
+        .login-form .group .check:checked + label {
+            color: #fff;
+        }
+
+            .login-form .group .check:checked + label .icon {
+                background: #1161ee;
+            }
+
+                .login-form .group .check:checked + label .icon:before {
+                    transform: scale(1) rotate(45deg);
+                }
+
+                .login-form .group .check:checked + label .icon:after {
+                    transform: scale(1) rotate(-45deg);
+                }
+
+.login-html .sign-in:checked + .tab + .sign-up + .tab + .login-form .sign-in-htm {
+    transform: rotate(0);
+}
+
+.login-html .sign-up:checked + .tab + .login-form .sign-up-htm {
+    transform: rotate(0);
+}
+
+.hr {
+    height: 2px;
+    margin: 60px 0 50px 0;
+    background: rgba(255,255,255,.2);
+}
+
+.foot-lnk {
+    text-align: center;
+}
+
+
     @media screen and (max-width : 600px) {
+
+        body:before {
+            content: "";
+            display: block;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -10;
+            
+            background: url("images/banner2.jpg") no-repeat center center;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+
         header nav .container, .navbar-collapse {
         flex-direction: column;
         flex-wrap: wrap;
@@ -1176,4 +1382,28 @@ button {
         
         width: 64px;
     }
+
+        #login-submit {
+            padding: 15px;
+            width: 121px;
+            border-radius: 6px;
+            background: white;
+            font-size: 19px;
+            color: black;
+        }
+
+        #registerSubmit {
+            padding: 15px;
+            width: 121px;
+            border-radius: 6px;
+            background: white;
+            font-size: 19px;
+            color: black;
+        }
+
+        #account , #registerForm{
+            background: rgba(0,0,0,.24);
+            box-shadow: 0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,0.5);
+            width: 89%;
+        }
 }

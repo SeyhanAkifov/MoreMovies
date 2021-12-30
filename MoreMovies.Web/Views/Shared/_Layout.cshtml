@@ -4,9 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Find More Movies</title>
-   
-    <link type="text/css" rel="stylesheet" href="~/css/style.css" />
 
+    <link type="text/css" rel="stylesheet" href="~/css/style.css" />
+    
 </head>
 <body>
     <div class="back"></div>
@@ -38,6 +38,8 @@
 
                         </ul>
                         <partial name="_LoginPartial" />
+                        @*<a class="btn-flip" data-back="Login" data-front="Login" asp-controller="Home" asp-action="Login"></a>
+                        <a class="btn-flip" data-back="Register" data-front="Register" asp-controller="Home" asp-action="Register"></a>*@
                     </div>
                 </div>
             </nav>
@@ -73,9 +75,9 @@
             </div>
         </div>
         <div class="container">
-            <main role="main" class="pb-3">
+           
                 @RenderBody()
-            </main>
+           
         </div>
 
         <footer id="footer" class="border-top footer ">
@@ -85,7 +87,7 @@
         </footer>
         <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
         <script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+       
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
 

@@ -48,14 +48,14 @@
                         <div id="search" >
                             <form asp-controller="Movie" asp-action="SearchByGenre" method="get" accept-charset="utf-8">
                                 <label for="search-field">SEARCH BY GENRE</label>
-                                <select type="text" placeholder="Genre" name="genre" id="search-field" class="blink search-field">
+                                <select type="text" placeholder="Genre" name="genre" id="search-field" >
                                     @foreach (var genre in Model.Genres)
                                     {
                                         <option value="@genre.Name">@genre.Name</option>
                                     }
                                     
                                 </select>
-                                <input type="submit" value="GO!" class="search-button" />
+                                <input type="submit" value="GO!"  />
                             </form>
                         </div>
                         <hr />
@@ -64,8 +64,8 @@
                         <div id="search" >
                             <form asp-controller="Movie" asp-action="SearchByYear" method="get" accept-charset="utf-8">
                                 <label for="search-field">SEARCH BY YEAR</label>
-                                <input type="text" name="year" value="" placeholder="Enter year here" id="search-field" class="blink search-field" />
-                                <input type="submit" value="GO!" class="search-button" />
+                                <input type="text" name="year" value="" placeholder="Enter year here" id="search-field"  />
+                                <input type="submit" value="GO!"  />
                             </form>
                         </div>
                         <hr />
@@ -75,8 +75,8 @@
                         <div id="search" >
                             <form asp-controller="Movie" asp-action="Search" method="get" accept-charset="utf-8">
                                 <label for="search-field">SEARCH BY NAME</label>
-                                <input type="text" name="name" value="" placeholder="Enter search here" id="search-field" class="blink search-field" />
-                                <input type="submit" value="GO!" class="search-button" />
+                                <input type="text" name="name" value="" placeholder="Enter search here" id="search-field" />
+                                <input type="submit" value="GO!"  />
                             </form>
                         </div>
                         <hr />
