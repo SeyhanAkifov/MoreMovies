@@ -22,7 +22,7 @@ namespace MoreMovies.Data
             if (!optionsBuilder.IsConfigured)
             {
 
-                optionsBuilder.UseSqlServer("Server=mssql6.asphostbg.net,14330;Database=seyhanak_moremovies;Uid=seyhanak_admin_seyhan;Password=DuduDudu157");
+                optionsBuilder.UseSqlServer("");
 
               
 
