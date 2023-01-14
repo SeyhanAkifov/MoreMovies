@@ -4,16 +4,16 @@
 @{
 }
 
-@*<div class="login-wrap">
+<div class="login-wrap">
     <div class="login-html">
         <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign In</label>
         
         <form method="post" asp-controller="Home" asp-action="Login" class="login-form">
             <div class="sign-in-htm">
                 <div class="group">
-                    <label asp-for="Email" for="user" class="label"></label>
-                    <input asp-for="Email" id="user" type="text" class="input" placeholder="Email" name="email" value="">
-                    <span asp-validation-for="Email" class="error"></span>
+                    <label  for="user" class="label"></label>
+                    <input  id="user" type="text" class="input" placeholder="Email" name="email" value="">
+                    <span  class="error"></span>
                 </div>
                 <div class="group">
                     <label for="pass" class="label">Password</label>
@@ -34,4 +34,4 @@
             
         </form>
     </div>
-</div>*@
+</div>

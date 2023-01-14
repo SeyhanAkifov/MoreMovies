@@ -1156,7 +1156,7 @@ a {
             border: none;
             padding: 15px 20px;
             border-radius: 25px;
-            
+            color: black;
         }
 
         .login-form .group input[data-type="password"] {

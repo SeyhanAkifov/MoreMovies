@@ -20,14 +20,15 @@ namespace MoreMovies.Web.Controllers
             this.mapper = mapper;
         }
 
+        [HttpGet]
         public IActionResult InCinema(string cinemaName)
         {
 
             var cinemaNames = this.cinemaService.GetCinemaNames();
             var projections = this.cinemaService.GetAll(cinemaName);
-           
 
-              var result = mapper.Map<ICollection<CinemaProjectionOutputDto>, ICollection<CinemaProjectionViewModel>>(projections);
+
+            var result = mapper.Map<ICollection<CinemaProjectionOutputDto>, ICollection<CinemaProjectionViewModel>>(projections);
 
             var d = new InCinemaViewModel
             {
@@ -46,16 +47,16 @@ namespace MoreMovies.Web.Controllers
             return View();
         }
 
-        
+
 
         [HttpPost]
         public async Task<IActionResult> AddCinema(string cinemaName)
         {
             var user = User.Identity.Name;
 
-            
 
-             await this.cinemaService.AddCinema(cinemaName, user);
+
+            await this.cinemaService.AddCinema(cinemaName, user);
 
             return RedirectToAction("InCinema");
         }

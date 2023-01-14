@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <UserSecretsId>aspnet-MoreMovies.Web-B5F709B3-67EE-4D48-ACA4-20EA41D57285</UserSecretsId>
   </PropertyGroup>
 
