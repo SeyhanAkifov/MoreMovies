@@ -5,25 +5,19 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-            <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+            <a class="nav-link text-white" data-back="Register" data-front="Register" asp-controller="Home" asp-action="Login">Hello @User.Identity.Name!</a>
         </li>
-        <li class="nav-item">
-            <form class="form-check-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button>
-                <a class="btn-flip" data-back="Logout" data-front="Logout" ></a>
-                    </button>
-            </form>
-        </li>
+        <li class="nav-item"><a class="btn-flip" data-back="Logout" data-front="Logout" asp-controller="Home" asp-action="Logout"></a></li>
     }
     else
     {
-       
 
-        <li class="nav-item"><a class="btn-flip" data-back="Register" data-front="Register" asp-area="Identity" asp-page="/Account/Register"></a></li>
-      
-        
-            
-        <li class="nav-item"><a class="btn-flip" data-back="Login" data-front="Login" asp-area="Identity" asp-page="/Account/Login"></a></li>
+
+        <li class="nav-item"><a class="btn-flip" data-back="Register" data-front="Register" asp-controller="Home" asp-action="Register"></a></li>
+
+
+
+         <li class="nav-item"><a class="btn-flip" data-back="Login" data-front="Login" asp-controller="Home" asp-action="Login"></a></li>
         
     }
 </ul>

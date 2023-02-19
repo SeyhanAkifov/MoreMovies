@@ -1100,7 +1100,7 @@ a {
         right: 0;
         bottom: 0;
         position: absolute;
-        transform: rotateY(180deg);
+        /*transform: rotateY(180deg);*/
         backface-visibility: hidden;
         transition: all .4s linear;
     }
@@ -1220,14 +1220,22 @@ a {
                 .login-form .group .check:checked + label .icon:after {
                     transform: scale(1) rotate(-45deg);
                 }
+/**/
+/*.login-html .sign-in:checked + .tab + .sign-in .sign-in-htm {
+    transform: rotate(0);
+}*/
 
-.login-html .sign-in:checked + .tab + .sign-up + .tab + .login-form .sign-in-htm {
+.sign-in-htm {
     transform: rotate(0);
 }
 
-.login-html .sign-up:checked + .tab + .login-form .sign-up-htm {
+.sign-up-htm {
     transform: rotate(0);
 }
+
+/*.login-html .sign-up:checked + .tab + .sign-up .sign-up-htm {
+    transform: rotate(0);
+}*/
 
 .hr {
     height: 2px;

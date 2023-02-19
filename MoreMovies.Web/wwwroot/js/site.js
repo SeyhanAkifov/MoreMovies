@@ -31,6 +31,8 @@ playButtons.forEach(button => button.addEventListener("click", (e) => {
     var current = document.querySelector(".modal-body > div >  iframe")
     current.src = trailerUrl;
     holder.click();
+    $(window).scrollTop(0);
+    $('.modal').css("display", "block")
 }));
 
 //try SignalR notification on add new comment
@@ -84,7 +86,7 @@ $(document).ready(function () {
 
 //Show movie info
 var clicked = false;
-var infoButton = document.querySelector("#movieInfo");
+var infoButton = document.querySelector("#show-info-btn");
 console.log(infoButton);
 infoButton.addEventListener('click', (e) => {
     e.preventDefault();
