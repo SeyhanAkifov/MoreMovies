@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MoreMovies.Web.Infrastructure
 {
@@ -44,7 +45,7 @@ namespace MoreMovies.Web.Infrastructure
             return app;
         }
 
-        public async static void SeedGenre(ApplicationDbContext db)
+        public static async Task SeedGenre(ApplicationDbContext db)
         {
 
 
@@ -69,7 +70,7 @@ namespace MoreMovies.Web.Infrastructure
 
         }
 
-        public async static void SeedLanguage(ApplicationDbContext db)
+        public static async Task SeedLanguage(ApplicationDbContext db)
         {
             if (db.Languages.Any())
             {
@@ -92,7 +93,7 @@ namespace MoreMovies.Web.Infrastructure
 
         }
 
-        public async static void SeedCountry(ApplicationDbContext db)
+        public static async Task SeedCountry(ApplicationDbContext db)
         {
             if (db.Country.Any())
             {
@@ -115,7 +116,7 @@ namespace MoreMovies.Web.Infrastructure
 
         }
 
-        public static async void SeedUsers(IServiceProvider serviceProvider)
+        public static async Task SeedUsers(IServiceProvider serviceProvider)
         {
 
             using var scopedServices = serviceProvider.CreateScope();
@@ -153,7 +154,7 @@ namespace MoreMovies.Web.Infrastructure
             await db.SaveChangesAsync();
         }
 
-        public static async void SeedMovies(ApplicationDbContext db, IMovieService ms)
+        public static async Task SeedMovies(ApplicationDbContext db, IMovieService ms)
         {
             if (db.Movies.Any())
             {
@@ -171,7 +172,7 @@ namespace MoreMovies.Web.Infrastructure
             await db.SaveChangesAsync();
         }
 
-        public static async void SeedNews(ApplicationDbContext db, INewsService ns)
+        public static async Task SeedNews(ApplicationDbContext db, INewsService ns)
         {
             if (db.News.Any())
             {
@@ -189,7 +190,7 @@ namespace MoreMovies.Web.Infrastructure
             await db.SaveChangesAsync();
         }
 
-        public static async void SeedComingSoon(ApplicationDbContext db, IComingSoonService cs)
+        public static async Task SeedComingSoon(ApplicationDbContext db, IComingSoonService cs)
         {
             if (db.ComingSoons.Any())
             {

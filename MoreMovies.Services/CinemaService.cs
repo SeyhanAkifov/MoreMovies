@@ -94,9 +94,9 @@ namespace MoreMovies.Services
         public ICollection<CinemaProjectionOutputDto> GetAll(string cinemaName)
         {
 
-            if (string.IsNullOrEmpty(cinemaName))
+            if (!string.IsNullOrEmpty(cinemaName))
             {
-                cinemaName = this.db.Cinemas.FirstOrDefault().Name;
+                cinemaName = this.db.Cinemas.FirstOrDefault()?.Name;
             }
             return this.db.CinemaPojections
                 .Where(x => x.Cinema.Name == cinemaName)

@@ -24,6 +24,7 @@ namespace MoreMovies.Web.Controllers
         public IActionResult InCinema(string cinemaName)
         {
 
+
             var cinemaNames = this.cinemaService.GetCinemaNames();
             var projections = this.cinemaService.GetAll(cinemaName);
 

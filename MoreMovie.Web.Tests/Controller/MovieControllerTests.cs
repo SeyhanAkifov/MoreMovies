@@ -510,6 +510,8 @@ namespace MoreMovie.Web.Tests.Controller
                 HttpContext = new DefaultHttpContext() { User = user }
             };
 
+          
+
             IActionResult result = await movieController.AddComment(1, new AddCommentInputModel());
 
             RedirectToActionResult viewResult = Assert.IsType<RedirectToActionResult>(result);

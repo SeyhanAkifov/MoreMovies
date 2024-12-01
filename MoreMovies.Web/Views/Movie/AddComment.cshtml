@@ -11,6 +11,7 @@
             <label asp-for="Description">Description</label>
             <input asp-for="Description" type="text" class="form-control" placeholder="Description" name="description" value="">
             <input id="user" type="hidden" class="form-control" placeholder="User" name="user" value="@Model.UserId">
+            <input id="MovieId" type="hidden" class="form-control" placeholder="MovieId" name="MovieId" value="@Model.MovieId">
             <span asp-validation-for="Description" class="m-md-0 text-danger"></span>
         </div>
         <div class="admin-main-item-footer">

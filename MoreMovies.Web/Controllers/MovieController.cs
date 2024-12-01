@@ -240,19 +240,22 @@ namespace MoreMovies.Web.Controllers
 
             var userEmail = User.FindFirstValue(ClaimTypes.Email);
             model.UserId = userEmail;
-            model.MovieId = id;
+            
             await movieService.AddComment(model);
             var movie = await movieService.GetMovieWithId(model.MovieId);
             await this.movieHub.Clients.All.SendAsync("NewMessage", model.UserId, movie.Title);
 
-            return RedirectToAction("Details", "Movie", new { id });
+            return RedirectToAction("Details", "Movie", new { id = model.MovieId });
         }
 
         [Authorize]
         [HttpGet]
-        public IActionResult AddComment()
+        public IActionResult AddComment(int id)
         {
-            return View(new AddCommentInputModel());
+            var s = new AddCommentInputModel();
+                s.MovieId = id;
+         
+            return View(s);
         }
 
         [HttpGet]
