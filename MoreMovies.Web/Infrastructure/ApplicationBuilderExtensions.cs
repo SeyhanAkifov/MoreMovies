@@ -47,6 +47,7 @@ namespace MoreMovies.Web.Infrastructure
         public async static void SeedGenre(ApplicationDbContext db)
         {
 
+
             if (db.Genre.Any())
             {
                 return;
