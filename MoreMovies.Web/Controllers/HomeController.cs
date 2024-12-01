@@ -25,13 +25,15 @@ namespace MoreMovies.Web.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
-        public HomeController(UserManager<IdentityUser> userManager,
-                              SignInManager<IdentityUser> signInManager, IMovieService service, 
+        public HomeController(
+            
             IMapper mapper, 
             INewsService newsService, 
             IComingSoonService comingSoonService, 
             IGenreService genreService, 
-            IMemoryCache cache)
+            IMemoryCache cache,
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager, IMovieService service)
         {
             this.service = service;
             this.mapper = mapper;

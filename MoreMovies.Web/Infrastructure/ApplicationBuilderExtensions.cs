@@ -12,19 +12,18 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace MoreMovies.Web.Infrastructure
 {
     public static class ApplicationBuilderExtensions
     {
-        
 
-        
-        public static  IApplicationBuilder PrepareDatabase(this IApplicationBuilder app)
+
+
+        public static IApplicationBuilder PrepareDatabase(this IApplicationBuilder app)
         {
             using var scopedServices = app.ApplicationServices.CreateScope();
-            
+
 
             var db = scopedServices.ServiceProvider.GetService<ApplicationDbContext>();
             var ms = scopedServices.ServiceProvider.GetService<IMovieService>();
@@ -45,8 +44,10 @@ namespace MoreMovies.Web.Infrastructure
             return app;
         }
 
-        public static void SeedGenre(ApplicationDbContext db)
+        public async static void SeedGenre(ApplicationDbContext db)
         {
+
+
             if (db.Genre.Any())
             {
                 return;
@@ -64,11 +65,11 @@ namespace MoreMovies.Web.Infrastructure
                 new Genre { Name = "Action"},
             });
 
-            db.SaveChangesAsync();
+            await db.SaveChangesAsync();
 
         }
 
-        public static void SeedLanguage(ApplicationDbContext db)
+        public async static void SeedLanguage(ApplicationDbContext db)
         {
             if (db.Languages.Any())
             {
@@ -87,11 +88,11 @@ namespace MoreMovies.Web.Infrastructure
                 new Language { Name = "Spanish"},
             });
 
-            db.SaveChangesAsync();
+            await db.SaveChangesAsync();
 
         }
 
-        public static void SeedCountry(ApplicationDbContext db)
+        public async static void SeedCountry(ApplicationDbContext db)
         {
             if (db.Country.Any())
             {
@@ -110,7 +111,7 @@ namespace MoreMovies.Web.Infrastructure
                 new Country { Name = "France"},
             });
 
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
         }
 
@@ -137,10 +138,10 @@ namespace MoreMovies.Web.Infrastructure
             {
                 Name = "User"
             };
-            
-            await roleManager.CreateAsync(roleAdmin);  
+
+            await roleManager.CreateAsync(roleAdmin);
             await roleManager.CreateAsync(roleUser);
-            
+
             var admin = new IdentityUser { UserName = "Admin1@abv.bg", Email = "Admin1@abv.bg", EmailConfirmed = true };
             await userManager.CreateAsync(admin, "Admin1@abv.bg");
             await userManager.AddToRoleAsync(admin, "Admin");
@@ -148,11 +149,11 @@ namespace MoreMovies.Web.Infrastructure
             var user = new IdentityUser { UserName = "User1@abv.bg", Email = "User1@abv.bg", EmailConfirmed = true };
             await userManager.CreateAsync(user, "User1@abv.bg");
             await userManager.AddToRoleAsync(user, "User");
-            
+
             await db.SaveChangesAsync();
         }
 
-        public static void SeedMovies(ApplicationDbContext db, IMovieService ms)
+        public static async void SeedMovies(ApplicationDbContext db, IMovieService ms)
         {
             if (db.Movies.Any())
             {
@@ -160,17 +161,17 @@ namespace MoreMovies.Web.Infrastructure
             }
 
             var movies = JsonConvert.DeserializeObject<ICollection<AddMovieInputModel>>(File.ReadAllText("movies.json"));
-            
+
             foreach (var movie in movies)
             {
                 ms.AddMovie(movie);
 
             }
-            
-            db.SaveChanges();
+
+            await db.SaveChangesAsync();
         }
 
-        public static void SeedNews(ApplicationDbContext db, INewsService ns)
+        public static async void SeedNews(ApplicationDbContext db, INewsService ns)
         {
             if (db.News.Any())
             {
@@ -185,10 +186,10 @@ namespace MoreMovies.Web.Infrastructure
 
             }
 
-            db.SaveChangesAsync();
+            await db.SaveChangesAsync();
         }
 
-        public static void SeedComingSoon(ApplicationDbContext db, IComingSoonService cs)
+        public static async void SeedComingSoon(ApplicationDbContext db, IComingSoonService cs)
         {
             if (db.ComingSoons.Any())
             {
@@ -203,7 +204,7 @@ namespace MoreMovies.Web.Infrastructure
 
             }
 
-            db.SaveChangesAsync();
+            await db.SaveChangesAsync();
         }
     }
 }
