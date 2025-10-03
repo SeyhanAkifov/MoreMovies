@@ -1,23 +1,32 @@
 ﻿@inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
-<ul class="navbar-nav">
+<div class="flex items-center space-x-2">
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item">
-            <a class="nav-link text-white" data-back="Register" data-front="Register" asp-controller="Home" asp-action="Login">Hello @User.Identity.Name!</a>
-        </li>
-        <li class="nav-item"><a class="btn-flip" data-back="Logout" data-front="Logout" asp-controller="Home" asp-action="Logout"></a></li>
+        <!-- Angemeldet -->
+        <span class="text-gray-300 hidden md:inline">Hello, @User.Identity.Name!</span>
+       @*  <form method="post" asp-controller="Home" asp-action="Logout" class="inline">
+            <button type="submit"
+                    class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded transition">
+                Logout
+            </button>
+        </form> *@
+        <a asp-controller="Home" asp-action="Logout"
+           class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded transition">
+            Logout
+        </a>
     }
     else
     {
-
-
-        <li class="nav-item"><a class="btn-flip" data-back="Register" data-front="Register" asp-controller="Home" asp-action="Register"></a></li>
-
-
-
-         <li class="nav-item"><a class="btn-flip" data-back="Login" data-front="Login" asp-controller="Home" asp-action="Login"></a></li>
-        
+        <!-- Nicht angemeldet -->
+        <a asp-controller="Home" asp-action="Register"
+           class="bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded transition">
+            Register
+        </a>
+        <a asp-controller="Home" asp-action="Login"
+           class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded transition">
+            Login
+        </a>
     }
-</ul>
+</div>

@@ -1,39 +1,51 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model MoreMovies.Web.Models.Administration.Login;
 @{
+    ViewData["Title"] = "Login";
+    
 }
 
-<div class="login-wrap">
-    <div class="login-html">
-        <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign In</label>
-        <form class="login-form" asp-controller="Home" asp-action="Login">
-        
-            <div class="sign-in-htm">
-                <div class="group">
-                    <label  for="user" class="label"></label>
-                    <input  id="user" type="text" class="input" placeholder="Email" name="email" value="">
-                    <span  class="error"></span>
-                </div>
-                <div class="group">
-                    <label for="password" class="label">Password</label>
-                    <input id="password" type="password" class="input" data-type="password" name="password">
-                </div>
-                <div class="group">
-                    <input id="rememberMe" type="checkbox" class="check" checked name="remeberme">
-                    <label for="rememberMe"><span class="icon"></span> Keep me Signed in</label>
-                </div>
-                <div class="group">
-                    <input type="submit" class="button" value="Sign In" >
-                </div>
-                <div class="hr"></div>
-                <div class="foot-lnk">
-                    <a href="#forgot">Forgot Password?</a>
-                </div>
+<div class="flex items-center justify-center min-h-screen bg-gray-900">
+    <div class="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h2 class="text-2xl font-bold text-center text-red-500 mb-6">Sign In</h2>
+
+        <form asp-controller="Home" asp-action="Login" method="post" class="space-y-6">
+            <!-- Email -->
+            <div>
+                <label for="email" class="block text-sm text-gray-300 mb-1">Email</label>
+                <input id="email" name="email" type="email" placeholder="Enter your email"
+                       class="w-full px-4 py-2 rounded bg-gray-900 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500" />
+            </div>
+
+            <!-- Password -->
+            <div>
+                <label for="password" class="block text-sm text-gray-300 mb-1">Password</label>
+                <input id="password" name="password" type="password" placeholder="Enter your password"
+                       class="w-full px-4 py-2 rounded bg-gray-900 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500" />
+            </div>
+
+            <!-- Remember Me -->
+            <div class="flex items-center justify-between">
+                <label class="flex items-center text-gray-400 text-sm">
+                    <input id="rememberMe" name="rememberMe" type="checkbox" asp-for="@Model.RememberMe"
+                           class="h-4 w-4 text-red-600 rounded border-gray-600 focus:ring-red-500" />
+
+                    <span class="ml-2">Keep me signed in</span>
+                </label>
+                <a href="#forgot" class="text-sm text-red-400 hover:underline">Forgot Password?</a>
+            </div>
+
+            <!-- Submit -->
+            <div>
+                <button type="submit"
+                        class="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded transition duration-200">
+                    Sign In
+                </button>
             </div>
         </form>
-       
-       
-        
+
+        <p class="mt-6 text-center text-sm text-gray-400">
+            Don’t have an account?
+            <a asp-controller="Home" asp-action="Register" class="text-red-500 hover:underline">Sign up</a>
+        </p>
     </div>
 </div>

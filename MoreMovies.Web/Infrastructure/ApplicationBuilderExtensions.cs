@@ -12,15 +12,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MoreMovies.Web.Infrastructure
 {
     public static class ApplicationBuilderExtensions
     {
-
-
-
-        public static IApplicationBuilder PrepareDatabase(this IApplicationBuilder app)
+        public static async Task<IApplicationBuilder> PrepareDatabase(this IApplicationBuilder app)
         {
             using var scopedServices = app.ApplicationServices.CreateScope();
 
@@ -33,25 +31,21 @@ namespace MoreMovies.Web.Infrastructure
 
             db.Database.Migrate();
 
-            SeedGenre(db);
-            SeedLanguage(db);
-            SeedCountry(db);
-            SeedUsers(app.ApplicationServices);
-            SeedMovies(db, ms);
-            SeedNews(db, ns);
-            SeedComingSoon(db, cs);
+            await SeedGenre(db);
+            await SeedLanguage(db);
+            await SeedCountry(db);
+            await SeedUsers(app.ApplicationServices);
+            await SeedMovies(db, ms);
+            await SeedNews(db, ns);
+            await SeedComingSoon(db, cs);
 
             return app;
         }
 
-        public async static void SeedGenre(ApplicationDbContext db)
+        public static async Task SeedGenre(ApplicationDbContext db)
         {
-
-
             if (db.Genre.Any())
-            {
                 return;
-            }
 
             db.Genre.AddRange(new[]
             {
@@ -66,15 +60,12 @@ namespace MoreMovies.Web.Infrastructure
             });
 
             await db.SaveChangesAsync();
-
         }
 
-        public async static void SeedLanguage(ApplicationDbContext db)
+        public async static Task SeedLanguage(ApplicationDbContext db)
         {
             if (db.Languages.Any())
-            {
                 return;
-            }
 
             db.Languages.AddRange(new[]
             {
@@ -89,10 +80,9 @@ namespace MoreMovies.Web.Infrastructure
             });
 
             await db.SaveChangesAsync();
-
         }
 
-        public async static void SeedCountry(ApplicationDbContext db)
+        public async static Task SeedCountry(ApplicationDbContext db)
         {
             if (db.Country.Any())
             {
@@ -115,7 +105,7 @@ namespace MoreMovies.Web.Infrastructure
 
         }
 
-        public static async void SeedUsers(IServiceProvider serviceProvider)
+        public static async Task SeedUsers(IServiceProvider serviceProvider)
         {
 
             using var scopedServices = serviceProvider.CreateScope();
@@ -153,7 +143,7 @@ namespace MoreMovies.Web.Infrastructure
             await db.SaveChangesAsync();
         }
 
-        public static async void SeedMovies(ApplicationDbContext db, IMovieService ms)
+        public static async Task SeedMovies(ApplicationDbContext db, IMovieService ms)
         {
             if (db.Movies.Any())
             {
@@ -164,14 +154,14 @@ namespace MoreMovies.Web.Infrastructure
 
             foreach (var movie in movies)
             {
-                ms.AddMovie(movie);
+                await ms.AddMovie(movie);
 
             }
 
             await db.SaveChangesAsync();
         }
 
-        public static async void SeedNews(ApplicationDbContext db, INewsService ns)
+        public static async Task SeedNews(ApplicationDbContext db, INewsService ns)
         {
             if (db.News.Any())
             {
@@ -182,14 +172,14 @@ namespace MoreMovies.Web.Infrastructure
 
             foreach (var item in news)
             {
-                ns.Add(item);
+                await ns.Add(item);
 
             }
 
             await db.SaveChangesAsync();
         }
 
-        public static async void SeedComingSoon(ApplicationDbContext db, IComingSoonService cs)
+        public static async Task SeedComingSoon(ApplicationDbContext db, IComingSoonService cs)
         {
             if (db.ComingSoons.Any())
             {
@@ -200,7 +190,7 @@ namespace MoreMovies.Web.Infrastructure
 
             foreach (var item in soon)
             {
-                cs.Add(item);
+                await cs.Add(item);
 
             }
 

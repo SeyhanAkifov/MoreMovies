@@ -5,6 +5,7 @@ using Microsoft.Extensions.Caching.Memory;
 using MoreMovies.Services.Dto.Output;
 using MoreMovies.Services.Interfaces;
 using MoreMovies.Web.Models;
+using MoreMovies.Web.Models.Administration;
 using MoreMovies.Web.Models.News;
 using System;
 
@@ -113,11 +114,11 @@ namespace MoreMovies.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(string email, string password, bool rememberMe)
+        public async Task<IActionResult> Login(Login model)
         {
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(email, password, rememberMe, false);
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
 
                 if (result.Succeeded)
                 {

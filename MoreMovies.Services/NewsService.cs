@@ -54,7 +54,7 @@ namespace MoreMovies.Services
         {
             var news = await this.db.News
                 .OrderByDescending(x => x.AddedOn)
-                .Take(2)
+                .Take(3)
                 .Select(x => GetNewsOutputDto(x))
                 .ToArrayAsync();
 

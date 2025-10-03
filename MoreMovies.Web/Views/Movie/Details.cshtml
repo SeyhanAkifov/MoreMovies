@@ -1,133 +1,136 @@
 ﻿@model MovieDetailsViewModel
-
 @{
     ViewData["Title"] = "Movie Details";
 }
 
+@if (Model != null)
+{
+    <div class="max-w-6xl mx-auto p-4 md:p-8 space-y-6">
+        <!-- Titel -->
+        <h1 class="text-3xl md:text-4xl font-bold text-red-600">@Model.Title</h1>
 
-    @if (Model != null)
-    {
-    <h1>@Model.Title</h1>
-    <section class="details">
-        
-        <article class="details-item">
-            <article class="movie-image-details align-content-center">
-                <img src="@Model.ImageUrl" alt="Image" width="200" height="300">
-            </article>
-            <article class="details-buttons">
-                <a class="btn-flip" id="show-info-btn" data-back="Show info" data-front="Show info" id="movieInfo" name="id" value="@Model.Id"></a>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Bild & Buttons -->
+            <div class="space-y-4">
+                <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? Url.Content("~/css/images/movie_placeholder.jpg") : Model.ImageUrl)"
+                     alt="@Model.Title"
+                     class="w-full h-64 object-cover">
 
-                @if (Model.Creator == User.Identity.Name)
-                {
+                <div class="flex flex-wrap gap-2">
+                    <!-- Show info button -->
+                    <button id="show-info-btn" data-id="@Model.Id" class="bg-gray-800 hover:bg-gray-700 text-white px-3 py-2 rounded">
+                        Show Info
+                    </button>
 
-                    <a class="btn-flip" id="delete-btn" data-back="Delete" data-front="Delete" asp-controller="Movie" asp-action="Delete" asp-route-id="@Model.Id" name="@Model.Id"></a>
-
-
-                    <a class="btn-flip" id="edit-btn" data-back="Edit" data-front="Edit" asp-controller="Movie" asp-action="Edit" asp-route-id="@Model.Id" name="@Model.Id"></a>
-                }
-                else
-                {
-                    @if (!Model.IsUserLiked)
+                    @if (Model.Creator == User.Identity.Name)
                     {
-
-                        <a class="btn-flip" id="like-btn" data-back="Like" data-front="Like" asp-controller="Movie" asp-action="Like" asp-route-id="@Model.Id" name="@Model.Id"></a>
+                        <a asp-controller="Movie" asp-action="Edit" asp-route-id="@Model.Id" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded">
+                            Edit
+                        </a>
+                        <a asp-controller="Movie" asp-action="Delete" asp-route-id="@Model.Id" class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded">
+                            Delete
+                        </a>
                     }
                     else
                     {
-                        <a class="btn-flip" id="dislike-btn" data-back="DisLike" data-front="DisLike" asp-controller="Movie" asp-action="DisLike" asp-route-id="@Model.Id" name="@Model.Id"></a>
+                        @if (!Model.IsUserLiked)
+                        {
+                            <a asp-controller="Movie" asp-action="Like" asp-route-id="@Model.Id" class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded">
+                                Like
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Movie" asp-action="DisLike" asp-route-id="@Model.Id" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-2 rounded">
+                                Dislike
+                            </a>
+                        }
                     }
-                }
 
-
-
-                <a class="btn-flip" id="addcomment-btn" data-back="Write a comment" data-front="Write a comment" asp-controller="Movie" asp-action="AddComment" asp-route-id="@Model.Id"></a>
-            </article>
-            <article class="card-body" style="display: none" id="info">
-                <h3 id="genre-info"></h3>
-                <h3 id="country-info"></h3>
-                <h3 id="language-info"></h3>
-                <h3 id="budget-info"></h3>
-                <h3 id="date-info">Release date: </h3>
-                <div class="comment mt-4 text-justify float-left " style="margin: 0 0 auto">
-                    <h3 id="description-info"></h3>
+                    <a asp-controller="Movie" asp-action="AddComment" asp-route-id="@Model.Id" class="bg-gray-600 hover:bg-gray-500 text-white px-3 py-2 rounded">
+                        Write Comment
+                    </a>
                 </div>
-                <h3 id="homepage-info"></h3>
-            </article>
-        </article>
-        <article class="details-item">
 
-            <iframe width="560" height="315" src="@Model.HomePage" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <!-- Movie Info (initially hidden) -->
+                <div id="info" class="bg-gray-800 text-white p-4 rounded hidden space-y-2">
+                    <p><strong>Genre:</strong> @Model.Genre</p>
+                    <p><strong>Country:</strong> @Model.Country</p>
+                    <p><strong>Language:</strong> @Model.Language</p>
+                    <p><strong>Budget:</strong> @Model.Budget</p>
+                    <p><strong>Release Date:</strong> @Model.ReleaseDate.ToString("dd MMM yyyy")</p>
+                    <p>@Model.Description</p>
+                    <p><a href="@Model.HomePage" class="text-red-500 hover:underline" target="_blank">Official Page</a></p>
+                </div>
+            </div>
 
+            <!-- Trailer + Actors -->
+            <div class="md:col-span-2 space-y-6">
+                <iframe class="w-full h-64 md:h-96 rounded shadow-md" src="@Model.HomePage" title="Trailer" frameborder="0" allowfullscreen></iframe>
 
+                <div>
+                    <h2 class="text-xl font-bold text-red-500 mb-2">Actors</h2>
+                    <div class="flex flex-wrap gap-2">
+                        @foreach (var actor in Model.Actors)
+                        {
+                            <span class="bg-gray-700 px-3 py-1 rounded text-white">@actor</span>
+                        }
+                    </div>
+                </div>
 
+                <!-- Rating -->
+                <div class="max-w-sm mx-auto p-4 bg-gray-900 text-white rounded-lg">
+                    <h2 class="text-xl font-bold text-red-500 mb-2">Star Rating</h2>
 
+                    <!-- Anzeige der aktuellen Bewertung -->
+                    <div class="flex items-center mb-2">
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            <span class="text-2xl @(i <= Model.Rating ? "text-yellow-400" : "text-gray-400")">★</span>
+                        }
+                        <span class="ml-2 text-gray-300 text-sm">(@Model.Rating / 5)</span>
+                    </div>
 
-            <article class="actors">
-
-                @foreach (var item in Model.Actors)
-                {
-
-                    <h3>@item</h3>
-
-
-                }
-
-            </article>
-
-
-            <article class="star-rating">
-
-                <h1>Star Rating</h1>
-                <form method="post" asp-controller="Movie" asp-action="RateMovie">
-
-                    <div class="rating">
-
-                        <input type="radio" id="star1" name="rating" value="5" /><label for="star1" title="Rocks!">5 stars</label>
-                        <input type="radio" id="star2" name="rating" value="4" /><label for="star2" title="Pretty good">4 stars</label>
-                        <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="Meh">3 stars</label>
-                        <input type="radio" id="star4" name="rating" value="2" /><label for="star4" title="Kinda bad">2 stars</label>
-                        <input type="radio" id="star5" name="rating" value="1" /><label for="star5" title="Sucks big time">1 star</label>
+                    <!-- Interaktive Sterne für neue Bewertung -->
+                    <form method="post" asp-controller="Movie" asp-action="RateMovie" class="flex items-center gap-2">
+                        @for (int i = 5; i >= 1; i--)
+                        {
+                            <input type="radio" id="star@i" name="rating" value="@i" class="hidden" />
+                            <label for="star@i" class="cursor-pointer text-2xl text-yellow-400 hover:text-yellow-500 transition">★</label>
+                        }
                         <input type="hidden" name="movieId" value="@Model.Id" />
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Rate</button>
+                    </form>
+                </div>
+
+
+
+                <!-- Comments -->
+                <div>
+                    <h2 class="text-xl font-bold text-red-500 mb-2">Comments</h2>
+                    <div class="space-y-4">
+                        @foreach (var comment in Model.Comments)
+                        {
+                            <div class="bg-gray-800 p-4 rounded shadow-md">
+                                <p class="font-semibold text-gray-300">@comment.UserEmail</p>
+                                <p>@comment.Description</p>
+                            </div>
+                        }
                     </div>
-                    <input style="background:#43a7d5;color:#fff;padding:12px;border:0" type="submit" value="Please rate">
+                </div>
+            </div>
+        </div>
+    </div>
 
-                </form>
-            </article>
-
-
-
-
-
-            <article class="comment">
-                <h1>Comments</h1>
-
-
-                @foreach (var item in Model.Comments)
-                {
-                    <div class="card-body d-flex text-justify justify-content-center">
-                        <div class="comment float-left " style="margin: 0 0 auto">
-                            <h4>@item.UserEmail</h4>
-                            <p class="text-justify justify-content-center" style="display:inline-block">@item.Description</p>
-
-                        </div>
-
-
-
-                    </div>
-                }
-
-            </article>
-        </article>
-
-
-
-    </section>
-
-    }
-    else
-    {
-        <h1>Not Found</h1>
-    }
-
-
-
+    <script>
+        // Toggle Movie Info
+        document.getElementById('show-info-btn')?.addEventListener('click', function () {
+            var info = document.getElementById('info');
+            info.classList.toggle('hidden');
+        });
+    </script>
+}
+else
+{
+    <h1 class="text-2xl text-red-500 font-bold text-center mt-8">Movie Not Found</h1>
+}

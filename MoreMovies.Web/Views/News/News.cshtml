@@ -1,14 +1,14 @@
 ﻿@model NewsViewModel
 
-@{
-    ViewData["Title"] = "News";
-}
-
-<div class="content" id="news-item">
-    <p class="date">@Model.AddedOn</p>
-    <h4>@Model.Title</h4>
-    <hr />
-    <p>@Model.Description</p>
-   
-    <a class="btn-flip" data-back="Read More" data-front="Read More" asp-controller="News" asp-action="Details" asp-route-id="@Model.Id"></a>
+<div class="bg-gray-800 rounded-lg shadow hover:shadow-lg transition duration-200 flex flex-col h-full">
+    <p class="text-gray-400 text-xs md:text-sm px-4 pt-4">@Model.AddedOn</p>
+    <h4 class="text-white font-semibold text-lg md:text-xl px-4 mt-1">@Model.Title</h4>
+    <hr class="border-gray-700 my-2 mx-4" />
+    <p class="text-gray-300 text-sm px-4 mb-4 line-clamp-3 flex-grow">@Model.Description</p>
+    <div class="px-4 pb-4 mt-auto">
+        <a asp-controller="News" asp-action="Details" asp-route-id="@Model.Id"
+           class="inline-block w-full text-center bg-red-600 hover:bg-red-700 text-white py-2 rounded transition duration-200">
+            Read More
+        </a>
+    </div>
 </div>

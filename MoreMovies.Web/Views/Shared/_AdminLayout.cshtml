@@ -3,115 +3,130 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - More Movies</title>
-    
-    <link  type="text/css" rel="stylesheet" href="~/css/style.css" />
-    
+    <title>@ViewData["Title"] - MoreMovies</title>
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="~/css/style.css" />
 </head>
-<body>
-    <div class="se-pre-con"></div>
-    <span id="status" class="text-danger"></span>
-    <header>
-        <nav class="navbar ">
-            <div class="container">
-                <article class="logo">
-                    <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">MoreMovies</a>
-                    <span> by </span>
-                    <a class="navbar-logo" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/css/images/logo2.png" /></a>
-                </article>
+<body class="bg-gray-900 text-gray-100 flex flex-col min-h-screen">
 
-                <div class="navbar-collapse">
-                    <ul class="navbar-nav flex-grow-1">
-                        @if (User.Identity.IsAuthenticated)
-                        {
+    <!-- Loader -->
+    <div class="se-pre-con fixed inset-0 bg-black flex items-center justify-center z-50">
+        <span class="text-white text-xl">Loading...</span>
+    </div>
+    <header class="bg-gray-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
 
-                            <li class="nav-item"><a class="btn-flip" data-back="My Movie" data-front="My Movie" asp-controller="Movie" asp-action="MyMovies"></a></li>
-                            <li class="nav-item"><a class="btn-flip" data-back="My Liked" data-front="My Liked" asp-controller="Movie" asp-action="MyLiked"></a></li>
-                            <li class="nav-item"><a class="btn-flip" data-back="Add Movie" data-front="Add Movie" asp-controller="Movie" asp-action="Add"></a></li>
-                            
-                            @if (User.IsInRole("Manager"))
-                            {
-                                <li class="nav-item"><a class="btn-flip" data-back="Add Projection" data-front="Add Projection" asp-controller="Cinema" asp-action="Add"></a></li>
-                            }
-                            else
-                            {
-                                <li class="nav-item"><a class="btn-flip" data-back="Become a Cinema Agent" data-front="Become a Cinema Agent" asp-controller="Cinema" asp-action="Become"></a></li>
-                            }
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center space-x-2">
+                    <a asp-controller="Home" asp-action="Index" class="text-red-500 font-bold text-xl">MoreMovies</a>
+                    <a asp-controller="Home" asp-action="Index">
+                        <img src="~/css/images/logo2.png" alt="Logo" class="h-8 w-auto">
+                    </a>
+                </div>
 
+                <!-- Desktop Menu -->
+                <nav class="hidden md:flex space-x-4 items-center">
+                    <a asp-controller="Movie" asp-action="MyMovies" class="hover:text-red-500 transition">My Movie</a>
+                    <a asp-controller="Movie" asp-action="MyLiked" class="hover:text-red-500 transition">My Liked</a>
+                    <a asp-controller="Movie" asp-action="Add" class="hover:text-red-500 transition">Add Movie</a>
 
-                        }
+                    @if (User.IsInRole("Manager"))
+                    {
+                        <a asp-controller="Cinema" asp-action="Add" class="hover:text-red-500 transition">Add Projection</a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Cinema" asp-action="Become" class="hover:text-red-500 transition">Become a Cinema Agent</a>
+                    }
 
-                        <li class="nav-item"><a class="btn-flip" data-back="In Cinema" data-front="In Cinema" asp-controller="Cinema" asp-action="InCinema"></a></li>
-                        <li class="nav-item"><a class="btn-flip" data-back="Coming Soon" data-front="Coming Soon" asp-controller="ComingSoon" asp-action="All"></a></li>
-                        <li class="nav-item"><a class="btn-flip" data-back="News" data-front="News" asp-controller="News" asp-action="All"></a></li>
-                        <li class="nav-item"><a class="btn-flip" data-back="Contact" data-front="Contact" asp-controller="Contact" asp-action="ContactPage"></a></li>
-                        <li class="nav-item"><a class="btn-flip" data-back="Administration" data-front="Administration" asp-area="" asp-controller="Administration" asp-action="Index"></a></li>
+                    <a asp-controller="Cinema" asp-action="InCinema" class="hover:text-red-500 transition">In Cinema</a>
+                    <a asp-controller="ComingSoon" asp-action="All" class="hover:text-red-500 transition">Coming Soon</a>
+                    <a asp-controller="News" asp-action="All" class="hover:text-red-500 transition">News</a>
+                    <a asp-controller="Contact" asp-action="ContactPage" class="hover:text-red-500 transition">Contact</a>
+                    <a asp-area="" asp-controller="Administration" asp-action="Index" class="hover:text-red-500 transition">Administration</a>
 
-
-
-
-
-
-                    </ul>
                     <partial name="_LoginPartial" />
+                </nav>
+
+                <!-- Mobile Hamburger -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="text-gray-400 hover:text-white focus:outline-none">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
+                        </svg>
+                    </button>
                 </div>
             </div>
-        </nav>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-gray-800">
+            <nav class="px-2 pt-2 pb-4 space-y-1">
+                <a asp-controller="Movie" asp-action="MyMovies" class="block px-3 py-2 rounded hover:bg-gray-700">My Movie</a>
+                <a asp-controller="Movie" asp-action="MyLiked" class="block px-3 py-2 rounded hover:bg-gray-700">My Liked</a>
+                <a asp-controller="Movie" asp-action="Add" class="block px-3 py-2 rounded hover:bg-gray-700">Add Movie</a>
+
+                @if (User.IsInRole("Manager"))
+                {
+                    <a asp-controller="Cinema" asp-action="Add" class="block px-3 py-2 rounded hover:bg-gray-700">Add Projection</a>
+                }
+                else
+                {
+                    <a asp-controller="Cinema" asp-action="Become" class="block px-3 py-2 rounded hover:bg-gray-700">Become a Cinema Agent</a>
+                }
+
+                <a asp-controller="Cinema" asp-action="InCinema" class="block px-3 py-2 rounded hover:bg-gray-700">In Cinema</a>
+                <a asp-controller="ComingSoon" asp-action="All" class="block px-3 py-2 rounded hover:bg-gray-700">Coming Soon</a>
+                <a asp-controller="News" asp-action="All" class="block px-3 py-2 rounded hover:bg-gray-700">News</a>
+                <a asp-controller="Contact" asp-action="ContactPage" class="block px-3 py-2 rounded hover:bg-gray-700">Contact</a>
+                <a asp-area="" asp-controller="Administration" asp-action="Index" class="block px-3 py-2 rounded hover:bg-gray-700">Administration</a>
+
+                <partial name="_LoginPartial" />
+            </nav>
+        </div>
+
+        <script>
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', () => {
+              mobileMenu.classList.toggle('hidden');
+            });
+        </script>
     </header>
-    <div class="holder" style="display: none;">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="display: none;">
-            Launch demo modal
-        </button>
-    </div>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 py-6">
+        @RenderBody()
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-center text-white py-6 border-t border-gray-700">
+        &copy; @DateTime.UtcNow.Year - MoreMovies - Seyhan Akifov
+    </footer>
 
     <!-- Modal -->
-    <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog"
-             style="width: 100%; max-width: 969px;">
-            <div class="modal-content">
-
-                <div class="modal-body" style="margin: 0 auto; padding: 0px;">
-                    <div align="center"
-                         style="width: 100%; height: 0;
-                            padding-bottom: 64.5%;
-                            position: relative;
-                            margin : 0 auto">
-                        <iframe style="position: absolute;
-                                   top: 0;
-                                   left: 0;
-                                   width: 100%;
-                                   height: 100%;"
-                                src="" frameborder="0" allowfullscreen></iframe>
-                    </div>
-                </div>
-
+    <div id="exampleModal" class="hidden fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg overflow-hidden w-full max-w-3xl">
+            <div class="relative pb-[56.25%]">
+                <iframe class="absolute top-0 left-0 w-full h-full" src="" frameborder="0" allowfullscreen></iframe>
             </div>
         </div>
     </div>
-    <div class="container">
-        
-            @RenderBody()
-        
-    </div>
 
-    <footer id="footer" class="border-top footer ">
-        <div id="footer">
-            &copy; @DateTime.UtcNow.Year - MoreMovies - Seyhan Akifov
-        </div>
-    </footer>
+    <!-- Scripts -->
     <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-
-
-
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
+
+    <script>
+        $(window).on("load", function () {
+            $(".se-pre-con").fadeOut("slow");
+        });
+    </script>
 </body>
-<script>$(window).load(function () {
-        // Animate loader off screen
-        $(".se-pre-con").fadeOut("slow");;
-    });</script>
 </html>

@@ -96,7 +96,7 @@ namespace MoreMovies.Services
 
             if (string.IsNullOrEmpty(cinemaName))
             {
-                cinemaName = this.db.Cinemas.FirstOrDefault().Name;
+                cinemaName = this.db.Cinemas.FirstOrDefault()?.Name;
             }
             return this.db.CinemaPojections
                 .Where(x => x.Cinema.Name == cinemaName)

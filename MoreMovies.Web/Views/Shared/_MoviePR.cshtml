@@ -1,30 +1,41 @@
 ﻿@model MovieViewModel
 
+<article class="bg-gray-800 rounded-lg overflow-hidden shadow hover:shadow-lg transition duration-200 flex flex-col">
 
-<article class="movie">
+    <!-- Movie Poster -->
+    <div class="relative group">
+        <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? Url.Content("~/css/images/movie_placeholder.jpg") : Model.ImageUrl)"
+             alt="@Model.Title"
+             class="w-full h-64 object-cover">
 
-    <div class="movie-image">
-        <span class="play" >
-            <span class="name">@Model.Title</span>
-        </span>
-        <span id="trailerUrl" style="display:none;">@Model.HomePage</span>
-        <a href="#"><img src="@Model.ImageUrl" alt="" /></a>
+        <!-- Overlay with title on hover -->
+        <div class="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition duration-200 flex items-center justify-center">
+            <span class="text-white text-lg font-semibold">@Model.Title</span>
+        </div>
     </div>
-    <hr />
-    <div class="rating">
-        <p>RATING</p>
-        <div class="stars">
-            <div class="stars-in" style="width: @(Model.Rating > 0 ? Model.Rating / Model.RatingCount * 12 +  "px" : 0)"> </div>
+
+    <!-- Rating & Info -->
+    <div class="p-4 flex flex-col space-y-2 flex-grow">
+        <!-- Rating Stars -->
+        <div>
+            <p class="text-gray-400 text-sm mb-1">RATING</p>
+            <div class="w-full bg-gray-700 h-3 rounded">
+                <div class="bg-yellow-400 h-3 rounded" style="width:@(Model.Rating > 0 ? (Model.Rating / Model.RatingCount * 100) + "%" : "0%")"></div>
+            </div>
         </div>
 
-    </div>
-    <div class="rating">
-        <span class="comment">Comments: @Model.CommentsCount.ToString()</span>
+        <!-- Comments & Likes -->
+        <div class="flex justify-between text-gray-300 text-sm mt-2">
+            <span>Comments: @Model.CommentsCount</span>
+            <span>Likes: @Model.Likes</span>
         </div>
-        <div class="rating">
-            <span style="padding: 3px">Likes: @Model.Likes</span>
-            </div>
-            <div class="text-center">
-                <a class="btn-flip" id="details-btn" data-back="Details" data-front="Details" asp-controller="Movie" asp-action="Details" asp-route-id=@Model.Id></a>
-            </div>
+
+        <!-- Details Button -->
+        <div class="mt-4 text-center">
+            <a asp-controller="Movie" asp-action="Details" asp-route-id="@Model.Id"
+               class="inline-block bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded transition duration-200">
+                Details
+            </a>
+        </div>
+    </div>
 </article>

@@ -1,13 +1,17 @@
 ﻿@model ICollection<NewsViewModel>
 
-<section id="news" class="col-md-12 m-lg-auto">
-    <article class="head">
-        <h3>NEWS</h3>
-        <p class="text-right"><a asp-controller="News" asp-action="All">See all</a></p>
-    </article>
-    @foreach (var item in Model)
-    {
-        @await Html.PartialAsync("../News/News", item)
+<section id="news" class="max-w-7xl mx-auto p-4 md:p-8">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6 border-b border-red-600 pb-2">
+        <h3 class="text-2xl font-bold text-red-500">NEWS</h3>
+        <a asp-controller="News" asp-action="All" class="text-red-500 hover:underline text-sm md:text-base">See all</a>
+    </div>
 
-    }
+    <!-- News Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        @foreach (var item in Model)
+        {
+            @await Html.PartialAsync("../News/News", item)
+        }
+    </div>
 </section>

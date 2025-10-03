@@ -1,152 +1,106 @@
-﻿@model MovieListViewModel;
-
+﻿@model MovieListViewModel
 @{
     ViewData["Title"] = "Index";
 }
 
+<!-- Search Section -->
+<section class="bg-gray-800 p-6 rounded-lg shadow-md max-w-5xl mx-auto mt-6 mb-12">
+    <h2 class="text-xl font-semibold text-red-500 mb-4 text-center">Search Movies</h2>
 
-
-    <div class="holder" style="display: none;">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="display: none;">
-            Launch demo modal
-        </button>
-    </div>
-
-    <!-- Modal -->
-   @* <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog align-center " style="transform: translate(-50%, -50%); position: relative; top:50%; left: -8%" role="document">
-            <div class="modal-content align-center" style="width:fit-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <iframe width="1160" height="615" src="" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=allowfullscreen></iframe>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Search by Genre -->
+        <form asp-controller="Movie" asp-action="SearchByGenre" method="get" class="flex flex-col gap-2">
+            <label for="genre-search" class="text-gray-300 text-sm">SEARCH BY GENRE</label>
+            <div class="flex gap-2">
+                <select name="genre" id="genre-search" class="flex-1 px-3 py-2 rounded bg-gray-900 border border-gray-700 text-white">
+                    @foreach (var genre in Model.Genres)
+                    {
+                        <option value="@genre.Name">@genre.Name</option>
+                    }
+                </select>
+                <button type="submit" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-white">GO!</button>
             </div>
-        </div>
-    </div>*@
+        </form>
 
-    <!-- START PAGE SOURCE -->
-
-    <div id="shell">
-        <div id="header">
-            @*<h1 id="logo"><a href="#">More Movies</a></h1>*@
-
-
-
-            
-            <div id="navigation" class="align-center ">
-                <ul class="align-center">
-                    <li >
-                        <div id="search" >
-                            <form asp-controller="Movie" asp-action="SearchByGenre" method="get" accept-charset="utf-8">
-                                <label for="search-field">SEARCH BY GENRE</label>
-                                <select type="text" placeholder="Genre" name="genre" id="search-field" >
-                                    @foreach (var genre in Model.Genres)
-                                    {
-                                        <option value="@genre.Name">@genre.Name</option>
-                                    }
-                                    
-                                </select>
-                                <input type="submit" value="GO!"  />
-                            </form>
-                        </div>
-                        <hr />
-                    </li>
-                    <li>
-                        <div id="search" >
-                            <form asp-controller="Movie" asp-action="SearchByYear" method="get" accept-charset="utf-8">
-                                <label for="search-field">SEARCH BY YEAR</label>
-                                <input type="text" name="year" value="" placeholder="Enter year here" id="search-field"  />
-                                <input type="submit" value="GO!"  />
-                            </form>
-                        </div>
-                        <hr />
-                    </li>
-
-                    <li>
-                        <div id="search" >
-                            <form asp-controller="Movie" asp-action="Search" method="get" accept-charset="utf-8">
-                                <label for="search-field">SEARCH BY NAME</label>
-                                <input type="text" name="name" value="" placeholder="Enter search here" id="search-field" />
-                                <input type="submit" value="GO!"  />
-                            </form>
-                        </div>
-                        <hr />
-                    </li>
-                </ul>
+        <!-- Search by Year -->
+        <form asp-controller="Movie" asp-action="SearchByYear" method="get" class="flex flex-col gap-2">
+            <label for="year-search" class="text-gray-300 text-sm">SEARCH BY YEAR</label>
+            <div class="flex gap-2">
+                <input type="text" name="year" id="year-search" placeholder="Enter year"
+                       class="flex-1 px-3 py-2 rounded bg-gray-900 border border-gray-700 text-white" />
+                <button type="submit" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-white">GO!</button>
             </div>
-           
+        </form>
 
-        </div>
-        <div id="main">
-            <section id="content">
-                <section class="item">
-                    <article class="head">
-                        <h2>LATEST TRAILERS</h2>
-                        <p class="text-right position-relative"><a asp-controller="Movie" asp-action="All" method="get">See all</a></p>
-                    </article>
-                    <article class="box col-12">
-
-                        @foreach (var movie in Model.Newest)
-                        {
-
-                            @await Html.PartialAsync("../Shared/_MoviePR", movie)
-
-                        }
-
-
-                        <div class="cl">&nbsp;</div>
-                    </article>
-                </section>
-                <section class="item">
-                    <article class="head">
-                        <h2>TOP RATED</h2>
-                        <p class="text-right"><a asp-controller="Movie" asp-action="AllTopLiked">See all</a></p>
-                    </article>
-                    <article class="box col-12">
-
-                        @foreach (var movie in Model.TopLiked)
-                        {
-                            @await Html.PartialAsync("../Shared/_MoviePR", movie)
-                        }
-                        <div class="cl">&nbsp;</div>
-                    </article>
-                </section>
-                <section class="item">
-
-                    <article class="head">
-                        <h2>MOST COMMENTED</h2>
-                        <p class="text-right"><a asp-controller="Movie" asp-action="AllTopCommented">See all</a></p>
-                    </article>
-                    <article class="box col-12">
-
-                        @foreach (var movie in Model.TopCommented)
-                        {
-                            @await Html.PartialAsync("../Shared/_MoviePR", movie)
-                        }
-                        <div class="cl">&nbsp;</div>
-                    </article>
-                </section>
-
-            </section>
-            <section class="common">
-
-            @await Html.PartialAsync("../Shared/_NewsPR", Model.News)
-
-
-
-            @await Html.PartialAsync("../Shared/_ComingSoonPR", Model.ComingSoon)
-
-            <div class="cl">&nbsp;</div>
-
-            </section>
-        </div>
+        <!-- Search by Name -->
+        <form asp-controller="Movie" asp-action="Search" method="get" class="flex flex-col gap-2">
+            <label for="name-search" class="text-gray-300 text-sm">SEARCH BY NAME</label>
+            <div class="flex gap-2">
+                <input type="text" name="name" id="name-search" placeholder="Enter title"
+                       class="flex-1 px-3 py-2 rounded bg-gray-900 border border-gray-700 text-white" />
+                <button type="submit" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-white">GO!</button>
+            </div>
+        </form>
     </div>
+</section>
+
+<!-- Movie Sections -->
+<div id="main" class="p-4 md:p-8 max-w-7xl mx-auto space-y-12">
+
+    @* Latest Trailers *@
+    <section>
+        <div class="flex justify-between items-center border-b border-red-600 pb-2 mb-4">
+            <h2 class="text-2xl font-bold">LATEST TRAILERS</h2>
+            <a asp-controller="Movie" asp-action="All" class="text-red-500 hover:underline">See all</a>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+            @foreach (var movie in Model.Newest)
+            {
+                @await Html.PartialAsync("../Shared/_MoviePR", movie)
+            }
+        </div>
+    </section>
+
+    @* Top Rated *@
+    <section>
+        <div class="flex justify-between items-center border-b border-red-600 pb-2 mb-4">
+            <h2 class="text-2xl font-bold">TOP RATED</h2>
+            <a asp-controller="Movie" asp-action="AllTopLiked" class="text-red-500 hover:underline">See all</a>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+            @foreach (var movie in Model.TopLiked)
+            {
+                @await Html.PartialAsync("../Shared/_MoviePR", movie)
+            }
+        </div>
+    </section>
+
+    @* Most Commented *@
+    <section>
+        <div class="flex justify-between items-center border-b border-red-600 pb-2 mb-4">
+            <h2 class="text-2xl font-bold">MOST COMMENTED</h2>
+            <a asp-controller="Movie" asp-action="AllTopCommented" class="text-red-500 hover:underline">See all</a>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+            @foreach (var movie in Model.TopCommented)
+            {
+                @await Html.PartialAsync("../Shared/_MoviePR", movie)
+            }
+        </div>
+    </section>
+
+</div>
+
+<!-- Coming Soon Section -->
+<section class="max-w-7xl mx-auto p-4 md:p-8">
+    <div>
+        @await Html.PartialAsync("../Shared/_ComingSoonPR", Model.ComingSoon)
+    </div>
+</section>
+
+<!-- News Section -->
+<section class="max-w-7xl mx-auto p-4 md:p-8">
+    <div>
+        @await Html.PartialAsync("../Shared/_NewsPR", Model.News)
+    </div>
+</section>

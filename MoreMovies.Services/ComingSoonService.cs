@@ -55,7 +55,7 @@ namespace MoreMovies.Services
         {
             var comingSoon = await this.db.ComingSoons
                 .OrderByDescending(x => x.AddedOn)
-                .Take(2)
+                .Take(3)
                  .Select(x => GetComingSoonOutputDto(x))
                  .ToArrayAsync();
 
