@@ -3,18 +3,38 @@
 @{
     ViewData["Title"] = "Add Comment";
 }
-<article class="admin-main-item" id="add-comment">
-    <h1>ADD COMMENT</h1>
 
-    <form class="text-center border border-light p-5" asp-controller="Movie" asp-action="AddComment" method="post">
-        <div class="form-group">
-            <label asp-for="Description">Description</label>
-            <input asp-for="Description" type="text" class="form-control" placeholder="Description" name="description" value="">
-            <input id="user" type="hidden" class="form-control" placeholder="User" name="user" value="@Model.UserId">
-            <span asp-validation-for="Description" class="m-md-0 text-danger"></span>
-        </div>
-        <div class="admin-main-item-footer">
-            <button id="submitComment" type="submit" class="btn btn-primary" value="submit">Add comment</button>
-        </div>
-    </form>
-</article>
+<section class="flex justify-center items-start min-h-screen bg-gray-900 text-white py-12 px-4">
+    <div class="w-full max-w-2xl bg-gray-800 shadow-2xl rounded-3xl p-10 md:p-12">
+        <h1 class="text-3xl font-bold text-red-500 mb-8 text-center uppercase tracking-wide">
+            Add Comment
+        </h1>
+
+        <form asp-controller="Movie" asp-action="AddComment" method="post" class="space-y-8">
+            <!-- Description -->
+            <div>
+                <label asp-for="Description" class="block text-sm font-semibold text-gray-300 mb-3">
+                    Your Comment
+                </label>
+                <textarea asp-for="Description"
+                          rows="6"
+                          placeholder="Write your thoughts about this movie..."
+                          class="w-full rounded-xl bg-gray-700 border border-gray-600 text-gray-100 p-4 focus:ring-2 focus:ring-red-500 focus:outline-none resize-none shadow-inner"></textarea>
+                <span asp-validation-for="Description" class="text-red-400 text-sm mt-1 block"></span>
+            </div>
+
+            <!-- Hidden fields -->
+            <input type="hidden" asp-for="UserId" value="@Model.UserId" />
+            <input type="hidden" asp-for="MovieId" value="@Model.MovieId" />
+
+            <!-- Submit -->
+            <div class="flex justify-center">
+                <button id="submitComment"
+                        type="submit"
+                        class="bg-red-600 hover:bg-red-700 text-white text-lg font-semibold py-3 px-10 rounded-xl transition duration-300 shadow-md hover:shadow-lg">
+                    Submit Comment
+                </button>
+            </div>
+        </form>
+    </div>
+</section>

@@ -4,21 +4,27 @@
     ViewData["Title"] = "My Liked Movies";
 }
 
-<h1 class="subtitle fancy">My Liked</h1>
-<div id="content">
-    @if (Model.Count > 0)
-    {
+<section class="min-h-screen bg-gray-900 text-white py-10">
+    <div class="max-w-7xl mx-auto px-6">
+        <h1 class="text-3xl font-bold text-red-500 text-center mb-10 border-b border-gray-700 pb-4">
+            ❤️ My Liked Movies
+        </h1>
 
-        <div class="box col-12">
-            @foreach (var movie in Model)
-            {
-                @await Html.PartialAsync("../Shared/_MoviePR", movie)
-            }
-        </div>
-    }
-    else
-    {
-        <h1>No Movies Here</h1>
-    }
+        @if (Model != null && Model.Any())
+        {
+            <div class="grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                @foreach (var movie in Model)
+                {
+                    @await Html.PartialAsync("../Shared/_MoviePR", movie)
+                }
+            </div>
+        }
+        else
+        {
+            <div class="text-center mt-20">
+                <h2 class="text-xl text-gray-400">No movies liked yet 🎬</h2>
+            </div>
+        }
+    </div>
+</section>
 
-</div>

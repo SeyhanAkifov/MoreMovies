@@ -4,7 +4,7 @@
     ViewData["Title"] = "My Movies";
 }
 
-<h1 class="subtitle fancy">My Movies</h1>
+@* <h1 class="subtitle fancy">My Movies</h1>
 <div id="content">
     @if (Model.Count > 0)
     {
@@ -21,4 +21,28 @@
         <h1>No Movies Here</h1>
     }
 
-</div>
+</div> *@
+
+<section class="min-h-screen bg-gray-900 text-white py-10">
+    <div class="max-w-7xl mx-auto px-6">
+        <h1 class="text-3xl font-bold text-red-500 text-center mb-10 border-b border-gray-700 pb-4">
+            My Movies
+        </h1>
+
+        @if (Model != null && Model.Any())
+        {
+            <div class="grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                @foreach (var movie in Model)
+                {
+                    @await Html.PartialAsync("../Shared/_MoviePR", movie)
+                }
+            </div>
+        }
+        else
+        {
+            <div class="text-center mt-20">
+                <h2 class="text-xl text-gray-400">No movies 🎬</h2>
+            </div>
+        }
+    </div>
+</section>

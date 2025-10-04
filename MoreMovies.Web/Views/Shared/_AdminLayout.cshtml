@@ -10,11 +10,13 @@
     <link rel="stylesheet" href="~/css/style.css" />
 </head>
 <body class="bg-gray-900 text-gray-100 flex flex-col min-h-screen">
-
+    <canvas id="movieParticles" class="fixed inset-0 z-0 pointer-events-none"></canvas>
+    <div id="gradient" class="fixed inset-0 z-0 opacity-60 pointer-events-none"></div>
     <!-- Loader -->
     <div class="se-pre-con fixed inset-0 bg-black flex items-center justify-center z-50">
         <span class="text-white text-xl">Loading...</span>
     </div>
+    <div class="relative z-10">
     <header class="bg-gray-900 text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
@@ -108,12 +110,13 @@
         &copy; @DateTime.UtcNow.Year - MoreMovies - Seyhan Akifov
     </footer>
 
+
     <!-- Modal -->
-    <div id="exampleModal" class="hidden fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
-        <div class="bg-white rounded-lg overflow-hidden w-full max-w-3xl">
-            <div class="relative pb-[56.25%]">
-                <iframe class="absolute top-0 left-0 w-full h-full" src="" frameborder="0" allowfullscreen></iframe>
-            </div>
+    <div id="trailerModal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50">
+        <div class="bg-gray-900 rounded-xl shadow-lg overflow-hidden w-full max-w-3xl relative">
+            <button id="closeModal" class="absolute top-2 right-3 text-white text-3xl z-10">&times;</button>
+            <iframe id="trailerFrame" class="w-full aspect-video" src=""
+                    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
         </div>
     </div>
 
@@ -126,6 +129,93 @@
     <script>
         $(window).on("load", function () {
             $(".se-pre-con").fadeOut("slow");
+        });
+    </script>
+
+    <script>
+        const canvas = document.getElementById("movieParticles");
+        const ctx = canvas.getContext("2d");
+        let particles = [];
+
+        function resize() {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        }
+        window.addEventListener("resize", resize);
+        resize();
+
+        function createParticles() {
+          particles = [];
+          for (let i = 0; i < 100; i++) {
+            particles.push({
+              x: Math.random() * canvas.width,
+              y: Math.random() * canvas.height,
+              radius: Math.random() * 2,
+              speedY: 0.3 + Math.random() * 0.7,
+              alpha: 0.3 + Math.random() * 0.7,
+            });
+          }
+        }
+
+        function animate() {
+          ctx.fillStyle = "rgba(10, 10, 15, 0.3)";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+          for (let p of particles) {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255,255,255,${p.alpha})`;
+            ctx.fill();
+
+            p.y += p.speedY;
+            if (p.y > canvas.height) p.y = 0;
+          }
+          requestAnimationFrame(animate);
+        }
+
+        createParticles();
+        animate();
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            console.log("🎬 Script loaded!");
+
+            const cards = document.querySelectorAll(".movie-card");
+            const modal = document.getElementById("trailerModal");
+            const frame = document.getElementById("trailerFrame");
+            const close = document.getElementById("closeModal");
+
+            cards.forEach(card => {
+                card.addEventListener("click", () => {
+                    const trailer = card.getAttribute("data-trailer");
+                    console.log("Clicked card with trailer:", trailer);
+
+                    if (trailer && modal && frame) {
+                        const embedLink = trailer.includes("watch?v=")
+                            ? trailer.replace("watch?v=", "embed/") + "?autoplay=1"
+                            : trailer;
+
+                        frame.src = embedLink;
+                        modal.classList.remove("hidden");
+                        modal.classList.add("flex");
+                    }
+                });
+            });
+
+            close.addEventListener("click", () => {
+                modal.classList.add("hidden");
+                modal.classList.remove("flex");
+                frame.src = "";
+            });
+
+            modal.addEventListener("click", (e) => {
+                if (e.target === modal) {
+                    modal.classList.add("hidden");
+                    modal.classList.remove("flex");
+                    frame.src = "";
+                }
+            });
         });
     </script>
 </body>

@@ -185,7 +185,7 @@ namespace MoreMovies.Services
                 .Include(x => x.Country.Country)
                 .Include(x => x.Comments)
                 .OrderByDescending(x => x.Comments.Count)
-                .Take(6)
+                .Take(5)
                 .Select(x => GetMovieOutputDto(x))
                 .ToArrayAsync();
 
@@ -214,7 +214,7 @@ namespace MoreMovies.Services
                 .Include(x => x.Country.Country)
                 .Include(x => x.Comments)
                 .OrderByDescending(x => x.Likes)
-                .Take(6)
+                .Take(5)
                 .Select(x => GetMovieOutputDto(x))
                 .ToArrayAsync();
 
@@ -243,7 +243,7 @@ namespace MoreMovies.Services
                 .Include(x => x.Country.Country)
                 .Include(x => x.Comments)
                 .OrderByDescending(x => x.ReleaseDate)
-                .Take(6)
+                .Take(5)
                 .Select(x => GetMovieOutputDto(x))
                 .ToArrayAsync();
 

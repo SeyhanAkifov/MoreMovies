@@ -1,7 +1,10 @@
 ﻿@model MovieViewModel
 
+
 <article class="bg-gray-800 rounded-lg overflow-hidden shadow hover:shadow-lg transition duration-200 flex flex-col">
 
+    <div class="bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-red-600/40 transition duration-300 transform hover:-translate-y-1 cursor-pointer movie-card"
+         data-trailer="@Model.HomePage">
     <!-- Movie Poster -->
     <div class="relative group">
         <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? Url.Content("~/css/images/movie_placeholder.jpg") : Model.ImageUrl)"
@@ -12,6 +15,7 @@
         <div class="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition duration-200 flex items-center justify-center">
             <span class="text-white text-lg font-semibold">@Model.Title</span>
         </div>
+    </div>
     </div>
 
     <!-- Rating & Info -->

@@ -10,129 +10,217 @@
     <link rel="stylesheet" href="~/css/style.css" />
 </head>
 <body class="bg-gray-900 text-gray-100 flex flex-col min-h-screen">
-
+    <canvas id="movieParticles" class="fixed inset-0 z-0 pointer-events-none"></canvas>
+    <div id="gradient" class="fixed inset-0 z-0 opacity-60 pointer-events-none"></div>
     <!-- Loader -->
     <div class="se-pre-con fixed inset-0 bg-black flex items-center justify-center z-50">
         <span class="text-white text-xl">Loading...</span>
     </div>
-    <header class="bg-gray-900 text-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
+    <div class="relative z-10">
+        <header class="bg-gray-900 text-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
 
-                <!-- Logo -->
-                <div class="flex-shrink-0 flex items-center space-x-2">
-                    <a asp-controller="Home" asp-action="Index" class="text-red-500 font-bold text-xl">MoreMovies</a>
-                    <a asp-controller="Home" asp-action="Index">
-                        <img src="~/css/images/logo2.png" alt="Logo" class="h-8 w-auto">
-                    </a>
+                    <!-- Logo -->
+                    <div class="flex-shrink-0 flex items-center space-x-2">
+                        <a asp-controller="Home" asp-action="Index" class="text-red-500 font-bold text-xl">MoreMovies</a>
+                        <a asp-controller="Home" asp-action="Index">
+                            <img src="~/css/images/logo2.png" alt="Logo" class="h-8 w-auto">
+                        </a>
+                    </div>
+
+                    <!-- Desktop Menu -->
+                    <nav class="hidden md:flex space-x-4 items-center">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <a asp-controller="Movie" asp-action="MyMovies" class="hover:text-red-500 transition">My Movie</a>
+                            <a asp-controller="Movie" asp-action="MyLiked" class="hover:text-red-500 transition">My Liked</a>
+                            <a asp-controller="Movie" asp-action="Add" class="hover:text-red-500 transition">Add Movie</a>
+
+                            @if (User.IsInRole("Manager"))
+                            {
+                                <a asp-controller="Cinema" asp-action="Add" class="hover:text-red-500 transition">Add Projection</a>
+                            }
+                            else
+                            {
+                                <a asp-controller="Cinema" asp-action="Become" class="hover:text-red-500 transition">Become a Cinema Agent</a>
+                            }
+                        }
+
+                        <a asp-controller="Cinema" asp-action="InCinema" class="hover:text-red-500 transition">In Cinema</a>
+                        <a asp-controller="ComingSoon" asp-action="All" class="hover:text-red-500 transition">Coming Soon</a>
+                        <a asp-controller="News" asp-action="All" class="hover:text-red-500 transition">News</a>
+                        <a asp-controller="Contact" asp-action="ContactPage" class="hover:text-red-500 transition">Contact</a>
+
+
+                        <partial name="_LoginPartial" />
+                    </nav>
+
+                    <!-- Mobile Hamburger -->
+                    <div class="md:hidden flex items-center">
+                        <button id="mobile-menu-button" class="text-gray-400 hover:text-white focus:outline-none">
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
+            </div>
 
-                <!-- Desktop Menu -->
-                <nav class="hidden md:flex space-x-4 items-center">
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden bg-gray-800">
+                <nav class="px-2 pt-2 pb-4 space-y-1">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <a asp-controller="Movie" asp-action="MyMovies" class="hover:text-red-500 transition">My Movie</a>
-                        <a asp-controller="Movie" asp-action="MyLiked" class="hover:text-red-500 transition">My Liked</a>
-                        <a asp-controller="Movie" asp-action="Add" class="hover:text-red-500 transition">Add Movie</a>
+                        <a asp-controller="Movie" asp-action="MyMovies" class="block px-3 py-2 rounded hover:bg-gray-700">My Movie</a>
+                        <a asp-controller="Movie" asp-action="MyLiked" class="block px-3 py-2 rounded hover:bg-gray-700">My Liked</a>
+                        <a asp-controller="Movie" asp-action="Add" class="block px-3 py-2 rounded hover:bg-gray-700">Add Movie</a>
 
                         @if (User.IsInRole("Manager"))
                         {
-                            <a asp-controller="Cinema" asp-action="Add" class="hover:text-red-500 transition">Add Projection</a>
+                            <a asp-controller="Cinema" asp-action="Add" class="block px-3 py-2 rounded hover:bg-gray-700">Add Projection</a>
                         }
                         else
                         {
-                            <a asp-controller="Cinema" asp-action="Become" class="hover:text-red-500 transition">Become a Cinema Agent</a>
+                            <a asp-controller="Cinema" asp-action="Become" class="block px-3 py-2 rounded hover:bg-gray-700">Become a Cinema Agent</a>
                         }
                     }
 
-                    <a asp-controller="Cinema" asp-action="InCinema" class="hover:text-red-500 transition">In Cinema</a>
-                    <a asp-controller="ComingSoon" asp-action="All" class="hover:text-red-500 transition">Coming Soon</a>
-                    <a asp-controller="News" asp-action="All" class="hover:text-red-500 transition">News</a>
-                    <a asp-controller="Contact" asp-action="ContactPage" class="hover:text-red-500 transition">Contact</a>
-                    
+                    <a asp-controller="Cinema" asp-action="InCinema" class="block px-3 py-2 rounded hover:bg-gray-700">In Cinema</a>
+                    <a asp-controller="ComingSoon" asp-action="All" class="block px-3 py-2 rounded hover:bg-gray-700">Coming Soon</a>
+                    <a asp-controller="News" asp-action="All" class="block px-3 py-2 rounded hover:bg-gray-700">News</a>
+                    <a asp-controller="Contact" asp-action="ContactPage" class="block px-3 py-2 rounded hover:bg-gray-700">Contact</a>
+
 
                     <partial name="_LoginPartial" />
                 </nav>
+            </div>
 
-                <!-- Mobile Hamburger -->
-                <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-button" class="text-gray-400 hover:text-white focus:outline-none">
-                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
-                        </svg>
-                    </button>
-                </div>
+            <script>
+                const mobileMenuButton = document.getElementById('mobile-menu-button');
+                const mobileMenu = document.getElementById('mobile-menu');
+
+                mobileMenuButton.addEventListener('click', () => {
+                  mobileMenu.classList.toggle('hidden');
+                });
+            </script>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-grow max-w-7xl mx-auto px-4 py-6">
+            @RenderBody()
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-center text-white py-6 border-t border-gray-700">
+            &copy; @DateTime.UtcNow.Year - MoreMovies - Seyhan Akifov
+        </footer>
+
+        <!-- Modal -->
+        <div id="trailerModal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50">
+            <div class="bg-gray-900 rounded-xl shadow-lg overflow-hidden w-full max-w-3xl relative">
+                <button id="closeModal" class="absolute top-2 right-3 text-white text-3xl z-10">&times;</button>
+                <iframe id="trailerFrame" class="w-full aspect-video" src=""
+                        frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
             </div>
         </div>
 
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-gray-800">
-            <nav class="px-2 pt-2 pb-4 space-y-1">
-                 @if (User.Identity.IsAuthenticated)
-                {
-                    <a asp-controller="Movie" asp-action="MyMovies" class="block px-3 py-2 rounded hover:bg-gray-700">My Movie</a>
-                    <a asp-controller="Movie" asp-action="MyLiked" class="block px-3 py-2 rounded hover:bg-gray-700">My Liked</a>
-                    <a asp-controller="Movie" asp-action="Add" class="block px-3 py-2 rounded hover:bg-gray-700">Add Movie</a>
-
-                    @if (User.IsInRole("Manager"))
-                    {
-                        <a asp-controller="Cinema" asp-action="Add" class="block px-3 py-2 rounded hover:bg-gray-700">Add Projection</a>
-                    }
-                    else
-                    {
-                        <a asp-controller="Cinema" asp-action="Become" class="block px-3 py-2 rounded hover:bg-gray-700">Become a Cinema Agent</a>
-                    }
-                }
-
-                <a asp-controller="Cinema" asp-action="InCinema" class="block px-3 py-2 rounded hover:bg-gray-700">In Cinema</a>
-                <a asp-controller="ComingSoon" asp-action="All" class="block px-3 py-2 rounded hover:bg-gray-700">Coming Soon</a>
-                <a asp-controller="News" asp-action="All" class="block px-3 py-2 rounded hover:bg-gray-700">News</a>
-                <a asp-controller="Contact" asp-action="ContactPage" class="block px-3 py-2 rounded hover:bg-gray-700">Contact</a>
-             
-
-                <partial name="_LoginPartial" />
-            </nav>
-        </div>
+        <!-- Scripts -->
+        <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        @await RenderSectionAsync("Scripts", required: false)
 
         <script>
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-
-            mobileMenuButton.addEventListener('click', () => {
-              mobileMenu.classList.toggle('hidden');
+            $(window).on("load", function () {
+                $(".se-pre-con").fadeOut("slow");
             });
         </script>
-    </header>
+        <script>
+            const canvas = document.getElementById("movieParticles");
+            const ctx = canvas.getContext("2d");
+            let particles = [];
 
-    <!-- Main Content -->
-    <main class="flex-grow max-w-7xl mx-auto px-4 py-6">
-        @RenderBody()
-    </main>
+            function resize() {
+              canvas.width = window.innerWidth;
+              canvas.height = window.innerHeight;
+            }
+            window.addEventListener("resize", resize);
+            resize();
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-center text-white py-6 border-t border-gray-700">
-        &copy; @DateTime.UtcNow.Year - MoreMovies - Seyhan Akifov
-    </footer>
+            function createParticles() {
+              particles = [];
+              for (let i = 0; i < 100; i++) {
+                particles.push({
+                  x: Math.random() * canvas.width,
+                  y: Math.random() * canvas.height,
+                  radius: Math.random() * 2,
+                  speedY: 0.3 + Math.random() * 0.7,
+                  alpha: 0.3 + Math.random() * 0.7,
+                });
+              }
+            }
 
-    <!-- Modal -->
-    <div id="exampleModal" class="hidden fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
-        <div class="bg-white rounded-lg overflow-hidden w-full max-w-3xl">
-            <div class="relative pb-[56.25%]">
-                <iframe class="absolute top-0 left-0 w-full h-full" src="" frameborder="0" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
+            function animate() {
+              ctx.fillStyle = "rgba(10, 10, 15, 0.3)";
+              ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    <!-- Scripts -->
-    <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+              for (let p of particles) {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255,255,255,${p.alpha})`;
+                ctx.fill();
 
-    <script>
-        $(window).on("load", function () {
-            $(".se-pre-con").fadeOut("slow");
-        });
-    </script>
+                p.y += p.speedY;
+                if (p.y > canvas.height) p.y = 0;
+              }
+              requestAnimationFrame(animate);
+            }
+
+            createParticles();
+            animate();
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                console.log("🎬 Script loaded!");
+
+                const cards = document.querySelectorAll(".movie-card");
+                const modal = document.getElementById("trailerModal");
+                const frame = document.getElementById("trailerFrame");
+                const close = document.getElementById("closeModal");
+
+                cards.forEach(card => {
+                    card.addEventListener("click", () => {
+                        const trailer = card.getAttribute("data-trailer");
+                        console.log("Clicked card with trailer:", trailer);
+
+                        if (trailer && modal && frame) {
+                            const embedLink = trailer.includes("watch?v=")
+                                ? trailer.replace("watch?v=", "embed/") + "?autoplay=1"
+                                : trailer;
+
+                            frame.src = embedLink;
+                            modal.classList.remove("hidden");
+                            modal.classList.add("flex");
+                        }
+                    });
+                });
+
+                close.addEventListener("click", () => {
+                    modal.classList.add("hidden");
+                    modal.classList.remove("flex");
+                    frame.src = "";
+                });
+
+                modal.addEventListener("click", (e) => {
+                    if (e.target === modal) {
+                        modal.classList.add("hidden");
+                        modal.classList.remove("flex");
+                        frame.src = "";
+                    }
+                });
+            });
+        </script>
 </body>
 </html>
