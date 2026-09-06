@@ -17,6 +17,7 @@ namespace MoreMovies.Services
         private readonly ApplicationDbContext db;
         private readonly IUserService userService;
 
+
         public CinemaService(ApplicationDbContext db, IUserService userService)
         {
             this.db = db;
