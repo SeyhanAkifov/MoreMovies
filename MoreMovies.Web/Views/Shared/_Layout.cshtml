@@ -12,10 +12,6 @@
 <body class="bg-gray-900 text-gray-100 flex flex-col min-h-screen">
     <canvas id="movieParticles" class="fixed inset-0 z-0 pointer-events-none"></canvas>
     <div id="gradient" class="fixed inset-0 z-0 opacity-60 pointer-events-none"></div>
-    <!-- Loader -->
-    <div class="se-pre-con fixed inset-0 bg-black flex items-center justify-center z-50">
-        <span class="text-white text-xl">Loading...</span>
-    </div>
     <div class="relative z-10 flex flex-col min-h-screen">
         <header class="bg-gray-900 text-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -80,7 +76,18 @@
                         <a asp-controller="Administration" asp-action="Index" class="block px-3 py-2 rounded hover:bg-gray-700">Administration</a>
                     }
 
-                    <partial name="_LoginPartial" />
+                    <hr class="border-gray-700 my-2" />
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <span class="block px-3 py-2 text-sm text-gray-400">@User.Identity.Name</span>
+                        <a asp-controller="Home" asp-action="Logout" class="block px-3 py-2 rounded text-red-400 hover:bg-gray-700">Logout</a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Home" asp-action="Register" class="block px-3 py-2 rounded hover:bg-gray-700">Register</a>
+                        <a asp-controller="Home" asp-action="Login" class="block px-3 py-2 rounded bg-red-600 hover:bg-red-700 text-white">Login</a>
+                    }
                 </nav>
             </div>
 
@@ -90,6 +97,25 @@
 
                 mobileMenuButton.addEventListener('click', () => {
                   mobileMenu.classList.toggle('hidden');
+                });
+
+                // User-Dropdown (Avatar oben rechts)
+                document.querySelectorAll('.user-menu').forEach(function (menu) {
+                    const button = menu.querySelector('.user-menu-button');
+                    const panel = menu.querySelector('.user-menu-panel');
+
+                    button.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        panel.classList.toggle('hidden');
+                    });
+                });
+
+                document.addEventListener('click', function (e) {
+                    document.querySelectorAll('.user-menu').forEach(function (menu) {
+                        if (!menu.contains(e.target)) {
+                            menu.querySelector('.user-menu-panel').classList.add('hidden');
+                        }
+                    });
                 });
             </script>
         </header>
@@ -116,14 +142,10 @@
         <!-- Scripts -->
         <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
         <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <partial name="_ValidationScriptsPartial" />
         <script src="~/js/site.js" asp-append-version="true"></script>
         @await RenderSectionAsync("Scripts", required: false)
 
-        <script>
-            $(window).on("load", function () {
-                $(".se-pre-con").fadeOut("slow");
-            });
-        </script>
         <script>
             const canvas = document.getElementById("movieParticles");
             const ctx = canvas.getContext("2d");

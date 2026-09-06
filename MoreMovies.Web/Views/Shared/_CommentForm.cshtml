@@ -1,0 +1,91 @@
+@model AddCommentInputModel
+
+@{
+    // Host decides what "Cancel" does: a link back (standalone page) or closing the modal.
+    var cancelUrl = ViewData["CancelUrl"] as string;
+    var emojis = new[] { "😀", "😍", "🔥", "👏", "😂", "😮", "😢", "😱", "👍", "👎", "🎬", "🍿", "⭐", "❤️" };
+}
+
+<form asp-controller="Movie" asp-action="AddComment" asp-route-id="@Model.MovieId" method="post"
+      class="comment-form space-y-4">
+    <div asp-validation-summary="ModelOnly" class="text-red-400 text-sm"></div>
+
+    <div>
+        <label asp-for="Description" class="block text-sm text-gray-300 mb-1">Your Comment</label>
+        <textarea asp-for="Description" rows="5" maxlength="@DataConstants.CommentDescriptionMaxLength"
+                  placeholder="Write your thoughts about this movie..."
+                  class="comment-text w-full px-4 py-2 rounded bg-gray-900 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500 resize-none"></textarea>
+
+        <div class="flex justify-between items-start gap-3 mt-1">
+            <span asp-validation-for="Description" class="text-red-400 text-sm"></span>
+            <span class="comment-counter text-gray-500 text-xs whitespace-nowrap">0 / @DataConstants.CommentDescriptionMaxLength</span>
+        </div>
+    </div>
+
+    <div class="flex flex-wrap gap-1">
+        @foreach (var emoji in emojis)
+        {
+            <button type="button" class="comment-emoji text-xl leading-none px-2 py-1 rounded hover:bg-gray-700 transition"
+                    title="@emoji">@emoji</button>
+        }
+    </div>
+
+    <div class="flex flex-wrap gap-3">
+        <button type="submit" class="bg-red-600 hover:bg-red-700 text-white py-2 px-6 rounded transition duration-200">
+            Submit Comment
+        </button>
+
+        @if (!string.IsNullOrEmpty(cancelUrl))
+        {
+            <a href="@cancelUrl" class="bg-gray-700 hover:bg-gray-600 text-white py-2 px-6 rounded transition duration-200">
+                Cancel
+            </a>
+        }
+        else
+        {
+            <button type="button" class="comment-cancel bg-gray-700 hover:bg-gray-600 text-white py-2 px-6 rounded transition duration-200">
+                Cancel
+            </button>
+        }
+    </div>
+</form>
+
+<script>
+    // Guard against double-binding if this partial is rendered more than once per page.
+    document.querySelectorAll('.comment-form:not([data-comment-init])').forEach(function (form) {
+        form.setAttribute('data-comment-init', 'true');
+
+        const textarea = form.querySelector('.comment-text');
+        const counter = form.querySelector('.comment-counter');
+        const maxLength = parseInt(textarea.getAttribute('maxlength'), 10);
+
+        function updateCounter() {
+            counter.textContent = textarea.value.length + ' / ' + maxLength;
+        }
+
+        function insertAtCursor(text) {
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const value = textarea.value;
+
+            if (value.length + text.length > maxLength) {
+                return;
+            }
+
+            textarea.value = value.slice(0, start) + text + value.slice(end);
+            const caret = start + text.length;
+            textarea.setSelectionRange(caret, caret);
+            textarea.focus();
+            updateCounter();
+        }
+
+        form.querySelectorAll('.comment-emoji').forEach(function (button) {
+            button.addEventListener('click', function () {
+                insertAtCursor(button.textContent.trim());
+            });
+        });
+
+        textarea.addEventListener('input', updateCounter);
+        updateCounter();
+    });
+</script>

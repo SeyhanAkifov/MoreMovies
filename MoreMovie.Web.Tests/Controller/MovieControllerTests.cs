@@ -450,7 +450,7 @@ namespace MoreMovie.Web.Tests.Controller
         }
 
         [Fact]
-        public void AddCommentSchoulReturnCorrectView()
+        public async Task AddCommentSchoulReturnCorrectView()
         {
             var data = DatabaseMock.Instance;
 
@@ -476,7 +476,7 @@ namespace MoreMovie.Web.Tests.Controller
                 HttpContext = new DefaultHttpContext() { User = user }
             };
 
-            IActionResult result = movieController.AddComment(1);
+            IActionResult result = await movieController.AddComment(1);
 
             ViewResult viewResult = Assert.IsType<ViewResult>(result);
         }

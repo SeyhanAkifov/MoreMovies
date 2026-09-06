@@ -49,9 +49,10 @@
                         }
                     }
 
-                    <a asp-controller="Movie" asp-action="AddComment" asp-route-id="@Model.Id" class="bg-gray-600 hover:bg-gray-500 text-white px-3 py-2 rounded">
+                    <button type="button" id="open-comment-modal"
+                            class="bg-gray-600 hover:bg-gray-500 text-white px-3 py-2 rounded transition">
                         Write Comment
-                    </a>
+                    </button>
                 </div>
 
                 <!-- Movie Info (initially hidden) -->
@@ -68,7 +69,8 @@
 
             <!-- Trailer + Actors -->
             <div class="md:col-span-2 space-y-6">
-                <iframe class="w-full h-64 md:h-96 rounded shadow-md" src="@Model.HomePage" title="Trailer" frameborder="0" allowfullscreen></iframe>
+                <iframe class="w-full h-64 md:h-96 rounded shadow-md" src="@Model.HomePage" title="Trailer"
+                        frameborder="0" allowfullscreen loading="lazy"></iframe>
 
                 <div>
                     <h2 class="text-xl font-bold text-red-500 mb-2">Actors</h2>
@@ -98,21 +100,28 @@
 
                     <!-- Interaktive Sterne für neue Bewertung -->
                     <form method="post" asp-controller="Movie" asp-action="RateMovie" id="rate-form" class="flex items-center gap-2">
-                        @for (int i = 1; i <= 5; i++)
-                        {
-                            <input type="radio" id="star@i" name="rating" value="@i" class="hidden rating-input" />
-                            <label for="star@i" data-star="@i" class="rating-star cursor-pointer text-2xl text-gray-600 transition">★</label>
-                        }
+                        <input type="hidden" name="rating" id="rating-value" value="0" />
                         <input type="hidden" name="movieId" value="@Model.Id" />
-                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Rate</button>
+                        <div class="flex items-center gap-1" id="rating-stars">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                <button type="button" data-star="@i"
+                                        class="rating-star text-2xl text-gray-600 hover:scale-110 transition">★</button>
+                            }
+                        </div>
+                        <button type="submit" id="rate-submit"
+                                class="bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white px-4 py-2 rounded transition">
+                            Rate
+                        </button>
                     </form>
                 </div>
 
                 <script>
                     (function () {
-                        var form = document.getElementById('rate-form');
-                        var stars = Array.from(form.querySelectorAll('.rating-star'));
-                        var inputs = form.querySelectorAll('.rating-input');
+                        var starsContainer = document.getElementById('rating-stars');
+                        var stars = Array.from(starsContainer.querySelectorAll('.rating-star'));
+                        var hiddenInput = document.getElementById('rating-value');
+                        var selected = 0;
 
                         function paint(value) {
                             stars.forEach(function (star) {
@@ -122,28 +131,28 @@
                             });
                         }
 
-                        function selectedValue() {
-                            var checked = form.querySelector('.rating-input:checked');
-                            return checked ? parseInt(checked.value, 10) : 0;
-                        }
-
-                        inputs.forEach(function (input) {
-                            input.addEventListener('change', function () {
-                                paint(parseInt(input.value, 10));
-                            });
-                        });
-
                         stars.forEach(function (star) {
+                            star.addEventListener('click', function () {
+                                selected = parseInt(star.getAttribute('data-star'), 10);
+                                hiddenInput.value = selected;
+                                paint(selected);
+                            });
+
                             star.addEventListener('mouseenter', function () {
                                 paint(parseInt(star.getAttribute('data-star'), 10));
                             });
                         });
 
-                        form.addEventListener('mouseleave', function () {
-                            paint(selectedValue());
+                        starsContainer.addEventListener('mouseleave', function () {
+                            paint(selected);
                         });
 
-                        paint(selectedValue());
+                        // Direktes Feedback beim Absenden statt Vollbild-Loader
+                        var submitButton = document.getElementById('rate-submit');
+                        document.getElementById('rate-form').addEventListener('submit', function () {
+                            submitButton.disabled = true;
+                            submitButton.textContent = 'Saving...';
+                        });
                     })();
                 </script>
 
@@ -166,12 +175,60 @@
         </div>
     </div>
 
+    <!-- Kommentar-Popup -->
+    <div id="commentModal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50 p-4">
+        <div class="bg-gray-800 rounded-lg shadow-lg w-full max-w-lg relative p-6 md:p-8">
+            <button type="button" id="close-comment-modal"
+                    class="absolute top-3 right-4 text-gray-400 hover:text-white text-2xl leading-none">&times;</button>
+
+            <h2 class="text-xl font-bold text-red-500 mb-1">Add Comment</h2>
+            <p class="text-gray-400 text-sm mb-5">for <span class="text-gray-200">@Model.Title</span></p>
+
+            <partial name="_CommentForm" model="@(new AddCommentInputModel { MovieId = Model.Id })" />
+        </div>
+    </div>
+
     <script>
         // Toggle Movie Info
         document.getElementById('show-info-btn')?.addEventListener('click', function () {
             var info = document.getElementById('info');
             info.classList.toggle('hidden');
         });
+
+        // Kommentar-Popup
+        (function () {
+            const modal = document.getElementById('commentModal');
+            const openButton = document.getElementById('open-comment-modal');
+            const closeButton = document.getElementById('close-comment-modal');
+            const textarea = modal.querySelector('.comment-text');
+
+            function open() {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                textarea?.focus();
+            }
+
+            function close() {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+
+            openButton?.addEventListener('click', open);
+            closeButton.addEventListener('click', close);
+            modal.querySelector('.comment-cancel')?.addEventListener('click', close);
+
+            modal.addEventListener('click', function (e) {
+                if (e.target === modal) {
+                    close();
+                }
+            });
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                    close();
+                }
+            });
+        })();
     </script>
 }
 else

@@ -1,18 +1,82 @@
 [
   {
-    "title": "Jungle Cruise to No. 1",
-    "description": "Disney film, starring Emily Blunt and Dwayne Johnson, is riding to an estimated $32 million opening weekend at the domestic box office.based on the famed Disney theme park ride, took in $13.378 million from 4,310 theaters on Friday. Despite the delta variant possibly deterring some moviegoers, if the film meets industry predictions — which range from $28 million to $32 million — it will debut on par with the opening weekend"
+    "title": "Jungle Cruise Sails to No. 1",
+    "description": "The Disney film, starring Emily Blunt and Dwayne Johnson, is riding to an estimated 32 million dollar opening weekend at the domestic box office. Based on the famed theme park ride, it took in 13.3 million from 4,310 theaters on Friday alone."
   },
   {
-    "title": "Fast And Furious 9",
-    "description": "Joining one of the most famous film franchises of all time is a daunting endeavor, even if you’re already very famous in your own right. Just ask John Cena, who made his debut as Jakob Toretto in F9 back in June. Though he’s proven he can hold his own both in the WWE ring and on film, he admits that he had to work against a unique challenge: Vin Diesel and other cast members were about joining the Fast and the Furious series."
+    "title": "John Cena on Joining Fast and Furious",
+    "description": "Joining one of the most famous film franchises of all time is a daunting endeavor, even if you are already very famous in your own right. Just ask John Cena, who made his debut as Jakob Toretto in F9 and admits the cast dynamic was a challenge of its own."
   },
   {
-    "title": "The Suicide Squad’s",
-    "description": "James Gunn’s The Suicide Squad is almost upon us, finally releasing into theaters on August 6th, and the hype around it is growing. Harly Quinn herself, Margot Robbie, has given some amazing praise to the film calling The Suicide Squad the GOAT comic book film, and it seems everyone involved believes it’s really special. Idris Elba’s Bloodsport is a character fans can’t wait to see in action."
+    "title": "The Suicide Squad Earns Early Praise",
+    "description": "James Gunn's The Suicide Squad is almost upon us and the hype keeps growing. Margot Robbie has called it one of the best comic book films she has worked on, and everyone involved seems convinced it is something special."
   },
   {
-    "title": "Scarlett Johansson",
-    "description": "Many were surprised when it was reported this past week that longtime Marvel star Scarlett Johansson was suing The Walt Disney Company over the simultaneous theatrical/streaming release of Black Widow. While we only learned of her filing a few days ago, the situation has already turned into a bit of a back-and-forth between the actress and the entertainment entity. In the wake of the lawsuit, Disney provided a scathing response to the filing. Now, Johannson’s talent agency has clapped back at Disney’s statements."
+    "title": "Marvel Announces Next Phase Line-Up",
+    "description": "Marvel Studios revealed its upcoming slate at a packed convention hall, confirming release windows for several long-rumoured sequels and introducing three new characters to the shared universe."
+  },
+  {
+    "title": "Denis Villeneuve Confirms Dune Sequel",
+    "description": "Following a strong opening weekend, the studio has greenlit the second part of the adaptation. Villeneuve confirmed that pre-production has already started and that filming will begin next summer."
+  },
+  {
+    "title": "Streaming Numbers Beat Box Office Again",
+    "description": "For the third month in a row, streaming premieres outperformed theatrical releases in total viewing hours. Analysts say the shift is changing how studios plan their release windows."
+  },
+  {
+    "title": "Oscar Nominations Announced",
+    "description": "The Academy revealed this year's nominees early this morning. Two independent films lead the field with eleven nominations each, while the most expensive blockbuster of the year walked away with only two technical nods."
+  },
+  {
+    "title": "Classic Trilogy Gets 4K Restoration",
+    "description": "The original trilogy has been scanned from the negatives and restored frame by frame. The release includes over four hours of previously unseen behind the scenes footage."
+  },
+  {
+    "title": "Director Reveals Cut Ending",
+    "description": "In a lengthy interview the director explained why the original ending never made it into theaters, describing test screenings where audiences reportedly walked out confused and unhappy."
+  },
+  {
+    "title": "Cinema Chains Report Record Summer",
+    "description": "Ticket sales across the largest chains rose sharply compared to last year. Operators credit a packed release calendar and the return of premium large format screenings."
+  },
+  {
+    "title": "Animation Studio Announces Original Film",
+    "description": "After a decade of sequels, the studio is returning to original storytelling with a hand drawn feature set in a coastal town. The project is scheduled for release in two years."
+  },
+  {
+    "title": "Lead Actor Exits Franchise",
+    "description": "Citing scheduling conflicts and a desire to work on smaller projects, the actor confirmed they will not return for the fourth installment. The studio says the role will be recast."
+  },
+  {
+    "title": "Film Festival Adds Streaming Category",
+    "description": "For the first time, the festival will accept films that premiere on streaming platforms. The decision ends a long standing rule that had excluded several award contenders."
+  },
+  {
+    "title": "Score Composer Wins Lifetime Award",
+    "description": "The composer behind some of the most recognisable film themes of the last forty years received a lifetime achievement award at a ceremony attended by directors from across the industry."
+  },
+  {
+    "title": "Sequel Delayed to Next Spring",
+    "description": "The studio moved the release date back by five months, citing unfinished visual effects work. Analysts see the move as an attempt to avoid competing with two other major releases."
+  },
+  {
+    "title": "Horror Film Breaks Genre Record",
+    "description": "Made on a modest budget, the film has become the highest grossing horror release of the decade. Its director has already signed a two picture deal off the back of the success."
+  },
+  {
+    "title": "Actress Makes Directing Debut",
+    "description": "After more than twenty years in front of the camera, she has stepped behind it. Her debut feature premiered to a standing ovation and picked up a distribution deal within days."
+  },
+  {
+    "title": "Documentary Series Sparks Debate",
+    "description": "The six part documentary has drawn both praise and criticism for its portrayal of events. The filmmakers have defended their approach and released additional interview footage."
+  },
+  {
+    "title": "Studio Restores Lost Silent Film",
+    "description": "A print thought lost for nearly a century has been recovered from a private collection and painstakingly restored. It will screen publicly for the first time since its original run."
+  },
+  {
+    "title": "Box Office Recovers to Pre-2020 Levels",
+    "description": "Global ticket revenue has returned to levels last seen before the pandemic, according to a new industry report. Growth was strongest in markets where premium formats expanded fastest."
   }
 ]

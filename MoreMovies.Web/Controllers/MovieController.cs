@@ -251,25 +251,40 @@ namespace MoreMovies.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddComment(int id, AddCommentInputModel model)
         {
+            var movie = await movieService.GetMovieWithId(id);
+            if (movie == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            model.MovieId = id;
+
             if (!ModelState.IsValid)
             {
+                ViewBag.MovieTitle = movie.Title;
                 return View(model);
             }
 
-            var userEmail = User.FindFirstValue(ClaimTypes.Email);
-            model.UserId = userEmail;
-            model.MovieId = id;
+            model.UserId = User.FindFirstValue(ClaimTypes.Email);
+
             await movieService.AddComment(model);
-            var movie = await movieService.GetMovieWithId(model.MovieId);
             await this.movieHub.Clients.All.SendAsync("NewMessage", model.UserId, movie.Title);
 
-            return RedirectToAction("Details", "Movie", new { movie.Id });
+            return RedirectToAction("Details", "Movie", new { id });
         }
 
         [Authorize]
         [HttpGet]
-        public IActionResult AddComment(int id)
+        public async Task<IActionResult> AddComment(int id)
         {
+            var movie = await movieService.GetMovieWithId(id);
+            if (movie == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            ViewBag.MovieTitle = movie.Title;
+
             var model = new AddCommentInputModel
             {
                 MovieId = id,

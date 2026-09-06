@@ -10,7 +10,7 @@
         public const int ComingSoonMinDescriptionLength = 30;
 
         public const int CommentDescriptionMaxLength = 150;
-        public const int CommentDescriptionMinLength = 10;
+        public const int CommentDescriptionMinLength = 1;
 
         public const int GenreMaxNameLength = 30;
 
