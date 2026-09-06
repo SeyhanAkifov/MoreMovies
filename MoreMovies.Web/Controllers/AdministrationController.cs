@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MoreMovie.Web.Controllers
+namespace MoreMovies.Web.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class AdministrationController : Controller

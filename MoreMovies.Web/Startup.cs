@@ -41,37 +41,32 @@ namespace MoreMovies.Web
             services.AddControllersWithViews(options
                 => options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>());
 
-            var mapperConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new ApplicationProfile());
-            });
-
-            IMapper mapper = mapperConfig.CreateMapper();
-            services.AddSingleton(mapper);
+            services.AddAutoMapper(typeof(ApplicationProfile));
 
             services.AddMvc();
 
             services.AddSignalR();
 
-            services.AddTransient<IMovieService, MovieService>();
-            services.AddTransient<ILanguageService, LanguageService>();
-            services.AddTransient<IGenreService, GenreService>();
-            services.AddTransient<IActorService, ActorService>();
-            services.AddTransient<ICountryService, CountryService>();
-            services.AddTransient<ICommentService, CommentService>();
-            services.AddTransient<INewsService, NewsService>();
-            services.AddTransient<IComingSoonService, ComingSoonService>();
-            services.AddTransient<ICinemaService, CinemaService>();
-            services.AddTransient<IUserService, UserService>();
-            services.AddScoped<UserManager<IdentityUser>>();
-            services.AddScoped<IdentityUser>();
+            services.AddScoped<IMovieService, MovieService>();
+            services.AddScoped<ILanguageService, LanguageService>();
+            services.AddScoped<IGenreService, GenreService>();
+            services.AddScoped<IActorService, ActorService>();
+            services.AddScoped<ICountryService, CountryService>();
+            services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<INewsService, NewsService>();
+            services.AddScoped<IComingSoonService, ComingSoonService>();
+            services.AddScoped<ICinemaService, CinemaService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddMemoryCache();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.PrepareDatabase();
+            // Blocking (not fire-and-forget) so a migration/seed failure aborts startup
+            // instead of being silently swallowed, and so this also runs under
+            // WebApplicationFactory-based integration tests (which never call Program.Main).
+            app.PrepareDatabaseAsync(env).GetAwaiter().GetResult();
 
             if (env.IsDevelopment())
             {

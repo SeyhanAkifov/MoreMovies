@@ -7,11 +7,6 @@ namespace MoreMovies.Web
     {
         public static void Main(string[] args)
         {
-            //var db = new ApplicationDbContext();
-            //db.Database.EnsureDeleted();
-            //db.Database.EnsureCreated();
-            //db.Database.Migrate();
-
             CreateHostBuilder(args).Build().Run();
         }
 

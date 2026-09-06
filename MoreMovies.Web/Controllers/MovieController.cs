@@ -82,7 +82,7 @@ namespace MoreMovies.Web.Controllers
         [Authorize]
         public async Task<IActionResult> RateMovie(int rating, int movieId)
         {
-            await movieService.Ratemovie(rating, movieId);
+            await movieService.RateMovie(rating, movieId);
 
             return RedirectToAction("Details", "Movie", new { Id = movieId });
         }
@@ -134,6 +134,8 @@ namespace MoreMovies.Web.Controllers
                 return View("Add", model);
             }
 
+            model.Creator = User.FindFirstValue(ClaimTypes.Email);
+
             await movieService.AddMovie(model);
 
             return RedirectToAction("Index", "Home");
@@ -160,6 +162,13 @@ namespace MoreMovies.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> EditMovie(int id, EditMovieInputModel model)
         {
+            var movie = await movieService.GetMovieWithId(id);
+            var userEmail = User.FindFirstValue(ClaimTypes.Email);
+            if (movie == null || userEmail != movie.Creator)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             if (!ModelState.IsValid)
             {
                 return View("Edit", model);
@@ -193,9 +202,17 @@ namespace MoreMovies.Web.Controllers
         }
 
         [Authorize]
-        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
+            var movie = await movieService.GetMovieWithId(id);
+            var userEmail = User.FindFirstValue(ClaimTypes.Email);
+            if (movie == null || userEmail != movie.Creator)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             await movieService.DeleteMovie(id);
 
             return RedirectToAction("Index", "Home");
@@ -241,7 +258,7 @@ namespace MoreMovies.Web.Controllers
 
             var userEmail = User.FindFirstValue(ClaimTypes.Email);
             model.UserId = userEmail;
-            model.MovieId = model.MovieId;
+            model.MovieId = id;
             await movieService.AddComment(model);
             var movie = await movieService.GetMovieWithId(model.MovieId);
             await this.movieHub.Clients.All.SendAsync("NewMessage", model.UserId, movie.Title);

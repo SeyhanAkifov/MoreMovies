@@ -20,7 +20,7 @@ namespace MoreMovie.Web.Tests.Mocks
                 var genreService = new GenreService(data);
                 var newsService = new NewsService(data);
                 var actorService = new ActorService(data);
-                var movieService = new MovieService(commentService, data, languageService, genreService, countryService, mapper);
+                var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
 
                 return new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, null);
             }

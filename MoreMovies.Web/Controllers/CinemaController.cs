@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MoreMovies.Services.Dto.Input;
 using MoreMovies.Services.Dto.Output;
@@ -49,7 +50,9 @@ namespace MoreMovies.Web.Controllers
 
 
 
+        [Authorize]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddCinema(string cinemaName)
         {
             var user = User.Identity.Name;
@@ -61,6 +64,7 @@ namespace MoreMovies.Web.Controllers
             return RedirectToAction("InCinema");
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult Add()
         {
@@ -73,17 +77,22 @@ namespace MoreMovies.Web.Controllers
             return View();
         }
 
+        [Authorize]
         [HttpPost]
-        public IActionResult Add(CinemaProjectionInputDto model)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Add(CinemaProjectionInputDto model)
         {
-            this.cinemaService.Add(model);
+            await this.cinemaService.Add(model);
 
             return RedirectToAction("InCinema");
         }
 
-        public IActionResult Delete(int id)
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
         {
-            this.cinemaService.Delete(id);
+            await this.cinemaService.Delete(id);
 
             return RedirectToAction("InCinema");
         }

@@ -24,7 +24,7 @@ namespace MoreMovie.Web.Tests.Controller
         }
 
         [Fact]
-        public async void ReturnViewAll()
+        public async Task ReturnViewAll()
         {
             IActionResult result = await controller.All();
 
@@ -40,7 +40,7 @@ namespace MoreMovie.Web.Tests.Controller
         }
 
         [Fact]
-        public async void ReturnViewInvalidmodelState()
+        public async Task ReturnViewInvalidmodelState()
         {
             controller.ModelState.AddModelError("x", "Test Error");
 
@@ -101,7 +101,7 @@ namespace MoreMovie.Web.Tests.Controller
         }
         
         [Fact]
-        public async void ReturnBadRequest()
+        public async Task ReturnBadRequest()
         {
             IActionResult result = await controller.Details(0);
 

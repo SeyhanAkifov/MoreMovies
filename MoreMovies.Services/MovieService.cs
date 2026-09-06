@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using MoreMovies.Data;
 using MoreMovies.Models;
 using MoreMovies.Services.Dto.Input;
@@ -22,7 +21,7 @@ namespace MoreMovies.Services
         private readonly IGenreService genreService;
         private readonly ICountryService countryService;
 
-        public MovieService(ICommentService commentService, ApplicationDbContext db, ILanguageService languageService, IGenreService genreService, ICountryService countryService, IMapper mapper)
+        public MovieService(ICommentService commentService, ApplicationDbContext db, ILanguageService languageService, IGenreService genreService, ICountryService countryService)
         {
             this.commentService = commentService;
             this.languageService = languageService;
@@ -145,13 +144,18 @@ namespace MoreMovies.Services
             await db.SaveChangesAsync();
         }
 
-        public async Task<ICollection<MovieOutputDto>> GetAllMovie()
+        private IQueryable<Movie> MoviesWithDetails()
         {
-            ICollection<MovieOutputDto> movies = await db.Movies
+            return db.Movies
                 .Include(x => x.Genre.Genre)
                 .Include(x => x.Language.Language)
                 .Include(x => x.Country.Country)
-                .Include(x => x.Comments)
+                .Include(x => x.Comments);
+        }
+
+        public async Task<ICollection<MovieOutputDto>> GetAllMovie()
+        {
+            ICollection<MovieOutputDto> movies = await MoviesWithDetails()
                 .Select(x => GetMovieOutputDto(x))
                 .ToArrayAsync();
 
@@ -172,18 +176,12 @@ namespace MoreMovies.Services
         {
             Movie movie = await db.Movies.FindAsync(id);
 
-            return GetMovieDetailOutputDto(movie);
+            return movie == null ? null : GetMovieDetailOutputDto(movie);
         }
-
-        
 
         public async Task<ICollection<MovieOutputDto>> GetTopCommentedMovie()
         {
-            ICollection<MovieOutputDto> movies = await db.Movies
-                .Include(x => x.Genre.Genre)
-                .Include(x => x.Language.Language)
-                .Include(x => x.Country.Country)
-                .Include(x => x.Comments)
+            ICollection<MovieOutputDto> movies = await MoviesWithDetails()
                 .OrderByDescending(x => x.Comments.Count)
                 .Take(5)
                 .Select(x => GetMovieOutputDto(x))
@@ -194,11 +192,7 @@ namespace MoreMovies.Services
 
         public async Task<ICollection<MovieOutputDto>> GetTopCommentedAllMovie()
         {
-            ICollection<MovieOutputDto> movies = await db.Movies
-                .Include(x => x.Genre.Genre)
-                .Include(x => x.Language.Language)
-                .Include(x => x.Country.Country)
-                .Include(x => x.Comments)
+            ICollection<MovieOutputDto> movies = await MoviesWithDetails()
                 .OrderByDescending(x => x.Comments.Count)
                 .Select(x => GetMovieOutputDto(x))
                 .ToArrayAsync();
@@ -208,11 +202,7 @@ namespace MoreMovies.Services
 
         public async Task<ICollection<MovieOutputDto>> GetTopLikedMovie()
         {
-            ICollection<MovieOutputDto> movies = await db.Movies
-                .Include(x => x.Genre.Genre)
-                .Include(x => x.Language.Language)
-                .Include(x => x.Country.Country)
-                .Include(x => x.Comments)
+            ICollection<MovieOutputDto> movies = await MoviesWithDetails()
                 .OrderByDescending(x => x.Likes)
                 .Take(5)
                 .Select(x => GetMovieOutputDto(x))
@@ -223,11 +213,7 @@ namespace MoreMovies.Services
 
         public async Task<ICollection<MovieOutputDto>> GetTopLikedAllMovie()
         {
-            ICollection<MovieOutputDto> movies = await db.Movies
-                .Include(x => x.Genre.Genre)
-                .Include(x => x.Language.Language)
-                .Include(x => x.Country.Country)
-                .Include(x => x.Comments)
+            ICollection<MovieOutputDto> movies = await MoviesWithDetails()
                 .OrderByDescending(x => x.Likes)
                 .Select(x => GetMovieOutputDto(x))
                 .ToArrayAsync();
@@ -237,11 +223,7 @@ namespace MoreMovies.Services
 
         public async Task<ICollection<MovieOutputDto>> GetNewestAddedMovie()
         {
-            ICollection<MovieOutputDto> movies = await db.Movies
-                .Include(x => x.Genre.Genre)
-                .Include(x => x.Language.Language)
-                .Include(x => x.Country.Country)
-                .Include(x => x.Comments)
+            ICollection<MovieOutputDto> movies = await MoviesWithDetails()
                 .OrderByDescending(x => x.ReleaseDate)
                 .Take(5)
                 .Select(x => GetMovieOutputDto(x))
@@ -252,11 +234,7 @@ namespace MoreMovies.Services
 
         public async Task<ICollection<MovieOutputDto>> GetNewestAddedAllMovie()
         {
-            ICollection<MovieOutputDto> movies = await db.Movies
-                .Include(x => x.Genre.Genre)
-                .Include(x => x.Language.Language)
-                .Include(x => x.Country.Country)
-                .Include(x => x.Comments)
+            ICollection<MovieOutputDto> movies = await MoviesWithDetails()
                 .OrderByDescending(x => x.ReleaseDate)
                 .Select(x => GetMovieOutputDto(x))
                 .ToArrayAsync();
@@ -266,11 +244,7 @@ namespace MoreMovies.Services
 
         public async Task<ICollection<MovieOutputDto>> SearchMovie(string name)
         {
-            ICollection<MovieOutputDto> movies = await db.Movies
-                            .Include(x => x.Genre.Genre)
-                            .Include(x => x.Language.Language)
-                            .Include(x => x.Country.Country)
-                            .Include(x => x.Comments)
+            ICollection<MovieOutputDto> movies = await MoviesWithDetails()
                             .Where(x => x.Title.ToLower().Contains(name.ToLower()))
                             .Select(x => GetMovieOutputDto(x))
                             .ToArrayAsync();
@@ -280,11 +254,7 @@ namespace MoreMovies.Services
 
         public async Task<ICollection<MovieOutputDto>> SearchMovieByGenre(string genre)
         {
-            ICollection<MovieOutputDto> movies = await db.Movies
-                .Include(x => x.Genre.Genre)
-                .Include(x => x.Language.Language)
-                .Include(x => x.Country.Country)
-                .Include(x => x.Comments)
+            ICollection<MovieOutputDto> movies = await MoviesWithDetails()
                 .Where(x => x.Genre.Genre.Name == genre)
                 .Select(x => GetMovieOutputDto(x))
                 .ToArrayAsync();
@@ -294,11 +264,7 @@ namespace MoreMovies.Services
 
         public async Task<ICollection<MovieOutputDto>> SearchMovieByYear(string year)
         {
-            ICollection<MovieOutputDto> movies = await db.Movies
-                .Include(x => x.Genre.Genre)
-                .Include(x => x.Language.Language)
-                .Include(x => x.Country.Country)
-                .Include(x => x.Comments)
+            ICollection<MovieOutputDto> movies = await MoviesWithDetails()
                 .Where(x => x.ReleaseDate.Year == int.Parse(year))
                 .Select(x => GetMovieOutputDto(x))
                 .ToArrayAsync();
@@ -306,7 +272,7 @@ namespace MoreMovies.Services
             return movies;
         }
 
-        public async Task Ratemovie(int rating, int movieId)
+        public async Task RateMovie(int rating, int movieId)
         {
             var movie = await this.db.Movies.FindAsync(movieId);
             movie.Rating += rating;

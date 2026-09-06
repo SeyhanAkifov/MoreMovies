@@ -36,8 +36,6 @@ namespace MoreMovies.Web.MappingConfiguration
             
             this.CreateMap<MovieDetailOutputDto, MovieDetailsViewModel>();
 
-            this.CreateMap<MovieDetailOutputDto, EditMovieInputModel>();
-
             this.CreateMap<CinemaProjectionOutputDto, CinemaProjectionViewModel>()
                 .ForMember(x => x.CinemaHall, y => y.MapFrom(s => s.CinemaHall.Name));
 

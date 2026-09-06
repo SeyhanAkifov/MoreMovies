@@ -1,9 +1,7 @@
 ﻿using MoreMovies.Data;
 using MoreMovies.Services.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace MoreMovies.Services
 {
@@ -14,11 +12,6 @@ namespace MoreMovies.Services
         public ActorService(ApplicationDbContext db)
         {
             this.db = db;
-        }
-
-        public Task Add()
-        {
-            throw new NotImplementedException();
         }
 
         public List<string> GetMovieActors(int id)

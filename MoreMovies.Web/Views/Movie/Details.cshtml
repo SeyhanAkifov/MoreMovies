@@ -27,9 +27,11 @@
                         <a asp-controller="Movie" asp-action="Edit" asp-route-id="@Model.Id" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded">
                             Edit
                         </a>
-                        <a asp-controller="Movie" asp-action="Delete" asp-route-id="@Model.Id" class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded">
-                            Delete
-                        </a>
+                        <form asp-controller="Movie" asp-action="Delete" asp-route-id="@Model.Id" method="post" class="inline">
+                            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded">
+                                Delete
+                            </button>
+                        </form>
                     }
                     else
                     {

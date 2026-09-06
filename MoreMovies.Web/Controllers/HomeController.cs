@@ -49,13 +49,13 @@ namespace MoreMovies.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            const string topcomentedMoviesCacheKey = "TopcomentedMoviesCasheKey";
-            const string topLikedMoviesCacheKey = "TopLikedMoviesCasheKey";
-            const string newsCacheKey = "NewsCasheKey";
-            const string comingSoonCacheKey = "ComingSoonCasheKey";
-            const string genresCacheKey = "GenresCasheKey";
+            const string topCommentedMoviesCacheKey = "TopCommentedMoviesCacheKey";
+            const string topLikedMoviesCacheKey = "TopLikedMoviesCacheKey";
+            const string newsCacheKey = "NewsCacheKey";
+            const string comingSoonCacheKey = "ComingSoonCacheKey";
+            const string genresCacheKey = "GenresCacheKey";
 
-            var topcomentedMovies = this.cache.Get<ICollection<MovieOutputDto>>(topcomentedMoviesCacheKey);
+            var topcomentedMovies = this.cache.Get<ICollection<MovieOutputDto>>(topCommentedMoviesCacheKey);
             var topLikedMovies = this.cache.Get<ICollection<MovieOutputDto>>(topLikedMoviesCacheKey);
             var news = this.cache.Get<ICollection<NewsOutputDto>>(newsCacheKey);
             var comingSoon = this.cache.Get<ICollection<ComingSoonOutputDto>>(comingSoonCacheKey);
@@ -72,7 +72,7 @@ namespace MoreMovies.Web.Controllers
                 comingSoon = await comingSoonService.GetForHomePage();
                 genres = await genreService.GetGenres();
                 
-                this.cache.Set(topcomentedMoviesCacheKey, topcomentedMovies, cacheOptions);
+                this.cache.Set(topCommentedMoviesCacheKey, topcomentedMovies, cacheOptions);
                 this.cache.Set(topLikedMoviesCacheKey, topLikedMovies, cacheOptions);
                 this.cache.Set(newsCacheKey, news, cacheOptions);
                 this.cache.Set(comingSoonCacheKey, comingSoon, cacheOptions);
@@ -118,7 +118,7 @@ namespace MoreMovies.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: true);
 
                 if (result.Succeeded)
                 {
@@ -140,8 +140,34 @@ namespace MoreMovies.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Register(string email, string password, string confirmPassword)
+        public async Task<IActionResult> Register(string email, string password, string confirmPassword)
         {
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+            {
+                ModelState.AddModelError(string.Empty, "Email and password are required.");
+                return View();
+            }
+
+            if (password != confirmPassword)
+            {
+                ModelState.AddModelError(string.Empty, "Passwords do not match.");
+                return View();
+            }
+
+            var user = new IdentityUser { UserName = email, Email = email };
+            var result = await _userManager.CreateAsync(user, password);
+
+            if (result.Succeeded)
+            {
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                return RedirectToAction("Index", "Home");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
             return View();
         }
 

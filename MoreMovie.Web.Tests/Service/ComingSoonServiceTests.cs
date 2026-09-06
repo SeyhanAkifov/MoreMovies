@@ -2,6 +2,7 @@
 using MoreMovies.Models;
 using MoreMovies.Services;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace MoreMovie.Web.Tests.Service
@@ -9,7 +10,7 @@ namespace MoreMovie.Web.Tests.Service
     public class ComingSoonServiceTests
     {
         [Fact]
-        public static async void Test()
+        public static async Task Test()
         {
             //Arrange
             var data = DatabaseMock.Instance;
@@ -19,6 +20,7 @@ namespace MoreMovie.Web.Tests.Service
                 Id = 1,
                 Title = "Test",
                 Description = "Test",
+                ImageUrl = "http://test.com/image.jpg",
                 AddedOn = new DateTime(01 / 01 / 2020)
             });
 

@@ -1,4 +1,5 @@
-﻿using MoreMovies.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using MoreMovies.Data;
 using MoreMovies.Models;
 using MoreMovies.Services.Dto.Input;
 using MoreMovies.Services.Dto.Output;
@@ -24,9 +25,9 @@ namespace MoreMovies.Services
             this.userService = userService;
         }
 
-        public  List<string> GetCinema(string userName)
+        public List<string> GetCinema(string userName)
         {
-            return  this.db.Cinemas.Where(x => x.User.Email == userName).Select(x => x.Name).ToList();
+            return this.db.Cinemas.Where(x => x.User.Email == userName).Select(x => x.Name).ToList();
         }
 
         public async Task AddCinema(string cinemaName, string userName)
@@ -46,25 +47,22 @@ namespace MoreMovies.Services
             await db.SaveChangesAsync();
         }
 
-        public void Add(CinemaProjectionInputDto model)
+        public async Task Add(CinemaProjectionInputDto model)
         {
-
-            
-
-            var hall = this.db.CinemaHalls.FirstOrDefault(x => x.Name == model.CinemaHallName);
+            var hall = await this.db.CinemaHalls.FirstOrDefaultAsync(x => x.Name == model.CinemaHallName);
             if (hall == null)
             {
-                this.db.CinemaHalls.Add(new CinemaHall
+                hall = new CinemaHall
                 {
                     Name = model.CinemaHallName,
-                });
+                };
 
-                this.db.SaveChanges();
+                this.db.CinemaHalls.Add(hall);
 
-                hall = this.db.CinemaHalls.FirstOrDefault(x => x.Name == model.CinemaHallName);
+                await this.db.SaveChangesAsync();
             }
 
-            var cinema = this.db.Cinemas.Where(x => x.Name == model.CinemaName).FirstOrDefault();
+            var cinema = await this.db.Cinemas.FirstOrDefaultAsync(x => x.Name == model.CinemaName);
 
             this.db.CinemaPojections.Add(new CinemaPojection
             {
@@ -76,14 +74,16 @@ namespace MoreMovies.Services
                 CinemaId = cinema.Id
             });
 
-            this.db.SaveChanges();
+            await this.db.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            var cinemaProjection = this.db.CinemaPojections.Find(id);
+            var cinemaProjection = await this.db.CinemaPojections.FindAsync(id);
 
             this.db.CinemaPojections.Remove(cinemaProjection);
+
+            await this.db.SaveChangesAsync();
         }
 
         public List<string> GetCinemaNames()

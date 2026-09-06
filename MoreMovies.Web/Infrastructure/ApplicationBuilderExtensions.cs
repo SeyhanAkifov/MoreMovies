@@ -1,8 +1,9 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using MoreMovies.Data;
 using MoreMovies.Models;
 using MoreMovies.Services.Dto.Input;
@@ -18,28 +19,34 @@ namespace MoreMovies.Web.Infrastructure
 {
     public static class ApplicationBuilderExtensions
     {
-        public static async Task<IApplicationBuilder> PrepareDatabase(this IApplicationBuilder app)
+        // Runs schema migrations for every environment, but only seeds demo
+        // content/accounts (Movies/News/ComingSoon/Admin1/User1) in Development,
+        // so a fresh production database never ships with well-known credentials.
+        // Called (and blocked on) from Startup.Configure so it also runs under
+        // WebApplicationFactory-based integration tests, which never execute Program.Main.
+        public static async Task PrepareDatabaseAsync(this IApplicationBuilder app, IWebHostEnvironment env)
         {
             using var scopedServices = app.ApplicationServices.CreateScope();
+            var services = scopedServices.ServiceProvider;
 
-
-            var db = scopedServices.ServiceProvider.GetService<ApplicationDbContext>();
-            var ms = scopedServices.ServiceProvider.GetService<IMovieService>();
-            var ns = scopedServices.ServiceProvider.GetService<INewsService>();
-            var cs = scopedServices.ServiceProvider.GetService<IComingSoonService>();
-
+            var db = services.GetRequiredService<ApplicationDbContext>();
+            var ms = services.GetRequiredService<IMovieService>();
+            var ns = services.GetRequiredService<INewsService>();
+            var cs = services.GetRequiredService<IComingSoonService>();
 
             db.Database.Migrate();
 
             await SeedGenre(db);
             await SeedLanguage(db);
             await SeedCountry(db);
-            await SeedUsers(app.ApplicationServices);
-            await SeedMovies(db, ms);
-            await SeedNews(db, ns);
-            await SeedComingSoon(db, cs);
 
-            return app;
+            if (env.IsDevelopment())
+            {
+                await SeedUsers(services);
+                await SeedMovies(db, ms);
+                await SeedNews(db, ns);
+                await SeedComingSoon(db, cs);
+            }
         }
 
         public static async Task SeedGenre(ApplicationDbContext db)

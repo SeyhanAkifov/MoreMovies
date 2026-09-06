@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MoreMovies.Services.Interfaces;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace MoreMovies.Web.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
 
@@ -25,9 +29,13 @@ namespace MoreMovies.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Become(string userId)
+        [ValidateAntiForgeryToken]
+        [ActionName("Become")]
+        public async Task<IActionResult> BecomeConfirmed()
         {
-            userService.Become(userId);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            await userService.Become(userId);
 
             return RedirectToAction("Index", "Home");
         }

@@ -4,6 +4,7 @@ using MoreMovies.Services;
 using MoreMovies.Services.Interfaces;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace MoreMovie.Web.Tests.Service
@@ -11,7 +12,7 @@ namespace MoreMovie.Web.Tests.Service
     public class NewsServiceTests
     {
         [Fact]
-        public static async void Test()
+        public static async Task Test()
         {
             //Arrange
             var newsService = GetNewsService();
@@ -98,7 +99,11 @@ namespace MoreMovie.Web.Tests.Service
         {
             var data = DatabaseMock.Instance;
 
-            data.News.AddRange(Enumerable.Range(0, 10).Select(i => new News()));
+            data.News.AddRange(Enumerable.Range(0, 10).Select(i => new News
+            {
+                Title = $"Test news {i}",
+                Description = "Test news description",
+            }));
 
             data.SaveChanges();
 

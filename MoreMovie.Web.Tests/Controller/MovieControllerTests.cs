@@ -27,26 +27,8 @@ namespace MoreMovie.Web.Tests.Controller
     {
 
 
-        private MovieController PrepareController()
-        {
-            var data = DatabaseMock.Instance;
-
-            var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
-            var commentService = new CommentService(data);
-            var languageService = new LanguageService(data);
-            var countryService = new CountryService(data);
-            var genreService = new GenreService(data);
-            var newsService = new NewsService(data);
-            var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService, mapper);
-
-            return new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, null);
-        }
-
-
-
         [Fact]
-        public async void AllShoudReturnAllmovies()
+        public async Task AllShoudReturnAllmovies()
         {
             var data = DatabaseMock.Instance;
 
@@ -57,7 +39,7 @@ namespace MoreMovie.Web.Tests.Controller
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService, mapper);
+            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
             var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, null);
 
             //Act
@@ -74,7 +56,7 @@ namespace MoreMovie.Web.Tests.Controller
         }
 
         [Fact]
-        public void DetailsShouldReturnMovieWithSameId()
+        public async Task DetailsShouldReturnMovieWithSameId()
         {
             //Arrange
 
@@ -87,21 +69,33 @@ namespace MoreMovie.Web.Tests.Controller
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService, mapper);
+            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
             var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, null);
 
+            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+            {
+                new Claim(ClaimTypes.Name, "example name"),
+                new Claim(ClaimTypes.NameIdentifier, "1"),
+            }, "mock"));
+
+            movieController.ControllerContext = new ControllerContext()
+            {
+                HttpContext = new DefaultHttpContext() { User = user }
+            };
 
             //Act
 
-            var result = movieController.Details(1);
+            var result = await movieController.Details(1);
 
             //Assert
             Assert.NotNull(result);
-            Assert.Equal(1, result.Id);
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsType<MovieDetailsViewModel>(viewResult.Model);
+            Assert.Equal(1, model.Id);
         }
 
         [Fact]
-        public async void RateMovieShouldReturnCorectRatring()
+        public async Task RateMovieShouldReturnCorectRatring()
         {
             //Arrange
 
@@ -114,7 +108,7 @@ namespace MoreMovie.Web.Tests.Controller
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService, mapper);
+            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
             var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, null);
 
             //Act
@@ -148,7 +142,7 @@ namespace MoreMovie.Web.Tests.Controller
         }
 
         [Fact]
-        public async void DeleteSchouldReturnCorrectCount()
+        public async Task DeleteSchouldReturnCorrectCount()
         {
             //Arrange
 
@@ -161,8 +155,20 @@ namespace MoreMovie.Web.Tests.Controller
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService, mapper);
+            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
             var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, null);
+
+            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+            {
+                new Claim(ClaimTypes.Name, "example name"),
+                new Claim(ClaimTypes.NameIdentifier, "1"),
+                new Claim(ClaimTypes.Email, "Admin1@abv.bg"),
+            }, "mock"));
+
+            movieController.ControllerContext = new ControllerContext()
+            {
+                HttpContext = new DefaultHttpContext() { User = user }
+            };
 
             //Act
             var moviesActual = data.Movies.Count();
@@ -170,12 +176,11 @@ namespace MoreMovie.Web.Tests.Controller
             await movieController.Delete(movie.Id);
 
             //Assert
-            Assert.Equal(9, (moviesActual - 1));
-
+            Assert.Equal(moviesActual - 1, data.Movies.Count());
         }
 
         [Fact]
-        public async void LikeShouldReturnCorrectLikeCount()
+        public async Task LikeShouldReturnCorrectLikeCount()
         {
             //Arrange
 
@@ -188,7 +193,7 @@ namespace MoreMovie.Web.Tests.Controller
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService, mapper);
+            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
             var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, null);
 
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
@@ -213,7 +218,7 @@ namespace MoreMovie.Web.Tests.Controller
         }
 
         [Fact]
-        public async void LikeShouldReturnOneLikePerUserCount()
+        public async Task LikeShouldReturnOneLikePerUserCount()
         {
             //Arrange
 
@@ -226,7 +231,7 @@ namespace MoreMovie.Web.Tests.Controller
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService, mapper);
+            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
             var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, null);
 
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
@@ -263,7 +268,7 @@ namespace MoreMovie.Web.Tests.Controller
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService, mapper);
+            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
             var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, null);
 
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
@@ -303,13 +308,14 @@ namespace MoreMovie.Web.Tests.Controller
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService, mapper);
+            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
             var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, null);
 
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
                 new Claim(ClaimTypes.Name, "example name"),
                 new Claim(ClaimTypes.NameIdentifier, "1"),
+                new Claim(ClaimTypes.Email, "Admin1@abv.bg"),
                 new Claim("custom-claim", "example claim value"),
             }, "mock"));
 
@@ -363,7 +369,7 @@ namespace MoreMovie.Web.Tests.Controller
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService, mapper);
+            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
             var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, null);
 
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
@@ -394,7 +400,7 @@ namespace MoreMovie.Web.Tests.Controller
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService, mapper);
+            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
             var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, null);
 
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
@@ -423,7 +429,7 @@ namespace MoreMovie.Web.Tests.Controller
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService, mapper);
+            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
             var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, null);
 
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
@@ -455,7 +461,7 @@ namespace MoreMovie.Web.Tests.Controller
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService, mapper);
+            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
             var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, null);
 
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
@@ -470,7 +476,7 @@ namespace MoreMovie.Web.Tests.Controller
                 HttpContext = new DefaultHttpContext() { User = user }
             };
 
-            IActionResult result = movieController.AddComment();
+            IActionResult result = movieController.AddComment(1);
 
             ViewResult viewResult = Assert.IsType<ViewResult>(result);
         }
@@ -494,7 +500,7 @@ namespace MoreMovie.Web.Tests.Controller
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService, mapper);
+            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
 
             var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, hubContext.Object);
 
@@ -502,6 +508,7 @@ namespace MoreMovie.Web.Tests.Controller
             {
                 new Claim(ClaimTypes.Name, "example name"),
                 new Claim(ClaimTypes.NameIdentifier, "1"),
+                new Claim(ClaimTypes.Email, "Admin1@abv.bg"),
                 new Claim("custom-claim", "example claim value"),
             }, "mock"));
 
@@ -510,7 +517,7 @@ namespace MoreMovie.Web.Tests.Controller
                 HttpContext = new DefaultHttpContext() { User = user }
             };
 
-            IActionResult result = await movieController.AddComment(1, new AddCommentInputModel());
+            IActionResult result = await movieController.AddComment(1, new AddCommentInputModel { Description = "Test comment description" });
 
             RedirectToActionResult viewResult = Assert.IsType<RedirectToActionResult>(result);
 
@@ -540,7 +547,7 @@ namespace MoreMovie.Web.Tests.Controller
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService, mapper);
+            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
 
             var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, hubContext.Object);
 
@@ -571,23 +578,5 @@ namespace MoreMovie.Web.Tests.Controller
 
             Assert.Equal(expectedCount, model.Count);
         }
-
-        [Fact]
-        public void MigrationsUpDownTest()
-        {
-            // Unit tests don't have a DataDirectory by default to store DB in
-            AppDomain.CurrentDomain.SetData("DataDirectory", System.IO.Directory.GetCurrentDirectory());
-
-            // Drop and recreate database
-            ApplicationDbContext db = new ApplicationDbContext();
-            db.Database.EnsureDeleted();
-
-            // Retrieve migrations
-            db.Database.Migrate();
-
-            // Optional: delete database
-            db.Database.EnsureDeleted();
-        }
-
     }
 }

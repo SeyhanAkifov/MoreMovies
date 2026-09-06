@@ -5,7 +5,7 @@ namespace MoreMovie.Web.Tests.Mocks
 {
     public static class MapperMock
     {
-        public static IMapper Instanse
+        public static IMapper Instance
         {
             get
             {

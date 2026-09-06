@@ -2,6 +2,7 @@
 using MoreMovies.Models;
 using MoreMovies.Services;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace MoreMovie.Web.Tests.Service
@@ -9,7 +10,7 @@ namespace MoreMovie.Web.Tests.Service
     public class LanguageServiceTests
     {
         [Fact]
-        public static async void GetAllLanguageShouldreturnCorrectCount()
+        public static async Task GetAllLanguageShouldreturnCorrectCount()
         {
             var data = DatabaseMock.Instance;
 
@@ -33,7 +34,7 @@ namespace MoreMovie.Web.Tests.Service
         }
 
         [Fact]
-        public static async void AddLanguageShouldAddCorectly()
+        public static async Task AddLanguageShouldAddCorectly()
         {
             var data = DatabaseMock.Instance;
 

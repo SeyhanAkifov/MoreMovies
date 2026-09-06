@@ -22,7 +22,6 @@ namespace MoreMovies.Services
 
         public async Task<Comment> AddComment(AddCommentInputModel model)
         {
-            //DateTime.ParseExact(DateTime.UtcNow.ToString(), "g", CultureInfo.InvariantCulture, DateTimeStyles.None), 
             var comment = new Comment
             {
                 Description = model.Description,
@@ -55,11 +54,6 @@ namespace MoreMovies.Services
                 .ToList();
 
             return d;
-        }
-
-        public Task Delete()
-        {
-            throw new NotImplementedException();
         }
     }
 }

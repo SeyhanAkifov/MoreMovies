@@ -10,6 +10,7 @@ namespace MoreMovies.Services.Dto.Input
         [Required]
         public string Description { get; set; }
         [Required]
+        [Url]
         public string HomePage { get; set; }
         [Required]
         public string ImageUrl { get; set; }

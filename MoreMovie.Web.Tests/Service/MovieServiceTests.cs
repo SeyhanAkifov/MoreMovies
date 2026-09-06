@@ -14,7 +14,7 @@ namespace MoreMovie.Web.Tests.Service
     public class MovieServiceTests
     {
         [Fact]
-        public async void AllNewsetAddedShouldReturnCorrertOrderedList()
+        public async Task AllNewestAddedShouldReturnCorrectOrderedList()
         {
             var data = DatabaseMock.Instance;
 
@@ -25,14 +25,14 @@ namespace MoreMovie.Web.Tests.Service
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService, mapper);
+            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
 
             //Act
             var newstMovies = await movieService.GetNewestAddedAllMovie();
             var allMovies = data.Movies.OrderByDescending(x => x.ReleaseDate);
 
             var newestFirst = newstMovies.First();
-            var allFirst = newstMovies.First();
+            var allFirst = allMovies.First();
 
             //Assert
             Assert.Equal(newstMovies.Count, allMovies.Count());
@@ -40,7 +40,7 @@ namespace MoreMovie.Web.Tests.Service
         }
 
         [Fact]
-        public async void NewsetAddedShouldReturnCorrertOrderedList()
+        public async Task NewestAddedShouldReturnCorrectOrderedList()
         {
             var data = DatabaseMock.Instance;
 
@@ -51,11 +51,11 @@ namespace MoreMovie.Web.Tests.Service
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService, mapper);
+            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
 
             //Act
             var newstMovies = await movieService.GetNewestAddedMovie();
-            var expectedCount = 6;
+            var expectedCount = 5;
 
             //Assert
             Assert.Equal(expectedCount, newstMovies.Count);
@@ -63,7 +63,7 @@ namespace MoreMovie.Web.Tests.Service
         }
 
         [Fact]
-        public async void AllTopCommentedShouldReturnCorectOrderedList()
+        public async Task AllTopCommentedShouldReturnCorrectOrderedList()
         {
             var data = DatabaseMock.Instance;
 
@@ -74,14 +74,14 @@ namespace MoreMovie.Web.Tests.Service
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService, mapper);
+            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
 
             //Act
             var topCommentedMovies = await movieService.GetTopCommentedAllMovie();
             var allMovies = data.Movies.OrderByDescending(x => x.Comments.Count);
 
             var newestFirst = topCommentedMovies.First();
-            var allFirst = topCommentedMovies.First();
+            var allFirst = allMovies.First();
 
             //Assert
             Assert.Equal(topCommentedMovies.Count, allMovies.Count());
@@ -89,7 +89,7 @@ namespace MoreMovie.Web.Tests.Service
         }
 
         [Fact]
-        public async void TopCommentedShouldReturnCorectOrderedList()
+        public async Task TopCommentedShouldReturnCorrectOrderedList()
         {
             var data = DatabaseMock.Instance;
 
@@ -100,19 +100,19 @@ namespace MoreMovie.Web.Tests.Service
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService, mapper);
+            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
 
             //Act
             var topCommentedMovies = await movieService.GetTopCommentedMovie();
 
-            var expectedCount = 6;
+            var expectedCount = 5;
             //Assert
             Assert.Equal(expectedCount, topCommentedMovies.Count);
 
         }
 
         [Fact]
-        public async void AllTopLikedShouldReturnCorectOrderedList()
+        public async Task AllTopLikedShouldReturnCorrectOrderedList()
         {
             var data = DatabaseMock.Instance;
 
@@ -123,14 +123,14 @@ namespace MoreMovie.Web.Tests.Service
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService, mapper);
+            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
 
             //Act
             var topCommentedMovies = await movieService.GetTopLikedAllMovie();
             var allMovies = data.Movies.OrderByDescending(x => x.Likes);
 
             var newestFirst = topCommentedMovies.First();
-            var allFirst = topCommentedMovies.First();
+            var allFirst = allMovies.First();
 
             //Assert
             Assert.Equal(topCommentedMovies.Count, allMovies.Count());
@@ -138,7 +138,7 @@ namespace MoreMovie.Web.Tests.Service
         }
 
         [Fact]
-        public async void TopLikedShouldReturnCorectOrderedList()
+        public async Task TopLikedShouldReturnCorrectOrderedList()
         {
             var data = DatabaseMock.Instance;
 
@@ -149,12 +149,12 @@ namespace MoreMovie.Web.Tests.Service
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService, mapper);
+            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
 
             //Act
             var topCommentedMovies = await movieService.GetTopLikedMovie();
 
-            var expectedCount = 6;
+            var expectedCount = 5;
             //Assert
             Assert.Equal(expectedCount, topCommentedMovies.Count);
 
@@ -172,11 +172,15 @@ namespace MoreMovie.Web.Tests.Service
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService, mapper);
+            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
 
             data.Movies.Add(new Movie
             {
-
+                Creator = "Admin1@abv.bg",
+                Title = "Search test movie",
+                Description = "Test movie description",
+                HomePage = "http://test.com",
+                ImageUrl = "http://test.com/image.jpg",
                 Genre = new MovieGenre { Genre = new Genre { Name = "Action" } }
             });
 
@@ -201,10 +205,15 @@ namespace MoreMovie.Web.Tests.Service
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService, mapper);
+            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
 
             data.Movies.Add(new Movie
             {
+                Creator = "Admin1@abv.bg",
+                Title = "Search test movie",
+                Description = "Test movie description",
+                HomePage = "http://test.com",
+                ImageUrl = "http://test.com/image.jpg",
                 ReleaseDate = DateTime.ParseExact("01/01/1983", "dd/MM/yyyy", CultureInfo.InvariantCulture),
             });
 

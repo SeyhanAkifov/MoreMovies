@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MoreMovies.Services.Dto.Output;
 using MoreMovies.Services.Interfaces;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace MoreMovies.Web.Controllers.Api
 {
+    [Authorize]
     [ApiController]
     [Route("api/[action]/{id}")]
     public class DetailsApiController : ControllerBase

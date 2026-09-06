@@ -9,6 +9,7 @@ using MoreMovies.Web.MappingConfiguration;
 using MoreMovies.Web.Models.News;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace MoreMovie.Web.Tests.Controller
@@ -16,7 +17,7 @@ namespace MoreMovie.Web.Tests.Controller
     public class NewsControllerTests
     {
         [Fact]
-        public async void Test()
+        public async Task Test()
         {
             var data = DatabaseMock.Instance;
             var newsService = new NewsService(data);
@@ -38,7 +39,7 @@ namespace MoreMovie.Web.Tests.Controller
                 HttpContext = new DefaultHttpContext() { User = user }
             };
 
-            await newsController.Add(new NewsAddModel());
+            await newsController.Add(new NewsAddModel { Title = "Test news title", Description = "Test news description, long enough" });
 
             var allNews = data.News.ToList();
 
@@ -47,7 +48,7 @@ namespace MoreMovie.Web.Tests.Controller
         }
 
         [Fact]
-        public async void DeleteShouldReturnCorrectCount()
+        public async Task DeleteShouldReturnCorrectCount()
         {
             var data = DatabaseMock.Instance;
             var newsService = new NewsService(data);
@@ -69,8 +70,8 @@ namespace MoreMovie.Web.Tests.Controller
                 HttpContext = new DefaultHttpContext() { User = user }
             };
 
-            await newsController.Add(new NewsAddModel());
-            await newsController.Add(new NewsAddModel());
+            await newsController.Add(new NewsAddModel { Title = "Test news title", Description = "Test news description, long enough" });
+            await newsController.Add(new NewsAddModel { Title = "Test news title", Description = "Test news description, long enough" });
             await newsController.Delete(1);
 
             var allNews = data.News.ToList();
@@ -80,7 +81,7 @@ namespace MoreMovie.Web.Tests.Controller
         }
 
         [Fact]
-        public async void AllShouldReturnCorrectCount()
+        public async Task AllShouldReturnCorrectCount()
         {
             var data = DatabaseMock.Instance;
             var newsService = new NewsService(data);
@@ -102,8 +103,8 @@ namespace MoreMovie.Web.Tests.Controller
                 HttpContext = new DefaultHttpContext() { User = user }
             };
 
-            await newsController.Add(new NewsAddModel());
-            await newsController.Add(new NewsAddModel());
+            await newsController.Add(new NewsAddModel { Title = "Test news title", Description = "Test news description, long enough" });
+            await newsController.Add(new NewsAddModel { Title = "Test news title", Description = "Test news description, long enough" });
             await newsController.All();
 
             var allNews = data.News.ToList();
@@ -113,7 +114,7 @@ namespace MoreMovie.Web.Tests.Controller
         }
 
         [Fact]
-        public async void DetailsShouldReturnCorrect()
+        public async Task DetailsShouldReturnCorrect()
         {
             var data = DatabaseMock.Instance;
             var newsService = new NewsService(data);
@@ -135,7 +136,7 @@ namespace MoreMovie.Web.Tests.Controller
                 HttpContext = new DefaultHttpContext() { User = user }
             };
 
-            await newsController.Add(new NewsAddModel());
+            await newsController.Add(new NewsAddModel { Title = "Test news title", Description = "Test news description, long enough" });
 
 
 

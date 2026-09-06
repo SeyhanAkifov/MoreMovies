@@ -4,6 +4,7 @@ using Moq;
 using MoreMovies.Services.Interfaces;
 using MoreMovies.Web.Controllers.Api;
 using MoreMovies.Web.Models.Movie;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace MoreMovie.Web.Tests.Controller.Api
@@ -24,7 +25,7 @@ namespace MoreMovie.Web.Tests.Controller.Api
        
 
         [Fact]
-        public async void ReturnCorrectRequest()
+        public async Task ReturnCorrectRequest()
         {
 
             IActionResult result = await controller.GetDetails(1);
@@ -35,7 +36,7 @@ namespace MoreMovie.Web.Tests.Controller.Api
         }
 
         [Fact]
-        public async void ReturnBadRequest()
+        public async Task ReturnBadRequest()
         {
 
             IActionResult result = await controller.GetDetails(0);
