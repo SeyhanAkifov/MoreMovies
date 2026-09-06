@@ -13,6 +13,7 @@ namespace MoreMovies.Services
 {
     public class CinemaService : ICinemaService
     {
+
         private readonly ApplicationDbContext db;
         private readonly IUserService userService;
 
