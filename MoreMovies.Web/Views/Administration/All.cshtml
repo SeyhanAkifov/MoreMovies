@@ -1,43 +1,22 @@
-﻿@model IList<MyProfileViewModel>
-
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@model IList<MyProfileViewModel>
 
 @{
     ViewData["Title"] = "All Users";
 }
-<h1 class="text-center">All Users</h1>
-<hr class="hr-2" />
 
-<div class=" mt-3 ">
-    <div class="row d-flex d-wrap">
+<div class="max-w-4xl mx-auto p-4 md:p-8">
+    <h1 class="text-2xl font-bold text-red-500 mb-6">All Users</h1>
 
-
-
-
-        @for (var i = 0; i < Model.Count(); i++)
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        @for (var i = 0; i < Model.Count; i++)
         {
-
-            <article class="admin-main-item">
-                <div class="admin-main-item-title">
-                    User Id: @Model[i].Id
-                </div>
-                
-                <div class="card-body">
-                    Email: @Model[i].Email
-                </div>
-                <div class="admin-main-item-footer">
-                    <form asp-controller="Administration" asp-action="DeleteUser" asp-route-id="@Model[i].Id" method="post">
-                       
-                        <button type="submit" class="btn btn-danger">Delete</button>
-
-                    </form>
-                </div>
+            <article class="bg-gray-800 rounded-lg shadow p-4 flex flex-col space-y-2">
+                <p class="text-gray-400 text-sm">User Id: @Model[i].Id</p>
+                <p class="text-white font-semibold">@Model[i].Email</p>
+                <form asp-controller="Administration" asp-action="DeleteUser" asp-route-id="@Model[i].Id" method="post" class="mt-auto">
+                    <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded transition">Delete</button>
+                </form>
             </article>
-
         }
-
-
-
     </div>
 </div>

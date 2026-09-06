@@ -2,7 +2,7 @@
 
 <article class="bg-gray-800 rounded-lg shadow hover:shadow-lg transition duration-200 flex flex-col h-full">
     <div class="relative group">
-        <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? Url.Content("~/css/images/placeholder.png") : Model.ImageUrl)"
+        <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? Url.Content("~/css/images/movie_placeholder.jpg") : Model.ImageUrl)"
              alt="@Model.Title"
              class="w-full h-64 object-cover">
         <div class="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition duration-200 flex items-center justify-center">

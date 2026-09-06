@@ -84,26 +84,68 @@
                 <div class="max-w-sm mx-auto p-4 bg-gray-900 text-white rounded-lg">
                     <h2 class="text-xl font-bold text-red-500 mb-2">Star Rating</h2>
 
+                    @{
+                        var averageRating = Model.RatingCount > 0 ? Math.Round((double)Model.Rating / Model.RatingCount) : 0;
+                    }
                     <!-- Anzeige der aktuellen Bewertung -->
                     <div class="flex items-center mb-2">
                         @for (int i = 1; i <= 5; i++)
                         {
-                            <span class="text-2xl @(i <= Model.Rating ? "text-yellow-400" : "text-gray-400")">★</span>
+                            <span class="text-2xl @(i <= averageRating ? "text-yellow-400" : "text-gray-400")">★</span>
                         }
-                        <span class="ml-2 text-gray-300 text-sm">(@Model.Rating / 5)</span>
+                        <span class="ml-2 text-gray-300 text-sm">(@averageRating / 5, @Model.RatingCount @(Model.RatingCount == 1 ? "vote" : "votes"))</span>
                     </div>
 
                     <!-- Interaktive Sterne für neue Bewertung -->
-                    <form method="post" asp-controller="Movie" asp-action="RateMovie" class="flex items-center gap-2">
-                        @for (int i = 5; i >= 1; i--)
+                    <form method="post" asp-controller="Movie" asp-action="RateMovie" id="rate-form" class="flex items-center gap-2">
+                        @for (int i = 1; i <= 5; i++)
                         {
-                            <input type="radio" id="star@i" name="rating" value="@i" class="hidden" />
-                            <label for="star@i" class="cursor-pointer text-2xl text-yellow-400 hover:text-yellow-500 transition">★</label>
+                            <input type="radio" id="star@i" name="rating" value="@i" class="hidden rating-input" />
+                            <label for="star@i" data-star="@i" class="rating-star cursor-pointer text-2xl text-gray-600 transition">★</label>
                         }
                         <input type="hidden" name="movieId" value="@Model.Id" />
                         <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Rate</button>
                     </form>
                 </div>
+
+                <script>
+                    (function () {
+                        var form = document.getElementById('rate-form');
+                        var stars = Array.from(form.querySelectorAll('.rating-star'));
+                        var inputs = form.querySelectorAll('.rating-input');
+
+                        function paint(value) {
+                            stars.forEach(function (star) {
+                                var starValue = parseInt(star.getAttribute('data-star'), 10);
+                                star.classList.toggle('text-yellow-400', starValue <= value);
+                                star.classList.toggle('text-gray-600', starValue > value);
+                            });
+                        }
+
+                        function selectedValue() {
+                            var checked = form.querySelector('.rating-input:checked');
+                            return checked ? parseInt(checked.value, 10) : 0;
+                        }
+
+                        inputs.forEach(function (input) {
+                            input.addEventListener('change', function () {
+                                paint(parseInt(input.value, 10));
+                            });
+                        });
+
+                        stars.forEach(function (star) {
+                            star.addEventListener('mouseenter', function () {
+                                paint(parseInt(star.getAttribute('data-star'), 10));
+                            });
+                        });
+
+                        form.addEventListener('mouseleave', function () {
+                            paint(selectedValue());
+                        });
+
+                        paint(selectedValue());
+                    })();
+                </script>
 
 
 

@@ -1,32 +1,75 @@
-﻿@inject SignInManager<IdentityUser> SignInManager
+@inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
-<div class="flex items-center space-x-2">
-    @if (SignInManager.IsSignedIn(User))
-    {
-        <!-- Angemeldet -->
-        <span class="text-gray-300 hidden md:inline">Hello, @User.Identity.Name!</span>
-       @*  <form method="post" asp-controller="Home" asp-action="Logout" class="inline">
-            <button type="submit"
-                    class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded transition">
-                Logout
-            </button>
-        </form> *@
-        <a asp-controller="Home" asp-action="Logout"
-           class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded transition">
-            Logout
-        </a>
-    }
-    else
-    {
-        <!-- Nicht angemeldet -->
+@if (SignInManager.IsSignedIn(User))
+{
+    var email = User.Identity.Name ?? "";
+    var initial = email.Length > 0 ? email.Substring(0, 1).ToUpper() : "?";
+
+    <div class="relative user-menu">
+        <button type="button" class="user-menu-button flex items-center gap-2 px-2 py-1.5 rounded hover:bg-gray-800 transition">
+            <span class="flex items-center justify-center h-8 w-8 rounded-full bg-red-600 text-white text-sm font-semibold">@initial</span>
+            <span class="hidden lg:inline text-gray-200 text-sm max-w-[10rem] truncate">@email</span>
+            <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+        </button>
+
+        <div class="user-menu-panel hidden absolute right-0 mt-2 w-56 bg-gray-800 rounded-lg shadow-lg ring-1 ring-gray-700 py-2 z-20">
+            <a asp-controller="Movie" asp-action="MyMovies" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700">My Movies</a>
+            <a asp-controller="Movie" asp-action="MyLiked" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700">My Liked</a>
+            <a asp-controller="Movie" asp-action="Add" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700">Add Movie</a>
+
+            @if (User.IsInRole(RoleNames.Manager))
+            {
+                <a asp-controller="Cinema" asp-action="Add" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700">Add Projection</a>
+            }
+            else
+            {
+                <a asp-controller="Cinema" asp-action="Become" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700">Become a Cinema Agent</a>
+            }
+
+            @if (User.IsInRole(RoleNames.Admin))
+            {
+                <a asp-controller="Administration" asp-action="Index" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700">Administration</a>
+            }
+
+            <hr class="border-gray-700 my-2" />
+
+            <a asp-controller="Home" asp-action="Logout" class="block px-4 py-2 text-sm text-red-400 hover:bg-gray-700">Logout</a>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            document.querySelectorAll('.user-menu').forEach(function (menu) {
+                var button = menu.querySelector('.user-menu-button');
+                var panel = menu.querySelector('.user-menu-panel');
+
+                button.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    panel.classList.toggle('hidden');
+                });
+
+                document.addEventListener('click', function (e) {
+                    if (!menu.contains(e.target)) {
+                        panel.classList.add('hidden');
+                    }
+                });
+            });
+        })();
+    </script>
+}
+else
+{
+    <div class="flex items-center gap-2">
         <a asp-controller="Home" asp-action="Register"
-           class="bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded transition">
+           class="bg-gray-700 hover:bg-gray-600 text-white px-3 py-1.5 rounded transition text-sm">
             Register
         </a>
         <a asp-controller="Home" asp-action="Login"
-           class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded transition">
+           class="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded transition text-sm">
             Login
         </a>
-    }
-</div>
+    </div>
+}

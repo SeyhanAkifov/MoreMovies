@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "MoreMovies.Web",
+      "runtimeExecutable": "dotnet",
+      "runtimeArgs": ["run", "--project", "MoreMovies.Web"],
+      "port": 5000
+    }
+  ]
+}

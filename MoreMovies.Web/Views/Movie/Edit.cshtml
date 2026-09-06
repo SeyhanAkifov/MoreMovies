@@ -1,36 +1,44 @@
-﻿@model EditMovieInputModel
+@model EditMovieInputModel
 
 @{
-    ViewData["Title"] = "Movie edit";
+    ViewData["Title"] = "Edit Movie";
 }
 
-<form class="add-form" asp-controller="Movie" asp-action="EditMovie" asp-route-id="@Model.Id" name="@Model.Id" method="post">
-    <div class="form-group">
-        <label asp-for="Title">Title</label>
-        <input asp-for="Title" type="text" class="form-control" placeholder="Title" name="title" value="@Model.Title">
-        <span asp-validation-for="Title" class="m-md-0 text-danger"></span>
-    </div>
+<div class="max-w-2xl mx-auto bg-gray-800 rounded-lg shadow-lg p-6 md:p-8">
+    <h1 class="text-2xl font-bold text-red-500 mb-6">Edit Movie</h1>
 
+    <form asp-controller="Movie" asp-action="EditMovie" asp-route-id="@Model.Id" method="post" class="space-y-5">
+        <div>
+            <label asp-for="Title" class="block text-sm text-gray-300 mb-1">Title</label>
+            <input asp-for="Title" placeholder="Title"
+                   class="w-full px-4 py-2 rounded bg-gray-900 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500" />
+            <span asp-validation-for="Title" class="text-red-400 text-sm"></span>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="ImageUrl">Image</label>
-        <input asp-for="ImageUrl" type="text" class="form-control" placeholder="Image" name="imageUrl" value="@Model.ImageUrl">
-        <span asp-validation-for="ImageUrl" class="m-md-0 text-danger"></span>
-    </div>
+        <div>
+            <label asp-for="ImageUrl" class="block text-sm text-gray-300 mb-1">Image URL</label>
+            <input asp-for="ImageUrl" placeholder="Image"
+                   class="w-full px-4 py-2 rounded bg-gray-900 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500" />
+            <span asp-validation-for="ImageUrl" class="text-red-400 text-sm"></span>
+        </div>
 
+        <div>
+            <label asp-for="HomePage" class="block text-sm text-gray-300 mb-1">Home Page / Trailer URL</label>
+            <input asp-for="HomePage" placeholder="HomePage"
+                   class="w-full px-4 py-2 rounded bg-gray-900 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500" />
+            <span asp-validation-for="HomePage" class="text-red-400 text-sm"></span>
+        </div>
 
+        <div>
+            <label asp-for="Description" class="block text-sm text-gray-300 mb-1">Description</label>
+            <textarea asp-for="Description" rows="4" placeholder="Description"
+                      class="w-full px-4 py-2 rounded bg-gray-900 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500"></textarea>
+            <span asp-validation-for="Description" class="text-red-400 text-sm"></span>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="HomePage">HomePage</label>
-        <input asp-for="HomePage" type="text" class="form-control" placeholder="HomePage" name="homePage" value="@Model.HomePage">
-        <span asp-validation-for="HomePage" class="m-md-0 text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Description">Description</label>
-        <input asp-for="Description" type="text" class="form-control" placeholder="Description" name="description" value="@Model.Description">
-        <span asp-validation-for="Description" class="m-md-0 text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Edit movie</button>
-</form>
+        <button type="submit"
+                class="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded transition duration-200">
+            Save Changes
+        </button>
+    </form>
+</div>

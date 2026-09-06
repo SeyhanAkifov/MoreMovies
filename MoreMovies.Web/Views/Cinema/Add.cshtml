@@ -1,48 +1,56 @@
-﻿@model CinemaProjectionInputDto
+@model CinemaProjectionInputDto
 
 @{
     ViewData["Title"] = "Add Projection";
-
 }
-<article class="admin-main-item">
-    
-<h1>ADD Projection</h1>
-<form class="text-center border border-light p-5" asp-controller="Cinema" asp-action="Add" method="post">
-    <div class="form-group">
-        <label asp-for="ProjectionTime">Date</label>
-        <input asp-for="ProjectionTime" type="date" class="form-control" placeholder="Date" name="ProjectionTime" value="">
-        <span asp-validation-for="ProjectionTime" class="small text-danger"></span>
-    </div>
-    <div class="form-group" aria-hidden="true">
-        <label asp-for="CinemaName">Cinema</label>
-        <select asp-for="CinemaName" type="text" class="form-control" placeholder="CinemaName" name="CinemaName">
-            @foreach (var item in ViewBag.Names)
-            {
-                <option>@item</option>
-            }
 
-        </select>
-        <span asp-validation-for="CinemaName" class="small text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="MovieName">Movie Name</label>
-        <input asp-for="MovieName" type="text" class="form-control" placeholder="Movie Name" name="movieName" value="">
-        <span asp-validation-for="MovieName" class="small text-danger"></span>
-    </div>
+<div class="max-w-2xl mx-auto bg-gray-800 rounded-lg shadow-lg p-6 md:p-8">
+    <h1 class="text-2xl font-bold text-red-500 mb-6">Add Projection</h1>
 
-    <div class="form-group">
-        <label asp-for="CinemaHallName">Hall</label>
-        <input asp-for="CinemaHallName" type="text" class="form-control" placeholder="Hall Name" name="cinemaHallName" value="">
-        <span asp-validation-for="CinemaHallName" class="small text-danger"></span>
-    </div>
+    <form asp-controller="Cinema" asp-action="Add" method="post" class="space-y-5">
+        <div>
+            <label asp-for="ProjectionTime" class="block text-sm text-gray-300 mb-1">Date</label>
+            <input asp-for="ProjectionTime" type="date"
+                   class="w-full px-4 py-2 rounded bg-gray-900 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500" />
+            <span asp-validation-for="ProjectionTime" class="text-red-400 text-sm"></span>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="Time">Time</label>
-        <input asp-for="Time" type="text" class="form-control" placeholder="Time" name="time" value="">
-        <span asp-validation-for="Time" class="small text-danger"></span>
-    </div>
-    <div class="admin-main-item-footer form-group">
-        <button type="submit" class="btn btn-primary" value="submit">Add</button>
-    </div>
-</form>
-</article>
+        <div>
+            <label asp-for="CinemaName" class="block text-sm text-gray-300 mb-1">Cinema</label>
+            <select asp-for="CinemaName"
+                    class="w-full px-4 py-2 rounded bg-gray-900 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500">
+                @foreach (var item in ViewBag.Names)
+                {
+                    <option>@item</option>
+                }
+            </select>
+            <span asp-validation-for="CinemaName" class="text-red-400 text-sm"></span>
+        </div>
+
+        <div>
+            <label asp-for="MovieName" class="block text-sm text-gray-300 mb-1">Movie Name</label>
+            <input asp-for="MovieName" placeholder="Movie Name"
+                   class="w-full px-4 py-2 rounded bg-gray-900 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500" />
+            <span asp-validation-for="MovieName" class="text-red-400 text-sm"></span>
+        </div>
+
+        <div>
+            <label asp-for="CinemaHallName" class="block text-sm text-gray-300 mb-1">Hall</label>
+            <input asp-for="CinemaHallName" placeholder="Hall Name"
+                   class="w-full px-4 py-2 rounded bg-gray-900 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500" />
+            <span asp-validation-for="CinemaHallName" class="text-red-400 text-sm"></span>
+        </div>
+
+        <div>
+            <label asp-for="Time" class="block text-sm text-gray-300 mb-1">Time</label>
+            <input asp-for="Time" placeholder="Time"
+                   class="w-full px-4 py-2 rounded bg-gray-900 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500" />
+            <span asp-validation-for="Time" class="text-red-400 text-sm"></span>
+        </div>
+
+        <button type="submit"
+                class="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded transition duration-200">
+            Add
+        </button>
+    </form>
+</div>

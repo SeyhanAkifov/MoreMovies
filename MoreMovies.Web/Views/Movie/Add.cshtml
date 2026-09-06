@@ -1,91 +1,105 @@
-﻿@model AddMovieInputModel
+@model AddMovieInputModel
 
 @{
     ViewData["Title"] = "Add Movie";
 }
 
+<div class="max-w-2xl mx-auto bg-gray-800 rounded-lg shadow-lg p-6 md:p-8">
+    <h1 class="text-2xl font-bold text-red-500 mb-6">Add Movie</h1>
 
+    <form method="post" asp-controller="Movie" asp-action="AddMovie" class="space-y-5">
+        <div>
+            <label asp-for="Title" class="block text-sm text-gray-300 mb-1">Title</label>
+            <input asp-for="Title" placeholder="Title"
+                   class="w-full px-4 py-2 rounded bg-gray-900 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500" />
+            <span asp-validation-for="Title" class="text-red-400 text-sm"></span>
+        </div>
 
-<form class="add-form" method="post" asp-controller="Movie" asp-action="AddMovie">
-    <h1>Add Movie</h1>
-    <div class="form-group">
-        <label asp-for="Title"></label>
-        <input asp-for="Title" type="text" class="form-control" placeholder="Title" name="title" value="">
-        <span asp-validation-for="Title" class="error"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Country">Country</label>
-        <select asp-for="Country" type="text" class="form-control" placeholder="Country" name="country">
-            @foreach (var country in Model.Countries)
-            {
-                <option value="@country.Name">@country.Name</option>
-            }
-        </select>
-        <span asp-validation-for="Country" class="error"></span>
-    </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+                <label asp-for="Country" class="block text-sm text-gray-300 mb-1">Country</label>
+                <select asp-for="Country"
+                        class="w-full px-4 py-2 rounded bg-gray-900 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500">
+                    @foreach (var country in Model.Countries)
+                    {
+                        <option value="@country.Name">@country.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="Country" class="text-red-400 text-sm"></span>
+            </div>
 
-    <div class="form-group">
-        <label asp-for="Genre">Genre</label>
-        <select asp-for="Genre" type="text" class="form-control" placeholder="Genre" name="genre">
-            @foreach (var genre in Model.Genres)
-            {
-                <option value="@genre.Name">@genre.Name</option>
-            }
-        </select>
-        <span asp-validation-for="Genre" class="error"></span>
-    </div>
+            <div>
+                <label asp-for="Genre" class="block text-sm text-gray-300 mb-1">Genre</label>
+                <select asp-for="Genre"
+                        class="w-full px-4 py-2 rounded bg-gray-900 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500">
+                    @foreach (var genre in Model.Genres)
+                    {
+                        <option value="@genre.Name">@genre.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="Genre" class="text-red-400 text-sm"></span>
+            </div>
 
-    <div class="form-group">
-        <label asp-for="Language">Language</label>
-        <select asp-for="Language" type="text" class="form-control" placeholder="Language" name="language">
-            @foreach (var language in Model.Languages)
-            {
-                <option value="@language.Name">@language.Name</option>
-            }
-        </select>
-        <span asp-validation-for="Language" class="error"></span>
-    </div>
+            <div>
+                <label asp-for="Language" class="block text-sm text-gray-300 mb-1">Language</label>
+                <select asp-for="Language"
+                        class="w-full px-4 py-2 rounded bg-gray-900 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500">
+                    @foreach (var language in Model.Languages)
+                    {
+                        <option value="@language.Name">@language.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="Language" class="text-red-400 text-sm"></span>
+            </div>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="Image">Image</label>
-        <input asp-for="Image" type="text" class="form-control" placeholder="Image" name="image" value="">
-        <span asp-validation-for="Image" class="error"></span>
+        <div>
+            <label asp-for="Image" class="block text-sm text-gray-300 mb-1">Image URL</label>
+            <input asp-for="Image" placeholder="https://..."
+                   class="w-full px-4 py-2 rounded bg-gray-900 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500" />
+            <span asp-validation-for="Image" class="text-red-400 text-sm"></span>
+        </div>
 
-    </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label asp-for="ReleaseDate" class="block text-sm text-gray-300 mb-1">Release Date</label>
+                <input asp-for="ReleaseDate" placeholder="dd/MM/yyyy"
+                       class="w-full px-4 py-2 rounded bg-gray-900 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500" />
+                <span asp-validation-for="ReleaseDate" class="text-red-400 text-sm"></span>
+            </div>
 
-    <div class="form-group">
-        <label asp-for="ReleaseDate">Release Date</label>
-        <input asp-for="ReleaseDate" type="datetime" class="form-control" placeholder="Release-Date" name="releaseDate" value="">
-        <span asp-validation-for="ReleaseDate" class="error"></span>
-    </div>
+            <div>
+                <label asp-for="Budget" class="block text-sm text-gray-300 mb-1">Budget</label>
+                <input asp-for="Budget" placeholder="Budget"
+                       class="w-full px-4 py-2 rounded bg-gray-900 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500" />
+                <span asp-validation-for="Budget" class="text-red-400 text-sm"></span>
+            </div>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="Budget">Budget</label>
-        <input asp-for="Budget" type="text" class="form-control" placeholder="Budget" name="budget" value="">
-        <span asp-validation-for="Budget" class="error"></span>
-    </div>
+        <div>
+            <label asp-for="HomePage" class="block text-sm text-gray-300 mb-1">Home Page / Trailer URL</label>
+            <input asp-for="HomePage" placeholder="https://www.youtube.com/watch?v=..."
+                   class="w-full px-4 py-2 rounded bg-gray-900 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500" />
+            <span asp-validation-for="HomePage" class="text-red-400 text-sm"></span>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="HomePage">Home page</label>
-        <input asp-for="HomePage" type="text" class="form-control" placeholder="HomePage" name="homePage" value="">
-        <span asp-validation-for="HomePage" class="error"></span>
-    </div>
+        <div>
+            <label asp-for="Description" class="block text-sm text-gray-300 mb-1">Description</label>
+            <textarea asp-for="Description" rows="4" placeholder="Description"
+                      class="w-full px-4 py-2 rounded bg-gray-900 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500"></textarea>
+            <span asp-validation-for="Description" class="text-red-400 text-sm"></span>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="Description">Description</label>
-        <textarea asp-for="Description" type="text" class="form-control" placeholder="Description" name="description" value=""></textarea>
-        <span asp-validation-for="Description" class="error"></span>
-    </div>
+        <div>
+            <label asp-for="Actors" class="block text-sm text-gray-300 mb-1">Actors (comma separated)</label>
+            <input asp-for="Actors" placeholder="Actor One, Actor Two"
+                   class="w-full px-4 py-2 rounded bg-gray-900 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500" />
+            <span asp-validation-for="Actors" class="text-red-400 text-sm"></span>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="Actors">Actors</label>
-        <input asp-for="Actors" type="text" class="form-control" placeholder="Actors" name="actors" value="">
-        <span asp-validation-for="Actors" class="error"></span>
-    </div>
-
-    <button><a class="btn-flip" data-back="Add movie" data-front="Add movie"></a></button>
-</form>
-
-@*@section Scripts {
-   <partial name="_ValidationScriptsPartial">
-}*@
+        <button type="submit"
+                class="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded transition duration-200">
+            Add Movie
+        </button>
+    </form>
+</div>

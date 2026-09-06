@@ -16,7 +16,7 @@
     <div class="se-pre-con fixed inset-0 bg-black flex items-center justify-center z-50">
         <span class="text-white text-xl">Loading...</span>
     </div>
-    <div class="relative z-10">
+    <div class="relative z-10 flex flex-col min-h-screen">
         <header class="bg-gray-900 text-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-center h-16">
@@ -30,28 +30,13 @@
                     </div>
 
                     <!-- Desktop Menu -->
-                    <nav class="hidden md:flex space-x-4 items-center">
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <a asp-controller="Movie" asp-action="MyMovies" class="hover:text-red-500 transition">My Movie</a>
-                            <a asp-controller="Movie" asp-action="MyLiked" class="hover:text-red-500 transition">My Liked</a>
-                            <a asp-controller="Movie" asp-action="Add" class="hover:text-red-500 transition">Add Movie</a>
-
-                            @if (User.IsInRole("Manager"))
-                            {
-                                <a asp-controller="Cinema" asp-action="Add" class="hover:text-red-500 transition">Add Projection</a>
-                            }
-                            else
-                            {
-                                <a asp-controller="Cinema" asp-action="Become" class="hover:text-red-500 transition">Become a Cinema Agent</a>
-                            }
-                        }
-
+                    <nav class="hidden md:flex items-center gap-6">
                         <a asp-controller="Cinema" asp-action="InCinema" class="hover:text-red-500 transition">In Cinema</a>
                         <a asp-controller="ComingSoon" asp-action="All" class="hover:text-red-500 transition">Coming Soon</a>
                         <a asp-controller="News" asp-action="All" class="hover:text-red-500 transition">News</a>
                         <a asp-controller="Contact" asp-action="ContactPage" class="hover:text-red-500 transition">Contact</a>
 
+                        <span class="h-6 w-px bg-gray-700"></span>
 
                         <partial name="_LoginPartial" />
                     </nav>
@@ -76,7 +61,7 @@
                         <a asp-controller="Movie" asp-action="MyLiked" class="block px-3 py-2 rounded hover:bg-gray-700">My Liked</a>
                         <a asp-controller="Movie" asp-action="Add" class="block px-3 py-2 rounded hover:bg-gray-700">Add Movie</a>
 
-                        @if (User.IsInRole("Manager"))
+                        @if (User.IsInRole(RoleNames.Manager))
                         {
                             <a asp-controller="Cinema" asp-action="Add" class="block px-3 py-2 rounded hover:bg-gray-700">Add Projection</a>
                         }
@@ -90,7 +75,10 @@
                     <a asp-controller="ComingSoon" asp-action="All" class="block px-3 py-2 rounded hover:bg-gray-700">Coming Soon</a>
                     <a asp-controller="News" asp-action="All" class="block px-3 py-2 rounded hover:bg-gray-700">News</a>
                     <a asp-controller="Contact" asp-action="ContactPage" class="block px-3 py-2 rounded hover:bg-gray-700">Contact</a>
-
+                    @if (User.IsInRole(RoleNames.Admin))
+                    {
+                        <a asp-controller="Administration" asp-action="Index" class="block px-3 py-2 rounded hover:bg-gray-700">Administration</a>
+                    }
 
                     <partial name="_LoginPartial" />
                 </nav>

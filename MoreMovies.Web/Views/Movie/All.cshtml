@@ -1,29 +1,25 @@
-﻿@model ICollection<MovieViewModel>;
+@model ICollection<MovieViewModel>
 
 @{
     ViewData["Title"] = "All Movies";
 }
 
-
-<div class="row" id="shell">
-
-    <div id="main">
-        <div id="content">
-            @if (Model.Count > 0)
-            {
-                <h1 class="subtitle fancy">All Movies</h1>
-                <div class="box col-12">
-                    @foreach (var movie in Model)
-                    {
-                        @await Html.PartialAsync("../Shared/_MoviePR", movie)
-                    }
-                </div>
-            }
-            else
-            {
-                <h1>No Movies Here</h1>
-            }
-
-        </div>
+<div class="max-w-7xl mx-auto p-4 md:p-8">
+    <div class="flex justify-between items-center border-b border-red-600 pb-2 mb-6">
+        <h1 class="text-2xl font-bold">All Movies</h1>
     </div>
+
+    @if (Model.Count > 0)
+    {
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+            @foreach (var movie in Model)
+            {
+                @await Html.PartialAsync("../Shared/_MoviePR", movie)
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-gray-400 text-center py-12">No movies here yet.</p>
+    }
 </div>

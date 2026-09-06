@@ -20,12 +20,15 @@
 
     <!-- Rating & Info -->
     <div class="p-4 flex flex-col space-y-2 flex-grow">
+        @{
+            var averageRating = Model.RatingCount > 0 ? Math.Round((double)Model.Rating / Model.RatingCount) : 0;
+        }
         <!-- Rating Stars -->
-        <div>
-            <p class="text-gray-400 text-sm mb-1">RATING</p>
-            <div class="w-full bg-gray-700 h-3 rounded">
-                <div class="bg-yellow-400 h-3 rounded" style="width:@(Model.Rating > 0 ? (Model.Rating / Model.RatingCount * 100) + "%" : "0%")"></div>
-            </div>
+        <div class="flex items-center gap-1">
+            @for (int i = 1; i <= 5; i++)
+            {
+                <span class="text-lg @(i <= averageRating ? "text-yellow-400" : "text-gray-600")">★</span>
+            }
         </div>
 
         <!-- Comments & Likes -->

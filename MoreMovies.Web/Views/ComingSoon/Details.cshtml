@@ -1,13 +1,22 @@
-﻿@model ComingSoonViewModel
-<article class="soon-item">
-    <article class="soon-head">
-        <img width="100" height="200" src=@Model.ImageUrl alt="" />
-    </article>
-    <article class="soon-body">
-        <h1 style="color:darkgoldenrod">@Model.Title</h1>
+@model ComingSoonViewModel
 
-        <p style="color:black">
-            @Model.Description
-        </p>
-    </article>
-</article>
+@{
+    ViewData["Title"] = Model?.Title ?? "Coming Soon";
+}
+
+@if (Model != null)
+{
+    <div class="max-w-3xl mx-auto bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+        <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? Url.Content("~/css/images/movie_placeholder.jpg") : Model.ImageUrl)"
+             alt="@Model.Title"
+             class="w-full h-80 object-cover">
+        <div class="p-6 md:p-8">
+            <h1 class="text-3xl font-bold text-red-500 mb-4">@Model.Title</h1>
+            <p class="text-gray-200 whitespace-pre-line">@Model.Description</p>
+        </div>
+    </div>
+}
+else
+{
+    <h1 class="text-2xl text-red-500 font-bold text-center mt-8">Not Found</h1>
+}

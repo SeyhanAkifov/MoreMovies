@@ -1,9 +1,19 @@
-﻿@model NewsViewModel
+@model NewsViewModel
 
-<article id="news-item" class="card mb-xl-5">
-    <h1 style="color:darkgoldenrod">@Model.Title</h1>
+@{
+    ViewData["Title"] = Model?.Title ?? "News";
+}
 
-    <p style="color:black">
-        @Model.Description
-    </p>
-</article>
+@if (Model != null)
+{
+    <div class="max-w-3xl mx-auto bg-gray-800 rounded-lg shadow-lg p-6 md:p-8">
+        <p class="text-gray-400 text-sm mb-2">@Model.AddedOn</p>
+        <h1 class="text-3xl font-bold text-red-500 mb-4">@Model.Title</h1>
+        <hr class="border-gray-700 mb-4" />
+        <p class="text-gray-200 whitespace-pre-line">@Model.Description</p>
+    </div>
+}
+else
+{
+    <h1 class="text-2xl text-red-500 font-bold text-center mt-8">News Not Found</h1>
+}

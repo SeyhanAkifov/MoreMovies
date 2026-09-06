@@ -1,1 +1,19 @@
-﻿<h1>ContactPage</h1>
+@{
+    ViewData["Title"] = "Contact";
+}
+
+<div class="max-w-2xl mx-auto bg-gray-800 rounded-lg shadow-lg p-6 md:p-8 text-center space-y-4">
+    <h1 class="text-3xl font-bold text-red-500">Contact Us</h1>
+    <p class="text-gray-300">Got a question, found a bug, or want to suggest a movie? Reach out to us.</p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left pt-4">
+        <div class="bg-gray-900 rounded p-4">
+            <p class="text-gray-400 text-sm">Email</p>
+            <p class="text-white">support@moremovies.example</p>
+        </div>
+        <div class="bg-gray-900 rounded p-4">
+            <p class="text-gray-400 text-sm">Support Hours</p>
+            <p class="text-white">Mon - Fri, 09:00 - 18:00</p>
+        </div>
+    </div>
+</div>
