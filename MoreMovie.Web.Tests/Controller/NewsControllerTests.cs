@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MoreMovie.Web.Tests.Mocks;
+using MoreMovies.Models;
 using MoreMovies.Services;
 using MoreMovies.Services.Dto.Input;
 using MoreMovies.Web.Controllers;
@@ -29,7 +30,7 @@ namespace MoreMovie.Web.Tests.Controller
             {
                 new Claim(ClaimTypes.Name, "example name"),
                 new Claim(ClaimTypes.NameIdentifier, "1"),
-                new Claim(ClaimTypes.Role, "User"),
+                new Claim(ClaimTypes.Role, RoleNames.User),
                 new Claim("custom-claim", "example claim value"),
             }, "mock"));
 
@@ -60,7 +61,7 @@ namespace MoreMovie.Web.Tests.Controller
             {
                 new Claim(ClaimTypes.Name, "example name"),
                 new Claim(ClaimTypes.NameIdentifier, "1"),
-                new Claim(ClaimTypes.Role, "User"),
+                new Claim(ClaimTypes.Role, RoleNames.User),
                 new Claim("custom-claim", "example claim value"),
             }, "mock"));
 
@@ -93,7 +94,7 @@ namespace MoreMovie.Web.Tests.Controller
             {
                 new Claim(ClaimTypes.Name, "example name"),
                 new Claim(ClaimTypes.NameIdentifier, "1"),
-                new Claim(ClaimTypes.Role, "User"),
+                new Claim(ClaimTypes.Role, RoleNames.User),
                 new Claim("custom-claim", "example claim value"),
             }, "mock"));
 
@@ -126,7 +127,7 @@ namespace MoreMovie.Web.Tests.Controller
             {
                 new Claim(ClaimTypes.Name, "example name"),
                 new Claim(ClaimTypes.NameIdentifier, "1"),
-                new Claim(ClaimTypes.Role, "User"),
+                new Claim(ClaimTypes.Role, RoleNames.User),
                 new Claim("custom-claim", "example claim value"),
             }, "mock"));
 

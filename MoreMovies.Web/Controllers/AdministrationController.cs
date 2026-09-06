@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MoreMovies.Web.Models.Administration;
+using MoreMovies.Models;
 using MoreMovies.Services.Dto.Output;
 using MoreMovies.Services.Interfaces;
 using MoreMovies.Web.Models;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace MoreMovies.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = RoleNames.Admin)]
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;

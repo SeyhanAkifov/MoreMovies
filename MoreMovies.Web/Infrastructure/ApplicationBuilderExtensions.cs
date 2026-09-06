@@ -128,12 +128,12 @@ namespace MoreMovies.Web.Infrastructure
 
             IdentityRole roleAdmin = new()
             {
-                Name = "Admin"
+                Name = RoleNames.Admin
             };
 
             IdentityRole roleUser = new()
             {
-                Name = "User"
+                Name = RoleNames.User
             };
 
             await roleManager.CreateAsync(roleAdmin);
@@ -141,11 +141,11 @@ namespace MoreMovies.Web.Infrastructure
 
             var admin = new IdentityUser { UserName = "Admin1@abv.bg", Email = "Admin1@abv.bg", EmailConfirmed = true };
             await userManager.CreateAsync(admin, "Admin1@abv.bg");
-            await userManager.AddToRoleAsync(admin, "Admin");
+            await userManager.AddToRoleAsync(admin, RoleNames.Admin);
 
             var user = new IdentityUser { UserName = "User1@abv.bg", Email = "User1@abv.bg", EmailConfirmed = true };
             await userManager.CreateAsync(user, "User1@abv.bg");
-            await userManager.AddToRoleAsync(user, "User");
+            await userManager.AddToRoleAsync(user, RoleNames.User);
 
             await db.SaveChangesAsync();
         }

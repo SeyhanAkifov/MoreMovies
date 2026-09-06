@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MoreMovies.Models;
 using MoreMovies.Services.Dto.Input;
 using MoreMovies.Services.Dto.Output;
 using MoreMovies.Services.Interfaces;
@@ -21,13 +22,13 @@ namespace MoreMovies.Web.Controllers
             this.mapper = mapper;
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = RoleNames.Admin)]
         public IActionResult Add()
         {
             return View(new NewsAddModel());
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = RoleNames.Admin)]
         [HttpPost]
         public async Task<IActionResult> Add(NewsAddModel model)
         {
@@ -41,7 +42,7 @@ namespace MoreMovies.Web.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = RoleNames.Admin)]
         public async Task<IActionResult> Delete(int id)
         {
             await newsService.Delete(id);

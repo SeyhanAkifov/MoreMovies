@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MoreMovies.Data;
+using MoreMovies.Models;
 using MoreMovies.Services.Interfaces;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -35,16 +36,12 @@ namespace MoreMovies.Services
         {
             var user = await userManager.FindByIdAsync(userId);
 
-            IdentityRole role = new()
+            if (!await roleManager.RoleExistsAsync(RoleNames.Manager))
             {
-                Name = "Manager"
-            };
-            var result = await roleManager.CreateAsync(role);
-
-            if (result.Succeeded)
-            {
-                await userManager.AddToRoleAsync(user, "Manager");
+                await roleManager.CreateAsync(new IdentityRole { Name = RoleNames.Manager });
             }
+
+            await userManager.AddToRoleAsync(user, RoleNames.Manager);
             
         }
 
