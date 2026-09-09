@@ -16,7 +16,8 @@ namespace MoreMovie.Web.Tests
             _factory = factory;
         }
 
-        
+        string password = "password";
+
         [Theory]
         [InlineData("/")]
         [InlineData("/Home/Index")]
