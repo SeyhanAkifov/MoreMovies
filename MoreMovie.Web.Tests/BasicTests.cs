@@ -1,11 +1,10 @@
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore;
-using MoreMovies.Data;
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace MoreMovie.Web.Tests
+namespace MoreMovies.Web.Tests
 {
     public class BasicTests : IClassFixture<WebApplicationFactory<MoreMovies.Web.Startup>>
     {
@@ -15,8 +14,6 @@ namespace MoreMovie.Web.Tests
         {
             _factory = factory;
         }
-
-        string password = "password";
 
         [Theory]
         [InlineData("/")]
@@ -31,7 +28,6 @@ namespace MoreMovie.Web.Tests
         [InlineData("/Movie/AllTopLiked")]
         [InlineData("/ComingSoon/All")]
         [InlineData("/News/All")]
-
         public async Task Get_EndpointsReturnSuccessAndCorrectContentType(string url)
         {
             // Arrange
@@ -44,8 +40,6 @@ namespace MoreMovie.Web.Tests
             response.EnsureSuccessStatusCode(); // Status Code 200-299
             Assert.Equal("text/html; charset=utf-8",
                 response.Content.Headers.ContentType.ToString());
-
-            
         }
 
         [Fact]
@@ -61,8 +55,6 @@ namespace MoreMovie.Web.Tests
             var html  = await response.Content.ReadAsStringAsync();
 
             Assert.Contains(" <h2>LATEST TRAILERS</h2>", html);
-
-            
         }
     }
 }
