@@ -215,14 +215,17 @@ namespace MoreMovies.Web.Infrastructure
             }
         }
 
+        /// <summary>Create demo films or correct known legacy poster assignments.</summary>
         public static async Task SeedMovies(ApplicationDbContext db, IMovieService ms, string contentRoot)
         {
-            if (db.Movies.Any())
+            var movies = JsonConvert.DeserializeObject<ICollection<AddMovieInputModel>>(
+                await File.ReadAllTextAsync(Path.Combine(contentRoot, "movies.json")));
+
+            if (await db.Movies.AnyAsync())
             {
+                await UpdateLegacyDemoPostersAsync(db, movies);
                 return;
             }
-
-            var movies = JsonConvert.DeserializeObject<ICollection<AddMovieInputModel>>(await File.ReadAllTextAsync(Path.Combine(contentRoot, "movies.json")));
 
             foreach (var movie in movies)
             {
@@ -231,6 +234,27 @@ namespace MoreMovies.Web.Infrastructure
             }
 
             await db.SaveChangesAsync();
+        }
+
+        /// <summary>Replace known incorrect poster URLs on untouched demo films.</summary>
+        private static async Task UpdateLegacyDemoPostersAsync(
+            ApplicationDbContext db, ICollection<AddMovieInputModel> seedMovies)
+        {
+            const string sharedPoster = "https://static.metacritic.com/images/products/movies/5/3cf883810a3ece9c6433ef0ababefb33-98.jpg";
+            const string blackWidowPoster = "https://de.web.img2.acsta.net/c_310_420/pictures/21/07/01/12/20/0398168.jpg";
+            var legacyMovies = await db.Movies.Where(movie => movie.Creator == "Admin1@abv.bg" &&
+                ((movie.Title == "Oppenheimer" || movie.Title == "Everything Everywhere") && movie.ImageUrl == sharedPoster ||
+                    movie.Title == "Dune" && movie.ImageUrl == blackWidowPoster)).ToListAsync();
+
+            foreach (var movie in legacyMovies)
+            {
+                movie.ImageUrl = seedMovies.First(seed => seed.Title == movie.Title).Image;
+            }
+
+            if (legacyMovies.Count > 0)
+            {
+                await db.SaveChangesAsync();
+            }
         }
 
         public static async Task SeedNews(ApplicationDbContext db, INewsService ns, string contentRoot)
