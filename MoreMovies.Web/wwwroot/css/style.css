@@ -267,3 +267,50 @@ body {
         transition: none;
     }
 }
+.movie-rating-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 0.75rem;
+}
+
+.movie-rating-form legend {
+    color: #e0d8e9;
+    font-size: 0.875rem;
+}
+
+.movie-rating-stars {
+    display: flex;
+}
+
+.movie-rating-stars label {
+    display: grid;
+    width: clamp(2rem, 9vw, 2.75rem);
+    min-height: 2.75rem;
+    place-items: center;
+    border-radius: 0.35rem;
+    color: #a69ab3;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.movie-rating-stars label:has(input:checked),
+.movie-rating-stars label:has(~ label input:checked) {
+    color: #f4c982;
+}
+
+.movie-rating-stars label:has(input:focus-visible),
+.movie-rating-stars label:hover {
+    background: #393044;
+    outline: 2px solid #f4c982;
+    outline-offset: -2px;
+}
+
+.movie-rating-submit {
+    min-height: 2.75rem;
+    padding-inline: 0.8rem;
+    border-radius: 0.5rem;
+    color: #251b20;
+    background: #f4c982;
+    font-weight: 700;
+}

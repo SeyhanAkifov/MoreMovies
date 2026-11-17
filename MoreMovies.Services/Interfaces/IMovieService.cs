@@ -43,7 +43,7 @@ namespace MoreMovies.Services.Interfaces
 
         public Task<ICollection<MovieOutputDto>> GetNewestAddedAllMovie();
 
-        public Task RateMovie(int rating, int movieId);
+        public Task<bool> RateMovie(int rating, int movieId);
 
         public Task<DetailsOutputDto> GetDetails(int id);
 

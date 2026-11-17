@@ -126,6 +126,21 @@ namespace MoreMovies.Web.Tests
             var logoutToken = Regex.Match(moviePage, "name=\"__RequestVerificationToken\"[^>]*value=\"([^\"]+)\"").Groups[1].Value;
             Assert.NotEmpty(logoutToken);
 
+            var ratingForm = new Dictionary<string, string>
+            {
+                ["__RequestVerificationToken"] = logoutToken,
+                ["movieId"] = "1",
+                ["rating"] = "0"
+            };
+            using var invalidRating = await client.PostAsync("/Movie/RateMovie", new FormUrlEncodedContent(ratingForm));
+            Assert.Equal(HttpStatusCode.BadRequest, invalidRating.StatusCode);
+
+            ratingForm["rating"] = "4";
+            using var validRating = await client.PostAsync("/Movie/RateMovie", new FormUrlEncodedContent(ratingForm));
+            Assert.Equal(HttpStatusCode.Redirect, validRating.StatusCode);
+            var updatedMovie = await client.GetStringAsync(movie);
+            Assert.Contains("4 / 5, 1 vote", updatedMovie);
+
             using var logout = await client.PostAsync("/Home/Logout", new FormUrlEncodedContent(
                 new Dictionary<string, string> { ["__RequestVerificationToken"] = logoutToken }));
             Assert.Equal(HttpStatusCode.Redirect, logout.StatusCode);

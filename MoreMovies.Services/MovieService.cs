@@ -34,7 +34,7 @@ namespace MoreMovies.Services
             {
                 Title = model.Title,
                 Budget = model.Budget,
-                ReleaseDate = DateTime.ParseExact(model.ReleaseDate, "dd/MM/yyyy", CultureInfo.InvariantCulture),
+                ReleaseDate = DateTime.ParseExact(model.ReleaseDate, AddMovieInputModel.ReleaseDateFormat, CultureInfo.InvariantCulture),
                 Description = model.Description,
                 HomePage = editedHomePage,
                 Language = new MovieLanguage { Language = language },
@@ -221,13 +221,31 @@ namespace MoreMovies.Services
             return movies;
         }
 
-        public async Task RateMovie(int rating, int movieId)
+        public async Task<bool> RateMovie(int rating, int movieId)
         {
-            var movie = await this.db.Movies.FindAsync(movieId);
+            ArgumentOutOfRangeException.ThrowIfLessThan(rating, 1);
+            ArgumentOutOfRangeException.ThrowIfGreaterThan(rating, 5);
+
+            if (db.Database.IsRelational())
+            {
+                var updated = await db.Movies.Where(movie => movie.Id == movieId)
+                    .ExecuteUpdateAsync(setters => setters
+                        .SetProperty(movie => movie.Rating, movie => movie.Rating + rating)
+                        .SetProperty(movie => movie.RatingCount, movie => movie.RatingCount + 1));
+                return updated > 0;
+            }
+
+            var movie = await db.Movies.FindAsync(movieId);
+            if (movie is null)
+            {
+                return false;
+            }
+
             movie.Rating += rating;
             movie.RatingCount++;
 
-            await this.db.SaveChangesAsync();
+            await db.SaveChangesAsync();
+            return true;
         }
 
         public async Task<DetailsOutputDto> GetDetails(int id)

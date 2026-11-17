@@ -329,6 +329,14 @@ namespace MoreMovie.Web.Tests.Controller
             };
 
 
+            movie.ReleaseDate = "31/02/2021";
+            var invalidDate = Assert.IsType<ViewResult>(await movieController.AddMovie(movie));
+            Assert.Equal("Add", invalidDate.ViewName);
+            Assert.False(movieController.ModelState.IsValid);
+            Assert.DoesNotContain(data.Movies, existing => existing.Title == movie.Title);
+
+            movie.ReleaseDate = "01/01/2021";
+            movieController.ModelState.Clear();
             IActionResult result = await movieController.AddMovie(movie);
 
             RedirectToActionResult viewResult = Assert.IsType<RedirectToActionResult>(result);

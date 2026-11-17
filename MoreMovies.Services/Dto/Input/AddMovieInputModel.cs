@@ -8,6 +8,8 @@ namespace MoreMovies.Services.Dto.Input
 {
     public class AddMovieInputModel
     {
+        public const string ReleaseDateFormat = "dd/MM/yyyy";
+
         public string Creator { get; set; }
 
         [Required]

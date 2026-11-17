@@ -9,7 +9,9 @@ using MoreMovies.Web.Hubs;
 using MoreMovies.Web.Models;
 using MoreMovies.Web.Models.Movie;
 using System.Collections.Generic;
+using System;
 using System.Linq;
+using System.Globalization;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -58,6 +60,11 @@ namespace MoreMovies.Web.Controllers
             if (id != 0)
             {
                 var movie = await movieService.GetMovieWithId(id);
+                if (movie is null)
+                {
+                    return NotFound();
+                }
+
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
                 movie.IsUserLiked = movieService.IsUserLiked(id, userId);
@@ -80,7 +87,15 @@ namespace MoreMovies.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> RateMovie(int rating, int movieId)
         {
-            await movieService.RateMovie(rating, movieId);
+            if (!ModelState.IsValid || rating is < 1 or > 5)
+            {
+                return BadRequest("Choose a rating from 1 to 5 stars.");
+            }
+
+            if (!await movieService.RateMovie(rating, movieId))
+            {
+                return NotFound();
+            }
 
             return RedirectToAction("Details", "Movie", new { Id = movieId });
         }
@@ -123,6 +138,13 @@ namespace MoreMovies.Web.Controllers
                 this.ModelState.AddModelError(nameof(model.Genre), "Genre does not exist");
             }
 
+            if (!string.IsNullOrWhiteSpace(model.ReleaseDate) &&
+                !DateTime.TryParseExact(model.ReleaseDate, AddMovieInputModel.ReleaseDateFormat,
+                    CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
+            {
+                ModelState.AddModelError(nameof(model.ReleaseDate), "Enter a valid release date in DD/MM/YYYY format.");
+            }
+
             if (!ModelState.IsValid)
             {
                 model.Languages = languages;
@@ -145,6 +167,11 @@ namespace MoreMovies.Web.Controllers
         {
 
             var movie = await movieService.GetMovieWithId(id);
+            if (movie is null)
+            {
+                return NotFound();
+            }
+
             var userEmail = User.FindFirstValue(ClaimTypes.Email);
             if (userEmail != movie.Creator)
             {
