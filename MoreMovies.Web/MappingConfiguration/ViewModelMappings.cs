@@ -85,10 +85,12 @@ internal static class ViewModelMappings
             IsUserLiked = source.IsUserLiked,
         };
 
+    /// <summary>Map showtime data and its owner controls to the view model.</summary>
     public static CinemaProjectionViewModel ToViewModel(this CinemaProjectionOutputDto source) =>
         source is null ? null : new CinemaProjectionViewModel
         {
             Id = source.Id,
+            CanManage = source.CanManage,
             ProjectionTime = source.ProjectionTime,
             MovieName = source.MovieName,
             Time = source.Time,

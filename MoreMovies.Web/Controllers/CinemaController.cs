@@ -21,12 +21,14 @@ namespace MoreMovies.Web.Controllers
             this.cinemaService = cinemaService;
         }
 
+        /// <summary>Show the selected cinema and its scheduled screenings.</summary>
         [HttpGet]
         public IActionResult InCinema(string cinemaName)
         {
 
             var cinemaNames = this.cinemaService.GetCinemaNames();
-            var projections = this.cinemaService.GetAll(cinemaName);
+            var selectedCinema = cinemaNames.Contains(cinemaName) ? cinemaName : cinemaNames.FirstOrDefault();
+            var projections = cinemaService.GetAll(selectedCinema, User.FindFirstValue(ClaimTypes.NameIdentifier));
 
 
             var result = (projections ?? System.Array.Empty<CinemaProjectionOutputDto>()).Select(ViewModelMappings.ToViewModel).ToList();
@@ -34,10 +36,9 @@ namespace MoreMovies.Web.Controllers
             var d = new InCinemaViewModel
             {
                 CinemaNames = cinemaNames,
+                SelectedCinema = selectedCinema,
                 Projections = result,
             };
-
-            ViewBag.Name = cinemaName;
 
             return View(d);
         }
@@ -50,18 +51,19 @@ namespace MoreMovies.Web.Controllers
 
 
 
+        /// <summary>Register a cinema for the signed-in user.</summary>
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddCinema(string cinemaName)
+        public async Task<IActionResult> AddCinema(CinemaInputDto model)
         {
-            var user = User.Identity.Name;
+            if (!ModelState.IsValid)
+            {
+                return View("Become", model);
+            }
 
-
-
-            await this.cinemaService.AddCinema(cinemaName, user);
-
-            return RedirectToAction("InCinema");
+            await cinemaService.AddCinema(model.CinemaName.Trim(), User.Identity.Name);
+            return RedirectToAction(nameof(Add));
         }
 
         [Authorize]
@@ -77,6 +79,7 @@ namespace MoreMovies.Web.Controllers
             return View();
         }
 
+        /// <summary>Save a screening for a cinema owned by the signed-in user.</summary>
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -94,13 +97,14 @@ namespace MoreMovies.Web.Controllers
                 return NotFound();
             }
 
-            return RedirectToAction("InCinema");
+            return RedirectToAction(nameof(InCinema), new { cinemaName = model.CinemaName });
         }
 
+        /// <summary>Remove a screening owned by the signed-in user.</summary>
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id, string cinemaName)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (!await cinemaService.Delete(id, userId))
@@ -108,7 +112,7 @@ namespace MoreMovies.Web.Controllers
                 return NotFound();
             }
 
-            return RedirectToAction("InCinema");
+            return RedirectToAction(nameof(InCinema), new { cinemaName });
         }
     }
 }

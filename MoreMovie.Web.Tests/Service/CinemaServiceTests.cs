@@ -11,6 +11,7 @@ namespace MoreMovie.Web.Tests.Service;
 
 public class CinemaServiceTests
 {
+    /// <summary>Verify that screening changes require cinema ownership.</summary>
     [Fact]
     public async Task OnlyCinemaOwnerCanChangeItsProjections()
     {
@@ -33,6 +34,9 @@ public class CinemaServiceTests
         Assert.True(await service.Add(projection, "owner"));
 
         var id = db.CinemaPojections.Single().Id;
+        Assert.Equal(id, Assert.Single(service.GetAll("Test cinema", "owner")).Id);
+        Assert.True(Assert.Single(service.GetAll("Test cinema", "owner")).CanManage);
+        Assert.False(Assert.Single(service.GetAll("Test cinema", "other-user")).CanManage);
         Assert.False(await service.Delete(id, "other-user"));
         Assert.Single(db.CinemaPojections);
         Assert.True(await service.Delete(id, "owner"));

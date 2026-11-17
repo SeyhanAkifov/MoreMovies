@@ -7,18 +7,19 @@
 <div class="max-w-6xl mx-auto p-4 md:p-8 space-y-6">
     <section class="bg-gray-800 p-6 rounded-lg shadow-md">
         <form asp-controller="Cinema" asp-action="InCinema" method="get" class="flex flex-col sm:flex-row gap-3">
-            <select name="cinemaName"
-                    class="flex-1 px-4 py-2 rounded bg-gray-900 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500">
+            <label for="cinema-selection" class="sr-only">Cinema</label>
+            <select id="cinema-selection" name="cinemaName"
+                    class="min-w-0 flex-1 px-4 py-2 rounded bg-gray-900 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500">
                 @foreach (var item in Model.CinemaNames)
                 {
-                    <option value="@item">@item</option>
+                    <option value="@item" selected="@(item == Model.SelectedCinema)">@item</option>
                 }
             </select>
-            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded transition">Go</button>
+            <button type="submit" class="cinema-button px-6 py-2 rounded transition">Go</button>
         </form>
     </section>
 
-    <h1 class="text-2xl font-bold text-red-500">Projections in @ViewBag.Name</h1>
+    <h1 class="text-2xl font-bold text-red-500">@(Model.SelectedCinema is null ? "Cinema showtimes" : $"Showtimes at {Model.SelectedCinema}")</h1>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         @for (int i = 0; i < 7; i++)
@@ -37,6 +38,15 @@
                             <p class="text-white font-medium">@item.MovieName</p>
                             <p class="text-gray-400 text-sm">Hall: @item.CinemaHall</p>
                             <p class="text-gray-400 text-sm">@item.Time</p>
+                            @if (item.CanManage)
+                            {
+                                <form asp-action="Delete" asp-route-id="@item.Id" asp-route-cinemaName="@Model.SelectedCinema"
+                                      method="post" class="mt-2">
+                                    <button type="submit" class="cinema-button cinema-button-danger rounded px-3 py-2">
+                                        Delete showtime
+                                    </button>
+                                </form>
+                            }
                         </div>
                     }
                 }

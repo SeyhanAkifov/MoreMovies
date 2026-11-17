@@ -10,6 +10,7 @@ namespace MoreMovies.Services.Dto.Output
     public class CinemaProjectionOutputDto
     {
         public int Id { get; set; }
+        public bool CanManage { get; set; }
         
         public DateTime ProjectionTime { get; set; }
         

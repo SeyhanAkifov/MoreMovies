@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using MoreMovies.Data;
 using MoreMovies.Models;
 using MoreMovies.Services.Dto.Input;
@@ -87,14 +87,16 @@ namespace MoreMovies.Services
             return true;
         }
 
+        /// <summary>List distinct cinema names in alphabetical order.</summary>
         public List<string> GetCinemaNames()
         {
-            return this.db.Cinemas.Select(x => x.Name).ToList();
+            return db.Cinemas.Select(x => x.Name).Distinct().OrderBy(name => name).ToList();
         }
 
         
 
-        public ICollection<CinemaProjectionOutputDto> GetAll(string cinemaName)
+        /// <summary>List showtimes and indicate which ones the viewer owns.</summary>
+        public ICollection<CinemaProjectionOutputDto> GetAll(string cinemaName, string userId = null)
         {
 
             if (string.IsNullOrEmpty(cinemaName))
@@ -103,8 +105,12 @@ namespace MoreMovies.Services
             }
             return this.db.CinemaPojections
                 .Where(x => x.Cinema.Name == cinemaName)
+                .OrderBy(x => x.ProjectionTime)
+                .ThenBy(x => x.Time)
                 .Select(x => new CinemaProjectionOutputDto
             {
+                Id = x.Id,
+                CanManage = userId != null && x.Cinema.UserId == userId,
                 MovieName = x.MovieName,
                 ProjectionTime = x.ProjectionTime,
                 CinemaHall = x.CinemaHall,

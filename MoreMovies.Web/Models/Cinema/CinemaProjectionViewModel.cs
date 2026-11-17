@@ -6,6 +6,7 @@ namespace MoreMovies.Web.Models.Cinema
     public class CinemaProjectionViewModel
     {
         public int Id { get; set; }
+        public bool CanManage { get; set; }
 
         public DateTime ProjectionTime { get; set; }
 

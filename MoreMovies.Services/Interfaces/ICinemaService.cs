@@ -1,4 +1,4 @@
-﻿using MoreMovies.Models;
+using MoreMovies.Models;
 using MoreMovies.Services.Dto.Input;
 using MoreMovies.Services.Dto.Output;
 using System;
@@ -15,7 +15,8 @@ namespace MoreMovies.Services.Interfaces
 
         public Task<bool> Delete(int id, string userId);
 
-        public ICollection<CinemaProjectionOutputDto> GetAll(string cinemaName);
+        /// <summary>List showtimes and indicate which ones the viewer owns.</summary>
+        public ICollection<CinemaProjectionOutputDto> GetAll(string cinemaName, string userId = null);
 
         public Task AddCinema(string cinemaName, string userName);
 

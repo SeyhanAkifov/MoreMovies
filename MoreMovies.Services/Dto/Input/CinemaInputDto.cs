@@ -10,6 +10,7 @@ namespace MoreMovies.Services.Dto.Input
     public class CinemaInputDto
     {
         [Required]
+        [StringLength(25)]
         public string CinemaName { get; set; }
     }
 }
