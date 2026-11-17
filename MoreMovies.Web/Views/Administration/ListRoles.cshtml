@@ -8,7 +8,7 @@
     <div class="flex justify-between items-center border-b border-red-600 pb-2 mb-6">
         <h1 class="text-2xl font-bold">All Roles</h1>
         <a asp-controller="Administration" asp-action="CreateRole"
-           class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded transition">Add new role</a>
+           class="cinema-button px-4 py-2 rounded transition">Add new role</a>
     </div>
 
     @if (Model.Any())
@@ -32,7 +32,7 @@
         <div class="bg-gray-800 rounded-lg shadow p-6 text-center">
             <p class="text-gray-300 mb-4">No roles created yet.</p>
             <a asp-controller="Administration" asp-action="CreateRole"
-               class="inline-block bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded transition">Create Role</a>
+               class="inline-block cinema-button px-4 py-2 rounded transition">Create Role</a>
         </div>
     }
 </div>

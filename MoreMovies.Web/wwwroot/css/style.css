@@ -643,3 +643,44 @@ main .text-red-500 {
         transform: none;
     }
 }
+.cinema-button {
+    min-height: 2.75rem;
+    color: #0d1626;
+    background: var(--cinema-gradient);
+    font-weight: 650;
+    transition: box-shadow 180ms ease, transform 180ms ease;
+}
+
+.cinema-button-secondary {
+    color: var(--cinema-text);
+    background: var(--cinema-raised);
+    box-shadow: inset 0 0 0 1px var(--cinema-border);
+}
+
+.cinema-button-danger {
+    color: #fff0f1;
+    background: #713545;
+}
+
+.cinema-button:hover {
+    box-shadow: 0 0 1rem rgb(131 231 250 / 26%);
+    transform: translateY(-2px);
+}
+
+.cinema-button-danger:hover {
+    box-shadow: 0 0 1rem rgb(238 118 143 / 30%);
+}
+
+.cinema-button:active {
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cinema-button {
+        transition: none;
+    }
+
+    .cinema-button:hover {
+        transform: none;
+    }
+}

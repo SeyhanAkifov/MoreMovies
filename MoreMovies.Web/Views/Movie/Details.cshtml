@@ -24,11 +24,11 @@
 
                     @if (Model.Creator == User.Identity.Name)
                     {
-                        <a asp-controller="Movie" asp-action="Edit" asp-route-id="@Model.Id" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded">
+                        <a asp-controller="Movie" asp-action="Edit" asp-route-id="@Model.Id" class="cinema-button cinema-button-secondary px-3 py-2 rounded">
                             Edit
                         </a>
                         <form asp-controller="Movie" asp-action="Delete" asp-route-id="@Model.Id" method="post" class="inline">
-                            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded">
+                            <button type="submit" class="cinema-button cinema-button-danger px-3 py-2 rounded">
                                 Delete
                             </button>
                         </form>
@@ -38,7 +38,7 @@
                         @if (!Model.IsUserLiked)
                         {
                             <form asp-controller="Movie" asp-action="Like" asp-route-id="@Model.Id" method="post">
-                                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded">
+                                <button type="submit" class="cinema-button px-3 py-2 rounded">
                                 Like
                             </button>
                             </form>
@@ -46,7 +46,7 @@
                         else
                         {
                             <form asp-controller="Movie" asp-action="DisLike" asp-route-id="@Model.Id" method="post">
-                                <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-2 rounded">
+                                <button type="submit" class="cinema-button cinema-button-secondary px-3 py-2 rounded">
                                 Dislike
                             </button>
                             </form>
