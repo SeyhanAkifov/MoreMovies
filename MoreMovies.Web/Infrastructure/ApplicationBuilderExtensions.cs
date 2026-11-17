@@ -167,7 +167,10 @@ namespace MoreMovies.Web.Infrastructure
             RoleManager<IdentityRole> roleManager = scopedServices.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var db = scopedServices.ServiceProvider.GetService<ApplicationDbContext>();
 
-            if (db.Users.Any())
+            await RemoveDefaultDemoPasswordAsync(userManager, "Admin1@abv.bg");
+            await RemoveDefaultDemoPasswordAsync(userManager, "User1@abv.bg");
+
+            if (await db.Users.AnyAsync())
             {
                 return;
             }
@@ -194,6 +197,22 @@ namespace MoreMovies.Web.Infrastructure
             await userManager.AddToRoleAsync(user, RoleNames.User);
 
             await db.SaveChangesAsync();
+        }
+
+        private static async Task RemoveDefaultDemoPasswordAsync(
+            UserManager<IdentityUser> userManager, string email)
+        {
+            var user = await userManager.FindByEmailAsync(email);
+            if (user is null || !await userManager.CheckPasswordAsync(user, email))
+            {
+                return;
+            }
+
+            var result = await userManager.RemovePasswordAsync(user);
+            if (!result.Succeeded)
+            {
+                throw new InvalidOperationException("Could not remove a default development demo password.");
+            }
         }
 
         public static async Task SeedMovies(ApplicationDbContext db, IMovieService ms, string contentRoot)
