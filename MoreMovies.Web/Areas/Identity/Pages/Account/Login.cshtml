@@ -1,0 +1,35 @@
+@page
+@model MoreMovies.Web.Areas.Identity.Pages.Account.LoginModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Sign in";
+}
+
+<link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
+
+<section class="login-screen" aria-labelledby="login-title">
+    <div class="login-art" aria-hidden="true"></div>
+    <div class="login-content">
+        <h1 id="login-title">Sign in</h1>
+        <form method="post" class="login-form">
+            <input type="hidden" asp-for="ReturnUrl" />
+            <div asp-validation-summary="ModelOnly" class="login-errors" role="alert"></div>
+            <div class="login-field">
+                <label asp-for="Input.Email"></label>
+                <input asp-for="Input.Email" autocomplete="username" required />
+                <span asp-validation-for="Input.Email" class="login-error"></span>
+            </div>
+            <div class="login-field">
+                <label asp-for="Input.Password"></label>
+                <input asp-for="Input.Password" autocomplete="current-password" required />
+                <span asp-validation-for="Input.Password" class="login-error"></span>
+            </div>
+            <div class="login-options">
+                <label><input asp-for="Input.RememberMe" /> Keep me signed in</label>
+                <a asp-page="./ForgotPassword">Forgot password?</a>
+            </div>
+            <button class="login-submit" type="submit">Sign in</button>
+        </form>
+        <p class="login-register">New to MoreMovies? <a asp-area="" asp-controller="Home" asp-action="Register">Create an account</a></p>
+    </div>
+</section>

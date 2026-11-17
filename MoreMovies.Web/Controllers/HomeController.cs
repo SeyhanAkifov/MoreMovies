@@ -105,28 +105,9 @@ namespace MoreMovies.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl)
         {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(Login model)
-        {
-            if (ModelState.IsValid)
-            {
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: true);
-
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Index", "Home");
-                }
-
-                ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
-
-            }
-            return View("Index", "Home");
+            return RedirectToPage("/Account/Login", new { area = "Identity", returnUrl });
         }
 
         [HttpGet]
@@ -174,7 +155,7 @@ namespace MoreMovies.Web.Controllers
         {
             await _signInManager.SignOutAsync();
             
-            return Redirect("Login");
+            return RedirectToPage("/Account/Login", new { area = "Identity" });
         }
     }
 }

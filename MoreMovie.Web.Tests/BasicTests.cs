@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
@@ -6,6 +7,9 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using MoreMovies.Data;
 using System;
 using System.Net;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -63,6 +67,59 @@ namespace MoreMovies.Web.Tests
             using var response = await client.GetAsync("/Movie/Details?id=1");
 
             Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task SignInReturnsToRequestedMovie()
+        {
+            using var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
+            {
+                AllowAutoRedirect = false
+            });
+            using var scope = _factory.Services.CreateScope();
+            var users = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            const string email = "login-test@example.com";
+            const string password = "Test-Only!957";
+            Assert.True((await users.CreateAsync(new IdentityUser
+            {
+                Email = email,
+                UserName = email,
+                EmailConfirmed = true
+            }, password)).Succeeded);
+
+            const string movie = "/Movie/Details?id=1";
+            using var challenge = await client.GetAsync(movie);
+            var loginUrl = challenge.Headers.Location;
+            Assert.Equal("/Identity/Account/Login", loginUrl.AbsolutePath);
+
+            var loginPage = await client.GetStringAsync(loginUrl);
+            Assert.Contains("login-screen", loginPage);
+            var token = Regex.Match(loginPage, "name=\"__RequestVerificationToken\"[^>]*value=\"([^\"]+)\"").Groups[1].Value;
+            Assert.NotEmpty(token);
+
+            var form = new Dictionary<string, string>
+            {
+                ["Input.Email"] = email,
+                ["Input.Password"] = password,
+                ["ReturnUrl"] = movie
+            };
+
+            using var missingToken = await client.PostAsync(loginUrl, new FormUrlEncodedContent(form));
+            Assert.Equal(HttpStatusCode.BadRequest, missingToken.StatusCode);
+
+            form["__RequestVerificationToken"] = token;
+            form["Input.Password"] = "Incorrect-password!8";
+            using var rejected = await client.PostAsync(loginUrl, new FormUrlEncodedContent(form));
+            Assert.Equal(HttpStatusCode.OK, rejected.StatusCode);
+            Assert.Contains("Sign-in failed.", await rejected.Content.ReadAsStringAsync());
+
+            form["Input.Password"] = password;
+            using var signedIn = await client.PostAsync(loginUrl, new FormUrlEncodedContent(form));
+            Assert.Equal(HttpStatusCode.Redirect, signedIn.StatusCode);
+            Assert.Equal(movie, signedIn.Headers.Location.OriginalString);
+
+            using var details = await client.GetAsync(movie);
+            Assert.Equal(HttpStatusCode.OK, details.StatusCode);
         }
 
         [Theory]
