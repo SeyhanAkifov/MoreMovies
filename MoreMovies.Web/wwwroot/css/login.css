@@ -6,9 +6,9 @@
     margin: clamp(1rem, 6vh, 4rem) auto;
     overflow: hidden;
     isolation: isolate;
-    border: 1px solid #3b3549;
+    border: 1px solid var(--cinema-border);
     border-radius: 1.25rem;
-    background: #211e2a;
+    background: var(--cinema-surface);
     box-shadow: 0 1.75rem 5rem rgb(0 0 0 / 35%);
     animation: login-enter 450ms ease-out both;
 }
@@ -16,7 +16,7 @@
 .login-art {
     position: relative;
     overflow: hidden;
-    background: #251d2d;
+    background: var(--cinema-raised);
 }
 
 .login-art::before,
@@ -33,7 +33,7 @@
 }
 
 .login-art::after {
-    background: radial-gradient(ellipse at 15% 85%, rgb(250 158 91 / 45%), transparent 62%);
+    background: radial-gradient(ellipse at 15% 85%, rgb(131 231 250 / 45%), transparent 62%);
     animation: login-glow 8s ease-in-out infinite alternate;
 }
 
@@ -44,8 +44,8 @@
 
 .login-content h1 {
     margin: 0 0 1.5rem;
-    color: #fff7eb;
-    font: 600 clamp(2.25rem, 5vw, 3.5rem) / 1 Georgia, serif;
+    color: var(--cinema-text);
+    font: 600 clamp(2.25rem, 5vw, 3.5rem) / 1 system-ui, sans-serif;
     letter-spacing: -0.04em;
 }
 
@@ -62,7 +62,7 @@
 .login-field label,
 .login-options,
 .login-register {
-    color: #e0d8e9;
+    color: var(--cinema-muted);
     font-size: 0.9rem;
 }
 
@@ -70,16 +70,16 @@
     min-width: 0;
     min-height: 3rem;
     padding: 0.6rem 0.85rem;
-    border: 1px solid #565066;
+    border: 1px solid var(--cinema-border);
     border-radius: 0.55rem;
-    color: #fff7eb;
-    background: #181621;
+    color: var(--cinema-text);
+    background: var(--cinema-bg);
     transition: border-color 180ms ease, box-shadow 180ms ease;
 }
 
 .login-field input:focus {
-    border-color: #f4c982;
-    box-shadow: 0 0 0 4px rgb(244 201 130 / 15%);
+    border-color: var(--cinema-accent);
+    box-shadow: 0 0 0 4px rgb(131 231 250 / 15%);
 }
 
 .login-options {
@@ -90,11 +90,11 @@
 }
 
 .login-options input {
-    accent-color: #f4c982;
+    accent-color: var(--cinema-accent);
 }
 
 .login-content a {
-    color: #ffd69a;
+    color: var(--cinema-accent);
     text-decoration: underline;
     text-underline-offset: 0.2em;
 }
@@ -102,14 +102,14 @@
 .login-submit {
     min-height: 3rem;
     border-radius: 0.55rem;
-    color: #251b20;
-    background: linear-gradient(110deg, #f4c982, #f2a58b);
+    color: #10192a;
+    background: var(--cinema-gradient);
     font-weight: 700;
     transition: box-shadow 180ms ease, transform 180ms ease;
 }
 
 .login-submit:hover {
-    box-shadow: 0 0.45rem 1.3rem rgb(242 165 139 / 28%);
+    box-shadow: 0 0.45rem 1.3rem rgb(170 154 255 / 28%);
     transform: translateY(-2px);
 }
 

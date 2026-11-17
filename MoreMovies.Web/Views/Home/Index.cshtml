@@ -1,13 +1,47 @@
 @model MovieListViewModel
 @{
     ViewData["Title"] = "Discover";
+    var featured = Model.Newest.FirstOrDefault();
 }
 
-<!-- Search Section -->
-<section class="bg-gray-800 p-6 rounded-lg shadow-md max-w-5xl mx-auto mt-6 mb-12">
-    <h2 class="text-xl font-semibold text-red-500 mb-4 text-center">Search Movies</h2>
+<section class="discover-hero" aria-labelledby="discover-title">
+    <div class="discover-beam" aria-hidden="true"></div>
+    <div class="discover-hero-copy">
+        @if (featured is not null)
+        {
+            <p class="discover-feature-label">Featured release</p>
+            <h1 id="discover-title">@featured.Title</h1>
+            <div class="discover-actions">
+                @if (!string.IsNullOrWhiteSpace(featured.HomePage))
+                {
+                    <button class="discover-primary" type="button" data-trailer="@featured.HomePage">
+                        <span aria-hidden="true">&#9654;&#65038;</span> Watch trailer
+                    </button>
+                }
+                <a class="discover-secondary" asp-controller="Movie" asp-action="All">Browse movies</a>
+            </div>
+        }
+        else
+        {
+            <h1 id="discover-title">Discover movies</h1>
+            <div class="discover-actions">
+                <a class="discover-primary" asp-controller="Movie" asp-action="All">Browse movies</a>
+            </div>
+        }
+    </div>
+    @if (featured is not null)
+    {
+        <a class="discover-feature-poster" asp-controller="Movie" asp-action="Details"
+           asp-route-id="@featured.Id" aria-label="Details for @featured.Title">
+            <img src="~/css/images/banner2.jpg" alt="" fetchpriority="high" />
+        </a>
+    }
+</section>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<section class="discover-search">
+    <h2 class="discover-search-title">Search Movies</h2>
+
+    <div class="discover-search-grid">
         <!-- Search by Genre -->
         <form asp-controller="Movie" asp-action="SearchByGenre" method="get" class="flex flex-col gap-2">
             <label for="genre-search" class="text-gray-300 text-sm">Genre</label>
@@ -18,7 +52,7 @@
                         <option value="@genre.Name">@genre.Name</option>
                     }
                 </select>
-                <button type="submit" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-white">Search</button>
+                <button type="submit" class="discover-search-button">Search</button>
             </div>
         </form>
 
@@ -28,7 +62,7 @@
             <div class="flex gap-2">
                 <input type="text" name="year" id="year-search" placeholder="Enter year"
                        class="min-w-0 flex-1 px-3 py-2 rounded bg-gray-900 border border-gray-700 text-white" />
-                <button type="submit" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-white">Search</button>
+                <button type="submit" class="discover-search-button">Search</button>
             </div>
         </form>
 
@@ -38,22 +72,22 @@
             <div class="flex gap-2">
                 <input type="text" name="name" id="name-search" placeholder="Enter title"
                        class="min-w-0 flex-1 px-3 py-2 rounded bg-gray-900 border border-gray-700 text-white" />
-                <button type="submit" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-white">Search</button>
+                <button type="submit" class="discover-search-button">Search</button>
             </div>
         </form>
     </div>
 </section>
 
 <!-- Movie Sections -->
-<div id="main" class="p-4 md:p-8 max-w-7xl mx-auto space-y-12">
+<div id="main" class="discover-shelves">
 
     @* Latest Trailers *@
     <section>
-        <div class="flex justify-between items-center border-b border-red-600 pb-2 mb-4">
+        <div class="discover-shelf-title">
             <h2 class="text-2xl font-bold">Latest trailers</h2>
-            <a asp-controller="Movie" asp-action="All" class="text-red-500 hover:underline">See all</a>
+            <a asp-controller="Movie" asp-action="All" class="discover-see-all">See all</a>
         </div>
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+        <div class="discover-grid">
             @foreach (var movie in Model.Newest)
             {
                 @await Html.PartialAsync("../Shared/_MoviePR", movie)
@@ -63,11 +97,11 @@
 
     @* Top Rated *@
     <section>
-        <div class="flex justify-between items-center border-b border-red-600 pb-2 mb-4">
+        <div class="discover-shelf-title">
             <h2 class="text-2xl font-bold">Most liked</h2>
-            <a asp-controller="Movie" asp-action="AllTopLiked" class="text-red-500 hover:underline">See all</a>
+            <a asp-controller="Movie" asp-action="AllTopLiked" class="discover-see-all">See all</a>
         </div>
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+        <div class="discover-grid">
             @foreach (var movie in Model.TopLiked)
             {
                 @await Html.PartialAsync("../Shared/_MoviePR", movie)
@@ -77,11 +111,11 @@
 
     @* Most Commented *@
     <section>
-        <div class="flex justify-between items-center border-b border-red-600 pb-2 mb-4">
+        <div class="discover-shelf-title">
             <h2 class="text-2xl font-bold">Most commented</h2>
-            <a asp-controller="Movie" asp-action="AllTopCommented" class="text-red-500 hover:underline">See all</a>
+            <a asp-controller="Movie" asp-action="AllTopCommented" class="discover-see-all">See all</a>
         </div>
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+        <div class="discover-grid">
             @foreach (var movie in Model.TopCommented)
             {
                 @await Html.PartialAsync("../Shared/_MoviePR", movie)

@@ -181,6 +181,9 @@ namespace MoreMovies.Web.Tests
             var html  = await response.Content.ReadAsStringAsync();
 
             Assert.Contains("Latest trailers", html, StringComparison.OrdinalIgnoreCase);
+            Assert.Contains("discover-hero", html);
+            Assert.Contains("Watch trailer", html);
+            Assert.Contains("data-trailer=", html);
         }
     }
 }

@@ -1,20 +1,56 @@
-﻿
+
 body {
     color-scheme: dark;
-    background-color: #14131c;
+    background-color: var(--cinema-bg);
+}
+
+body::before {
+    position: fixed;
+    z-index: 0;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at 13% 25%, rgb(67 126 193 / 20%), transparent 48%),
+        radial-gradient(ellipse at 88% 62%, rgb(105 76 187 / 22%), transparent 50%);
+    content: "";
+    pointer-events: none;
+    animation: cinema-ambient-light 16s ease-in-out infinite alternate;
+}
+
+@keyframes cinema-ambient-light {
+    from { opacity: 0.55; }
+    to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body::before {
+        animation: none;
+    }
+}
+
+main .bg-gray-800 {
+    background-color: var(--cinema-surface);
+}
+
+main .bg-gray-900 {
+    background-color: var(--cinema-bg);
+}
+
+main .text-red-500 {
+    color: var(--cinema-accent);
 }
 
 :focus-visible {
-    outline: 2px solid #f4c982;
+    outline: 2px solid var(--cinema-accent);
     outline-offset: 4px;
 }
 
 .catalog-card {
     min-width: 0;
     overflow: hidden;
-    border: 1px solid #383544;
+    border: 1px solid var(--cinema-border);
     border-radius: 0.75rem;
-    background: #211f2b;
+    background: var(--cinema-surface);
+    transition: border-color 240ms ease, box-shadow 240ms ease, transform 240ms ease;
 }
 
 .catalog-poster {
@@ -22,13 +58,42 @@ body {
     display: block;
     width: 100%;
     aspect-ratio: 2 / 3;
-    background: #302c3b;
+    background: var(--cinema-raised);
+    overflow: hidden;
 }
 
 .catalog-poster img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 350ms ease;
+}
+
+.catalog-poster:focus-visible {
+    outline-offset: -4px;
+}
+
+.catalog-card:hover,
+.catalog-card:focus-within {
+    border-color: var(--cinema-accent);
+    box-shadow: 0 0.85rem 2rem rgb(34 53 108 / 50%);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .catalog-card:hover {
+        transform: translateY(-4px);
+    }
+
+    .catalog-poster:hover img {
+        transform: scale(1.07);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .catalog-card,
+    .catalog-poster img {
+        transition: none;
+    }
 }
 
 .catalog-poster span {
@@ -37,7 +102,7 @@ body {
     bottom: 0.5rem;
     padding: 0.25rem 0.5rem;
     border-radius: 0.25rem;
-    background: #14131c;
+    background: var(--cinema-bg);
     font-size: 0.75rem;
 }
 
@@ -45,12 +110,12 @@ body {
     display: grid;
     gap: 0.35rem;
     padding: 0.85rem;
-    color: #c7c1d2;
+    color: var(--cinema-muted);
     font-size: 0.8rem;
 }
 
 .catalog-card h3 {
-    color: #fff9f0;
+    color: var(--cinema-text);
     font-size: 1rem;
     font-weight: 700;
 }
@@ -60,7 +125,7 @@ body {
 }
 
 .catalog-rating {
-    color: #f4c982;
+    color: var(--cinema-accent);
 }
 
 #trailerModal {
@@ -70,8 +135,8 @@ body {
     margin: auto;
     padding: 0.5rem;
     border-radius: 0.75rem;
-    background: #211f2b;
-    color: #fff9f0;
+    background: var(--cinema-surface);
+    color: var(--cinema-text);
 }
 
 #trailerModal::backdrop {
@@ -96,8 +161,8 @@ body {
     position: sticky;
     top: 0;
     z-index: 30;
-    border-bottom: 1px solid #393342;
-    background: rgb(24 22 33 / 94%);
+    border-bottom: 1px solid var(--cinema-border);
+    background: rgb(9 13 23 / 92%);
     backdrop-filter: blur(14px);
 }
 
@@ -122,8 +187,8 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 0.55rem;
-    color: #fff6e4;
-    font: 700 1.45rem Georgia, serif;
+    color: var(--cinema-text);
+    font: 750 1.35rem system-ui, sans-serif;
     white-space: nowrap;
 }
 
@@ -140,7 +205,7 @@ body {
     min-height: 2.75rem;
     padding: 0.45rem 0.75rem;
     border-radius: 0.55rem;
-    color: #e8deed;
+    color: var(--cinema-text);
     font-size: 0.9rem;
     text-align: left;
     transition: background-color 180ms ease, color 180ms ease;
@@ -151,19 +216,19 @@ body {
 .site-nav-toggle,
 .site-account summary:hover,
 .site-account-panel button:hover {
-    color: #ffd69a;
-    background: #30283a;
+    color: var(--cinema-accent);
+    background: var(--cinema-raised);
 }
 
 .site-navigation .site-sign-in {
-    color: #251b20;
-    background: #f4c982;
+    color: #10192a;
+    background: var(--cinema-accent);
     font-weight: 700;
 }
 
 .site-navigation .site-sign-in:hover {
-    color: #251b20;
-    background: #ffdda4;
+    color: #10192a;
+    background: var(--cinema-secondary);
 }
 
 .site-nav-toggle,
@@ -196,8 +261,8 @@ body {
     aspect-ratio: 1;
     place-items: center;
     border-radius: 50%;
-    background: #514056;
-    color: #ffe3c3;
+    background: var(--cinema-raised);
+    color: var(--cinema-accent);
 }
 
 .site-account-panel {
@@ -206,15 +271,15 @@ body {
     right: 0;
     width: 15rem;
     padding: 0.4rem;
-    border: 1px solid #51465b;
+    border: 1px solid var(--cinema-border);
     border-radius: 0.75rem;
-    background: #242031;
+    background: var(--cinema-surface);
     box-shadow: 0 1rem 2rem rgb(0 0 0 / 35%);
 }
 
 .site-account-panel p {
     padding: 0.65rem 0.75rem;
-    color: #cfc2d6;
+    color: var(--cinema-muted);
     font-size: 0.8rem;
     overflow-wrap: anywhere;
 }
@@ -296,13 +361,13 @@ body {
 
 .movie-rating-stars label:has(input:checked),
 .movie-rating-stars label:has(~ label input:checked) {
-    color: #f4c982;
+    color: var(--cinema-accent);
 }
 
 .movie-rating-stars label:has(input:focus-visible),
 .movie-rating-stars label:hover {
     background: #393044;
-    outline: 2px solid #f4c982;
+    outline: 2px solid var(--cinema-accent);
     outline-offset: -2px;
 }
 
@@ -310,7 +375,253 @@ body {
     min-height: 2.75rem;
     padding-inline: 0.8rem;
     border-radius: 0.5rem;
-    color: #251b20;
-    background: #f4c982;
+    color: #10192a;
+    background: var(--cinema-accent);
     font-weight: 700;
+}
+:root {
+    --cinema-bg: #090d17;
+    --cinema-surface: #11192a;
+    --cinema-raised: #1b2540;
+    --cinema-border: #303e5d;
+    --cinema-text: #f1f5ff;
+    --cinema-muted: #b4c2dc;
+    --cinema-accent: #83e7fa;
+    --cinema-secondary: #aa9aff;
+    --cinema-gradient: linear-gradient(115deg, #83e7fa, #aa9aff);
+}
+
+.discover-hero {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(12rem, 0.62fr);
+    align-items: center;
+    gap: clamp(1.5rem, 6vw, 5rem);
+    min-height: 26rem;
+    padding: clamp(1.4rem, 5vw, 4.5rem);
+    overflow: hidden;
+    border: 1px solid var(--cinema-border);
+    border-radius: 1.5rem;
+    background: radial-gradient(ellipse at 76% 80%, #272259, transparent 70%), var(--cinema-surface);
+}
+
+.discover-hero::after {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent 0 5px, rgb(255 255 255 / 4%) 5px 6px);
+    content: "";
+    pointer-events: none;
+}
+
+.discover-beam {
+    position: absolute;
+    z-index: -1;
+    inset: -50% -15%;
+    background: conic-gradient(from 210deg at 77% 48%, transparent 0deg 19deg,
+        rgb(131 231 250 / 22%) 35deg, rgb(170 154 255 / 10%) 78deg, transparent 100deg);
+    animation: projector-sweep 12s ease-in-out infinite alternate;
+    pointer-events: none;
+}
+
+.discover-hero-copy {
+    animation: discover-enter 550ms ease-out both;
+}
+
+.discover-feature-label {
+    margin-bottom: 0.8rem;
+    color: var(--cinema-accent);
+    font-size: 0.9rem;
+    font-weight: 650;
+}
+
+.discover-hero h1 {
+    max-width: 13ch;
+    color: var(--cinema-text);
+    font: 750 clamp(2.5rem, 6.4vw, 6.1rem) / 0.98 system-ui, sans-serif;
+    letter-spacing: -0.07em;
+    overflow-wrap: anywhere;
+}
+
+.discover-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-top: 1.5rem;
+}
+
+.discover-primary,
+.discover-secondary,
+.discover-search-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 0.55rem 0.95rem;
+    border: 1px solid transparent;
+    border-radius: 0.65rem;
+    font-weight: 700;
+    transition: background-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.discover-primary {
+    color: #0d1626;
+    background: var(--cinema-gradient);
+}
+
+.discover-secondary,
+.discover-search-button {
+    border-color: var(--cinema-border);
+    color: var(--cinema-text);
+    background: var(--cinema-raised);
+}
+
+.discover-primary:hover,
+.discover-secondary:hover,
+.discover-search-button:hover {
+    box-shadow: 0 0 1.4rem rgb(131 231 250 / 24%);
+    transform: translateY(-2px);
+}
+
+.discover-feature-poster {
+    display: block;
+    width: min(100%, 22rem);
+    aspect-ratio: 6 / 5;
+    justify-self: center;
+    overflow: hidden;
+    border: 1px solid rgb(131 231 250 / 50%);
+    border-radius: 1rem;
+    background: var(--cinema-raised);
+    box-shadow: 0 1.2rem 3.5rem #050812, 0 0 3rem rgb(131 231 250 / 14%);
+    transform: rotate(4deg);
+    transition: transform 260ms ease;
+}
+
+.discover-feature-poster:hover,
+.discover-feature-poster:focus-visible {
+    transform: rotate(0) scale(1.04);
+}
+
+.discover-feature-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.discover-search,
+.discover-shelves {
+    margin-block: clamp(1.25rem, 4vw, 3rem);
+}
+
+.discover-search {
+    padding: clamp(1rem, 3vw, 2rem);
+    border: 1px solid var(--cinema-border);
+    border-radius: 1rem;
+    background: var(--cinema-surface);
+}
+
+.discover-search-title,
+.discover-shelf-title h2 {
+    font-size: clamp(1.3rem, 2.4vw, 1.8rem);
+    font-weight: 720;
+    letter-spacing: -0.035em;
+}
+
+.discover-search-grid,
+.discover-grid,
+.discover-shelves {
+    display: grid;
+    gap: clamp(0.85rem, 2vw, 1.5rem);
+}
+
+.discover-search-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 0.8rem;
+}
+
+.discover-shelves {
+    gap: clamp(1.75rem, 5vw, 4rem);
+}
+
+.discover-shelf-title {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.55rem;
+    border-bottom: 1px solid var(--cinema-border);
+}
+
+.discover-see-all {
+    color: var(--cinema-accent);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+}
+
+.discover-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.site-footer {
+    padding: 1.4rem 1rem;
+    border-top: 1px solid var(--cinema-border);
+    color: var(--cinema-muted);
+    background: var(--cinema-surface);
+    text-align: center;
+}
+
+@keyframes projector-sweep {
+    from { transform: rotate(-8deg) translateX(-3%); }
+    to { transform: rotate(9deg) translateX(4%); }
+}
+
+@keyframes discover-enter {
+    from { opacity: 0; transform: translateY(0.9rem); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 59rem) {
+    .discover-search-grid { grid-template-columns: minmax(0, 1fr); }
+    .discover-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 38rem) {
+    .discover-hero {
+        grid-template-columns: minmax(0, 1fr);
+        min-height: 0;
+    }
+
+    .discover-feature-poster {
+        width: min(100%, 16rem);
+        justify-self: start;
+        transform: none;
+    }
+
+    .discover-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .discover-beam,
+    .discover-hero-copy {
+        animation: none;
+    }
+
+    .discover-primary,
+    .discover-secondary,
+    .discover-search-button,
+    .discover-feature-poster {
+        transition: none;
+    }
+
+    .discover-primary:hover,
+    .discover-secondary:hover,
+    .discover-search-button:hover,
+    .discover-feature-poster:hover,
+    .discover-feature-poster:focus-visible {
+        transform: none;
+    }
 }
