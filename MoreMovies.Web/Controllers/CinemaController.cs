@@ -7,6 +7,7 @@ using MoreMovies.Services.Dto.Output;
 using MoreMovies.Services.Interfaces;
 using MoreMovies.Web.Models.Cinema;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace MoreMovies.Web.Controllers
@@ -81,7 +82,17 @@ namespace MoreMovies.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(CinemaProjectionInputDto model)
         {
-            await this.cinemaService.Add(model);
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Names = cinemaService.GetCinema(User.Identity.Name);
+                return View(model);
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!await cinemaService.Add(model, userId))
+            {
+                return NotFound();
+            }
 
             return RedirectToAction("InCinema");
         }
@@ -91,7 +102,11 @@ namespace MoreMovies.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            await this.cinemaService.Delete(id);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!await cinemaService.Delete(id, userId))
+            {
+                return NotFound();
+            }
 
             return RedirectToAction("InCinema");
         }

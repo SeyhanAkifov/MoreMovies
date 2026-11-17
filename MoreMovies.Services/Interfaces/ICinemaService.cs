@@ -11,9 +11,9 @@ namespace MoreMovies.Services.Interfaces
 {
     public interface ICinemaService
     {
-        public Task Add(CinemaProjectionInputDto model);
+        public Task<bool> Add(CinemaProjectionInputDto model, string userId);
 
-        public Task Delete(int id);
+        public Task<bool> Delete(int id, string userId);
 
         public ICollection<CinemaProjectionOutputDto> GetAll(string cinemaName);
 

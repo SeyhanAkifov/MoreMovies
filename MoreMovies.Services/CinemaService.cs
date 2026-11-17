@@ -47,9 +47,15 @@ namespace MoreMovies.Services
             await db.SaveChangesAsync();
         }
 
-        public async Task Add(CinemaProjectionInputDto model)
+        public async Task<bool> Add(CinemaProjectionInputDto model, string userId)
         {
-            var cinema = await db.Cinemas.FirstAsync(x => x.Name == model.CinemaName);
+            var cinema = await db.Cinemas.FirstOrDefaultAsync(x =>
+                x.Name == model.CinemaName && x.UserId == userId);
+            if (cinema == null)
+            {
+                return false;
+            }
+
             var hall = await db.CinemaHalls.FirstOrDefaultAsync(x => x.Name == model.CinemaHallName)
                 ?? new CinemaHall { Name = model.CinemaHallName };
 
@@ -63,15 +69,22 @@ namespace MoreMovies.Services
             });
 
             await this.db.SaveChangesAsync();
+            return true;
         }
 
-        public async Task Delete(int id)
+        public async Task<bool> Delete(int id, string userId)
         {
-            var cinemaProjection = await this.db.CinemaPojections.FindAsync(id);
+            var cinemaProjection = await db.CinemaPojections.FirstOrDefaultAsync(x =>
+                x.Id == id && x.Cinema.UserId == userId);
+            if (cinemaProjection == null)
+            {
+                return false;
+            }
 
             this.db.CinemaPojections.Remove(cinemaProjection);
 
             await this.db.SaveChangesAsync();
+            return true;
         }
 
         public List<string> GetCinemaNames()
