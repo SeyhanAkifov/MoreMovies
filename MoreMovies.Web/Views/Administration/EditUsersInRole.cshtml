@@ -8,23 +8,31 @@
 <div class="max-w-xl mx-auto bg-gray-800 rounded-lg shadow-lg p-6 md:p-8">
     <h1 class="text-2xl font-bold text-red-500 mb-6">Add or Remove Users from this Role</h1>
 
-    <form method="post" class="space-y-5">
+    <form asp-action="EditUsersInRole" asp-route-roleId="@roleId" method="post" class="space-y-5">
         <div class="space-y-2">
             @for (int i = 0; i < Model.Count; i++)
             {
                 <div class="flex items-center gap-3 bg-gray-900 rounded px-4 py-2">
                     <input type="hidden" asp-for="@Model[i].UserId" />
-                    <input type="hidden" asp-for="@Model[i].UserName" />
-                    <input asp-for="@Model[i].IsSelected" class="h-4 w-4 text-red-600 rounded border-gray-600 focus:ring-red-500" />
-                    <label class="text-gray-200" asp-for="@Model[i].IsSelected">
+                    @if (Model[i].UserId == (string)ViewBag.ProtectedUserId)
+                    {
+                        <input type="hidden" name="[@i].IsSelected" value="true" />
+                        <input type="checkbox" id="own-admin-role" checked disabled />
+                        <label class="min-w-0 break-all text-gray-200" for="own-admin-role">@Model[i].UserName</label>
+                    }
+                    else
+                    {
+                    <input asp-for="@Model[i].IsSelected" class="h-4 w-4 shrink-0 rounded border-gray-600" />
+                    <label class="min-w-0 break-all text-gray-200" asp-for="@Model[i].IsSelected">
                         @Model[i].UserName
                     </label>
+                    }
                 </div>
             }
         </div>
 
         <div class="flex gap-3">
-            <input type="submit" value="Update" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded transition cursor-pointer" />
+            <input type="submit" value="Update" class="cinema-button px-4 py-2 rounded transition cursor-pointer" />
             <a asp-action="EditRoles" asp-route-id="@roleId" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded transition">Cancel</a>
         </div>
     </form>

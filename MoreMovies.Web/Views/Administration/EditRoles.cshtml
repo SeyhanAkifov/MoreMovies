@@ -6,26 +6,29 @@
 
 <div class="max-w-2xl mx-auto space-y-6">
     <div class="bg-gray-800 rounded-lg shadow-lg p-6 md:p-8">
-        <h1 class="text-2xl font-bold text-red-500 mb-6">Edit Role</h1>
+        <h1 class="text-2xl font-bold text-red-500 mb-6">@(Model.NameLocked ? "Manage role" : "Edit role")</h1>
 
         <form method="post" class="space-y-5">
-            <div>
-                <label asp-for="RoleId" class="block text-sm text-gray-300 mb-1"></label>
-                <input asp-for="RoleId" readonly
-                       class="w-full px-4 py-2 rounded bg-gray-900 border border-gray-700 text-gray-400" />
-            </div>
+            <input asp-for="RoleId" type="hidden" />
 
             <div>
-                <label asp-for="RoleName" class="block text-sm text-gray-300 mb-1"></label>
-                <input asp-for="RoleName"
+                <label asp-for="RoleName" class="block text-sm text-gray-300 mb-1">Role name</label>
+                <input asp-for="RoleName" readonly="@Model.NameLocked"
                        class="w-full px-4 py-2 rounded bg-gray-900 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500" />
                 <span asp-validation-for="RoleName" class="text-red-400 text-sm"></span>
+                @if (Model.NameLocked)
+                {
+                    <p class="mt-2 text-sm text-gray-300">This built-in role has a fixed name.</p>
+                }
             </div>
 
             <div asp-validation-summary="All" class="text-red-400 text-sm"></div>
 
-            <div class="flex gap-3">
-                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded transition">Update</button>
+            <div class="flex flex-wrap gap-3">
+                @if (!Model.NameLocked)
+                {
+                    <button type="submit" class="cinema-button px-4 py-2 rounded transition">Update</button>
+                }
                 <a asp-action="ListRoles" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded transition">Cancel</a>
             </div>
         </form>
@@ -39,7 +42,7 @@
             <ul class="space-y-1 text-gray-300">
                 @foreach (var user in Model.Users)
                 {
-                    <li>@user</li>
+                    <li class="break-all">@user</li>
                 }
             </ul>
         }
@@ -49,7 +52,7 @@
         }
 
         <a asp-controller="Administration" asp-action="EditUsersInRole" asp-route-roleId="@Model.RoleId"
-           class="inline-block mt-4 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded transition">
+           class="inline-block mt-4 cinema-button px-4 py-2 rounded transition">
             Add or Remove Users
         </a>
     </div>

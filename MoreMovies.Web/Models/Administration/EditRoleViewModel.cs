@@ -14,6 +14,8 @@ namespace MoreMovies.Web.Models.Administration
         [Required(ErrorMessage = "Role Name is required")]
         public string RoleName { get; set; }
 
+        public bool NameLocked { get; set; }
+
         public List<string> Users { get; set; }
     }
 }

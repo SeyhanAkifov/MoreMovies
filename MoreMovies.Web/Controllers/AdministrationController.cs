@@ -9,6 +9,7 @@ using MoreMovies.Services.Interfaces;
 using MoreMovies.Web.Models;
 using MoreMovies.Web.Models.News;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -78,146 +79,127 @@ namespace MoreMovies.Web.Controllers
         }
 
 
+        /// <summary>Apply changes to role membership.</summary>
         [HttpPost]
         public async Task<IActionResult> EditUsersInRole(List<UserRoleViewModel> model, string roleId)
         {
-            var role = await roleManager.FindByIdAsync(roleId);
-
-            if (role == null)
+            var role = await roleManager.FindByIdAsync(roleId ?? "");
+            if (role is null)
             {
-                ViewBag.ErrorMessage = $"Role with Id: {roleId} cannot be found";
-                return View("NoteFound");
+                return NotFound();
             }
 
-            for (int i = 0; i < model.Count; i++)
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (role.Name == RoleNames.Admin && model.Any(entry => entry.UserId == currentUserId && !entry.IsSelected))
             {
-                var user = await userManager.FindByIdAsync(model[i].UserId);
+                return BadRequest("You cannot remove your own administrator access.");
+            }
 
-                IdentityResult result;
-
-                if (model[i].IsSelected && !(await userManager.IsInRoleAsync(user, role.Name)))
-                {
-                    result = await userManager.AddToRoleAsync(user, role.Name);
-                }
-                else if (!model[i].IsSelected && await userManager.IsInRoleAsync(user, role.Name))
-                {
-                    result = await userManager.RemoveFromRoleAsync(user, role.Name);
-                }
-                else
+            foreach (var entry in model)
+            {
+                var user = await userManager.FindByIdAsync(entry.UserId ?? "");
+                if (user is null || entry.IsSelected == await userManager.IsInRoleAsync(user, role.Name))
                 {
                     continue;
                 }
 
-                if (result.Succeeded)
+                var result = entry.IsSelected
+                    ? await userManager.AddToRoleAsync(user, role.Name)
+                    : await userManager.RemoveFromRoleAsync(user, role.Name);
+                if (!result.Succeeded)
                 {
-                    if (i < (model.Count - 1))
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        return RedirectToAction("EditRoles", new { Id = roleId });
-                    }
+                    return BadRequest("A role assignment could not be updated.");
                 }
             }
 
-            return RedirectToAction("EditRoles", new { Id = roleId });
+            return RedirectToAction(nameof(EditRoles), new { id = roleId });
         }
 
-
+        /// <summary>Show users and their current role membership.</summary>
+        [HttpGet]
         public async Task<IActionResult> EditUsersInRole(string roleId)
         {
-            ViewBag.roleId = roleId;
-
-            var role = await roleManager.FindByIdAsync(roleId);
-
-            if (role == null)
+            var role = await roleManager.FindByIdAsync(roleId ?? "");
+            if (role is null)
             {
-                ViewBag.ErrorMessage = $"Role with Id: {roleId} cannot be found";
-                return View("NoteFound");
+                return NotFound();
             }
 
-            var model = new List<UserRoleViewModel>();
-
-            foreach (var user in userManager.Users)
-            {
-                var userRoleViewModel = new UserRoleViewModel
+            ViewBag.RoleId = role.Id;
+            ViewBag.ProtectedUserId = role.Name == RoleNames.Admin
+                ? User.FindFirstValue(ClaimTypes.NameIdentifier)
+                : null;
+            var members = (await userManager.GetUsersInRoleAsync(role.Name)).Select(user => user.Id).ToHashSet();
+            var model = userManager.Users.OrderBy(user => user.UserName).AsEnumerable()
+                .Select(user => new UserRoleViewModel
                 {
                     UserId = user.Id,
-                    UserName = user.UserName
-                };
-
-                if (await userManager.IsInRoleAsync(user, role.Name))
-                {
-                    userRoleViewModel.IsSelected = true;
-                }
-                else
-                {
-                    userRoleViewModel.IsSelected = false;
-                }
-
-                model.Add(userRoleViewModel);
-            }
+                    UserName = user.UserName,
+                    IsSelected = members.Contains(user.Id)
+                }).ToList();
 
             return View(model);
         }
 
+        /// <summary>Show the selected role and its members.</summary>
         [HttpGet]
         public async Task<IActionResult> EditRoles(string id)
         {
-            var role = await roleManager.FindByIdAsync(id);
-
-            if (role == null)
-            {
-                ViewBag.ErrorMessage = $"Role with Id: {id} cannot be found";
-                return View("Error");
-            }
-
-            var model = new EditRoleViewModel
-            {
-                RoleId = role.Id,
-                RoleName = role.Name
-            };
-
-            foreach (var user in userManager.Users)
-            {
-                if (await userManager.IsInRoleAsync(user, role.Name))
-                {
-                    model.Users.Add(user.UserName);
-                }
-            }
-
-            return View(model);
+            var role = await roleManager.FindByIdAsync(id ?? "");
+            return role is null ? NotFound() : View(await BuildRoleViewAsync(role));
         }
 
+        /// <summary>Rename a custom role after validating its new name.</summary>
         [HttpPost]
         public async Task<IActionResult> EditRoles(EditRoleViewModel model)
         {
-            var role = await roleManager.FindByIdAsync(model.RoleId);
-
-            if (role == null)
+            var role = await roleManager.FindByIdAsync(model.RoleId ?? "");
+            if (role is null)
             {
-                ViewBag.ErrorMessage = $"Role with Id: {model.RoleId} cannot be found";
-                return View("Error");
+                return NotFound();
             }
-            else
+
+            if (RoleNames.IsBuiltIn(role.Name))
+            {
+                return BadRequest("Built-in roles cannot be renamed.");
+            }
+
+            if (ModelState.IsValid)
             {
                 role.Name = model.RoleName;
                 var result = await roleManager.UpdateAsync(role);
-
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("ListRoles");
+                    return RedirectToAction(nameof(ListRoles));
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(nameof(model.RoleName), error.Description);
                 }
             }
 
-            return View(model);
+            return View(await BuildRoleViewAsync(role));
         }
 
+        /// <summary>Build the role editor with its current members.</summary>
+        private async Task<EditRoleViewModel> BuildRoleViewAsync(IdentityRole role)
+        {
+            var users = await userManager.GetUsersInRoleAsync(role.Name);
+            return new EditRoleViewModel
+            {
+                RoleId = role.Id,
+                RoleName = role.Name,
+                NameLocked = RoleNames.IsBuiltIn(role.Name),
+                Users = users.Select(user => user.UserName).OrderBy(name => name).ToList()
+            };
+        }
+
+        /// <summary>Show roles in alphabetical order.</summary>
         [HttpGet]
         public IActionResult ListRoles()
         {
-            var roles = roleManager.Roles;
+            var roles = roleManager.Roles.OrderBy(role => role.Name).ToList();
             return View(roles);
         }
 
@@ -251,10 +233,16 @@ namespace MoreMovies.Web.Controllers
             return this.View(model);
         }
 
+        /// <summary>Delete another user from administration.</summary>
         [HttpPost]
         public async Task<IActionResult> DeleteUser(string id)
         {
-            var user = await userManager.FindByIdAsync(id);
+            if (id == User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                return BadRequest("You cannot delete your own account from administration.");
+            }
+
+            var user = await userManager.FindByIdAsync(id ?? "");
 
             if (user == null)
             {

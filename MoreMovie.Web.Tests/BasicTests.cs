@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using MoreMovies.Data;
+using MoreMovies.Models;
 using System;
 using System.Net;
 using System.Collections.Generic;
@@ -70,6 +71,7 @@ namespace MoreMovies.Web.Tests
             Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
         }
 
+        /// <summary>Verify sign-in, rating, permissions, and logout through HTTP.</summary>
         [Fact]
         public async Task SignInReturnsToRequestedMovie()
         {
@@ -153,6 +155,10 @@ namespace MoreMovies.Web.Tests
             Assert.Equal(4, summary.RootElement.GetProperty("average").GetInt32());
             Assert.Equal(2, summary.RootElement.GetProperty("count").GetInt32());
 
+            using var admin = await client.GetAsync("/Administration/Index");
+            Assert.Equal(HttpStatusCode.Redirect, admin.StatusCode);
+            Assert.Equal("/Identity/Account/AccessDenied", admin.Headers.Location.AbsolutePath);
+
             using var logout = await client.PostAsync("/Home/Logout", new FormUrlEncodedContent(
                 new Dictionary<string, string> { ["__RequestVerificationToken"] = logoutToken }));
             Assert.Equal(HttpStatusCode.Redirect, logout.StatusCode);
@@ -178,6 +184,69 @@ namespace MoreMovies.Web.Tests
             using var response = await client.GetAsync(url);
 
             Assert.Equal(HttpStatusCode.MethodNotAllowed, response.StatusCode);
+        }
+
+        /// <summary>Verify the built-in administrator role cannot be renamed or removed from the active admin.</summary>
+        [Fact]
+        public async Task AdministratorCanViewButCannotBreakItsRole()
+        {
+            using var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
+            {
+                AllowAutoRedirect = false
+            });
+            using var scope = _factory.Services.CreateScope();
+            var users = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            var roles = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            const string email = "admin-integration@example.invalid";
+            const string password = "Test-Only!853";
+            var user = new IdentityUser { Email = email, UserName = email, EmailConfirmed = true };
+            Assert.True((await users.CreateAsync(user, password)).Succeeded);
+            Assert.True((await users.AddToRoleAsync(user, RoleNames.Admin)).Succeeded);
+            var role = await roles.FindByNameAsync(RoleNames.Admin);
+            Assert.NotNull(role);
+
+            const string loginUrl = "/Identity/Account/Login";
+            const string tokenPattern = "name=\"__RequestVerificationToken\"[^>]*value=\"([^\"]+)\"";
+            var loginToken = Regex.Match(await client.GetStringAsync(loginUrl), tokenPattern).Groups[1].Value;
+            using var login = await client.PostAsync(loginUrl, new FormUrlEncodedContent(new Dictionary<string, string>
+            {
+                ["Input.Email"] = email,
+                ["Input.Password"] = password,
+                ["__RequestVerificationToken"] = loginToken
+            }));
+            Assert.Equal(HttpStatusCode.Redirect, login.StatusCode);
+
+            var roleEditor = await client.GetStringAsync($"/Administration/EditRoles?id={role.Id}");
+            Assert.Contains("Users in this role", roleEditor);
+            Assert.DoesNotContain(">RoleId<", roleEditor);
+            Assert.Contains("readonly=", roleEditor);
+            var roleList = await client.GetStringAsync("/Administration/ListRoles");
+            Assert.DoesNotContain("Role Id:", roleList);
+            Assert.Contains("Built-in role", roleList);
+            var userList = await client.GetStringAsync("/Administration/All");
+            Assert.Contains("Your account", userList);
+            Assert.DoesNotContain("User Id:", userList);
+            var token = Regex.Match(roleEditor, tokenPattern).Groups[1].Value;
+            Assert.NotEmpty(token);
+
+            using var rename = await client.PostAsync("/Administration/EditRoles",
+                new FormUrlEncodedContent(new Dictionary<string, string>
+                {
+                    ["RoleId"] = role.Id,
+                    ["RoleName"] = "Renamed",
+                    ["__RequestVerificationToken"] = token
+                }));
+            Assert.Equal(HttpStatusCode.BadRequest, rename.StatusCode);
+
+            using var remove = await client.PostAsync($"/Administration/EditUsersInRole?roleId={role.Id}",
+                new FormUrlEncodedContent(new Dictionary<string, string>
+                {
+                    ["[0].UserId"] = user.Id,
+                    ["[0].IsSelected"] = "false",
+                    ["__RequestVerificationToken"] = token
+                }));
+            Assert.Equal(HttpStatusCode.BadRequest, remove.StatusCode);
+            Assert.True(await users.IsInRoleAsync(user, RoleNames.Admin));
         }
 
         [Fact]

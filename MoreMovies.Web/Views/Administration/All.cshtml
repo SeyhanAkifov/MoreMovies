@@ -1,7 +1,9 @@
 @model IList<MyProfileViewModel>
+@using System.Security.Claims
 
 @{
     ViewData["Title"] = "All Users";
+    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 }
 
 <div class="max-w-4xl mx-auto p-4 md:p-8">
@@ -11,11 +13,17 @@
         @for (var i = 0; i < Model.Count; i++)
         {
             <article class="bg-gray-800 rounded-lg shadow p-4 flex flex-col space-y-2">
-                <p class="text-gray-400 text-sm">User Id: @Model[i].Id</p>
-                <p class="text-white font-semibold">@Model[i].Email</p>
-                <form asp-controller="Administration" asp-action="DeleteUser" asp-route-id="@Model[i].Id" method="post" class="mt-auto">
-                    <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded transition">Delete</button>
-                </form>
+                <p class="break-all text-white font-semibold">@Model[i].Email</p>
+                @if (Model[i].Id == currentUserId)
+                {
+                    <p class="text-sm text-gray-300">Your account</p>
+                }
+                else
+                {
+                    <form asp-controller="Administration" asp-action="DeleteUser" asp-route-id="@Model[i].Id" method="post" class="mt-auto">
+                        <button type="submit" class="w-full cinema-button cinema-button-danger py-2 rounded transition">Delete user</button>
+                    </form>
+                }
             </article>
         }
     </div>
