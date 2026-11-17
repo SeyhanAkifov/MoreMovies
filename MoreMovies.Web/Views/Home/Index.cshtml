@@ -1,6 +1,6 @@
-﻿@model MovieListViewModel
+@model MovieListViewModel
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Discover";
 }
 
 <!-- Search Section -->
@@ -10,35 +10,35 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <!-- Search by Genre -->
         <form asp-controller="Movie" asp-action="SearchByGenre" method="get" class="flex flex-col gap-2">
-            <label for="genre-search" class="text-gray-300 text-sm">SEARCH BY GENRE</label>
+            <label for="genre-search" class="text-gray-300 text-sm">Genre</label>
             <div class="flex gap-2">
-                <select name="genre" id="genre-search" class="flex-1 px-3 py-2 rounded bg-gray-900 border border-gray-700 text-white">
+                <select name="genre" id="genre-search" class="min-w-0 flex-1 px-3 py-2 rounded bg-gray-900 border border-gray-700 text-white">
                     @foreach (var genre in Model.Genres)
                     {
                         <option value="@genre.Name">@genre.Name</option>
                     }
                 </select>
-                <button type="submit" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-white">GO!</button>
+                <button type="submit" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-white">Search</button>
             </div>
         </form>
 
         <!-- Search by Year -->
         <form asp-controller="Movie" asp-action="SearchByYear" method="get" class="flex flex-col gap-2">
-            <label for="year-search" class="text-gray-300 text-sm">SEARCH BY YEAR</label>
+            <label for="year-search" class="text-gray-300 text-sm">Release year</label>
             <div class="flex gap-2">
                 <input type="text" name="year" id="year-search" placeholder="Enter year"
-                       class="flex-1 px-3 py-2 rounded bg-gray-900 border border-gray-700 text-white" />
-                <button type="submit" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-white">GO!</button>
+                       class="min-w-0 flex-1 px-3 py-2 rounded bg-gray-900 border border-gray-700 text-white" />
+                <button type="submit" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-white">Search</button>
             </div>
         </form>
 
         <!-- Search by Name -->
         <form asp-controller="Movie" asp-action="Search" method="get" class="flex flex-col gap-2">
-            <label for="name-search" class="text-gray-300 text-sm">SEARCH BY NAME</label>
+            <label for="name-search" class="text-gray-300 text-sm">Title</label>
             <div class="flex gap-2">
                 <input type="text" name="name" id="name-search" placeholder="Enter title"
-                       class="flex-1 px-3 py-2 rounded bg-gray-900 border border-gray-700 text-white" />
-                <button type="submit" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-white">GO!</button>
+                       class="min-w-0 flex-1 px-3 py-2 rounded bg-gray-900 border border-gray-700 text-white" />
+                <button type="submit" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-white">Search</button>
             </div>
         </form>
     </div>
@@ -50,7 +50,7 @@
     @* Latest Trailers *@
     <section>
         <div class="flex justify-between items-center border-b border-red-600 pb-2 mb-4">
-            <h2 class="text-2xl font-bold">LATEST TRAILERS</h2>
+            <h2 class="text-2xl font-bold">Latest trailers</h2>
             <a asp-controller="Movie" asp-action="All" class="text-red-500 hover:underline">See all</a>
         </div>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
@@ -64,7 +64,7 @@
     @* Top Rated *@
     <section>
         <div class="flex justify-between items-center border-b border-red-600 pb-2 mb-4">
-            <h2 class="text-2xl font-bold">TOP RATED</h2>
+            <h2 class="text-2xl font-bold">Most liked</h2>
             <a asp-controller="Movie" asp-action="AllTopLiked" class="text-red-500 hover:underline">See all</a>
         </div>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
@@ -78,7 +78,7 @@
     @* Most Commented *@
     <section>
         <div class="flex justify-between items-center border-b border-red-600 pb-2 mb-4">
-            <h2 class="text-2xl font-bold">MOST COMMENTED</h2>
+            <h2 class="text-2xl font-bold">Most commented</h2>
             <a asp-controller="Movie" asp-action="AllTopCommented" class="text-red-500 hover:underline">See all</a>
         </div>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">

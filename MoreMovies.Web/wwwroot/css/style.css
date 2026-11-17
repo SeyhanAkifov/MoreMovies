@@ -1,1 +1,93 @@
 ﻿
+body {
+    color-scheme: dark;
+    background-color: #14131c;
+}
+
+:focus-visible {
+    outline: 2px solid #f4c982;
+    outline-offset: 4px;
+}
+
+.catalog-card {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid #383544;
+    border-radius: 0.75rem;
+    background: #211f2b;
+}
+
+.catalog-poster {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    background: #302c3b;
+}
+
+.catalog-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.catalog-poster span {
+    position: absolute;
+    right: 0.5rem;
+    bottom: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    background: #14131c;
+    font-size: 0.75rem;
+}
+
+.catalog-card-copy {
+    display: grid;
+    gap: 0.35rem;
+    padding: 0.85rem;
+    color: #c7c1d2;
+    font-size: 0.8rem;
+}
+
+.catalog-card h3 {
+    color: #fff9f0;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.catalog-card a:hover {
+    text-decoration: underline;
+}
+
+.catalog-rating {
+    color: #f4c982;
+}
+
+#trailerModal {
+    position: fixed;
+    width: min(60rem, calc(100% - 2rem));
+    max-width: none;
+    margin: auto;
+    padding: 0.5rem;
+    border-radius: 0.75rem;
+    background: #211f2b;
+    color: #fff9f0;
+}
+
+#trailerModal::backdrop {
+    background: rgb(0 0 0 / 78%);
+}
+
+#trailerFrame {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 0;
+}
+
+.trailer-close {
+    display: block;
+    min-width: 2.75rem;
+    margin-left: auto;
+    font-size: 1.75rem;
+}

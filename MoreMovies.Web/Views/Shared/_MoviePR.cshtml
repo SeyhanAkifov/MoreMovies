@@ -1,48 +1,38 @@
-﻿@model MovieViewModel
+@model MovieViewModel
 
+@{
+    var poster = string.IsNullOrEmpty(Model.ImageUrl)
+        ? Url.Content("~/css/images/movie_placeholder.jpg")
+        : Model.ImageUrl;
+    var rating = Model.RatingCount > 0
+        ? ((double)Model.Rating / Model.RatingCount).ToString("0.0")
+        : null;
+}
 
-<article class="bg-gray-800 rounded-lg overflow-hidden shadow hover:shadow-lg transition duration-200 flex flex-col">
-
-    <div class="bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-red-600/40 transition duration-300 transform hover:-translate-y-1 cursor-pointer movie-card"
-         data-trailer="@Model.HomePage">
-    <!-- Movie Poster -->
-    <div class="relative group">
-        <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? Url.Content("~/css/images/movie_placeholder.jpg") : Model.ImageUrl)"
-             alt="@Model.Title"
-             class="w-full h-64 object-cover">
-
-        <!-- Overlay with title on hover -->
-        <div class="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition duration-200 flex items-center justify-center">
-            <span class="text-white text-lg font-semibold">@Model.Title</span>
+<article class="catalog-card">
+    @if (!string.IsNullOrWhiteSpace(Model.HomePage))
+    {
+        <button type="button" class="catalog-poster" data-trailer="@Model.HomePage"
+                aria-label="Play trailer for @Model.Title">
+            <img src="@poster" alt="" loading="lazy" decoding="async" />
+            <span>Play trailer</span>
+        </button>
+    }
+    else
+    {
+        <div class="catalog-poster">
+            <img src="@poster" alt="" loading="lazy" decoding="async" />
         </div>
-    </div>
-    </div>
+    }
 
-    <!-- Rating & Info -->
-    <div class="p-4 flex flex-col space-y-2 flex-grow">
-        @{
-            var averageRating = Model.RatingCount > 0 ? Math.Round((double)Model.Rating / Model.RatingCount) : 0;
+    <div class="catalog-card-copy">
+        <h3>
+            <a asp-controller="Movie" asp-action="Details" asp-route-id="@Model.Id">@Model.Title</a>
+        </h3>
+        @if (rating is not null)
+        {
+            <p class="catalog-rating">Rated @rating / 5</p>
         }
-        <!-- Rating Stars -->
-        <div class="flex items-center gap-1">
-            @for (int i = 1; i <= 5; i++)
-            {
-                <span class="text-lg @(i <= averageRating ? "text-yellow-400" : "text-gray-600")">★</span>
-            }
-        </div>
-
-        <!-- Comments & Likes -->
-        <div class="flex justify-between text-gray-300 text-sm mt-2">
-            <span>Comments: @Model.CommentsCount</span>
-            <span>Likes: @Model.Likes</span>
-        </div>
-
-        <!-- Details Button -->
-        <div class="mt-4 text-center">
-            <a asp-controller="Movie" asp-action="Details" asp-route-id="@Model.Id"
-               class="inline-block bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded transition duration-200">
-                Details
-            </a>
-        </div>
+        <p>@Model.Likes likes · @Model.CommentsCount comments</p>
     </div>
 </article>

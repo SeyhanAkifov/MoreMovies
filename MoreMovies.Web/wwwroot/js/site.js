@@ -17,3 +17,28 @@
 
     connection.start().catch(err => console.error(err.toString()));
 })();
+
+const trailerDialog = document.getElementById("trailerModal");
+const trailerFrame = document.getElementById("trailerFrame");
+
+if (trailerDialog && trailerFrame) {
+    document.querySelectorAll("button[data-trailer]").forEach(button => {
+        button.addEventListener("click", () => {
+            const trailer = URL.parse(button.dataset.trailer, document.baseURI);
+            if (!trailer || !["https:", "http:"].includes(trailer.protocol)) {
+                return;
+            }
+
+            if (["www.youtube.com", "youtube.com"].includes(trailer.hostname)
+                && trailer.pathname === "/watch" && trailer.searchParams.has("v")) {
+                trailer.pathname = "/embed/" + encodeURIComponent(trailer.searchParams.get("v"));
+                trailer.searchParams.delete("v");
+            }
+
+            trailerFrame.src = trailer.href;
+            trailerDialog.showModal();
+        });
+    });
+
+    trailerDialog.addEventListener("close", () => trailerFrame.removeAttribute("src"));
+}

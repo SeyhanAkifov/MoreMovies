@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -9,9 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="~/css/style.css" />
 </head>
-<body class="bg-gray-900 text-gray-100 flex flex-col min-h-screen">
-    <canvas id="movieParticles" class="fixed inset-0 z-0 pointer-events-none"></canvas>
-    <div id="gradient" class="fixed inset-0 z-0 opacity-60 pointer-events-none"></div>
+<body class="text-gray-100 flex flex-col min-h-screen">
     <div class="relative z-10 flex flex-col min-h-screen">
         <header class="bg-gray-900 text-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -39,7 +37,7 @@
 
                     <!-- Mobile Hamburger -->
                     <div class="md:hidden flex items-center">
-                        <button id="mobile-menu-button" class="text-gray-400 hover:text-white focus:outline-none">
+                        <button id="mobile-menu-button" type="button" aria-label="Toggle navigation" aria-controls="mobile-menu" aria-expanded="false" class="text-gray-400 hover:text-white focus:outline-none">
                             <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
                             </svg>
@@ -96,7 +94,8 @@
                 const mobileMenu = document.getElementById('mobile-menu');
 
                 mobileMenuButton.addEventListener('click', () => {
-                  mobileMenu.classList.toggle('hidden');
+                  const hidden = mobileMenu.classList.toggle('hidden');
+                  mobileMenuButton.setAttribute('aria-expanded', String(!hidden));
                 });
 
                 // User-Dropdown (Avatar oben rechts)
@@ -121,7 +120,7 @@
         </header>
 
         <!-- Main Content -->
-        <main class="flex-grow max-w-7xl mx-auto px-4 py-6">
+        <main class="flex-grow w-full max-w-7xl mx-auto px-4 py-6">
             @RenderBody()
         </main>
 
@@ -130,14 +129,13 @@
             &copy; @DateTime.UtcNow.Year - MoreMovies - Seyhan Akifov
         </footer>
 
-        <!-- Modal -->
-        <div id="trailerModal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50">
-            <div class="bg-gray-900 rounded-xl shadow-lg overflow-hidden w-full max-w-3xl relative">
-                <button id="closeModal" class="absolute top-2 right-3 text-white text-3xl z-10">&times;</button>
-                <iframe id="trailerFrame" class="w-full aspect-video" src=""
-                        frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-            </div>
-        </div>
+        <dialog id="trailerModal" aria-label="Movie trailer">
+            <form method="dialog">
+                <button type="submit" class="trailer-close" aria-label="Close trailer">&times;</button>
+            </form>
+            <iframe id="trailerFrame" title="Movie trailer"
+                    allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </dialog>
 
         <!-- Scripts -->
         <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
@@ -145,92 +143,6 @@
         <partial name="_ValidationScriptsPartial" />
         <script src="~/js/site.js" asp-append-version="true"></script>
         @await RenderSectionAsync("Scripts", required: false)
-
-        <script>
-            const canvas = document.getElementById("movieParticles");
-            const ctx = canvas.getContext("2d");
-            let particles = [];
-
-            function resize() {
-              canvas.width = window.innerWidth;
-              canvas.height = window.innerHeight;
-            }
-            window.addEventListener("resize", resize);
-            resize();
-
-            function createParticles() {
-              particles = [];
-              for (let i = 0; i < 100; i++) {
-                particles.push({
-                  x: Math.random() * canvas.width,
-                  y: Math.random() * canvas.height,
-                  radius: Math.random() * 2,
-                  speedY: 0.3 + Math.random() * 0.7,
-                  alpha: 0.3 + Math.random() * 0.7,
-                });
-              }
-            }
-
-            function animate() {
-              ctx.fillStyle = "rgba(10, 10, 15, 0.3)";
-              ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-              for (let p of particles) {
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255,255,255,${p.alpha})`;
-                ctx.fill();
-
-                p.y += p.speedY;
-                if (p.y > canvas.height) p.y = 0;
-              }
-              requestAnimationFrame(animate);
-            }
-
-            createParticles();
-            animate();
-        </script>
-
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                console.log("🎬 Script loaded!");
-
-                const cards = document.querySelectorAll(".movie-card");
-                const modal = document.getElementById("trailerModal");
-                const frame = document.getElementById("trailerFrame");
-                const close = document.getElementById("closeModal");
-
-                cards.forEach(card => {
-                    card.addEventListener("click", () => {
-                        const trailer = card.getAttribute("data-trailer");
-                        console.log("Clicked card with trailer:", trailer);
-
-                        if (trailer && modal && frame) {
-                            const embedLink = trailer.includes("watch?v=")
-                                ? trailer.replace("watch?v=", "embed/") + "?autoplay=1"
-                                : trailer;
-
-                            frame.src = embedLink;
-                            modal.classList.remove("hidden");
-                            modal.classList.add("flex");
-                        }
-                    });
-                });
-
-                close.addEventListener("click", () => {
-                    modal.classList.add("hidden");
-                    modal.classList.remove("flex");
-                    frame.src = "";
-                });
-
-                modal.addEventListener("click", (e) => {
-                    if (e.target === modal) {
-                        modal.classList.add("hidden");
-                        modal.classList.remove("flex");
-                        frame.src = "";
-                    }
-                });
-            });
-        </script>
+    </div>
 </body>
 </html>
