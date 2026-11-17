@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using MoreMovies.Data;
 using MoreMovies.Models;
 using MoreMovies.Services.Dto.Input;
@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 
@@ -32,17 +33,9 @@ namespace MoreMovies.Services
 
         public async Task AddMovie(AddMovieInputModel model)
         {
-
-            var language = db.Languages.FirstOrDefault(x => x.Name == model.Language);
-
-
-            var genre = db.Genre.FirstOrDefault(x => x.Name == model.Genre);
-
-            
-
-            var country = db.Country.FirstOrDefault(x => x.Name == model.Country);
-
-            
+            var language = await db.Languages.FirstOrDefaultAsync(x => x.Name == model.Language);
+            var genre = await db.Genre.FirstOrDefaultAsync(x => x.Name == model.Genre);
+            var country = await db.Country.FirstOrDefaultAsync(x => x.Name == model.Country);
 
             var editedHomePage = model.HomePage.Replace("watch?v=", "embed/");
 
@@ -50,7 +43,7 @@ namespace MoreMovies.Services
             {
                 Title = model.Title,
                 Budget = model.Budget,
-                ReleaseDate = DateTime.ParseExact(model.ReleaseDate.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture),
+                ReleaseDate = DateTime.ParseExact(model.ReleaseDate, "dd/MM/yyyy", CultureInfo.InvariantCulture),
                 Description = model.Description,
                 HomePage = editedHomePage,
                 Language = new MovieLanguage { Language = language },
@@ -64,27 +57,12 @@ namespace MoreMovies.Services
 
             foreach (var name in actorNames)
             {
-                if (!this.db.Actors.Any(x => x.Name == name))
-                {
-                    var actor = new Actor()
-                    {
-                        Name = name
-                    };
-
-                    this.db.Actors.Add(actor);
-
-                    movie.Actors.Add(new MovieActor { Actor = actor });
-                }
-                else
-                {
-                    var actor = await this.db.Actors.FirstOrDefaultAsync(x => x.Name == name);
-                    movie.Actors.Add(new MovieActor { Actor = actor });
-                }
+                var actor = await db.Actors.FirstOrDefaultAsync(x => x.Name == name);
+                movie.Actors.Add(new MovieActor { Actor = actor ?? new Actor { Name = name } });
             }
 
-            var result = db.Movies.Add(movie);
-
-            db.SaveChanges();
+            db.Movies.Add(movie);
+            await db.SaveChangesAsync();
         }
 
         public async Task DeleteMovie(int id)
@@ -110,7 +88,7 @@ namespace MoreMovies.Services
 
         public async Task LikeMovie(int id, string userId)
         {
-            var movie = db.Movies.Find(id);
+            var movie = await db.Movies.FindAsync(id);
             
             movie.Likes++;
 
@@ -121,11 +99,11 @@ namespace MoreMovies.Services
 
         public async Task DisLikeMovie(int id, string userId)
         {
-            var movie = db.Movies.Find(id);
+            var movie = await db.Movies.FindAsync(id);
 
             movie.Likes--;
 
-            var usermovie = db.UserMovies.FirstOrDefault(x => x.MovieId == movie.Id && x.UserId == userId);
+            var usermovie = await db.UserMovies.FirstOrDefaultAsync(x => x.MovieId == movie.Id && x.UserId == userId);
 
             this.db.UserMovies.Remove(usermovie);
 
@@ -144,19 +122,10 @@ namespace MoreMovies.Services
             await db.SaveChangesAsync();
         }
 
-        private IQueryable<Movie> MoviesWithDetails()
-        {
-            return db.Movies
-                .Include(x => x.Genre.Genre)
-                .Include(x => x.Language.Language)
-                .Include(x => x.Country.Country)
-                .Include(x => x.Comments);
-        }
-
         public async Task<ICollection<MovieOutputDto>> GetAllMovie()
         {
-            ICollection<MovieOutputDto> movies = await MoviesWithDetails()
-                .Select(x => GetMovieOutputDto(x))
+            ICollection<MovieOutputDto> movies = await db.Movies
+                .Select(MovieProjection)
                 .ToArrayAsync();
 
             return movies;
@@ -166,7 +135,7 @@ namespace MoreMovies.Services
         {
             ICollection<MovieOutputDto> movies = await db.Movies
                 .Where(x => x.Creator == userName)
-                .Select(x => GetMovieOutputDto(x))
+                .Select(MovieProjection)
                 .ToArrayAsync();
 
             return movies;
@@ -181,10 +150,10 @@ namespace MoreMovies.Services
 
         public async Task<ICollection<MovieOutputDto>> GetTopCommentedMovie()
         {
-            ICollection<MovieOutputDto> movies = await MoviesWithDetails()
+            ICollection<MovieOutputDto> movies = await db.Movies
                 .OrderByDescending(x => x.Comments.Count)
                 .Take(5)
-                .Select(x => GetMovieOutputDto(x))
+                .Select(MovieProjection)
                 .ToArrayAsync();
 
             return movies;
@@ -192,9 +161,9 @@ namespace MoreMovies.Services
 
         public async Task<ICollection<MovieOutputDto>> GetTopCommentedAllMovie()
         {
-            ICollection<MovieOutputDto> movies = await MoviesWithDetails()
+            ICollection<MovieOutputDto> movies = await db.Movies
                 .OrderByDescending(x => x.Comments.Count)
-                .Select(x => GetMovieOutputDto(x))
+                .Select(MovieProjection)
                 .ToArrayAsync();
 
             return movies;
@@ -202,10 +171,10 @@ namespace MoreMovies.Services
 
         public async Task<ICollection<MovieOutputDto>> GetTopLikedMovie()
         {
-            ICollection<MovieOutputDto> movies = await MoviesWithDetails()
+            ICollection<MovieOutputDto> movies = await db.Movies
                 .OrderByDescending(x => x.Likes)
                 .Take(5)
-                .Select(x => GetMovieOutputDto(x))
+                .Select(MovieProjection)
                 .ToArrayAsync();
 
             return movies;
@@ -213,9 +182,9 @@ namespace MoreMovies.Services
 
         public async Task<ICollection<MovieOutputDto>> GetTopLikedAllMovie()
         {
-            ICollection<MovieOutputDto> movies = await MoviesWithDetails()
+            ICollection<MovieOutputDto> movies = await db.Movies
                 .OrderByDescending(x => x.Likes)
-                .Select(x => GetMovieOutputDto(x))
+                .Select(MovieProjection)
                 .ToArrayAsync();
 
             return movies;
@@ -223,10 +192,10 @@ namespace MoreMovies.Services
 
         public async Task<ICollection<MovieOutputDto>> GetNewestAddedMovie()
         {
-            ICollection<MovieOutputDto> movies = await MoviesWithDetails()
+            ICollection<MovieOutputDto> movies = await db.Movies
                 .OrderByDescending(x => x.ReleaseDate)
                 .Take(5)
-                .Select(x => GetMovieOutputDto(x))
+                .Select(MovieProjection)
                 .ToArrayAsync();
 
             return movies;
@@ -234,9 +203,9 @@ namespace MoreMovies.Services
 
         public async Task<ICollection<MovieOutputDto>> GetNewestAddedAllMovie()
         {
-            ICollection<MovieOutputDto> movies = await MoviesWithDetails()
+            ICollection<MovieOutputDto> movies = await db.Movies
                 .OrderByDescending(x => x.ReleaseDate)
-                .Select(x => GetMovieOutputDto(x))
+                .Select(MovieProjection)
                 .ToArrayAsync();
 
             return movies;
@@ -244,9 +213,9 @@ namespace MoreMovies.Services
 
         public async Task<ICollection<MovieOutputDto>> SearchMovie(string name)
         {
-            ICollection<MovieOutputDto> movies = await MoviesWithDetails()
+            ICollection<MovieOutputDto> movies = await db.Movies
                             .Where(x => x.Title.ToLower().Contains(name.ToLower()))
-                            .Select(x => GetMovieOutputDto(x))
+                            .Select(MovieProjection)
                             .ToArrayAsync();
 
             return movies;
@@ -254,9 +223,9 @@ namespace MoreMovies.Services
 
         public async Task<ICollection<MovieOutputDto>> SearchMovieByGenre(string genre)
         {
-            ICollection<MovieOutputDto> movies = await MoviesWithDetails()
+            ICollection<MovieOutputDto> movies = await db.Movies
                 .Where(x => x.Genre.Genre.Name == genre)
-                .Select(x => GetMovieOutputDto(x))
+                .Select(MovieProjection)
                 .ToArrayAsync();
 
             return movies;
@@ -264,9 +233,9 @@ namespace MoreMovies.Services
 
         public async Task<ICollection<MovieOutputDto>> SearchMovieByYear(string year)
         {
-            ICollection<MovieOutputDto> movies = await MoviesWithDetails()
+            ICollection<MovieOutputDto> movies = await db.Movies
                 .Where(x => x.ReleaseDate.Year == int.Parse(year))
-                .Select(x => GetMovieOutputDto(x))
+                .Select(MovieProjection)
                 .ToArrayAsync();
 
             return movies;
@@ -310,15 +279,13 @@ namespace MoreMovies.Services
         {
             ICollection<MovieOutputDto> movies = await db.UserMovies.Where(um => um.UserId == userId)
                  .Select(x => x.Movies)
-                 .Select(x => GetMovieOutputDto(x))
+                 .Select(MovieProjection)
                  .ToArrayAsync();
 
             return movies;
         }
 
-        private static MovieOutputDto GetMovieOutputDto(Movie movie)
-        {
-            return new MovieOutputDto
+        private static readonly Expression<Func<Movie, MovieOutputDto>> MovieProjection = movie => new MovieOutputDto
             {
                 Id = movie.Id,
                 Title = movie.Title,
@@ -329,7 +296,6 @@ namespace MoreMovies.Services
                 CommentsCount = movie.Comments.Count,
                 HomePage = movie.HomePage,
             };
-        }
 
         private static MovieDetailOutputDto GetMovieDetailOutputDto(Movie movie)
         {
