@@ -684,3 +684,65 @@ main .text-red-500 {
         transform: none;
     }
 }
+.cinema-calendar-filter,
+.cinema-calendar-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 0.75rem;
+}
+
+.cinema-calendar-filter label {
+    display: grid;
+    gap: 0.3rem;
+    min-width: 0;
+    flex: 1 1 12rem;
+    color: var(--cinema-muted);
+}
+
+.cinema-calendar-filter input {
+    width: 100%;
+    min-width: 0;
+    min-height: 2.75rem;
+    padding: 0.45rem 0.75rem;
+    border: 1px solid var(--cinema-border);
+    border-radius: 0.5rem;
+    color: var(--cinema-text);
+    background: var(--cinema-bg);
+}
+
+.cinema-calendar-nav a {
+    padding: 0.5rem 0.7rem;
+    border: 1px solid var(--cinema-border);
+    border-radius: 0.5rem;
+    color: var(--cinema-accent);
+    background: var(--cinema-surface);
+}
+
+.cinema-calendar-nav a:hover {
+    background: var(--cinema-raised);
+}
+
+.cinema-calendar-days {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+    gap: 1rem;
+}
+
+.cinema-calendar-days > article {
+    min-width: 0;
+}
+
+.cinema-screening {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.65rem;
+    padding: 0.65rem;
+    border-radius: 0.5rem;
+    background: var(--cinema-bg);
+}
+
+.cinema-screening-time {
+    color: var(--cinema-accent);
+    font-variant-numeric: tabular-nums;
+}

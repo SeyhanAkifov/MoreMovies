@@ -9,6 +9,7 @@ namespace MoreMovies.Web.Models.Cinema
     {
         public List<string> CinemaNames { get; set; }
         public string SelectedCinema { get; set; }
+        public DateOnly StartDate { get; set; }
 
         public ICollection<CinemaProjectionViewModel> Projections { get; set; }
     }

@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using MoreMovies.Data;
 using MoreMovies.Models;
+using MoreMovies.Services.Dto.Input;
+using MoreMovies.Services.Interfaces;
 using System;
 using System.Net;
 using System.Collections.Generic;
@@ -265,6 +267,39 @@ namespace MoreMovies.Web.Tests
             Assert.Contains("discover-hero", html);
             Assert.Contains("Watch trailer", html);
             Assert.Contains("data-trailer=", html);
+        }
+
+        /// <summary>Verify that multiple screenings appear in time order on the selected date.</summary>
+        [Fact]
+        public async Task CinemaCalendarShowsMultipleScreeningsOnOneDate()
+        {
+            using var client = _factory.CreateClient();
+            using var scope = _factory.Services.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            var cinema = await db.Cinemas.FirstAsync();
+            var screenings = scope.ServiceProvider.GetRequiredService<ICinemaService>();
+            var day = new DateTime(2031, 2, 3);
+
+            foreach (var (title, time) in new[] { ("Late screening", "20:30"), ("Early screening", "14:00") })
+            {
+                Assert.True(await screenings.Add(new CinemaProjectionInputDto
+                {
+                    CinemaName = cinema.Name,
+                    CinemaHallName = "Calendar test hall",
+                    MovieName = title,
+                    ProjectionTime = day,
+                    Time = time
+                }, cinema.UserId));
+            }
+
+            var html = await client.GetStringAsync(
+                $"/Cinema/InCinema?cinemaName={Uri.EscapeDataString(cinema.Name)}&start=2031-02-03");
+            Assert.Contains("datetime=\"2031-02-03\"", html);
+            Assert.Contains("Early screening", html);
+            Assert.Contains("Late screening", html);
+            Assert.True(html.IndexOf("Early screening", StringComparison.Ordinal) <
+                        html.IndexOf("Late screening", StringComparison.Ordinal));
+            Assert.Contains("start=2031-02-10", html);
         }
     }
 }

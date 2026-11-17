@@ -1,52 +1,86 @@
 @model InCinemaViewModel
+@using System.Globalization
 
 @{
     ViewData["Title"] = "In Cinema";
+    var start = Model.StartDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+    var previous = Model.StartDate.AddDays(-7);
+    var next = Model.StartDate.AddDays(7);
+    var screeningsByDay = Model.Projections.ToLookup(item => DateOnly.FromDateTime(item.ProjectionTime));
 }
 
 <div class="max-w-6xl mx-auto p-4 md:p-8 space-y-6">
     <section class="bg-gray-800 p-6 rounded-lg shadow-md">
-        <form asp-controller="Cinema" asp-action="InCinema" method="get" class="flex flex-col sm:flex-row gap-3">
-            <label for="cinema-selection" class="sr-only">Cinema</label>
-            <select id="cinema-selection" name="cinemaName"
-                    class="min-w-0 flex-1 px-4 py-2 rounded bg-gray-900 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500">
-                @foreach (var item in Model.CinemaNames)
-                {
-                    <option value="@item" selected="@(item == Model.SelectedCinema)">@item</option>
-                }
-            </select>
-            <button type="submit" class="cinema-button px-6 py-2 rounded transition">Go</button>
+        <form asp-controller="Cinema" asp-action="InCinema" method="get" class="cinema-calendar-filter">
+            <label for="cinema-selection">
+                Cinema
+                <select id="cinema-selection" name="cinemaName"
+                        class="min-w-0 flex-1 px-4 py-2 rounded bg-gray-900 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500">
+                    @foreach (var item in Model.CinemaNames)
+                    {
+                        <option value="@item" selected="@(item == Model.SelectedCinema)">@item</option>
+                    }
+                </select>
+            </label>
+            <label for="calendar-start">
+                Start date
+                <input id="calendar-start" name="start" type="date" value="@start"
+                       min="1900-01-01" max="9998-12-31" />
+            </label>
+            <button type="submit" class="cinema-button px-6 py-2 rounded">Show dates</button>
         </form>
     </section>
 
     <h1 class="text-2xl font-bold text-red-500">@(Model.SelectedCinema is null ? "Cinema showtimes" : $"Showtimes at {Model.SelectedCinema}")</h1>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <nav aria-label="Showtime dates" class="cinema-calendar-nav">
+        @if (previous.Year >= 1900)
+        {
+            <a asp-action="InCinema" asp-route-cinemaName="@Model.SelectedCinema"
+               asp-route-start="@previous.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)"
+               rel="prev">Previous 7 days</a>
+        }
+        <a asp-action="InCinema" asp-route-cinemaName="@Model.SelectedCinema">Today</a>
+        @if (next.Year <= 9998)
+        {
+            <a asp-action="InCinema" asp-route-cinemaName="@Model.SelectedCinema"
+               asp-route-start="@next.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)"
+               rel="next">Next 7 days</a>
+        }
+    </nav>
+
+    <div class="cinema-calendar-days">
         @for (int i = 0; i < 7; i++)
         {
-            var day = DateTime.UtcNow.AddDays(i);
-            var projectionsForDay = Model.Projections.Where(x => x.ProjectionTime.Date == day.Date).ToList();
+            var day = Model.StartDate.AddDays(i);
+            var projectionsForDay = screeningsByDay[day].OrderBy(item => item.Time).ToList();
 
             <article class="bg-gray-800 rounded-lg shadow p-4 space-y-3">
-                <h2 class="text-lg font-semibold border-b border-gray-700 pb-2">@day.DayOfWeek</h2>
+                <h2 class="text-lg font-semibold border-b border-gray-700 pb-2">
+                    <time datetime="@day.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)">
+                        @day.ToString("ddd, dd MMM yyyy", CultureInfo.InvariantCulture)
+                    </time>
+                </h2>
 
                 @if (projectionsForDay.Any())
                 {
                     @foreach (var item in projectionsForDay)
                     {
-                        <div class="bg-gray-900 rounded p-3">
-                            <p class="text-white font-medium">@item.MovieName</p>
-                            <p class="text-gray-400 text-sm">Hall: @item.CinemaHall</p>
-                            <p class="text-gray-400 text-sm">@item.Time</p>
-                            @if (item.CanManage)
-                            {
-                                <form asp-action="Delete" asp-route-id="@item.Id" asp-route-cinemaName="@Model.SelectedCinema"
-                                      method="post" class="mt-2">
-                                    <button type="submit" class="cinema-button cinema-button-danger rounded px-3 py-2">
-                                        Delete showtime
-                                    </button>
-                                </form>
-                            }
+                        <div class="cinema-screening">
+                            <p class="cinema-screening-time">@item.Time</p>
+                            <div class="min-w-0">
+                                <p class="break-words text-white font-medium">@item.MovieName</p>
+                                <p class="break-words text-gray-400 text-sm">Hall: @item.CinemaHall</p>
+                                @if (item.CanManage)
+                                {
+                                    <form asp-action="Delete" asp-route-id="@item.Id" asp-route-cinemaName="@Model.SelectedCinema"
+                                          asp-route-start="@start" method="post" class="mt-2">
+                                        <button type="submit" class="cinema-button cinema-button-danger rounded px-3 py-2">
+                                            Delete showtime
+                                        </button>
+                                    </form>
+                                }
+                            </div>
                         </div>
                     }
                 }

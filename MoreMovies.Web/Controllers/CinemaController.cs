@@ -1,3 +1,5 @@
+using System;
+using System.Globalization;
 using System.Linq;
 using MoreMovies.Web.MappingConfiguration;
 using Microsoft.AspNetCore.Authorization;
@@ -21,9 +23,9 @@ namespace MoreMovies.Web.Controllers
             this.cinemaService = cinemaService;
         }
 
-        /// <summary>Show the selected cinema and its scheduled screenings.</summary>
+        /// <summary>Show seven days of screenings from the selected date.</summary>
         [HttpGet]
-        public IActionResult InCinema(string cinemaName)
+        public IActionResult InCinema(string cinemaName, DateOnly? start)
         {
 
             var cinemaNames = this.cinemaService.GetCinemaNames();
@@ -37,6 +39,9 @@ namespace MoreMovies.Web.Controllers
             {
                 CinemaNames = cinemaNames,
                 SelectedCinema = selectedCinema,
+                StartDate = start is { Year: >= 1900 and <= 9998 }
+                    ? start.Value
+                    : DateOnly.FromDateTime(DateTime.Today),
                 Projections = result,
             };
 
@@ -66,6 +71,7 @@ namespace MoreMovies.Web.Controllers
             return RedirectToAction(nameof(Add));
         }
 
+        /// <summary>Show the screening form with today's date selected.</summary>
         [Authorize]
         [HttpGet]
         public IActionResult Add()
@@ -76,7 +82,7 @@ namespace MoreMovies.Web.Controllers
 
             ViewBag.Names = cinema;
 
-            return View();
+            return View(new CinemaProjectionInputDto { ProjectionTime = DateTime.Today });
         }
 
         /// <summary>Save a screening for a cinema owned by the signed-in user.</summary>
@@ -85,6 +91,17 @@ namespace MoreMovies.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(CinemaProjectionInputDto model)
         {
+            if (model.ProjectionTime.Year is < 1900 or > 9998)
+            {
+                ModelState.AddModelError(nameof(model.ProjectionTime), "Choose a valid screening date.");
+            }
+
+            if (!TimeOnly.TryParseExact(model.Time, "HH:mm", CultureInfo.InvariantCulture,
+                    DateTimeStyles.None, out _))
+            {
+                ModelState.AddModelError(nameof(model.Time), "Choose a valid screening time.");
+            }
+
             if (!ModelState.IsValid)
             {
                 ViewBag.Names = cinemaService.GetCinema(User.Identity.Name);
@@ -97,14 +114,18 @@ namespace MoreMovies.Web.Controllers
                 return NotFound();
             }
 
-            return RedirectToAction(nameof(InCinema), new { cinemaName = model.CinemaName });
+            return RedirectToAction(nameof(InCinema), new
+            {
+                cinemaName = model.CinemaName,
+                start = model.ProjectionTime.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)
+            });
         }
 
         /// <summary>Remove a screening owned by the signed-in user.</summary>
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id, string cinemaName)
+        public async Task<IActionResult> Delete(int id, string cinemaName, string start)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (!await cinemaService.Delete(id, userId))
@@ -112,7 +133,7 @@ namespace MoreMovies.Web.Controllers
                 return NotFound();
             }
 
-            return RedirectToAction(nameof(InCinema), new { cinemaName });
+            return RedirectToAction(nameof(InCinema), new { cinemaName, start });
         }
     }
 }
