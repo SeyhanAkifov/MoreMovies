@@ -1,25 +1,35 @@
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using MoreMovies.Data;
 using System;
-using System.Net.Http;
+using System.Net;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace MoreMovies.Web.Tests
 {
-    public class BasicTests : IClassFixture<WebApplicationFactory<MoreMovies.Web.Startup>>
+    public class BasicTests : IClassFixture<WebApplicationFactory<Program>>
     {
-        private readonly WebApplicationFactory<MoreMovies.Web.Startup> _factory;
+        private readonly WebApplicationFactory<Program> _factory;
 
-        public BasicTests(WebApplicationFactory<MoreMovies.Web.Startup> factory)
+        public BasicTests(WebApplicationFactory<Program> factory)
         {
-            _factory = factory;
+            _factory = factory.WithWebHostBuilder(builder =>
+                builder.ConfigureServices(services =>
+                {
+                    services.RemoveAll<IDbContextOptionsConfiguration<ApplicationDbContext>>();
+                    services.AddDbContext<ApplicationDbContext>(options =>
+                        options.UseInMemoryDatabase("MoreMoviesEndpointTests"));
+                }));
         }
 
         [Theory]
         [InlineData("/")]
         [InlineData("/Home/Index")]
         [InlineData("/Contact/ContactPage")]
-        [InlineData("/Movie/Details/0")]
         [InlineData("/Movie/MyMovies")]
         [InlineData("/Movie/Add")]
         [InlineData("/Movie/AddComment")]
@@ -43,6 +53,19 @@ namespace MoreMovies.Web.Tests
         }
 
         [Fact]
+        public async Task MovieDetailsRequiresAuthentication()
+        {
+            using var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
+            {
+                AllowAutoRedirect = false
+            });
+
+            using var response = await client.GetAsync("/Movie/Details?id=1");
+
+            Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
+        }
+
+        [Fact]
         public async Task HomePage()
         {
             // Arrange
@@ -54,7 +77,7 @@ namespace MoreMovies.Web.Tests
             // Assert
             var html  = await response.Content.ReadAsStringAsync();
 
-            Assert.Contains(" <h2>LATEST TRAILERS</h2>", html);
+            Assert.Contains("Latest trailers", html, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

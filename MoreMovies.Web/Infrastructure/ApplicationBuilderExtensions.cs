@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -22,8 +22,6 @@ namespace MoreMovies.Web.Infrastructure
         // Runs schema migrations for every environment, but only seeds demo
         // content/accounts (Movies/News/ComingSoon/Admin1/User1) in Development,
         // so a fresh production database never ships with well-known credentials.
-        // Called (and blocked on) from Startup.Configure so it also runs under
-        // WebApplicationFactory-based integration tests, which never execute Program.Main.
         public static async Task PrepareDatabaseAsync(this IApplicationBuilder app, IWebHostEnvironment env)
         {
             using var scopedServices = app.ApplicationServices.CreateScope();
@@ -34,7 +32,14 @@ namespace MoreMovies.Web.Infrastructure
             var ns = services.GetRequiredService<INewsService>();
             var cs = services.GetRequiredService<IComingSoonService>();
 
-            db.Database.Migrate();
+            if (db.Database.IsRelational())
+            {
+                await db.Database.MigrateAsync();
+            }
+            else
+            {
+                await db.Database.EnsureCreatedAsync();
+            }
 
             await SeedGenre(db);
             await SeedLanguage(db);
@@ -43,9 +48,9 @@ namespace MoreMovies.Web.Infrastructure
             if (env.IsDevelopment())
             {
                 await SeedUsers(services);
-                await SeedMovies(db, ms);
-                await SeedNews(db, ns);
-                await SeedComingSoon(db, cs);
+                await SeedMovies(db, ms, env.ContentRootPath);
+                await SeedNews(db, ns, env.ContentRootPath);
+                await SeedComingSoon(db, cs, env.ContentRootPath);
                 await SeedCinemas(db);
                 await SeedComments(db);
             }
@@ -191,14 +196,14 @@ namespace MoreMovies.Web.Infrastructure
             await db.SaveChangesAsync();
         }
 
-        public static async Task SeedMovies(ApplicationDbContext db, IMovieService ms)
+        public static async Task SeedMovies(ApplicationDbContext db, IMovieService ms, string contentRoot)
         {
             if (db.Movies.Any())
             {
                 return;
             }
 
-            var movies = JsonConvert.DeserializeObject<ICollection<AddMovieInputModel>>(File.ReadAllText("movies.json"));
+            var movies = JsonConvert.DeserializeObject<ICollection<AddMovieInputModel>>(await File.ReadAllTextAsync(Path.Combine(contentRoot, "movies.json")));
 
             foreach (var movie in movies)
             {
@@ -209,14 +214,14 @@ namespace MoreMovies.Web.Infrastructure
             await db.SaveChangesAsync();
         }
 
-        public static async Task SeedNews(ApplicationDbContext db, INewsService ns)
+        public static async Task SeedNews(ApplicationDbContext db, INewsService ns, string contentRoot)
         {
             if (db.News.Any())
             {
                 return;
             }
 
-            var news = JsonConvert.DeserializeObject<ICollection<NewsAddModel>>(File.ReadAllText("news.json"));
+            var news = JsonConvert.DeserializeObject<ICollection<NewsAddModel>>(await File.ReadAllTextAsync(Path.Combine(contentRoot, "news.json")));
 
             foreach (var item in news)
             {
@@ -227,14 +232,14 @@ namespace MoreMovies.Web.Infrastructure
             await db.SaveChangesAsync();
         }
 
-        public static async Task SeedComingSoon(ApplicationDbContext db, IComingSoonService cs)
+        public static async Task SeedComingSoon(ApplicationDbContext db, IComingSoonService cs, string contentRoot)
         {
             if (db.ComingSoons.Any())
             {
                 return;
             }
 
-            var soon = JsonConvert.DeserializeObject<ICollection<ComingSoonAddModel>>(File.ReadAllText("comingSoon.json"));
+            var soon = JsonConvert.DeserializeObject<ICollection<ComingSoonAddModel>>(await File.ReadAllTextAsync(Path.Combine(contentRoot, "comingSoon.json")));
 
             foreach (var item in soon)
             {

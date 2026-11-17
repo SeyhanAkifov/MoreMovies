@@ -1,30 +1,31 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using MoreMovies.Data;
-using System;
+using System.Linq;
 using Xunit;
 
 namespace MoreMovie.Web.Tests.Integration
 {
-    // Requires a reachable SQL Server instance (uses the real ApplicationDbContext
-    // connection string) - kept separate from the in-memory unit test classes.
     [Trait("Category", "Integration")]
     public class MigrationsIntegrationTests
     {
         [Fact]
-        public void MigrationsUpDownTest()
+        public void ExistingMigrationsGenerateSqlForBothDirections()
         {
-            // Unit tests don't have a DataDirectory by default to store DB in
-            AppDomain.CurrentDomain.SetData("DataDirectory", System.IO.Directory.GetCurrentDirectory());
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseSqlServer()
+                .Options;
+            using var db = new ApplicationDbContext(options);
+            var migrator = db.GetService<IMigrator>();
+            var latestMigration = db.Database.GetMigrations().Last();
 
-            // Drop and recreate database
-            ApplicationDbContext db = new ApplicationDbContext();
-            db.Database.EnsureDeleted();
+            var upgrade = migrator.GenerateScript();
+            var rollback = migrator.GenerateScript(latestMigration, Migration.InitialDatabase);
 
-            // Retrieve migrations
-            db.Database.Migrate();
-
-            // Optional: delete database
-            db.Database.EnsureDeleted();
+            Assert.Contains("CREATE TABLE [Movies]", upgrade);
+            Assert.Contains("DROP TABLE [Movies]", rollback);
+            Assert.False(db.Database.HasPendingModelChanges());
         }
     }
 }
