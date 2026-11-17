@@ -49,27 +49,15 @@ namespace MoreMovies.Services
 
         public async Task Add(CinemaProjectionInputDto model)
         {
-            var hall = await this.db.CinemaHalls.FirstOrDefaultAsync(x => x.Name == model.CinemaHallName);
-            if (hall == null)
-            {
-                hall = new CinemaHall
-                {
-                    Name = model.CinemaHallName,
-                };
-
-                this.db.CinemaHalls.Add(hall);
-
-                await this.db.SaveChangesAsync();
-            }
-
-            var cinema = await this.db.Cinemas.FirstOrDefaultAsync(x => x.Name == model.CinemaName);
+            var cinema = await db.Cinemas.FirstAsync(x => x.Name == model.CinemaName);
+            var hall = await db.CinemaHalls.FirstOrDefaultAsync(x => x.Name == model.CinemaHallName)
+                ?? new CinemaHall { Name = model.CinemaHallName };
 
             this.db.CinemaPojections.Add(new CinemaPojection
             {
                 Time = model.Time,
                 MovieName = model.MovieName,
                 ProjectionTime = model.ProjectionTime,
-                CinemaHallId = hall.Id,
                 CinemaHall = hall,
                 CinemaId = cinema.Id
             });
