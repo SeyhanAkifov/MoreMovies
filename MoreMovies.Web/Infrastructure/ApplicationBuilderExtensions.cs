@@ -186,11 +186,11 @@ namespace MoreMovies.Web.Infrastructure
             await roleManager.CreateAsync(roleUser);
 
             var admin = new IdentityUser { UserName = "Admin1@abv.bg", Email = "Admin1@abv.bg", EmailConfirmed = true };
-            await userManager.CreateAsync(admin, "Admin1@abv.bg");
+            await userManager.CreateAsync(admin);
             await userManager.AddToRoleAsync(admin, RoleNames.Admin);
 
             var user = new IdentityUser { UserName = "User1@abv.bg", Email = "User1@abv.bg", EmailConfirmed = true };
-            await userManager.CreateAsync(user, "User1@abv.bg");
+            await userManager.CreateAsync(user);
             await userManager.AddToRoleAsync(user, RoleNames.User);
 
             await db.SaveChangesAsync();

@@ -20,7 +20,7 @@ Note the test project is `MoreMovie.Web.Tests` — **singular "Movie"**, unlike 
 
 `MoreMovies.Web/appsettings.json` is deleted from the repo and gitignored — it must be created locally with a `ConnectionStrings:DefaultConnection` key (SQL Server) before the app will start. The Web project also has a `UserSecretsId`, so user-secrets is the intended place for local secrets instead of committing them to `appsettings.json`.
 
-On every startup, `Program.cs` calls `app.PrepareDatabaseAsync()` ([MoreMovies.Web/Infrastructure/ApplicationBuilderExtensions.cs](MoreMovies.Web/Infrastructure/ApplicationBuilderExtensions.cs)), which runs `db.Database.MigrateAsync()` and then seeds Genre/Language/Country/Users/Movies/News/ComingSoon data (idempotent via `.Any()` checks). Movies/News/ComingSoon seed content comes from `movies.json`, `news.json`, `comingSoon.json` in the Web project root. Seeded login accounts: `Admin1@abv.bg` (role Admin) and `User1@abv.bg` (role User), password = same as the email.
+On every startup, `Program.cs` calls `app.PrepareDatabaseAsync()` ([MoreMovies.Web/Infrastructure/ApplicationBuilderExtensions.cs](MoreMovies.Web/Infrastructure/ApplicationBuilderExtensions.cs)), which runs `db.Database.MigrateAsync()` and then seeds Genre/Language/Country/Users/Movies/News/ComingSoon data (idempotent via `.Any()` checks). Movies/News/ComingSoon seed content comes from `movies.json`, `news.json`, `comingSoon.json` in the Web project root. Development demo users are created without passwords. Existing accounts keep their current credentials.
 
 ## Architecture
 
