@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MoreMovies.Models;
@@ -47,9 +47,14 @@ namespace MoreMovies.Data
         public DbSet<CinemaPojection> CinemaPojections { get; set; }
         public DbSet<Cinema> Cinemas { get; set; }
 
+        /// <summary>Configure the database model and relationship keys.</summary>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Movie>()
+                .Property(movie => movie.Budget)
+                .HasPrecision(18, 2);
 
             modelBuilder.Entity<MovieActor>()
                 .HasKey(x => new { x.ActorId, x.MovieId });
