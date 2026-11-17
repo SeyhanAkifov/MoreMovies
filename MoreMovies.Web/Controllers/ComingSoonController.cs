@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+using System.Linq;
+using MoreMovies.Web.MappingConfiguration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MoreMovies.Models;
@@ -14,12 +15,10 @@ namespace MoreMovies.Web.Controllers
     public class ComingSoonController : Controller
     {
         private readonly IComingSoonService comingSoonService;
-        private readonly IMapper mapper;
 
-        public ComingSoonController(IComingSoonService comingSoonService, IMapper mapper)
+        public ComingSoonController(IComingSoonService comingSoonService)
         {
             this.comingSoonService = comingSoonService;
-            this.mapper = mapper;
         }
 
         [Authorize(Roles = RoleNames.Admin)]
@@ -47,7 +46,7 @@ namespace MoreMovies.Web.Controllers
         {
             var comingSoon = await this.comingSoonService.GetAll();
 
-            var comingSoonResult = mapper.Map<ICollection<ComingSoonOutputDto>, ICollection<ComingSoonViewModel>>(comingSoon);
+            var comingSoonResult = (comingSoon ?? System.Array.Empty<ComingSoonOutputDto>()).Select(ViewModelMappings.ToViewModel).ToList();
 
             return this.View(comingSoonResult);
         }
@@ -61,7 +60,7 @@ namespace MoreMovies.Web.Controllers
             }
 
             var comingSoon = await this.comingSoonService.GetWithId(id);
-            var comingSoonResult = mapper.Map<ComingSoonOutputDto, ComingSoonViewModel>(comingSoon);
+            var comingSoonResult = comingSoon.ToViewModel();
 
             return this.View(comingSoonResult);
         }

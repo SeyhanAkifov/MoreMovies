@@ -34,12 +34,12 @@ All projects target `net10.0`. There is no repository/unit-of-work abstraction �
 
 - **MoreMovies.Models** — domain entities (`Actor`, `Movie`, `Genre`, `Language`, `Country`, `Comment`, `News`, `ComingSoon`, `Cinema`, `CinemaHall`, `CinemaPojection`, join entities `MovieActor`/`MovieComment`/`MovieCountry`/`MovieGenre`/`MovieLanguage`/`UserMovie`), plus `DataConstants.cs` (validation constants). `ApplicationUser.cs` is defined here but unused — the app registers `IdentityUser` directly in the DbContext and Identity setup, not `ApplicationUser`.
 - **MoreMovies.Data** — `ApplicationDbContext : IdentityDbContext<IdentityUser>` ([MoreMovies.Data/ApplicationDbContext.cs](MoreMovies.Data/ApplicationDbContext.cs)) combines app tables and ASP.NET Identity tables in one context. Composite keys for all many-to-many join entities are configured in `OnModelCreating`. 20 EF Core migrations exist, dated 2021-05-27 through 2021-12-29 — none since the .NET 10 migration, so the schema has been stable since then.
-- **MoreMovies.Services** — one service + interface per domain area (`MovieService`/`IMovieService`, `ActorService`, `CinemaService`, `CommentService`, `GenreService`, `LanguageService`, `CountryService`, `NewsService`, `ComingSoonService`, `UserService`), plus `Validator`/`IValidator`. `Dto/Input` and `Dto/Output` hold the AutoMapper source/target DTOs used at the service boundary.
+- **MoreMovies.Services** — one service + interface per domain area (`MovieService`/`IMovieService`, `ActorService`, `CinemaService`, `CommentService`, `GenreService`, `LanguageService`, `CountryService`, `NewsService`, `ComingSoonService`, `UserService`), plus `Validator`/`IValidator`. `Dto/Input` and `Dto/Output` hold the request and response DTOs used at the service boundary.
 - **MoreMovies.Web** — ASP.NET Core MVC app using the minimal hosting model. Service registrations and the request pipeline are configured in `Program.cs`:
   - `AddDbContext<ApplicationDbContext>` using `Configuration.GetConnectionString("DefaultConnection")`
   - `AddDefaultIdentity<IdentityUser>(RequireConfirmedAccount = true).AddRoles<IdentityRole>()` — cookie auth, roles `Admin`/`User`, no JWT/external OAuth
   - Global `AutoValidateAntiforgeryTokenAttribute` filter on all controllers
-  - AutoMapper is registered via `AddAutoMapper(typeof(ApplicationProfile))`
+  - Typed mapping methods convert service DTOs to Razor and API models
   - `AddSignalR()`, with all domain services registered `AddScoped`
   - `MapHub<MovieHub>("/moviehub")` for live comment notifications
   - Has its own `Models/{Administration,Cinema,Comingsoon,Movie,News}` folder for view/API models — distinct from the domain entities in `MoreMovies.Models`

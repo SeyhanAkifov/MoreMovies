@@ -1,4 +1,3 @@
-﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -11,7 +10,6 @@ using MoreMovies.Services;
 using MoreMovies.Services.Dto.Input;
 using MoreMovies.Web.Controllers;
 using MoreMovies.Web.Hubs;
-using MoreMovies.Web.MappingConfiguration;
 using MoreMovies.Web.Models;
 using MoreMovies.Web.Models.Movie;
 using System;
@@ -31,16 +29,14 @@ namespace MoreMovie.Web.Tests.Controller
         public async Task AllShoudReturnAllmovies()
         {
             var data = DatabaseMock.Instance;
-
-            var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
             var commentService = new CommentService(data);
             var languageService = new LanguageService(data);
             var countryService = new CountryService(data);
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
-            var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, null);
+            var movieService = new MovieService(data);
+            var movieController = new MovieController(movieService, commentService, actorService, languageService, genreService, countryService, null);
 
             //Act
             var result = await movieController.All();
@@ -61,16 +57,14 @@ namespace MoreMovie.Web.Tests.Controller
             //Arrange
 
             var data = DatabaseMock.Instance;
-
-            var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
             var commentService = new CommentService(data);
             var languageService = new LanguageService(data);
             var countryService = new CountryService(data);
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
-            var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, null);
+            var movieService = new MovieService(data);
+            var movieController = new MovieController(movieService, commentService, actorService, languageService, genreService, countryService, null);
 
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
@@ -100,16 +94,14 @@ namespace MoreMovie.Web.Tests.Controller
             //Arrange
 
             var data = DatabaseMock.Instance;
-
-            var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
             var commentService = new CommentService(data);
             var languageService = new LanguageService(data);
             var countryService = new CountryService(data);
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
-            var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, null);
+            var movieService = new MovieService(data);
+            var movieController = new MovieController(movieService, commentService, actorService, languageService, genreService, countryService, null);
 
             //Act
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
@@ -147,16 +139,14 @@ namespace MoreMovie.Web.Tests.Controller
             //Arrange
 
             var data = DatabaseMock.Instance;
-
-            var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
             var commentService = new CommentService(data);
             var languageService = new LanguageService(data);
             var countryService = new CountryService(data);
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
-            var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, null);
+            var movieService = new MovieService(data);
+            var movieController = new MovieController(movieService, commentService, actorService, languageService, genreService, countryService, null);
 
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
@@ -185,16 +175,14 @@ namespace MoreMovie.Web.Tests.Controller
             //Arrange
 
             var data = DatabaseMock.Instance;
-
-            var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
             var commentService = new CommentService(data);
             var languageService = new LanguageService(data);
             var countryService = new CountryService(data);
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
-            var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, null);
+            var movieService = new MovieService(data);
+            var movieController = new MovieController(movieService, commentService, actorService, languageService, genreService, countryService, null);
 
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
@@ -223,16 +211,14 @@ namespace MoreMovie.Web.Tests.Controller
             //Arrange
 
             var data = DatabaseMock.Instance;
-
-            var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
             var commentService = new CommentService(data);
             var languageService = new LanguageService(data);
             var countryService = new CountryService(data);
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
-            var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, null);
+            var movieService = new MovieService(data);
+            var movieController = new MovieController(movieService, commentService, actorService, languageService, genreService, countryService, null);
 
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
@@ -260,16 +246,14 @@ namespace MoreMovie.Web.Tests.Controller
         public async Task AddMovieIfModelStateIsNotValidShouldReturnCorrectRedirect()
         {
             var data = DatabaseMock.Instance;
-
-            var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
             var commentService = new CommentService(data);
             var languageService = new LanguageService(data);
             var countryService = new CountryService(data);
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
-            var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, null);
+            var movieService = new MovieService(data);
+            var movieController = new MovieController(movieService, commentService, actorService, languageService, genreService, countryService, null);
 
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
@@ -300,16 +284,14 @@ namespace MoreMovie.Web.Tests.Controller
         public async Task AddMovieShouldReturnCorrectAddedMovie()
         {
             var data = DatabaseMock.Instance;
-
-            var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
             var commentService = new CommentService(data);
             var languageService = new LanguageService(data);
             var countryService = new CountryService(data);
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
-            var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, null);
+            var movieService = new MovieService(data);
+            var movieController = new MovieController(movieService, commentService, actorService, languageService, genreService, countryService, null);
 
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
@@ -361,16 +343,14 @@ namespace MoreMovie.Web.Tests.Controller
         public async Task GetDetailsShouldReturnNullWithIdZero()
         {
             var data = DatabaseMock.Instance;
-
-            var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
             var commentService = new CommentService(data);
             var languageService = new LanguageService(data);
             var countryService = new CountryService(data);
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
-            var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, null);
+            var movieService = new MovieService(data);
+            var movieController = new MovieController(movieService, commentService, actorService, languageService, genreService, countryService, null);
 
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
@@ -392,16 +372,14 @@ namespace MoreMovie.Web.Tests.Controller
         public async Task AddShouldReturnCorectView()
         {
             var data = DatabaseMock.Instance;
-
-            var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
             var commentService = new CommentService(data);
             var languageService = new LanguageService(data);
             var countryService = new CountryService(data);
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
-            var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, null);
+            var movieService = new MovieService(data);
+            var movieController = new MovieController(movieService, commentService, actorService, languageService, genreService, countryService, null);
 
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
@@ -421,16 +399,14 @@ namespace MoreMovie.Web.Tests.Controller
         public async Task MyMoviesShouldReturnCorectCount()
         {
             var data = DatabaseMock.Instance;
-
-            var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
             var commentService = new CommentService(data);
             var languageService = new LanguageService(data);
             var countryService = new CountryService(data);
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
-            var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, null);
+            var movieService = new MovieService(data);
+            var movieController = new MovieController(movieService, commentService, actorService, languageService, genreService, countryService, null);
 
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
@@ -453,16 +429,14 @@ namespace MoreMovie.Web.Tests.Controller
         public async Task AddCommentSchoulReturnCorrectView()
         {
             var data = DatabaseMock.Instance;
-
-            var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
             var commentService = new CommentService(data);
             var languageService = new LanguageService(data);
             var countryService = new CountryService(data);
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
-            var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, null);
+            var movieService = new MovieService(data);
+            var movieController = new MovieController(movieService, commentService, actorService, languageService, genreService, countryService, null);
 
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
@@ -492,17 +466,15 @@ namespace MoreMovie.Web.Tests.Controller
 
             var hubContext = new Mock<IHubContext<MovieHub>>();
             hubContext.Setup(x => x.Clients).Returns(() => mockClients.Object);
-
-            var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
             var commentService = new CommentService(data);
             var languageService = new LanguageService(data);
             var countryService = new CountryService(data);
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
+            var movieService = new MovieService(data);
 
-            var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, hubContext.Object);
+            var movieController = new MovieController(movieService, commentService, actorService, languageService, genreService, countryService, hubContext.Object);
 
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
@@ -539,17 +511,15 @@ namespace MoreMovie.Web.Tests.Controller
 
             var hubContext = new Mock<IHubContext<MovieHub>>();
             hubContext.Setup(x => x.Clients).Returns(() => mockClients.Object);
-
-            var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
             var commentService = new CommentService(data);
             var languageService = new LanguageService(data);
             var countryService = new CountryService(data);
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
+            var movieService = new MovieService(data);
 
-            var movieController = new MovieController(movieService, mapper, commentService, actorService, languageService, genreService, countryService, hubContext.Object);
+            var movieController = new MovieController(movieService, commentService, actorService, languageService, genreService, countryService, hubContext.Object);
 
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {

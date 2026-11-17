@@ -11,7 +11,6 @@ using MoreMovies.Services;
 using MoreMovies.Services.Interfaces;
 using MoreMovies.Web.Hubs;
 using MoreMovies.Web.Infrastructure;
-using MoreMovies.Web.MappingConfiguration;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -30,8 +29,6 @@ services.AddDefaultIdentity<IdentityUser>(options =>
 
 services.AddControllersWithViews(options
     => options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>());
-
-services.AddAutoMapper(typeof(ApplicationProfile));
 
 services.AddSignalR();
 

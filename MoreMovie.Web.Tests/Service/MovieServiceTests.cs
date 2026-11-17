@@ -1,8 +1,6 @@
-﻿using AutoMapper;
 using MoreMovie.Web.Tests.Mocks;
 using MoreMovies.Models;
 using MoreMovies.Services;
-using MoreMovies.Web.MappingConfiguration;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -17,15 +15,13 @@ namespace MoreMovie.Web.Tests.Service
         public async Task AllNewestAddedShouldReturnCorrectOrderedList()
         {
             var data = DatabaseMock.Instance;
-
-            var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
             var commentService = new CommentService(data);
             var languageService = new LanguageService(data);
             var countryService = new CountryService(data);
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
+            var movieService = new MovieService(data);
 
             //Act
             var newstMovies = await movieService.GetNewestAddedAllMovie();
@@ -43,15 +39,13 @@ namespace MoreMovie.Web.Tests.Service
         public async Task NewestAddedShouldReturnCorrectOrderedList()
         {
             var data = DatabaseMock.Instance;
-
-            var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
             var commentService = new CommentService(data);
             var languageService = new LanguageService(data);
             var countryService = new CountryService(data);
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
+            var movieService = new MovieService(data);
 
             //Act
             var newstMovies = await movieService.GetNewestAddedMovie();
@@ -66,15 +60,13 @@ namespace MoreMovie.Web.Tests.Service
         public async Task AllTopCommentedShouldReturnCorrectOrderedList()
         {
             var data = DatabaseMock.Instance;
-
-            var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
             var commentService = new CommentService(data);
             var languageService = new LanguageService(data);
             var countryService = new CountryService(data);
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
+            var movieService = new MovieService(data);
 
             //Act
             var topCommentedMovies = await movieService.GetTopCommentedAllMovie();
@@ -92,15 +84,13 @@ namespace MoreMovie.Web.Tests.Service
         public async Task TopCommentedShouldReturnCorrectOrderedList()
         {
             var data = DatabaseMock.Instance;
-
-            var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
             var commentService = new CommentService(data);
             var languageService = new LanguageService(data);
             var countryService = new CountryService(data);
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
+            var movieService = new MovieService(data);
 
             //Act
             var topCommentedMovies = await movieService.GetTopCommentedMovie();
@@ -115,15 +105,13 @@ namespace MoreMovie.Web.Tests.Service
         public async Task AllTopLikedShouldReturnCorrectOrderedList()
         {
             var data = DatabaseMock.Instance;
-
-            var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
             var commentService = new CommentService(data);
             var languageService = new LanguageService(data);
             var countryService = new CountryService(data);
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
+            var movieService = new MovieService(data);
 
             //Act
             var topCommentedMovies = await movieService.GetTopLikedAllMovie();
@@ -141,15 +129,13 @@ namespace MoreMovie.Web.Tests.Service
         public async Task TopLikedShouldReturnCorrectOrderedList()
         {
             var data = DatabaseMock.Instance;
-
-            var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
             var commentService = new CommentService(data);
             var languageService = new LanguageService(data);
             var countryService = new CountryService(data);
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
+            var movieService = new MovieService(data);
 
             //Act
             var topCommentedMovies = await movieService.GetTopLikedMovie();
@@ -164,15 +150,13 @@ namespace MoreMovie.Web.Tests.Service
         public async Task SearchByGenreShouldReturnCorrectCount()
         {
             var data = DatabaseMock.Instance;
-
-            var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
             var commentService = new CommentService(data);
             var languageService = new LanguageService(data);
             var countryService = new CountryService(data);
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
+            var movieService = new MovieService(data);
 
             data.Movies.Add(new Movie
             {
@@ -197,15 +181,13 @@ namespace MoreMovie.Web.Tests.Service
         public async Task SearchByYearShouldReturnCorrectCount()
         {
             var data = DatabaseMock.Instance;
-
-            var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
             var commentService = new CommentService(data);
             var languageService = new LanguageService(data);
             var countryService = new CountryService(data);
             var genreService = new GenreService(data);
             var newsService = new NewsService(data);
             var actorService = new ActorService(data);
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
+            var movieService = new MovieService(data);
 
             data.Movies.Add(new Movie
             {

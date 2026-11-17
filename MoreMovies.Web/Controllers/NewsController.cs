@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+using System.Linq;
+using MoreMovies.Web.MappingConfiguration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MoreMovies.Models;
@@ -14,12 +15,10 @@ namespace MoreMovies.Web.Controllers
     public class NewsController : Controller
     {
         private readonly INewsService newsService;
-        private readonly IMapper mapper;
 
-        public NewsController(INewsService newsService, IMapper mapper)
+        public NewsController(INewsService newsService)
         {
             this.newsService = newsService;
-            this.mapper = mapper;
         }
 
         [Authorize(Roles = RoleNames.Admin)]
@@ -53,7 +52,7 @@ namespace MoreMovies.Web.Controllers
         public async Task<IActionResult> All()
         {
             var news = await this.newsService.GetAllNews();
-            var newsResult = mapper.Map<ICollection<NewsOutputDto>, ICollection<NewsViewModel>>(news);
+            var newsResult = (news ?? System.Array.Empty<NewsOutputDto>()).Select(ViewModelMappings.ToViewModel).ToList();
 
             return this.View(newsResult);
         }
@@ -62,7 +61,7 @@ namespace MoreMovies.Web.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var news = await this.newsService.GetNewsWithId(id);
-            var newsResult = mapper.Map<NewsOutputDto, NewsViewModel>(news);
+            var newsResult = news.ToViewModel();
 
             return this.View(newsResult);
         }

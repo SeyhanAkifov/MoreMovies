@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using MoreMovies.Web.MappingConfiguration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +19,6 @@ namespace MoreMovies.Web.Controllers
     {
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly UserManager<IdentityUser> userManager;
-        private readonly IMapper mapper;
         private readonly INewsService newsService;
         private readonly IComingSoonService comingSoonService;
         private readonly IUserService userService;
@@ -27,13 +26,12 @@ namespace MoreMovies.Web.Controllers
         public AdministrationController(
             UserManager<IdentityUser> userManager, 
             RoleManager<IdentityRole> roleManager, 
-            IMapper mapper, INewsService newsService, 
+            INewsService newsService,
             IComingSoonService comingSoonService, 
             IUserService userService)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
-            this.mapper = mapper;
             this.newsService = newsService;
             this.comingSoonService = comingSoonService;
             this.userService = userService;
@@ -49,7 +47,7 @@ namespace MoreMovies.Web.Controllers
         public async Task<IActionResult> EditComingSoon()
         {
             var comingSoon = await this.comingSoonService.GetAll();
-            var comingSoonResult = mapper.Map<ICollection<ComingSoonOutputDto>, ICollection<ComingSoonViewModel>>(comingSoon);
+            var comingSoonResult = (comingSoon ?? System.Array.Empty<ComingSoonOutputDto>()).Select(ViewModelMappings.ToViewModel).ToList();
             
             return this.View(comingSoonResult);
         }
@@ -66,7 +64,7 @@ namespace MoreMovies.Web.Controllers
         public async Task<IActionResult> EditNews()
         {
             var news = await this.newsService.GetAllNews();
-            var newsResult = mapper.Map<ICollection<NewsOutputDto>, ICollection<NewsViewModel>>(news);
+            var newsResult = (news ?? System.Array.Empty<NewsOutputDto>()).Select(ViewModelMappings.ToViewModel).ToList();
 
             return this.View(newsResult);
         }
@@ -279,7 +277,7 @@ namespace MoreMovies.Web.Controllers
         public async Task<IActionResult> All()
         {
             var users = await userService.GetAll();
-            var usersResult = mapper.Map<ICollection<IdentityUser>, ICollection<MyProfileViewModel>>(users)
+            var usersResult = (users ?? System.Array.Empty<IdentityUser>()).Select(ViewModelMappings.ToViewModel).ToList()
                 .ToList();
 
             return this.View(usersResult);

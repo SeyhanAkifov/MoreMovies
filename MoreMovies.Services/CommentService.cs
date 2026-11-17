@@ -28,7 +28,11 @@ namespace MoreMovies.Services
                 UserEmail = model.UserId
             };
 
-            db.Comments.Add(comment);
+            db.MovieComments.Add(new MovieComment
+            {
+                MovieId = model.MovieId,
+                Comment = comment
+            });
 
             await db.SaveChangesAsync();
 

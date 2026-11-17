@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+using System.Linq;
+using MoreMovies.Web.MappingConfiguration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MoreMovies.Services.Dto.Input;
@@ -13,12 +14,10 @@ namespace MoreMovies.Web.Controllers
     public class CinemaController : Controller
     {
         private readonly ICinemaService cinemaService;
-        private readonly IMapper mapper;
 
-        public CinemaController(ICinemaService cinemaService, IMapper mapper)
+        public CinemaController(ICinemaService cinemaService)
         {
             this.cinemaService = cinemaService;
-            this.mapper = mapper;
         }
 
         [HttpGet]
@@ -29,7 +28,7 @@ namespace MoreMovies.Web.Controllers
             var projections = this.cinemaService.GetAll(cinemaName);
 
 
-            var result = mapper.Map<ICollection<CinemaProjectionOutputDto>, ICollection<CinemaProjectionViewModel>>(projections);
+            var result = (projections ?? System.Array.Empty<CinemaProjectionOutputDto>()).Select(ViewModelMappings.ToViewModel).ToList();
 
             var d = new InCinemaViewModel
             {

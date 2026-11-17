@@ -17,17 +17,8 @@ namespace MoreMovies.Services
     public class MovieService : IMovieService
     {
         private readonly ApplicationDbContext db;
-        private readonly ICommentService commentService;
-        private readonly ILanguageService languageService;
-        private readonly IGenreService genreService;
-        private readonly ICountryService countryService;
-
-        public MovieService(ICommentService commentService, ApplicationDbContext db, ILanguageService languageService, IGenreService genreService, ICountryService countryService)
+        public MovieService(ApplicationDbContext db)
         {
-            this.commentService = commentService;
-            this.languageService = languageService;
-            this.genreService = genreService;
-            this.countryService = countryService;
             this.db = db;
         }
 
@@ -110,17 +101,6 @@ namespace MoreMovies.Services
             await db.SaveChangesAsync();
         }
 
-
-        public async Task AddComment(AddCommentInputModel model)
-        {
-            var movie = await GetMovieWithId(model.MovieId);
-
-            var comment = await commentService.AddComment(model);
-
-            movie.Comments.Add(new MovieComment { Comment = comment });
-
-            await db.SaveChangesAsync();
-        }
 
         public async Task<ICollection<MovieOutputDto>> GetAllMovie()
         {

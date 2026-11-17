@@ -1,4 +1,3 @@
-﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MoreMovie.Web.Tests.Mocks;
@@ -6,7 +5,6 @@ using MoreMovies.Models;
 using MoreMovies.Services;
 using MoreMovies.Services.Dto.Input;
 using MoreMovies.Web.Controllers;
-using MoreMovies.Web.MappingConfiguration;
 using MoreMovies.Web.Models.News;
 using System.Linq;
 using System.Security.Claims;
@@ -22,9 +20,8 @@ namespace MoreMovie.Web.Tests.Controller
         {
             var data = DatabaseMock.Instance;
             var newsService = new NewsService(data);
-            var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
 
-            var newsController = new NewsController(newsService, mapper);
+            var newsController = new NewsController(newsService);
 
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
@@ -53,9 +50,8 @@ namespace MoreMovie.Web.Tests.Controller
         {
             var data = DatabaseMock.Instance;
             var newsService = new NewsService(data);
-            var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
 
-            var newsController = new NewsController(newsService, mapper);
+            var newsController = new NewsController(newsService);
 
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
@@ -86,9 +82,8 @@ namespace MoreMovie.Web.Tests.Controller
         {
             var data = DatabaseMock.Instance;
             var newsService = new NewsService(data);
-            var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
 
-            var newsController = new NewsController(newsService, mapper);
+            var newsController = new NewsController(newsService);
 
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
@@ -119,9 +114,8 @@ namespace MoreMovie.Web.Tests.Controller
         {
             var data = DatabaseMock.Instance;
             var newsService = new NewsService(data);
-            var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
 
-            var newsController = new NewsController(newsService, mapper);
+            var newsController = new NewsController(newsService);
 
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {

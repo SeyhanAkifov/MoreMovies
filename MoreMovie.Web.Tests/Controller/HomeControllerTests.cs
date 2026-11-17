@@ -1,10 +1,8 @@
-﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using MoreMovie.Web.Tests.Mocks;
 using MoreMovies.Services;
 using MoreMovies.Web.Controllers;
-using MoreMovies.Web.MappingConfiguration;
 using MoreMovies.Web.Models;
 using System.Threading.Tasks;
 using Xunit;
@@ -18,7 +16,6 @@ namespace MoreMovie.Web.Tests.Controller
         {
             //Arrange
             var data = DatabaseMock.Instance;
-            var mapper = new Mapper(new MapperConfiguration(config => config.AddProfile(new ApplicationProfile())));
             var cache = new MemoryCache(new MemoryCacheOptions());
 
             var commentService = new CommentService(data);
@@ -28,9 +25,9 @@ namespace MoreMovie.Web.Tests.Controller
             var newsService = new NewsService(data);
             var comingSoonService = new ComingSoonService(data);
 
-            var movieService = new MovieService(commentService, data, languageService, genreService, countryService);
+            var movieService = new MovieService(data);
 
-            var homeController = new HomeController(mapper, newsService, comingSoonService, genreService, cache, null, null, movieService);
+            var homeController = new HomeController(newsService, comingSoonService, genreService, cache, null, null, movieService);
 
             //Act
             var result = await homeController.Index();
@@ -60,7 +57,7 @@ namespace MoreMovie.Web.Tests.Controller
         public void ErrorShouldReturnView()
         {
             //Arrange
-            var homeController = new HomeController(MapperMock.Instance, null, null, null, null, null, null, null);
+            var homeController = new HomeController(null, null, null, null, null, null, null);
 
             //Act
             var result = homeController.Error();

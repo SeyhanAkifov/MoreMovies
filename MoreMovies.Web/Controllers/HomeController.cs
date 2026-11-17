@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+using System.Linq;
+using MoreMovies.Web.MappingConfiguration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -21,14 +22,12 @@ namespace MoreMovies.Web.Controllers
         private readonly IGenreService genreService;
         private readonly INewsService newsService;
         private readonly IComingSoonService comingSoonService;
-        private readonly IMapper mapper;
         private readonly IMemoryCache cache;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
         public HomeController(
             
-            IMapper mapper, 
             INewsService newsService, 
             IComingSoonService comingSoonService, 
             IGenreService genreService, 
@@ -37,7 +36,6 @@ namespace MoreMovies.Web.Controllers
             SignInManager<IdentityUser> signInManager, IMovieService service)
         {
             this.service = service;
-            this.mapper = mapper;
             this.newsService = newsService;
             this.comingSoonService = comingSoonService;
             this.genreService = genreService;
@@ -81,11 +79,11 @@ namespace MoreMovies.Web.Controllers
             
             var newestAddedMovies = await service.GetNewestAddedMovie();
             
-            var topCommentedResult = mapper.Map<ICollection<MovieOutputDto>, ICollection<MovieViewModel>>(topcomentedMovies);
-            var topLikedResult = mapper.Map<ICollection<MovieOutputDto>, ICollection<MovieViewModel>>(topLikedMovies);
-            var newestAddedResult = mapper.Map<ICollection<MovieOutputDto>, ICollection<MovieViewModel>>(newestAddedMovies);
-            var newsResult = mapper.Map<ICollection<NewsOutputDto>, ICollection<NewsViewModel>>(news);
-            var comingSoonResult = mapper.Map<ICollection<ComingSoonOutputDto>, ICollection<ComingSoonViewModel>>(comingSoon);
+            var topCommentedResult = (topcomentedMovies ?? System.Array.Empty<MovieOutputDto>()).Select(ViewModelMappings.ToViewModel).ToList();
+            var topLikedResult = (topLikedMovies ?? System.Array.Empty<MovieOutputDto>()).Select(ViewModelMappings.ToViewModel).ToList();
+            var newestAddedResult = (newestAddedMovies ?? System.Array.Empty<MovieOutputDto>()).Select(ViewModelMappings.ToViewModel).ToList();
+            var newsResult = (news ?? System.Array.Empty<NewsOutputDto>()).Select(ViewModelMappings.ToViewModel).ToList();
+            var comingSoonResult = (comingSoon ?? System.Array.Empty<ComingSoonOutputDto>()).Select(ViewModelMappings.ToViewModel).ToList();
             
             var movies = new MovieListViewModel()
             {

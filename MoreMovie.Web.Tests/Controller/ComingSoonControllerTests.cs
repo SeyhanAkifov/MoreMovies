@@ -1,4 +1,3 @@
-﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using MoreMovies.Services.Dto.Input;
@@ -11,15 +10,13 @@ namespace MoreMovie.Web.Tests.Controller
 {
     public class ComingSoonControllerTests
     {
-        private readonly Mock<IMapper> mapper;
         private readonly Mock<IComingSoonService> service;
         private readonly ComingSoonController controller;
         
         public ComingSoonControllerTests()
         {
-            this.mapper = new Mock<IMapper>();
             this.service = new Mock<IComingSoonService>();
-            this.controller = new ComingSoonController(this.service.Object, this.mapper.Object);
+            this.controller = new ComingSoonController(this.service.Object);
 
         }
 

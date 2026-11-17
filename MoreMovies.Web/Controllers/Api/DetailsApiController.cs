@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using MoreMovies.Web.MappingConfiguration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MoreMovies.Services.Dto.Output;
@@ -14,12 +14,10 @@ namespace MoreMovies.Web.Controllers.Api
     public class DetailsApiController : ControllerBase
     {
         private readonly IMovieService movieService;
-        private readonly IMapper mapper;
 
-        public DetailsApiController(IMovieService movieService, IMapper mapper)
+        public DetailsApiController(IMovieService movieService)
         {
             this.movieService = movieService;
-            this.mapper = mapper;
         }
 
         public async Task<IActionResult> GetDetails(int id)
@@ -29,7 +27,7 @@ namespace MoreMovies.Web.Controllers.Api
                 return BadRequest($"Invalid request for id {id}");
             }
             var details = await movieService.GetDetails(id);
-            var result = mapper.Map<DetailsOutputDto, MovieDetailsApiModel>(details);
+            var result = details.ToApiModel();
 
             return Ok(result);
         }
