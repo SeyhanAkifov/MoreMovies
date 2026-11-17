@@ -65,6 +65,24 @@ namespace MoreMovies.Web.Tests
             Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
         }
 
+        [Theory]
+        [InlineData("/Movie/Like")]
+        [InlineData("/Movie/DisLike")]
+        [InlineData("/Movie/RateMovie")]
+        [InlineData("/Home/Logout")]
+        [InlineData("/News/Delete")]
+        public async Task WriteActionsRejectGet(string url)
+        {
+            using var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
+            {
+                AllowAutoRedirect = false
+            });
+
+            using var response = await client.GetAsync(url);
+
+            Assert.Equal(HttpStatusCode.MethodNotAllowed, response.StatusCode);
+        }
+
         [Fact]
         public async Task HomePage()
         {

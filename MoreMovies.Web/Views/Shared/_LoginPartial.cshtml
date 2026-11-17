@@ -36,7 +36,9 @@
 
             <hr class="border-gray-700 my-2" />
 
-            <a asp-controller="Home" asp-action="Logout" class="block px-4 py-2 text-sm text-red-400 hover:bg-gray-700">Logout</a>
+            <form asp-controller="Home" asp-action="Logout" method="post">
+                <button type="submit" class="block px-4 py-2 text-sm text-red-400 hover:bg-gray-700">Logout</button>
+            </form>
         </div>
     </div>
 }

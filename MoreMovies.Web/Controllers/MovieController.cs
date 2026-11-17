@@ -77,6 +77,7 @@ namespace MoreMovies.Web.Controllers
         }
 
         [Authorize]
+        [HttpPost]
         public async Task<IActionResult> RateMovie(int rating, int movieId)
         {
             await movieService.RateMovie(rating, movieId);
@@ -216,7 +217,7 @@ namespace MoreMovies.Web.Controllers
         }
 
         [Authorize]
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> Like(int id)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -230,7 +231,7 @@ namespace MoreMovies.Web.Controllers
         }
 
         [Authorize]
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> DisLike(int id)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);

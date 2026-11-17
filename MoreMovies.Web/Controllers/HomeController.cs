@@ -169,8 +169,7 @@ namespace MoreMovies.Web.Controllers
             return View();
         }
 
-        [HttpGet]
-       
+        [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();

@@ -42,6 +42,7 @@ namespace MoreMovies.Web.Controllers
         }
 
         [Authorize(Roles = RoleNames.Admin)]
+        [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
             await newsService.Delete(id);

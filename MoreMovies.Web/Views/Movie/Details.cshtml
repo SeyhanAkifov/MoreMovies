@@ -1,4 +1,4 @@
-﻿@model MovieDetailsViewModel
+@model MovieDetailsViewModel
 @{
     ViewData["Title"] = "Movie Details";
 }
@@ -37,15 +37,19 @@
                     {
                         @if (!Model.IsUserLiked)
                         {
-                            <a asp-controller="Movie" asp-action="Like" asp-route-id="@Model.Id" class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded">
+                            <form asp-controller="Movie" asp-action="Like" asp-route-id="@Model.Id" method="post">
+                                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded">
                                 Like
-                            </a>
+                            </button>
+                            </form>
                         }
                         else
                         {
-                            <a asp-controller="Movie" asp-action="DisLike" asp-route-id="@Model.Id" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-2 rounded">
+                            <form asp-controller="Movie" asp-action="DisLike" asp-route-id="@Model.Id" method="post">
+                                <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-2 rounded">
                                 Dislike
-                            </a>
+                            </button>
+                            </form>
                         }
                     }
 
