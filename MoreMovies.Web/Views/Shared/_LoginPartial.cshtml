@@ -1,57 +1,39 @@
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
-
-@if (SignInManager.IsSignedIn(User))
+@if (User.Identity?.IsAuthenticated == true)
 {
-    var email = User.Identity.Name ?? "";
-    var initial = email.Length > 0 ? email.Substring(0, 1).ToUpper() : "?";
+    var name = string.IsNullOrWhiteSpace(User.Identity.Name) ? "Account" : User.Identity.Name;
 
-    <div class="relative user-menu">
-        <button type="button" class="user-menu-button flex items-center gap-2 px-2 py-1.5 rounded hover:bg-gray-800 transition">
-            <span class="flex items-center justify-center h-8 w-8 rounded-full bg-red-600 text-white text-sm font-semibold">@initial</span>
-            <span class="hidden lg:inline text-gray-200 text-sm max-w-[10rem] truncate">@email</span>
-            <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-        </button>
-
-        <div class="user-menu-panel hidden absolute right-0 mt-2 w-56 bg-gray-800 rounded-lg shadow-lg ring-1 ring-gray-700 py-2 z-20">
-            <a asp-controller="Movie" asp-action="MyMovies" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700">My Movies</a>
-            <a asp-controller="Movie" asp-action="MyLiked" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700">My Liked</a>
-            <a asp-controller="Movie" asp-action="Add" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700">Add Movie</a>
-
+    <details class="site-account">
+        <summary>
+            <span class="site-avatar" aria-hidden="true">@name[..1].ToUpperInvariant()</span>
+            Account
+        </summary>
+        <div class="site-account-panel">
+            <p>@name</p>
+            <a asp-area="" asp-controller="Movie" asp-action="MyMovies">My movies</a>
+            <a asp-area="" asp-controller="Movie" asp-action="MyLiked">Liked movies</a>
+            <a asp-area="" asp-controller="Movie" asp-action="Add">Add movie</a>
             @if (User.IsInRole(RoleNames.Manager))
             {
-                <a asp-controller="Cinema" asp-action="Add" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700">Add Projection</a>
+                <a asp-area="" asp-controller="Cinema" asp-action="Add">Add projection</a>
             }
             else
             {
-                <a asp-controller="Cinema" asp-action="Become" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700">Become a Cinema Agent</a>
+                <a asp-area="" asp-controller="Cinema" asp-action="Become">Become a cinema agent</a>
             }
-
             @if (User.IsInRole(RoleNames.Admin))
             {
-                <a asp-controller="Administration" asp-action="Index" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700">Administration</a>
+                <a asp-area="" asp-controller="Administration" asp-action="Index">Administration</a>
             }
-
-            <hr class="border-gray-700 my-2" />
-
-            <form asp-controller="Home" asp-action="Logout" method="post">
-                <button type="submit" class="block px-4 py-2 text-sm text-red-400 hover:bg-gray-700">Logout</button>
+            <form asp-area="" asp-controller="Home" asp-action="Logout" method="post">
+                <button type="submit">Sign out</button>
             </form>
         </div>
-    </div>
+    </details>
 }
 else
 {
-    <div class="flex items-center gap-2">
-        <a asp-controller="Home" asp-action="Register"
-           class="bg-gray-700 hover:bg-gray-600 text-white px-3 py-1.5 rounded transition text-sm">
-            Register
-        </a>
-        <a asp-controller="Home" asp-action="Login"
-           class="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded transition text-sm">
-            Login
-        </a>
+    <div class="site-auth-links">
+        <a asp-area="" asp-controller="Home" asp-action="Register">Register</a>
+        <a class="site-sign-in" asp-area="Identity" asp-page="/Account/Login">Sign in</a>
     </div>
 }

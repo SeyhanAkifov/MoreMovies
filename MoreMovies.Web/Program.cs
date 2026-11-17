@@ -46,6 +46,12 @@ services.AddMemoryCache();
 
 var app = builder.Build();
 
+app.Use(async (context, next) =>
+{
+    context.Response.Headers["Permissions-Policy"] = "camera=(), microphone=()";
+    await next(context);
+});
+
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();

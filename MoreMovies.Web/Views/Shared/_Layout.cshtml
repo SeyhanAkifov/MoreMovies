@@ -7,118 +7,34 @@
 
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="~/css/style.css" />
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
 </head>
 <body class="text-gray-100 flex flex-col min-h-screen">
     <div class="relative z-10 flex flex-col min-h-screen">
-        <header class="bg-gray-900 text-white">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between items-center h-16">
-
-                    <!-- Logo -->
-                    <div class="flex-shrink-0 flex items-center space-x-2">
-                        <a asp-controller="Home" asp-action="Index" class="text-red-500 font-bold text-xl">MoreMovies</a>
-                        <a asp-controller="Home" asp-action="Index">
-                            <img src="~/css/images/logo2.png" alt="Logo" class="h-8 w-auto">
-                        </a>
+        <header class="site-header">
+            <div class="site-header-inner">
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="site-brand">
+                    <img src="~/css/images/logo2.png" alt="" width="32" height="32" />
+                    MoreMovies
+                </a>
+                <button class="site-nav-toggle" type="button" aria-controls="site-navigation"
+                        aria-expanded="false" hidden>Menu</button>
+                <nav id="site-navigation" class="site-navigation" aria-label="Main navigation">
+                    <div class="site-nav-links">
+                        <a asp-area="" asp-controller="Movie" asp-action="All"
+                           aria-current="@(ViewContext.RouteData.Values["controller"] as string == "Movie" ? "page" : null)">Movies</a>
+                        <a asp-area="" asp-controller="Cinema" asp-action="InCinema"
+                           aria-current="@(ViewContext.RouteData.Values["controller"] as string == "Cinema" ? "page" : null)">In Cinema</a>
+                        <a asp-area="" asp-controller="ComingSoon" asp-action="All"
+                           aria-current="@(ViewContext.RouteData.Values["controller"] as string == "ComingSoon" ? "page" : null)">Coming Soon</a>
+                        <a asp-area="" asp-controller="News" asp-action="All"
+                           aria-current="@(ViewContext.RouteData.Values["controller"] as string == "News" ? "page" : null)">News</a>
+                        <a asp-area="" asp-controller="Contact" asp-action="ContactPage"
+                           aria-current="@(ViewContext.RouteData.Values["controller"] as string == "Contact" ? "page" : null)">Contact</a>
                     </div>
-
-                    <!-- Desktop Menu -->
-                    <nav class="hidden md:flex items-center gap-6">
-                        <a asp-controller="Cinema" asp-action="InCinema" class="hover:text-red-500 transition">In Cinema</a>
-                        <a asp-controller="ComingSoon" asp-action="All" class="hover:text-red-500 transition">Coming Soon</a>
-                        <a asp-controller="News" asp-action="All" class="hover:text-red-500 transition">News</a>
-                        <a asp-controller="Contact" asp-action="ContactPage" class="hover:text-red-500 transition">Contact</a>
-
-                        <span class="h-6 w-px bg-gray-700"></span>
-
-                        <partial name="_LoginPartial" />
-                    </nav>
-
-                    <!-- Mobile Hamburger -->
-                    <div class="md:hidden flex items-center">
-                        <button id="mobile-menu-button" type="button" aria-label="Toggle navigation" aria-controls="mobile-menu" aria-expanded="false" class="text-gray-400 hover:text-white focus:outline-none">
-                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Mobile Menu -->
-            <div id="mobile-menu" class="hidden md:hidden bg-gray-800">
-                <nav class="px-2 pt-2 pb-4 space-y-1">
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <a asp-controller="Movie" asp-action="MyMovies" class="block px-3 py-2 rounded hover:bg-gray-700">My Movie</a>
-                        <a asp-controller="Movie" asp-action="MyLiked" class="block px-3 py-2 rounded hover:bg-gray-700">My Liked</a>
-                        <a asp-controller="Movie" asp-action="Add" class="block px-3 py-2 rounded hover:bg-gray-700">Add Movie</a>
-
-                        @if (User.IsInRole(RoleNames.Manager))
-                        {
-                            <a asp-controller="Cinema" asp-action="Add" class="block px-3 py-2 rounded hover:bg-gray-700">Add Projection</a>
-                        }
-                        else
-                        {
-                            <a asp-controller="Cinema" asp-action="Become" class="block px-3 py-2 rounded hover:bg-gray-700">Become a Cinema Agent</a>
-                        }
-                    }
-
-                    <a asp-controller="Cinema" asp-action="InCinema" class="block px-3 py-2 rounded hover:bg-gray-700">In Cinema</a>
-                    <a asp-controller="ComingSoon" asp-action="All" class="block px-3 py-2 rounded hover:bg-gray-700">Coming Soon</a>
-                    <a asp-controller="News" asp-action="All" class="block px-3 py-2 rounded hover:bg-gray-700">News</a>
-                    <a asp-controller="Contact" asp-action="ContactPage" class="block px-3 py-2 rounded hover:bg-gray-700">Contact</a>
-                    @if (User.IsInRole(RoleNames.Admin))
-                    {
-                        <a asp-controller="Administration" asp-action="Index" class="block px-3 py-2 rounded hover:bg-gray-700">Administration</a>
-                    }
-
-                    <hr class="border-gray-700 my-2" />
-
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <span class="block px-3 py-2 text-sm text-gray-400">@User.Identity.Name</span>
-                        <form asp-controller="Home" asp-action="Logout" method="post">
-                            <button type="submit" class="block px-3 py-2 rounded text-red-400 hover:bg-gray-700">Logout</button>
-                        </form>
-                    }
-                    else
-                    {
-                        <a asp-controller="Home" asp-action="Register" class="block px-3 py-2 rounded hover:bg-gray-700">Register</a>
-                        <a asp-controller="Home" asp-action="Login" class="block px-3 py-2 rounded bg-red-600 hover:bg-red-700 text-white">Login</a>
-                    }
+                    <partial name="_LoginPartial" />
                 </nav>
             </div>
-
-            <script>
-                const mobileMenuButton = document.getElementById('mobile-menu-button');
-                const mobileMenu = document.getElementById('mobile-menu');
-
-                mobileMenuButton.addEventListener('click', () => {
-                  const hidden = mobileMenu.classList.toggle('hidden');
-                  mobileMenuButton.setAttribute('aria-expanded', String(!hidden));
-                });
-
-                // User-Dropdown (Avatar oben rechts)
-                document.querySelectorAll('.user-menu').forEach(function (menu) {
-                    const button = menu.querySelector('.user-menu-button');
-                    const panel = menu.querySelector('.user-menu-panel');
-
-                    button.addEventListener('click', function (e) {
-                        e.stopPropagation();
-                        panel.classList.toggle('hidden');
-                    });
-                });
-
-                document.addEventListener('click', function (e) {
-                    document.querySelectorAll('.user-menu').forEach(function (menu) {
-                        if (!menu.contains(e.target)) {
-                            menu.querySelector('.user-menu-panel').classList.add('hidden');
-                        }
-                    });
-                });
-            </script>
         </header>
 
         <!-- Main Content -->

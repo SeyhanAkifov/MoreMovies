@@ -18,6 +18,50 @@
     connection.start().catch(err => console.error(err.toString()));
 })();
 
+const navigationToggle = document.querySelector(".site-nav-toggle");
+const navigation = document.getElementById("site-navigation");
+const accountMenu = document.querySelector(".site-account");
+
+if (navigationToggle && navigation) {
+    navigationToggle.hidden = false;
+    navigation.dataset.collapsible = "true";
+
+    function setNavigationExpanded(expanded) {
+        navigationToggle.setAttribute("aria-expanded", String(expanded));
+        navigation.dataset.expanded = String(expanded);
+        if (!expanded && accountMenu) {
+            accountMenu.open = false;
+        }
+    }
+
+    navigationToggle.addEventListener("click", () => {
+        setNavigationExpanded(navigationToggle.getAttribute("aria-expanded") !== "true");
+    });
+
+    document.addEventListener("keydown", event => {
+        if (event.key !== "Escape") {
+            return;
+        }
+
+        if (accountMenu?.open) {
+            accountMenu.open = false;
+            accountMenu.querySelector("summary").focus();
+        } else if (navigationToggle.getAttribute("aria-expanded") === "true"
+            && navigationToggle.getClientRects().length) {
+            setNavigationExpanded(false);
+            navigationToggle.focus();
+        }
+    });
+}
+
+if (accountMenu) {
+    document.addEventListener("click", event => {
+        if (!accountMenu.contains(event.target)) {
+            accountMenu.open = false;
+        }
+    });
+}
+
 const trailerDialog = document.getElementById("trailerModal");
 const trailerFrame = document.getElementById("trailerFrame");
 

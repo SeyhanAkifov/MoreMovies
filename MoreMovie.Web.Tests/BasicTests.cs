@@ -120,6 +120,19 @@ namespace MoreMovies.Web.Tests
 
             using var details = await client.GetAsync(movie);
             Assert.Equal(HttpStatusCode.OK, details.StatusCode);
+            var moviePage = await details.Content.ReadAsStringAsync();
+            Assert.Contains("main navigation", moviePage, StringComparison.OrdinalIgnoreCase);
+            Assert.Contains("camera=(), microphone=()", details.Headers.GetValues("Permissions-Policy"));
+            var logoutToken = Regex.Match(moviePage, "name=\"__RequestVerificationToken\"[^>]*value=\"([^\"]+)\"").Groups[1].Value;
+            Assert.NotEmpty(logoutToken);
+
+            using var logout = await client.PostAsync("/Home/Logout", new FormUrlEncodedContent(
+                new Dictionary<string, string> { ["__RequestVerificationToken"] = logoutToken }));
+            Assert.Equal(HttpStatusCode.Redirect, logout.StatusCode);
+
+            using var signedOut = await client.GetAsync(movie);
+            Assert.Equal(HttpStatusCode.Redirect, signedOut.StatusCode);
+            Assert.Equal("/Identity/Account/Login", signedOut.Headers.Location.AbsolutePath);
         }
 
         [Theory]

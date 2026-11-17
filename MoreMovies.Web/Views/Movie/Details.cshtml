@@ -73,7 +73,7 @@
 
             <!-- Trailer + Actors -->
             <div class="md:col-span-2 space-y-6">
-                <iframe class="w-full h-64 md:h-96 rounded shadow-md" src="@Model.HomePage" title="Trailer"
+                <iframe class="w-full aspect-video rounded shadow-md" src="@Model.HomePage" title="Trailer"
                         frameborder="0" allowfullscreen loading="lazy"></iframe>
 
                 <div>
@@ -94,7 +94,7 @@
                         var averageRating = Model.RatingCount > 0 ? Math.Round((double)Model.Rating / Model.RatingCount) : 0;
                     }
                     <!-- Anzeige der aktuellen Bewertung -->
-                    <div class="flex items-center mb-2">
+                    <div class="flex flex-wrap items-center mb-2">
                         @for (int i = 1; i <= 5; i++)
                         {
                             <span class="text-2xl @(i <= averageRating ? "text-yellow-400" : "text-gray-400")">★</span>
@@ -103,7 +103,7 @@
                     </div>
 
                     <!-- Interaktive Sterne für neue Bewertung -->
-                    <form method="post" asp-controller="Movie" asp-action="RateMovie" id="rate-form" class="flex items-center gap-2">
+                    <form method="post" asp-controller="Movie" asp-action="RateMovie" id="rate-form" class="flex flex-wrap items-center gap-2">
                         <input type="hidden" name="rating" id="rating-value" value="0" />
                         <input type="hidden" name="movieId" value="@Model.Id" />
                         <div class="flex items-center gap-1" id="rating-stars">

@@ -91,3 +91,179 @@ body {
     margin-left: auto;
     font-size: 1.75rem;
 }
+
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    border-bottom: 1px solid #393342;
+    background: rgb(24 22 33 / 94%);
+    backdrop-filter: blur(14px);
+}
+
+.site-header-inner,
+.site-navigation,
+.site-nav-links,
+.site-auth-links {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.35rem, 1.2vw, 1rem);
+}
+
+.site-header-inner {
+    justify-content: space-between;
+    max-width: 80rem;
+    min-height: 4.5rem;
+    margin-inline: auto;
+    padding: 0.65rem clamp(1rem, 3vw, 2rem);
+}
+
+.site-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: #fff6e4;
+    font: 700 1.45rem Georgia, serif;
+    white-space: nowrap;
+}
+
+.site-brand img {
+    object-fit: contain;
+}
+
+.site-navigation a,
+.site-nav-toggle,
+.site-account summary,
+.site-account-panel button {
+    display: flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.45rem 0.75rem;
+    border-radius: 0.55rem;
+    color: #e8deed;
+    font-size: 0.9rem;
+    text-align: left;
+    transition: background-color 180ms ease, color 180ms ease;
+}
+
+.site-navigation a:hover,
+.site-navigation a[aria-current],
+.site-nav-toggle,
+.site-account summary:hover,
+.site-account-panel button:hover {
+    color: #ffd69a;
+    background: #30283a;
+}
+
+.site-navigation .site-sign-in {
+    color: #251b20;
+    background: #f4c982;
+    font-weight: 700;
+}
+
+.site-navigation .site-sign-in:hover {
+    color: #251b20;
+    background: #ffdda4;
+}
+
+.site-nav-toggle,
+.site-account summary {
+    cursor: pointer;
+}
+
+.site-nav-toggle,
+.site-nav-toggle[hidden],
+.site-account summary::marker {
+    display: none;
+}
+
+.site-account {
+    position: relative;
+}
+
+.site-account summary {
+    gap: 0.5rem;
+    list-style: none;
+}
+
+.site-account summary::-webkit-details-marker {
+    display: none;
+}
+
+.site-avatar {
+    display: grid;
+    width: 1.75rem;
+    aspect-ratio: 1;
+    place-items: center;
+    border-radius: 50%;
+    background: #514056;
+    color: #ffe3c3;
+}
+
+.site-account-panel {
+    position: absolute;
+    top: calc(100% + 0.55rem);
+    right: 0;
+    width: 15rem;
+    padding: 0.4rem;
+    border: 1px solid #51465b;
+    border-radius: 0.75rem;
+    background: #242031;
+    box-shadow: 0 1rem 2rem rgb(0 0 0 / 35%);
+}
+
+.site-account-panel p {
+    padding: 0.65rem 0.75rem;
+    color: #cfc2d6;
+    font-size: 0.8rem;
+    overflow-wrap: anywhere;
+}
+
+.site-account-panel button {
+    width: 100%;
+    color: #ffb8b8;
+}
+
+@media (max-width: 57rem) {
+    .site-header-inner {
+        flex-wrap: wrap;
+    }
+
+    .site-nav-toggle:not([hidden]) {
+        display: flex;
+    }
+
+    .site-navigation,
+    .site-nav-links,
+    .site-auth-links {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .site-navigation {
+        flex: 1 0 100%;
+        max-height: 70vh;
+        overflow: auto;
+        padding: 0.25rem;
+    }
+
+    .site-navigation[data-collapsible][data-expanded="false"],
+    .site-navigation[data-collapsible]:not([data-expanded]) {
+        display: none;
+    }
+
+    .site-account-panel {
+        position: static;
+        width: auto;
+        box-shadow: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .site-navigation a,
+    .site-nav-toggle,
+    .site-account summary,
+    .site-account-panel button {
+        transition: none;
+    }
+}
