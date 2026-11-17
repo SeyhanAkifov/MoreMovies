@@ -97,9 +97,9 @@
                     <div class="flex flex-wrap items-center mb-2">
                         @for (int i = 1; i <= 5; i++)
                         {
-                            <span class="text-2xl @(i <= averageRating ? "text-yellow-400" : "text-gray-400")">★</span>
+                            <span aria-hidden="true" data-average-star="@i" class="text-2xl @(i <= averageRating ? "text-yellow-400" : "text-gray-400")">★</span>
                         }
-                        <span class="ml-2 text-gray-300 text-sm">(@averageRating / 5, @Model.RatingCount @(Model.RatingCount == 1 ? "vote" : "votes"))</span>
+                        <span data-rating-summary class="ml-2 text-gray-300 text-sm">(@averageRating / 5, @Model.RatingCount @(Model.RatingCount == 1 ? "vote" : "votes"))</span>
                     </div>
 
                     <form method="post" asp-controller="Movie" asp-action="RateMovie" class="movie-rating-form">
@@ -119,6 +119,7 @@
                         </fieldset>
                         <button type="submit" class="movie-rating-submit">Rate movie</button>
                     </form>
+                    <p data-rating-status class="movie-rating-status" role="status"></p>
                 </div>
 
                 <!-- Comments -->

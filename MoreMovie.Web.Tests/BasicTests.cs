@@ -10,6 +10,7 @@ using System.Net;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.RegularExpressions;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -140,6 +141,17 @@ namespace MoreMovies.Web.Tests
             Assert.Equal(HttpStatusCode.Redirect, validRating.StatusCode);
             var updatedMovie = await client.GetStringAsync(movie);
             Assert.Contains("4 / 5, 1 vote", updatedMovie);
+
+            using var asyncRating = new HttpRequestMessage(HttpMethod.Post, "/Movie/RateMovie")
+            {
+                Content = new FormUrlEncodedContent(ratingForm)
+            };
+            asyncRating.Headers.Accept.ParseAdd("application/json");
+            using var asyncResult = await client.SendAsync(asyncRating);
+            Assert.Equal(HttpStatusCode.OK, asyncResult.StatusCode);
+            using var summary = JsonDocument.Parse(await asyncResult.Content.ReadAsStringAsync());
+            Assert.Equal(4, summary.RootElement.GetProperty("average").GetInt32());
+            Assert.Equal(2, summary.RootElement.GetProperty("count").GetInt32());
 
             using var logout = await client.PostAsync("/Home/Logout", new FormUrlEncodedContent(
                 new Dictionary<string, string> { ["__RequestVerificationToken"] = logoutToken }));

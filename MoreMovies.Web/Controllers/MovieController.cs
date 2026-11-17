@@ -1,5 +1,6 @@
 using MoreMovies.Web.MappingConfiguration;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using MoreMovies.Services.Dto.Input;
@@ -95,6 +96,22 @@ namespace MoreMovies.Web.Controllers
             if (!await movieService.RateMovie(rating, movieId))
             {
                 return NotFound();
+            }
+
+            if (Request?.GetTypedHeaders().Accept?.Any(type =>
+                string.Equals(type.MediaType.Value, "application/json", StringComparison.OrdinalIgnoreCase)) == true)
+            {
+                var movie = await movieService.GetMovieWithId(movieId);
+                if (movie is null)
+                {
+                    return NotFound();
+                }
+
+                return Json(new
+                {
+                    average = Math.Round((double)movie.Rating / movie.RatingCount),
+                    count = movie.RatingCount
+                });
             }
 
             return RedirectToAction("Details", "Movie", new { Id = movieId });

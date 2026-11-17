@@ -379,6 +379,24 @@ main .text-red-500 {
     background: var(--cinema-accent);
     font-weight: 700;
 }
+
+.movie-rating-submit[aria-disabled="true"] {
+    opacity: 0.7;
+    cursor: wait;
+}
+
+.movie-rating-status {
+    color: var(--cinema-accent);
+    font-size: 0.875rem;
+}
+
+.movie-rating-status:not(:empty) {
+    margin-top: 0.55rem;
+}
+
+.movie-rating-status[data-error="true"] {
+    color: #ffb8b8;
+}
 :root {
     --cinema-bg: #090d17;
     --cinema-surface: #11192a;

@@ -86,3 +86,61 @@ if (trailerDialog && trailerFrame) {
 
     trailerDialog.addEventListener("close", () => trailerFrame.removeAttribute("src"));
 }
+
+const ratingForm = document.querySelector(".movie-rating-form");
+const ratingSummary = document.querySelector("[data-rating-summary]");
+const ratingStatus = document.querySelector("[data-rating-status]");
+
+if (ratingForm && ratingSummary && ratingStatus && typeof fetch === "function") {
+    const submitButton = ratingForm.querySelector('button[type="submit"]');
+    const averageStars = document.querySelectorAll("[data-average-star]");
+    let saving = false;
+
+    ratingForm.addEventListener("submit", async event => {
+        event.preventDefault();
+        if (saving) {
+            return;
+        }
+
+        saving = true;
+        submitButton.setAttribute("aria-disabled", "true");
+        ratingStatus.dataset.error = "false";
+        ratingStatus.textContent = "Saving rating…";
+
+        try {
+            const response = await fetch(ratingForm.action, {
+                method: "POST",
+                headers: { Accept: "application/json" },
+                body: new FormData(ratingForm),
+                redirect: "manual"
+            });
+
+            if (response.type === "opaqueredirect" || response.status === 401 || response.status === 403) {
+                ratingStatus.dataset.error = "true";
+                ratingStatus.textContent = "Sign in again to submit your rating.";
+                return;
+            }
+
+            if (!response.ok || !response.headers.get("Content-Type")?.includes("application/json")) {
+                throw new Error("Rating response could not be confirmed.");
+            }
+
+            const { average, count } = await response.json();
+            const summary = `${average} / 5, ${count} ${count === 1 ? "vote" : "votes"}`;
+            ratingSummary.textContent = `(${summary})`;
+            averageStars.forEach(star => {
+                const filled = Number(star.dataset.averageStar) <= average;
+                star.classList.toggle("text-yellow-400", filled);
+                star.classList.toggle("text-gray-400", !filled);
+            });
+            ratingForm.reset();
+            ratingStatus.textContent = `Rating saved. ${summary}.`;
+        } catch {
+            ratingStatus.dataset.error = "true";
+            ratingStatus.textContent = "Could not confirm your rating. Refresh to check whether it was saved.";
+        } finally {
+            saving = false;
+            submitButton.removeAttribute("aria-disabled");
+        }
+    });
+}
