@@ -41,14 +41,34 @@
     @foreach (var group in Model.Seats.Where(seat => seat.OwnReservation.HasValue).GroupBy(seat => seat.OwnReservation))
     {
         var expiry = group.First().OwnExpiry.Value;
-        <form asp-action="Release" method="post" class="seat-hold">
-            <input type="hidden" name="id" value="@screeningId" />
-            <input type="hidden" name="reservationId" value="@group.Key" />
-            <p>Held seats: @string.Join(", ", group.Select(seat => $"{(char)('A' + (seat.Number - 1) / Model.SeatsPerRow)}{(seat.Number - 1) % Model.SeatsPerRow + 1}"))</p>
-            <p>Hold expires at <time datetime="@expiry.ToString("O", CultureInfo.InvariantCulture)">@expiry.ToLocalTime().ToString("HH:mm:ss", CultureInfo.InvariantCulture)</time>
-                <span data-hold-countdown="@expiry.ToString("O", CultureInfo.InvariantCulture)"></span>
+        var confirmed = group.First().Confirmed;
+        <section class="seat-hold">
+            <h2 class="font-semibold">@(confirmed ? "Test ticket" : "Seat reservation")</h2>
+            <p>@(confirmed ? "Booked seats:" : "Held seats:")
+                @string.Join(", ", group.Select(seat => $"{(char)('A' + (seat.Number - 1) / Model.SeatsPerRow)}{(seat.Number - 1) % Model.SeatsPerRow + 1}"))
             </p>
-            <button class="cinema-button cinema-button-secondary px-3 py-2 rounded" type="submit">Release seats</button>
-        </form>
+            @if (confirmed)
+            {
+                <p class="break-all">Booking reference: <code>@group.Key</code></p>
+                <p>No payment was collected.</p>
+            }
+            else
+            {
+                <p>Hold expires at <time datetime="@expiry.ToString("O", CultureInfo.InvariantCulture)">@expiry.ToLocalTime().ToString("HH:mm:ss", CultureInfo.InvariantCulture)</time>
+                    <span data-hold-countdown="@expiry.ToString("O", CultureInfo.InvariantCulture)"></span>
+                </p>
+                <form asp-action="Release" method="post" class="seat-hold-actions">
+                    <input type="hidden" name="id" value="@screeningId" />
+                    <input type="hidden" name="reservationId" value="@group.Key" />
+                    @if (ViewData["TestCheckout"] is true)
+                    {
+                        <button asp-action="Confirm" class="cinema-button px-3 py-2 rounded" type="submit">
+                            Confirm test booking
+                        </button>
+                    }
+                    <button class="cinema-button cinema-button-secondary px-3 py-2 rounded" type="submit">Release seats</button>
+                </form>
+            }
+        </section>
     }
 </section>

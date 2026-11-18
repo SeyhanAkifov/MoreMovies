@@ -15,7 +15,7 @@ public sealed class SeatReservationSqlTests
 {
     private const string ConnectionVariable = "MOREMOVIES_SQL_TEST_CONNECTION";
 
-    /// <summary>Verify concurrent last-seat requests, ownership, expiry and atomic group holds.</summary>
+    /// <summary>Verify concurrent holds, atomic groups and test ticket confirmation on SQL Server.</summary>
     [SqlSeatTest]
     public async Task OnlyOneCustomerCanHoldTheLastSeat()
     {
@@ -65,6 +65,7 @@ public sealed class SeatReservationSqlTests
             Assert.Equal(1, await db.ScreeningSeatHolds.CountAsync());
             await db.ScreeningSeatHolds.ExecuteUpdateAsync(update =>
                 update.SetProperty(hold => hold.ExpiresAt, DateTimeOffset.UtcNow.AddMinutes(-1)));
+            Assert.False(await service.ConfirmAsync(screening.Id, reservation.ReservationId, winner));
             Assert.Equal(SeatReservationService.ReservationResult.Held,
                 await service.ReserveAsync(screening.Id, other, [1]));
 
@@ -75,6 +76,19 @@ public sealed class SeatReservationSqlTests
             Assert.Equal(SeatReservationService.ReservationResult.Unavailable,
                 await group.ReserveAsync(screening.Id, winner, [1, 2]));
             Assert.Equal(1, await db.ScreeningSeatHolds.CountAsync());
+
+            var validHold = await db.ScreeningSeatHolds.AsNoTracking().SingleAsync();
+            Assert.False(await service.ConfirmAsync(screening.Id, validHold.ReservationId, winner));
+            Assert.True(await service.ConfirmAsync(screening.Id, validHold.ReservationId, other));
+            Assert.True(await service.ConfirmAsync(screening.Id, validHold.ReservationId, other));
+            await service.ReleaseAsync(screening.Id, validHold.ReservationId, other);
+            Assert.Equal(1, await db.ScreeningSeatHolds.CountAsync());
+            await db.ScreeningSeatHolds.ExecuteUpdateAsync(update =>
+                update.SetProperty(hold => hold.ExpiresAt, DateTimeOffset.UtcNow.AddMinutes(-1)));
+            await using var afterCheckout = new ApplicationDbContext(options);
+            var retry = new SeatReservationService(afterCheckout, TimeProvider.System);
+            Assert.Equal(SeatReservationService.ReservationResult.Unavailable,
+                await retry.ReserveAsync(screening.Id, winner, [1]));
         }
         finally
         {

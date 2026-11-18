@@ -594,6 +594,9 @@ namespace MoreMovies.Data.Migrations
                     b.Property<int>("SeatNumber")
                         .HasColumnType("int");
 
+                    b.Property<DateTimeOffset?>("ConfirmedAt")
+                        .HasColumnType("datetimeoffset");
+
                     b.Property<DateTimeOffset>("ExpiresAt")
                         .HasColumnType("datetimeoffset");
 

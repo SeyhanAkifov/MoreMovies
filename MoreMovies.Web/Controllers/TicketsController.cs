@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using MoreMovies.Services;
 using System;
 using System.Linq;
@@ -10,7 +12,7 @@ using System.Threading.Tasks;
 namespace MoreMovies.Web.Controllers;
 
 [Authorize]
-public class TicketsController(SeatReservationService reservations) : Controller
+public class TicketsController(SeatReservationService reservations, IWebHostEnvironment environment) : Controller
 {
     /// <summary>Show seat availability and the signed-in user's reservations.</summary>
     [HttpGet]
@@ -24,6 +26,7 @@ public class TicketsController(SeatReservationService reservations) : Controller
         }
 
         ViewData["ScreeningId"] = id;
+        ViewData["TestCheckout"] = environment.IsDevelopment();
         return View(plan);
     }
 
@@ -84,6 +87,32 @@ public class TicketsController(SeatReservationService reservations) : Controller
         }
 
         await reservations.ReleaseAsync(id, reservationId, User.FindFirstValue(ClaimTypes.NameIdentifier));
+        return RedirectToAction(nameof(Seats), new { id });
+    }
+
+    /// <summary>Complete a test booking without payment in development.</summary>
+    [HttpPost]
+    public async Task<IActionResult> Confirm(int id, Guid reservationId)
+    {
+        if (!environment.IsDevelopment())
+        {
+            return NotFound();
+        }
+
+        if (!ModelState.IsValid || reservationId == Guid.Empty)
+        {
+            return BadRequest();
+        }
+
+        if (!await reservations.ConfirmAsync(id, reservationId, User.FindFirstValue(ClaimTypes.NameIdentifier)))
+        {
+            TempData["SeatError"] = "This reservation has expired or is unavailable.";
+        }
+        else
+        {
+            TempData["SeatSuccess"] = "Test booking confirmed. No payment was collected.";
+        }
+
         return RedirectToAction(nameof(Seats), new { id });
     }
 }

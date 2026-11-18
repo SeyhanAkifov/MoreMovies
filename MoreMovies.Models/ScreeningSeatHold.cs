@@ -13,4 +13,6 @@ public class ScreeningSeatHold
     public string UserId { get; set; }
 
     public DateTimeOffset ExpiresAt { get; set; }
+
+    public DateTimeOffset? ConfirmedAt { get; set; }
 }

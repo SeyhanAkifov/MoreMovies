@@ -12,7 +12,7 @@ namespace MoreMovies.Services;
 
 public class SeatReservationService(ApplicationDbContext db, TimeProvider clock)
 {
-    public record Seat(int Number, Guid? OwnReservation, DateTimeOffset? OwnExpiry, bool Unavailable);
+    public record Seat(int Number, Guid? OwnReservation, DateTimeOffset? OwnExpiry, bool Unavailable, bool Confirmed);
     public record SeatPlan(string Movie, DateTime Date, string Time, int Rows, int SeatsPerRow, bool Open, IReadOnlyList<Seat> Seats);
     public enum ReservationResult { Held, Unavailable, Invalid, Missing, Closed }
 
@@ -28,13 +28,14 @@ public class SeatReservationService(ApplicationDbContext db, TimeProvider clock)
 
         var now = clock.GetUtcNow();
         var held = await db.ScreeningSeatHolds.AsNoTracking()
-            .Where(seat => seat.ScreeningId == screeningId && seat.ExpiresAt > now)
+            .Where(seat => seat.ScreeningId == screeningId && (seat.ConfirmedAt != null || seat.ExpiresAt > now))
             .ToDictionaryAsync(seat => seat.SeatNumber);
         var seats = Enumerable.Range(1, screening.SeatRows * screening.SeatsPerRow).Select(number =>
         {
             held.TryGetValue(number, out var hold);
             var owned = hold is not null && hold.UserId == userId;
-            return new Seat(number, owned ? hold.ReservationId : null, owned ? hold.ExpiresAt : null, hold is not null);
+            return new Seat(number, owned ? hold.ReservationId : null, owned ? hold.ExpiresAt : null,
+                hold is not null, owned && hold.ConfirmedAt.HasValue);
         }).ToArray();
 
         return new SeatPlan(screening.MovieName, screening.ProjectionTime, screening.Time,
@@ -68,7 +69,8 @@ public class SeatReservationService(ApplicationDbContext db, TimeProvider clock)
         try
         {
             await db.ScreeningSeatHolds
-                .Where(hold => hold.ScreeningId == screeningId && hold.ExpiresAt <= now && seats.Contains(hold.SeatNumber))
+                .Where(hold => hold.ScreeningId == screeningId && hold.ConfirmedAt == null &&
+                    hold.ExpiresAt <= now && seats.Contains(hold.SeatNumber))
                 .ExecuteDeleteAsync();
 
             db.ScreeningSeatHolds.AddRange(seats.OrderBy(number => number).Select(number => new ScreeningSeatHold
@@ -97,7 +99,19 @@ public class SeatReservationService(ApplicationDbContext db, TimeProvider clock)
     public async Task ReleaseAsync(int screeningId, Guid reservationId, string userId)
     {
         await db.ScreeningSeatHolds.Where(hold => hold.ScreeningId == screeningId &&
-            hold.ReservationId == reservationId && hold.UserId == userId).ExecuteDeleteAsync();
+            hold.ReservationId == reservationId && hold.UserId == userId && hold.ConfirmedAt == null)
+            .ExecuteDeleteAsync();
+    }
+
+    /// <summary>Confirm all seats in a valid hold as a single test booking.</summary>
+    public async Task<bool> ConfirmAsync(int screeningId, Guid reservationId, string userId)
+    {
+        var now = clock.GetUtcNow();
+        var reservation = db.ScreeningSeatHolds.Where(hold => hold.ScreeningId == screeningId &&
+            hold.ReservationId == reservationId && hold.UserId == userId);
+        var completed = await reservation.Where(hold => hold.ConfirmedAt == null && hold.ExpiresAt > now)
+            .ExecuteUpdateAsync(update => update.SetProperty(hold => hold.ConfirmedAt, now));
+        return completed > 0 || await reservation.AnyAsync(hold => hold.ConfirmedAt != null);
     }
 
     /// <summary>Check whether the local screening start is still in the future.</summary>
