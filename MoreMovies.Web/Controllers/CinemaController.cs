@@ -126,14 +126,14 @@ namespace MoreMovies.Web.Controllers
             });
         }
 
-        /// <summary>Remove a screening owned by the signed-in user.</summary>
+        /// <summary>Cancel a screening owned by the signed-in user.</summary>
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id, string cinemaName, string start)
+        public async Task<IActionResult> Cancel(int id, string cinemaName, string start)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (!await cinemaService.Delete(id, userId))
+            if (!await cinemaService.CancelAsync(id, userId))
             {
                 return NotFound();
             }

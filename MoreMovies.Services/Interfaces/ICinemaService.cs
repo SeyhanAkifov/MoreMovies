@@ -13,7 +13,8 @@ namespace MoreMovies.Services.Interfaces
     {
         public Task<bool> Add(CinemaProjectionInputDto model, string userId);
 
-        public Task<bool> Delete(int id, string userId);
+        /// <summary>Cancel an owned screening and retain its confirmed bookings.</summary>
+        public Task<bool> CancelAsync(int id, string userId);
 
         /// <summary>List showtimes and indicate which ones the viewer owns.</summary>
         public ICollection<CinemaProjectionOutputDto> GetAll(string cinemaName, string userId = null);

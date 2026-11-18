@@ -7,6 +7,7 @@ namespace MoreMovies.Web.Models.Cinema
     {
         public int Id { get; set; }
         public bool CanManage { get; set; }
+        public bool Cancelled { get; set; }
         public bool HasSeatPlan { get; set; }
 
         public DateTime ProjectionTime { get; set; }

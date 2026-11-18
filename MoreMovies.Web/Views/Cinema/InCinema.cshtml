@@ -71,20 +71,34 @@
                             <div class="min-w-0">
                                 <p class="break-words text-white font-medium">@item.MovieName</p>
                                 <p class="break-words text-gray-400 text-sm">Hall: @item.CinemaHall</p>
-                                @if (item.HasSeatPlan)
+                                @if (item.Cancelled)
+                                {
+                                    <p class="cinema-cancelled">Cancelled</p>
+                                    @if (item.HasSeatPlan)
+                                    {
+                                        <a asp-controller="Tickets" asp-action="Seats" asp-route-id="@item.Id"
+                                           aria-label="View cancelled showtime for @item.MovieName"
+                                           class="inline-block rounded px-3 py-2 mt-2 cinema-button cinema-button-secondary">View showtime</a>
+                                    }
+                                }
+                                else if (item.HasSeatPlan)
                                 {
                                     <a asp-controller="Tickets" asp-action="Seats" asp-route-id="@item.Id"
                                        aria-label="Choose seats for @item.MovieName"
                                        class="inline-block rounded px-3 py-2 mt-2 cinema-button">Choose seats</a>
                                 }
-                                @if (item.CanManage)
+                                @if (item.CanManage && !item.Cancelled)
                                 {
-                                    <form asp-action="Delete" asp-route-id="@item.Id" asp-route-cinemaName="@Model.SelectedCinema"
-                                          asp-route-start="@start" method="post" class="mt-2">
-                                        <button type="submit" class="cinema-button cinema-button-danger rounded px-3 py-2">
-                                            Delete showtime
-                                        </button>
-                                    </form>
+                                    <details class="cinema-cancel-confirmation mt-2">
+                                        <summary>Cancel showtime</summary>
+                                        <p>Seat holds will be released. Confirmed bookings will stay on record.</p>
+                                        <form asp-action="Cancel" asp-route-id="@item.Id" asp-route-cinemaName="@Model.SelectedCinema"
+                                              asp-route-start="@start" method="post">
+                                            <button type="submit" class="cinema-button cinema-button-danger rounded px-3 py-2">
+                                                Confirm cancellation
+                                            </button>
+                                        </form>
+                                    </details>
                                 }
                             </div>
                         </div>

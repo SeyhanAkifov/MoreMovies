@@ -57,18 +57,29 @@ public class TicketsController(SeatReservationService reservations, IWebHostEnvi
             return Conflict("Reservations for this screening are closed.");
         }
 
-        if (result == SeatReservationService.ReservationResult.Unavailable)
+        if (result is SeatReservationService.ReservationResult.Unavailable or SeatReservationService.ReservationResult.Cancelled)
         {
             if (wantsJson)
             {
-                var plan = await reservations.GetPlanAsync(id, userId);
+                var plan = result == SeatReservationService.ReservationResult.Unavailable
+                    ? await reservations.GetPlanAsync(id, userId)
+                    : null;
+                if (result == SeatReservationService.ReservationResult.Cancelled || plan?.Cancelled == true)
+                {
+                    return Conflict(new { url = Url.Action(nameof(Seats), new { id }) });
+                }
+
                 return Conflict(new
                 {
                     unavailable = plan?.Seats.Where(seat => seat.Unavailable).Select(seat => seat.Number)
                 });
             }
 
-            TempData["SeatError"] = "Availability changed. Please select your seats again.";
+            if (result == SeatReservationService.ReservationResult.Unavailable)
+            {
+                TempData["SeatError"] = "Availability changed. Please select your seats again.";
+            }
+
             return RedirectToAction(nameof(Seats), new { id });
         }
 
@@ -104,11 +115,12 @@ public class TicketsController(SeatReservationService reservations, IWebHostEnvi
             return BadRequest();
         }
 
-        if (!await reservations.ConfirmAsync(id, reservationId, User.FindFirstValue(ClaimTypes.NameIdentifier)))
+        var result = await reservations.ConfirmAsync(id, reservationId, User.FindFirstValue(ClaimTypes.NameIdentifier));
+        if (result == SeatReservationService.ConfirmationResult.Unavailable)
         {
             TempData["SeatError"] = "This reservation has expired or is unavailable.";
         }
-        else
+        else if (result == SeatReservationService.ConfirmationResult.Confirmed)
         {
             TempData["SeatSuccess"] = "Test booking confirmed. No payment was collected.";
         }

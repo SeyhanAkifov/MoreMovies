@@ -116,7 +116,12 @@ if (reserveButton && typeof fetch === "function") {
                 redirect: "manual"
             });
             if (response.status === 409 && response.headers.get("Content-Type")?.includes("application/json")) {
-                const { unavailable } = await response.json();
+                const { unavailable, url } = await response.json();
+                if (url) {
+                    window.location.assign(url);
+                    return;
+                }
+
                 const blocked = new Set(unavailable ?? []);
                 seatForm.querySelectorAll('input[name="seats"]').forEach(input => {
                     input.disabled = blocked.has(Number(input.value));

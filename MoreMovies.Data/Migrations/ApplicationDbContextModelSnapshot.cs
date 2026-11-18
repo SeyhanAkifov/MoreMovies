@@ -287,6 +287,9 @@ namespace MoreMovies.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTimeOffset?>("CancelledAt")
+                        .HasColumnType("datetimeoffset");
+
                     b.Property<int>("CinemaHallId")
                         .HasColumnType("int");
 

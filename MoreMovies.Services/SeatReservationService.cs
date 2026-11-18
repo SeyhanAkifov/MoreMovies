@@ -13,8 +13,10 @@ namespace MoreMovies.Services;
 public class SeatReservationService(ApplicationDbContext db, TimeProvider clock)
 {
     public record Seat(int Number, Guid? OwnReservation, DateTimeOffset? OwnExpiry, bool Unavailable, bool Confirmed);
-    public record SeatPlan(string Movie, DateTime Date, string Time, int Rows, int SeatsPerRow, bool Open, IReadOnlyList<Seat> Seats);
-    public enum ReservationResult { Held, Unavailable, Invalid, Missing, Closed }
+    public record SeatPlan(string Movie, DateTime Date, string Time, int Rows, int SeatsPerRow, bool Open,
+        bool Cancelled, IReadOnlyList<Seat> Seats);
+    public enum ReservationResult { Held, Unavailable, Invalid, Missing, Closed, Cancelled }
+    public enum ConfirmationResult { Confirmed, Unavailable, Cancelled }
 
     /// <summary>Read the published seating layout and current live holds.</summary>
     public async Task<SeatPlan> GetPlanAsync(int screeningId, string userId)
@@ -28,7 +30,8 @@ public class SeatReservationService(ApplicationDbContext db, TimeProvider clock)
 
         var now = clock.GetUtcNow();
         var held = await db.ScreeningSeatHolds.AsNoTracking()
-            .Where(seat => seat.ScreeningId == screeningId && (seat.ConfirmedAt != null || seat.ExpiresAt > now))
+            .Where(seat => seat.ScreeningId == screeningId &&
+                (seat.ConfirmedAt != null || (!screening.CancelledAt.HasValue && seat.ExpiresAt > now)))
             .ToDictionaryAsync(seat => seat.SeatNumber);
         var seats = Enumerable.Range(1, screening.SeatRows * screening.SeatsPerRow).Select(number =>
         {
@@ -39,19 +42,26 @@ public class SeatReservationService(ApplicationDbContext db, TimeProvider clock)
         }).ToArray();
 
         return new SeatPlan(screening.MovieName, screening.ProjectionTime, screening.Time,
-            screening.SeatRows, screening.SeatsPerRow, CanReserve(screening), seats);
+            screening.SeatRows, screening.SeatsPerRow,
+            !screening.CancelledAt.HasValue && HasNotStarted(screening), screening.CancelledAt.HasValue, seats);
     }
 
     /// <summary>Hold every requested seat for ten minutes or leave none held.</summary>
     public async Task<ReservationResult> ReserveAsync(int screeningId, string userId, int[] seats)
     {
-        var screening = await db.CinemaPojections.AsNoTracking().SingleOrDefaultAsync(show => show.Id == screeningId);
+        await using var transaction = await db.Database.BeginTransactionAsync();
+        var screening = await db.LockScreeningAsync(screeningId);
         if (screening is null || screening.SeatRows == 0 || screening.SeatsPerRow == 0)
         {
             return ReservationResult.Missing;
         }
 
-        if (!CanReserve(screening))
+        if (screening.CancelledAt.HasValue)
+        {
+            return ReservationResult.Cancelled;
+        }
+
+        if (!HasNotStarted(screening))
         {
             return ReservationResult.Closed;
         }
@@ -65,7 +75,6 @@ public class SeatReservationService(ApplicationDbContext db, TimeProvider clock)
 
         var now = clock.GetUtcNow();
         var reservationId = Guid.NewGuid();
-        await using var transaction = await db.Database.BeginTransactionAsync();
         try
         {
             await db.ScreeningSeatHolds
@@ -104,18 +113,32 @@ public class SeatReservationService(ApplicationDbContext db, TimeProvider clock)
     }
 
     /// <summary>Confirm all seats in a valid hold as a single test booking.</summary>
-    public async Task<bool> ConfirmAsync(int screeningId, Guid reservationId, string userId)
+    public async Task<ConfirmationResult> ConfirmAsync(int screeningId, Guid reservationId, string userId)
     {
+        await using var transaction = await db.Database.BeginTransactionAsync();
+        var screening = await db.LockScreeningAsync(screeningId);
+        if (screening is null)
+        {
+            return ConfirmationResult.Unavailable;
+        }
+
+        if (screening.CancelledAt.HasValue)
+        {
+            return ConfirmationResult.Cancelled;
+        }
+
         var now = clock.GetUtcNow();
         var reservation = db.ScreeningSeatHolds.Where(hold => hold.ScreeningId == screeningId &&
             hold.ReservationId == reservationId && hold.UserId == userId);
         var completed = await reservation.Where(hold => hold.ConfirmedAt == null && hold.ExpiresAt > now)
             .ExecuteUpdateAsync(update => update.SetProperty(hold => hold.ConfirmedAt, now));
-        return completed > 0 || await reservation.AnyAsync(hold => hold.ConfirmedAt != null);
+        var confirmed = completed > 0 || await reservation.AnyAsync(hold => hold.ConfirmedAt != null);
+        await transaction.CommitAsync();
+        return confirmed ? ConfirmationResult.Confirmed : ConfirmationResult.Unavailable;
     }
 
     /// <summary>Check whether the local screening start is still in the future.</summary>
-    private bool CanReserve(CinemaPojection screening) =>
+    private bool HasNotStarted(CinemaPojection screening) =>
         TimeOnly.TryParseExact(screening.Time, "HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out var time) &&
         screening.ProjectionTime.Date.Add(time.ToTimeSpan()) > clock.GetLocalNow().DateTime;
 }

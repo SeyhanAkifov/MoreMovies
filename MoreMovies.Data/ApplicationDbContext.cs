@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MoreMovies.Models;
+using System.Threading.Tasks;
 
 namespace MoreMovies.Data
 {
@@ -47,6 +48,13 @@ namespace MoreMovies.Data
         public DbSet<CinemaPojection> CinemaPojections { get; set; }
         public DbSet<Cinema> Cinemas { get; set; }
         public DbSet<ScreeningSeatHold> ScreeningSeatHolds { get; set; }
+
+        /// <summary>Lock a screening for writes until the caller's SQL Server transaction ends.</summary>
+        public Task<CinemaPojection> LockScreeningAsync(int screeningId) =>
+            CinemaPojections
+                .FromSql($"SELECT * FROM [dbo].[CinemaPojections] WITH (UPDLOCK) WHERE [Id] = {screeningId}")
+                .AsNoTracking()
+                .SingleOrDefaultAsync();
 
         /// <summary>Configure the database model and relationship keys.</summary>
         protected override void OnModelCreating(ModelBuilder modelBuilder)

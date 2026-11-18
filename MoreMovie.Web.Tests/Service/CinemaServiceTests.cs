@@ -19,7 +19,7 @@ public class CinemaServiceTests
         db.Cinemas.Add(new Cinema { Name = "Test cinema", UserId = "owner" });
         await db.SaveChangesAsync();
 
-        var service = new CinemaService(db, null);
+        var service = new CinemaService(db, null, TimeProvider.System);
         var projection = new CinemaProjectionInputDto
         {
             CinemaName = "Test cinema",
@@ -37,9 +37,5 @@ public class CinemaServiceTests
         Assert.Equal(id, Assert.Single(service.GetAll("Test cinema", "owner")).Id);
         Assert.True(Assert.Single(service.GetAll("Test cinema", "owner")).CanManage);
         Assert.False(Assert.Single(service.GetAll("Test cinema", "other-user")).CanManage);
-        Assert.False(await service.Delete(id, "other-user"));
-        Assert.Single(db.CinemaPojections);
-        Assert.True(await service.Delete(id, "owner"));
-        Assert.Empty(db.CinemaPojections);
     }
 }

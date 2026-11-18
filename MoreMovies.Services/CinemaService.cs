@@ -17,12 +17,15 @@ namespace MoreMovies.Services
 
         private readonly ApplicationDbContext db;
         private readonly IUserService userService;
+        private readonly TimeProvider clock;
 
 
-        public CinemaService(ApplicationDbContext db, IUserService userService)
+        /// <summary>Initialize cinema services and the cancellation clock.</summary>
+        public CinemaService(ApplicationDbContext db, IUserService userService, TimeProvider clock)
         {
             this.db = db;
             this.userService = userService;
+            this.clock = clock;
         }
 
         public List<string> GetCinema(string userName)
@@ -74,18 +77,29 @@ namespace MoreMovies.Services
             return true;
         }
 
-        public async Task<bool> Delete(int id, string userId)
+        /// <summary>Cancel an owned screening and clear only its unconfirmed holds.</summary>
+        public async Task<bool> CancelAsync(int id, string userId)
         {
-            var cinemaProjection = await db.CinemaPojections.FirstOrDefaultAsync(x =>
-                x.Id == id && x.Cinema.UserId == userId);
-            if (cinemaProjection == null)
+            await using var transaction = await db.Database.BeginTransactionAsync();
+            var screening = await db.LockScreeningAsync(id);
+            if (screening is null || !await db.Cinemas.AnyAsync(cinema =>
+                    cinema.Id == screening.CinemaId && cinema.UserId == userId))
             {
                 return false;
             }
 
-            this.db.CinemaPojections.Remove(cinemaProjection);
+            if (screening.CancelledAt.HasValue)
+            {
+                return true;
+            }
 
-            await this.db.SaveChangesAsync();
+            var cancelledAt = clock.GetUtcNow();
+            await db.CinemaPojections.Where(projection => projection.Id == id)
+                .ExecuteUpdateAsync(update => update.SetProperty(projection => projection.CancelledAt, cancelledAt));
+            await db.ScreeningSeatHolds
+                .Where(hold => hold.ScreeningId == id && hold.ConfirmedAt == null)
+                .ExecuteDeleteAsync();
+            await transaction.CommitAsync();
             return true;
         }
 
@@ -113,6 +127,7 @@ namespace MoreMovies.Services
             {
                 Id = x.Id,
                 CanManage = userId != null && x.Cinema.UserId == userId,
+                Cancelled = x.CancelledAt.HasValue,
                 HasSeatPlan = x.SeatRows > 0 && x.SeatsPerRow > 0,
                 MovieName = x.MovieName,
                 ProjectionTime = x.ProjectionTime,

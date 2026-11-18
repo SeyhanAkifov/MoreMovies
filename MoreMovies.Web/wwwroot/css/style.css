@@ -746,6 +746,31 @@ main .text-red-500 {
     color: var(--cinema-accent);
     font-variant-numeric: tabular-nums;
 }
+
+.cinema-cancelled {
+    color: var(--cinema-muted);
+    font-weight: 600;
+}
+
+.cinema-cancel-confirmation summary {
+    width: fit-content;
+    padding-block: 0.35rem;
+    color: var(--cinema-accent);
+    cursor: pointer;
+}
+
+.cinema-cancel-confirmation[open] {
+    display: grid;
+    gap: 0.45rem;
+    padding: 0.55rem;
+    border: 1px solid var(--cinema-border);
+    border-radius: 0.5rem;
+}
+
+.cinema-cancel-confirmation p {
+    margin-bottom: 0.45rem;
+}
+
 .seat-booking {
     display: grid;
     grid-template-columns: minmax(0, 1fr);

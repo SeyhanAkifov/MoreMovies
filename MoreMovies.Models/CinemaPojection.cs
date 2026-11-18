@@ -34,5 +34,7 @@ namespace MoreMovies.Models
         public int SeatRows { get; set; }
 
         public int SeatsPerRow { get; set; }
+
+        public DateTimeOffset? CancelledAt { get; set; }
     }
 }
