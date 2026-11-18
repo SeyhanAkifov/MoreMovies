@@ -167,5 +167,7 @@
     "homePage": "https://www.youtube.com/embed/uYPbbksJxIg",
     "actors": "Cillian Murphy, Emily Blunt, Robert Downey Jr",
     "creator": "Admin1@abv.bg"
-  }
+  },
+  {"title":"Demo: The Night Projection","description":"A projectionist discovers a missing reel just before the premiere.","genre":"Drama","language":"English","country":"United Kingdom","image":"/css/images/movie_placeholder.jpg","homePage":"","releaseDate":"15/09/2020","budget":1800000,"actors":"Nora Finch, Ellis Hart","creator":"Admin1@abv.bg"},
+  {"title":"Demo: The Last Signal","description":"A weather station catches a transmission from a city that no longer exists.","genre":"Sci-Fi","language":"English","country":"Canada","image":"/css/images/movie_placeholder.jpg","homePage":"","releaseDate":"17/08/2020","budget":2200000,"actors":"Maya Reid, Ellis Hart","creator":"Admin1@abv.bg"}
 ]

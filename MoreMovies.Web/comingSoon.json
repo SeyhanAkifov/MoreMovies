@@ -98,5 +98,7 @@
     "imageUrl": "https://static.posters.cz/image/750/poster/raya-and-the-last-dragon-warrior-in-the-wild-i103404.jpg",
     "title": "Last Call at the Astoria",
     "description": "On the final night of a historic cinema, the staff and regulars gather for one more screening and one more argument about which film should close it."
-  }
+  },
+  {"title":"Demo: The Quiet Archive","description":"An archivist finds a recorded conversation that changes how a small town remembers its oldest cinema.","imageUrl":"/css/images/movie_placeholder.jpg"},
+  {"title":"Demo: Winter Circuit","description":"A touring crew tries to keep a community film festival open through a sudden snowstorm.","imageUrl":"/css/images/movie_placeholder.jpg"}
 ]

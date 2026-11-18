@@ -52,7 +52,9 @@ namespace MoreMovies.Web.Infrastructure
                 await SeedNews(db, ns, env.ContentRootPath);
                 await SeedComingSoon(db, cs, env.ContentRootPath);
                 await SeedCinemas(db);
+                await SeedReservationShowtimesAsync(db);
                 await SeedComments(db);
+                await SeedExampleInteractionsAsync(db);
             }
         }
 
@@ -224,7 +226,9 @@ namespace MoreMovies.Web.Infrastructure
             if (await db.Movies.AnyAsync())
             {
                 await UpdateLegacyDemoPostersAsync(db, movies);
-                return;
+                var existing = await db.Movies.Select(movie => movie.Title).ToListAsync();
+                movies = movies.Where(movie => movie.Title.StartsWith("Demo:", StringComparison.Ordinal) &&
+                    !existing.Contains(movie.Title)).ToArray();
             }
 
             foreach (var movie in movies)
@@ -257,16 +261,14 @@ namespace MoreMovies.Web.Infrastructure
             }
         }
 
+        /// <summary>Seed news and add new development examples only once.</summary>
         public static async Task SeedNews(ApplicationDbContext db, INewsService ns, string contentRoot)
         {
-            if (db.News.Any())
-            {
-                return;
-            }
-
             var news = JsonConvert.DeserializeObject<ICollection<NewsAddModel>>(await File.ReadAllTextAsync(Path.Combine(contentRoot, "news.json")));
+            var existing = await db.News.Select(item => item.Title).ToListAsync();
 
-            foreach (var item in news)
+            foreach (var item in news.Where(item => existing.Count == 0 ||
+                item.Title.StartsWith("Demo:", StringComparison.Ordinal) && !existing.Contains(item.Title)))
             {
                 await ns.Add(item);
 
@@ -275,19 +277,91 @@ namespace MoreMovies.Web.Infrastructure
             await db.SaveChangesAsync();
         }
 
+        /// <summary>Seed upcoming films and add new development examples only once.</summary>
         public static async Task SeedComingSoon(ApplicationDbContext db, IComingSoonService cs, string contentRoot)
         {
-            if (db.ComingSoons.Any())
+            var soon = JsonConvert.DeserializeObject<ICollection<ComingSoonAddModel>>(await File.ReadAllTextAsync(Path.Combine(contentRoot, "comingSoon.json")));
+            var existing = await db.ComingSoons.Select(item => item.Title).ToListAsync();
+
+            foreach (var item in soon.Where(item => existing.Count == 0 ||
+                item.Title.StartsWith("Demo:", StringComparison.Ordinal) && !existing.Contains(item.Title)))
+            {
+                await cs.Add(item);
+
+            }
+
+            await db.SaveChangesAsync();
+        }
+
+        /// <summary>Keep a small and a one-seat example available in the development calendar.</summary>
+        private static async Task SeedReservationShowtimesAsync(ApplicationDbContext db)
+        {
+            var owner = await db.Users.FirstOrDefaultAsync(user => user.Email == "Admin1@abv.bg");
+            if (owner is null)
             {
                 return;
             }
 
-            var soon = JsonConvert.DeserializeObject<ICollection<ComingSoonAddModel>>(await File.ReadAllTextAsync(Path.Combine(contentRoot, "comingSoon.json")));
-
-            foreach (var item in soon)
+            var cinema = await db.Cinemas.FirstOrDefaultAsync(item => item.Name == "Demo Cinema" && item.UserId == owner.Id)
+                ?? new Cinema { Name = "Demo Cinema", UserId = owner.Id };
+            var hall = await db.CinemaHalls.FirstOrDefaultAsync(item => item.Name == "Demo Hall")
+                ?? new CinemaHall { Name = "Demo Hall" };
+            var today = DateTime.Today;
+            foreach (var (title, time, rows, columns) in new[]
             {
-                await cs.Add(item);
+                ("Demo: Last available seat", "14:00", 1, 1),
+                ("Demo: The Night Projection", "18:30", 4, 6),
+                ("Demo: The Last Signal", "20:30", 6, 8)
+            })
+            {
+                if (!await db.CinemaPojections.AnyAsync(item => item.CinemaId == cinema.Id &&
+                    item.MovieName == title && item.ProjectionTime >= today))
+                {
+                    db.CinemaPojections.Add(new CinemaPojection
+                    {
+                        Cinema = cinema, CinemaHall = hall, MovieName = title, Time = time,
+                        ProjectionTime = today.AddDays(1), SeatRows = rows, SeatsPerRow = columns
+                    });
+                }
+            }
 
+            await db.SaveChangesAsync();
+        }
+
+        /// <summary>Add sample comments, ratings, and likes to fictional development films.</summary>
+        private static async Task SeedExampleInteractionsAsync(ApplicationDbContext db)
+        {
+            var examples = await db.Movies.Where(item => item.Creator == "Admin1@abv.bg" &&
+                item.Title.StartsWith("Demo:")).ToListAsync();
+            var viewer = await db.Users.FirstOrDefaultAsync(user => user.Email == "User1@abv.bg");
+            if (viewer is null)
+            {
+                return;
+            }
+
+            const string example = "Demo comment: I would watch this at an evening screening.";
+            foreach (var movie in examples)
+            {
+                if (!await db.MovieComments.AnyAsync(item => item.MovieId == movie.Id && item.Comment.Description == example))
+                {
+                    db.MovieComments.Add(new MovieComment
+                    {
+                        MovieId = movie.Id,
+                        Comment = new Comment { Description = example, UserEmail = viewer.Email }
+                    });
+                }
+
+                if (movie.RatingCount == 0)
+                {
+                    movie.Rating = 9;
+                    movie.RatingCount = 2;
+                }
+
+                if (!await db.UserMovies.AnyAsync(item => item.MovieId == movie.Id && item.UserId == viewer.Id))
+                {
+                    db.UserMovies.Add(new UserMovie { MovieId = movie.Id, UserId = viewer.Id });
+                    movie.Likes++;
+                }
             }
 
             await db.SaveChangesAsync();
