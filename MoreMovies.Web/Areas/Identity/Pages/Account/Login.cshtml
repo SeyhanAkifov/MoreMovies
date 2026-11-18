@@ -30,6 +30,6 @@
             </div>
             <button class="login-submit" type="submit">Sign in</button>
         </form>
-        <p class="login-register">New to MoreMovies? <a asp-area="" asp-controller="Home" asp-action="Register">Create an account</a></p>
+        <p class="login-register">New to MoreMovies? <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Create an account</a></p>
     </div>
 </section>

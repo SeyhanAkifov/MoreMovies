@@ -1,0 +1,25 @@
+@page
+@model MoreMovies.Web.Areas.Identity.Pages.Account.RegisterConfirmationModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Confirm your email";
+}
+
+<link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
+
+<section class="login-screen" aria-labelledby="confirm-title">
+    <div class="login-art" aria-hidden="true"></div>
+    <div class="login-content">
+        <h1 id="confirm-title">Confirm your email</h1>
+        @if (Model.DevelopmentConfirmationUrl is { } link)
+        {
+            <p>Use this development link to confirm your test account.</p>
+            <p class="login-register"><a href="@link">Confirm test account</a></p>
+        }
+        else
+        {
+            <p>Open the confirmation link in your email before signing in.</p>
+        }
+        <p class="login-register"><a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Continue to sign in</a></p>
+    </div>
+</section>

@@ -27,7 +27,7 @@ namespace MoreMovie.Web.Tests.Controller
 
             var movieService = new MovieService(data);
 
-            var homeController = new HomeController(newsService, comingSoonService, genreService, cache, null, null, movieService);
+            var homeController = new HomeController(newsService, comingSoonService, genreService, cache, null, movieService);
 
             //Act
             var result = await homeController.Index();
@@ -57,7 +57,7 @@ namespace MoreMovie.Web.Tests.Controller
         public void ErrorShouldReturnView()
         {
             //Arrange
-            var homeController = new HomeController(null, null, null, null, null, null, null);
+            var homeController = new HomeController(null, null, null, null, null, null);
 
             //Act
             var result = homeController.Error();

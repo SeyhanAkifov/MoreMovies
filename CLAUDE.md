@@ -20,6 +20,8 @@ Note the test project is `MoreMovie.Web.Tests` — **singular "Movie"**, unlike 
 
 `MoreMovies.Web/appsettings.json` is deleted from the repo and gitignored — it must be created locally with a `ConnectionStrings:DefaultConnection` key (SQL Server) before the app will start. The Web project also has a `UserSecretsId`, so user-secrets is the intended place for local secrets instead of committing them to `appsettings.json`.
 
+Registration in Development can show a one-time confirmation link in the browser that created the account. For registration by email, register an `IEmailSender` implementation and set `Registration:PublicOrigin` to the site's public HTTPS origin. The production form stays unavailable until these are configured.
+
 On every startup, `Program.cs` calls `app.PrepareDatabaseAsync()` ([MoreMovies.Web/Infrastructure/ApplicationBuilderExtensions.cs](MoreMovies.Web/Infrastructure/ApplicationBuilderExtensions.cs)), which runs `db.Database.MigrateAsync()` and then seeds Genre/Language/Country/Users/Movies/News/ComingSoon data (idempotent via `.Any()` checks). Movies/News/ComingSoon seed content comes from `movies.json`, `news.json`, `comingSoon.json` in the Web project root. Development demo users are created without passwords. Development startup removes the former default passwords from existing demo accounts and preserves custom passwords.
 
 ## Architecture
@@ -44,7 +46,7 @@ All projects target `net10.0`. There is no repository/unit-of-work abstraction �
   - `MapHub<MovieHub>("/moviehub")` for live comment notifications
   - Has its own `Models/{Administration,Cinema,Comingsoon,Movie,News}` folder for view/API models — distinct from the domain entities in `MoreMovies.Models`
   - `Controllers/Api/DetailsApiController.cs` is a separate `[ApiController]` JSON endpoint (`api/[action]/{id}`) alongside the regular MVC controllers
-  - `Areas/Identity/Pages` only tracks `_ViewStart.cshtml` — the actual Identity UI comes from the `Microsoft.AspNetCore.Identity.UI` package, not customized here
+  - `Areas/Identity/Pages/Account` customizes sign-in, registration and its confirmation instructions. The token confirmation page and other account pages come from the `Microsoft.AspNetCore.Identity.UI` package.
 
 ### Known naming quirks (intentional, not typos to "fix" opportunistically)
 

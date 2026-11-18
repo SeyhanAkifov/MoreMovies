@@ -23,16 +23,15 @@ namespace MoreMovies.Web.Controllers
         private readonly INewsService newsService;
         private readonly IComingSoonService comingSoonService;
         private readonly IMemoryCache cache;
-        private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
+        /// <summary>Initialize the home page and sign-out dependencies.</summary>
         public HomeController(
             
             INewsService newsService, 
             IComingSoonService comingSoonService, 
             IGenreService genreService, 
             IMemoryCache cache,
-            UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager, IMovieService service)
         {
             this.service = service;
@@ -40,7 +39,6 @@ namespace MoreMovies.Web.Controllers
             this.comingSoonService = comingSoonService;
             this.genreService = genreService;
             this.cache = cache;
-            _userManager = userManager;
             _signInManager = signInManager;
         }
 
@@ -110,44 +108,11 @@ namespace MoreMovies.Web.Controllers
             return RedirectToPage("/Account/Login", new { area = "Identity", returnUrl });
         }
 
+        /// <summary>Redirect old registration links to the Identity page.</summary>
         [HttpGet]
-
-        public IActionResult Register()
+        public IActionResult Register(string returnUrl)
         {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(string email, string password, string confirmPassword)
-        {
-            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
-            {
-                ModelState.AddModelError(string.Empty, "Email and password are required.");
-                return View();
-            }
-
-            if (password != confirmPassword)
-            {
-                ModelState.AddModelError(string.Empty, "Passwords do not match.");
-                return View();
-            }
-
-            var user = new IdentityUser { UserName = email, Email = email };
-            var result = await _userManager.CreateAsync(user, password);
-
-            if (result.Succeeded)
-            {
-                await _signInManager.SignInAsync(user, isPersistent: false);
-                return RedirectToAction("Index", "Home");
-            }
-
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
-
-            return View();
+            return RedirectToPage("/Account/Register", new { area = "Identity", returnUrl });
         }
 
         [HttpPost]

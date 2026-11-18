@@ -1,0 +1,43 @@
+@page
+@model MoreMovies.Web.Areas.Identity.Pages.Account.RegisterModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Create an account";
+}
+
+<link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
+
+<section class="login-screen" aria-labelledby="register-title">
+    <div class="login-art" aria-hidden="true"></div>
+    <div class="login-content">
+        <h1 id="register-title">Create an account</h1>
+        @if (Model.CanRegister)
+        {
+            <form method="post" class="login-form">
+                <input type="hidden" asp-for="ReturnUrl" />
+                <div asp-validation-summary="ModelOnly" class="login-errors" role="alert"></div>
+                <div class="login-field">
+                    <label asp-for="Input.Email"></label>
+                    <input asp-for="Input.Email" autocomplete="email" required />
+                    <span asp-validation-for="Input.Email" class="login-error"></span>
+                </div>
+                <div class="login-field">
+                    <label asp-for="Input.Password"></label>
+                    <input asp-for="Input.Password" autocomplete="new-password" required />
+                    <span asp-validation-for="Input.Password" class="login-error"></span>
+                </div>
+                <div class="login-field">
+                    <label asp-for="Input.ConfirmPassword"></label>
+                    <input asp-for="Input.ConfirmPassword" autocomplete="new-password" required />
+                    <span asp-validation-for="Input.ConfirmPassword" class="login-error"></span>
+                </div>
+                <button class="login-submit" type="submit">Create account</button>
+            </form>
+        }
+        else
+        {
+            <p>Registration is temporarily unavailable. Please try again later.</p>
+        }
+        <p class="login-register">Already registered? <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Sign in</a></p>
+    </div>
+</section>
