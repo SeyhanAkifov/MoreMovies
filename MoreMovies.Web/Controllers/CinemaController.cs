@@ -91,6 +91,11 @@ namespace MoreMovies.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(CinemaProjectionInputDto model)
         {
+            if ((model.SeatRows == 0) != (model.SeatsPerRow == 0))
+            {
+                ModelState.AddModelError(nameof(model.SeatsPerRow), "Enter both seat-plan dimensions or leave both at zero.");
+            }
+
             if (model.ProjectionTime.Year is < 1900 or > 9998)
             {
                 ModelState.AddModelError(nameof(model.ProjectionTime), "Choose a valid screening date.");

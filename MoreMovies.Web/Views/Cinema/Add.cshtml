@@ -48,6 +48,19 @@
             <span asp-validation-for="Time" class="text-red-400 text-sm"></span>
         </div>
 
+        <fieldset class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <legend class="font-semibold mb-2">Seat plan</legend>
+            <p class="text-sm text-gray-300 sm:col-span-2">Set both values to enable reservations. Leave both at zero for showtimes without reservations.</p>
+            <label>Rows
+                <input asp-for="SeatRows" min="0" max="20" class="block w-full p-2 rounded bg-gray-900 border border-gray-700" />
+                <span asp-validation-for="SeatRows" class="text-red-400 text-sm"></span>
+            </label>
+            <label>Seats per row
+                <input asp-for="SeatsPerRow" min="0" max="20" class="block w-full p-2 rounded bg-gray-900 border border-gray-700" />
+                <span asp-validation-for="SeatsPerRow" class="text-red-400 text-sm"></span>
+            </label>
+        </fieldset>
+
         <button type="submit"
                 class="w-full cinema-button py-2 px-4 rounded transition duration-200">
             Add

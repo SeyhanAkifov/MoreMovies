@@ -71,6 +71,12 @@
                             <div class="min-w-0">
                                 <p class="break-words text-white font-medium">@item.MovieName</p>
                                 <p class="break-words text-gray-400 text-sm">Hall: @item.CinemaHall</p>
+                                @if (item.HasSeatPlan)
+                                {
+                                    <a asp-controller="Tickets" asp-action="Seats" asp-route-id="@item.Id"
+                                       aria-label="Choose seats for @item.MovieName"
+                                       class="inline-block rounded px-3 py-2 mt-2 cinema-button">Choose seats</a>
+                                }
                                 @if (item.CanManage)
                                 {
                                     <form asp-action="Delete" asp-route-id="@item.Id" asp-route-cinemaName="@Model.SelectedCinema"

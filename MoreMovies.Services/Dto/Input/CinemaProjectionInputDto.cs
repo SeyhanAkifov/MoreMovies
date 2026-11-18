@@ -25,6 +25,12 @@ namespace MoreMovies.Services.Dto.Input
         [Required]
         public string CinemaName { get; set; }
 
+        [Range(0, 20)]
+        public int SeatRows { get; set; }
+
+        [Range(0, 20)]
+        public int SeatsPerRow { get; set; }
+
 
     }
 }

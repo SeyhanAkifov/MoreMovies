@@ -1,0 +1,54 @@
+@model MoreMovies.Services.SeatReservationService.SeatPlan
+@using System.Globalization
+@{
+    ViewData["Title"] = "Choose seats";
+    var screeningId = ViewData["ScreeningId"];
+}
+
+<section class="seat-booking">
+    <h1 class="text-3xl font-bold">Choose seats for @Model.Movie</h1>
+    <p>@Model.Date.ToString("ddd, dd MMM yyyy", CultureInfo.InvariantCulture) · @Model.Time</p>
+    <form asp-action="Reserve" method="post" data-seat-booking>
+        <input type="hidden" name="id" value="@screeningId" />
+        <p class="seat-screen">Screen</p>
+        <fieldset class="seat-plan">
+            <legend class="sr-only">Select up to eight seats</legend>
+            @for (var row = 0; row < Model.Rows; row++)
+            {
+                <div class="seat-row" style="--seat-columns: @Model.SeatsPerRow">
+                    @foreach (var seat in Model.Seats.Skip(row * Model.SeatsPerRow).Take(Model.SeatsPerRow))
+                    {
+                        var label = $"{(char)('A' + row)}{(seat.Number - 1) % Model.SeatsPerRow + 1}";
+                        <label class="seat-cell">
+                            <input type="checkbox" name="seats" value="@seat.Number" disabled="@(seat.Unavailable || !Model.Open)" class="sr-only" />
+                            <span>@label</span>
+                        </label>
+                    }
+                </div>
+            }
+        </fieldset>
+        <p class="text-sm">Available seats have a solid outline. Selected seats light up. Crossed-out seats are unavailable.</p>
+        @if (Model.Open)
+        {
+            <button type="submit" class="cinema-button px-4 py-2 rounded">Reserve seats</button>
+        }
+        else
+        {
+            <p>Reservations for this screening are closed.</p>
+        }
+        <p role="status" data-seat-status>@(TempData["SeatError"] ?? TempData["SeatSuccess"])</p>
+    </form>
+    @foreach (var group in Model.Seats.Where(seat => seat.OwnReservation.HasValue).GroupBy(seat => seat.OwnReservation))
+    {
+        var expiry = group.First().OwnExpiry.Value;
+        <form asp-action="Release" method="post" class="seat-hold">
+            <input type="hidden" name="id" value="@screeningId" />
+            <input type="hidden" name="reservationId" value="@group.Key" />
+            <p>Held seats: @string.Join(", ", group.Select(seat => $"{(char)('A' + (seat.Number - 1) / Model.SeatsPerRow)}{(seat.Number - 1) % Model.SeatsPerRow + 1}"))</p>
+            <p>Hold expires at <time datetime="@expiry.ToString("O", CultureInfo.InvariantCulture)">@expiry.ToLocalTime().ToString("HH:mm:ss", CultureInfo.InvariantCulture)</time>
+                <span data-hold-countdown="@expiry.ToString("O", CultureInfo.InvariantCulture)"></span>
+            </p>
+            <button class="cinema-button cinema-button-secondary px-3 py-2 rounded" type="submit">Release seats</button>
+        </form>
+    }
+</section>

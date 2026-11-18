@@ -746,3 +746,76 @@ main .text-red-500 {
     color: var(--cinema-accent);
     font-variant-numeric: tabular-nums;
 }
+.seat-booking {
+    display: grid;
+    gap: 1rem;
+    max-width: 58rem;
+    margin-inline: auto;
+    padding: clamp(1rem, 4vw, 2rem);
+    border: 1px solid var(--cinema-border);
+    border-radius: 1rem;
+    background: var(--cinema-surface);
+}
+
+.seat-booking form {
+    display: grid;
+    gap: 0.75rem;
+    justify-items: start;
+    min-width: 0;
+}
+
+.seat-screen {
+    justify-self: stretch;
+    padding: 0.35rem;
+    border-top: 2px solid var(--cinema-accent);
+    color: var(--cinema-accent);
+    text-align: center;
+}
+
+.seat-plan {
+    display: grid;
+    gap: 0.35rem;
+    max-width: 100%;
+    min-width: 0;
+    padding: 0.25rem;
+    overflow-x: auto;
+}
+
+.seat-row {
+    display: grid;
+    grid-template-columns: repeat(var(--seat-columns), 2.75rem);
+    gap: 0.35rem;
+}
+
+.seat-cell span {
+    display: grid;
+    min-height: 2.75rem;
+    place-items: center;
+    border: 1px solid var(--cinema-accent);
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.seat-cell input:checked + span {
+    color: #0d1626;
+    background: var(--cinema-gradient);
+    font-weight: 700;
+}
+
+.seat-cell input:disabled + span {
+    border-color: var(--cinema-border);
+    color: var(--cinema-muted);
+    text-decoration: line-through;
+    cursor: default;
+}
+
+.seat-cell input:focus-visible + span {
+    outline: 2px solid var(--cinema-accent);
+    outline-offset: 2px;
+}
+
+.seat-hold {
+    padding: 0.75rem;
+    border: 1px solid var(--cinema-border);
+    border-radius: 0.5rem;
+}

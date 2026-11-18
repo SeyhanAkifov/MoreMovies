@@ -65,7 +65,9 @@ namespace MoreMovies.Services
                 MovieName = model.MovieName,
                 ProjectionTime = model.ProjectionTime,
                 CinemaHall = hall,
-                CinemaId = cinema.Id
+                CinemaId = cinema.Id,
+                SeatRows = model.SeatRows,
+                SeatsPerRow = model.SeatsPerRow
             });
 
             await this.db.SaveChangesAsync();
@@ -111,6 +113,7 @@ namespace MoreMovies.Services
             {
                 Id = x.Id,
                 CanManage = userId != null && x.Cinema.UserId == userId,
+                HasSeatPlan = x.SeatRows > 0 && x.SeatsPerRow > 0,
                 MovieName = x.MovieName,
                 ProjectionTime = x.ProjectionTime,
                 CinemaHall = x.CinemaHall,

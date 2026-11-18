@@ -41,6 +41,8 @@ services.AddScoped<ICommentService, CommentService>();
 services.AddScoped<INewsService, NewsService>();
 services.AddScoped<IComingSoonService, ComingSoonService>();
 services.AddScoped<ICinemaService, CinemaService>();
+services.AddScoped<SeatReservationService>();
+services.AddSingleton(System.TimeProvider.System);
 services.AddScoped<IUserService, UserService>();
 services.AddMemoryCache();
 

@@ -30,5 +30,9 @@ namespace MoreMovies.Models
         public int CinemaId { get; set; }
 
         public Cinema Cinema { get; set; }
+
+        public int SeatRows { get; set; }
+
+        public int SeatsPerRow { get; set; }
     }
 }

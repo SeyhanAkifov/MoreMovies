@@ -46,11 +46,20 @@ namespace MoreMovies.Data
         public DbSet<CinemaHall> CinemaHalls { get; set; }
         public DbSet<CinemaPojection> CinemaPojections { get; set; }
         public DbSet<Cinema> Cinemas { get; set; }
+        public DbSet<ScreeningSeatHold> ScreeningSeatHolds { get; set; }
 
         /// <summary>Configure the database model and relationship keys.</summary>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<ScreeningSeatHold>(hold =>
+            {
+                hold.HasKey(seat => new { seat.ScreeningId, seat.SeatNumber });
+                hold.Property(seat => seat.UserId).IsRequired().HasMaxLength(450);
+                hold.HasOne<CinemaPojection>().WithMany()
+                    .HasForeignKey(seat => seat.ScreeningId);
+            });
 
             modelBuilder.Entity<Movie>()
                 .Property(movie => movie.Budget)

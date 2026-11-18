@@ -87,6 +87,78 @@ if (trailerDialog && trailerFrame) {
     trailerDialog.addEventListener("close", () => trailerFrame.removeAttribute("src"));
 }
 
+const seatForm = document.querySelector("[data-seat-booking]");
+const reserveButton = seatForm?.querySelector('button[type="submit"]');
+if (reserveButton && typeof fetch === "function") {
+    const seatStatus = seatForm.querySelector("[data-seat-status]");
+
+    // Submit all selected seats and keep the available selection after conflicts.
+    seatForm.addEventListener("submit", async event => {
+        event.preventDefault();
+        if (reserveButton.disabled) {
+            return;
+        }
+
+        const selection = new FormData(seatForm);
+        const count = selection.getAll("seats").length;
+        if (count < 1 || count > 8) {
+            seatStatus.textContent = "Select between one and eight seats.";
+            return;
+        }
+
+        reserveButton.disabled = true;
+        seatStatus.textContent = "Reserving seats…";
+        try {
+            const response = await fetch(seatForm.action, {
+                method: "POST",
+                headers: { Accept: "application/json" },
+                body: selection,
+                redirect: "manual"
+            });
+            if (response.status === 409 && response.headers.get("Content-Type")?.includes("application/json")) {
+                const { unavailable } = await response.json();
+                const blocked = new Set(unavailable ?? []);
+                seatForm.querySelectorAll('input[name="seats"]').forEach(input => {
+                    input.disabled = blocked.has(Number(input.value));
+                    if (input.disabled) {
+                        input.checked = false;
+                    }
+                });
+                seatStatus.textContent = "Availability changed. Unavailable seats have been marked. Your other selections are still checked.";
+            } else if (response.status === 409) {
+                seatStatus.textContent = "Reservations for this screening are closed.";
+            } else if (response.ok) {
+                const { url } = await response.json();
+                window.location.assign(url);
+            } else if (response.type === "opaqueredirect" || response.status === 401) {
+                seatStatus.textContent = "Sign in again to reserve seats.";
+            } else {
+                seatStatus.textContent = "Could not reserve these seats. Refresh the plan and try again.";
+            }
+        } catch {
+            seatStatus.textContent = "Could not confirm the reservation. Refresh the plan to check your holds.";
+        } finally {
+            reserveButton.disabled = false;
+        }
+    });
+}
+
+const holdCountdowns = document.querySelectorAll("[data-hold-countdown]");
+if (holdCountdowns.length) {
+    // Show the time remaining from the reservation's server-issued expiry.
+    function updateHoldCountdowns() {
+        holdCountdowns.forEach(countdown => {
+            const seconds = Math.max(0, Math.ceil((Date.parse(countdown.dataset.holdCountdown) - Date.now()) / 1000));
+            const minutes = Math.floor(seconds / 60);
+            const remainder = String(seconds % 60).padStart(2, "0");
+            countdown.textContent = seconds > 0 ? `(${minutes}:${remainder} left)` : "(expired)";
+        });
+    }
+
+    updateHoldCountdowns();
+    setInterval(updateHoldCountdowns, 1000);
+}
+
 const ratingForm = document.querySelector(".movie-rating-form");
 const ratingSummary = document.querySelector("[data-rating-summary]");
 const ratingStatus = document.querySelector("[data-rating-status]");

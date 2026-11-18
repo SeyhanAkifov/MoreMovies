@@ -91,6 +91,7 @@ internal static class ViewModelMappings
         {
             Id = source.Id,
             CanManage = source.CanManage,
+            HasSeatPlan = source.HasSeatPlan,
             ProjectionTime = source.ProjectionTime,
             MovieName = source.MovieName,
             Time = source.Time,
